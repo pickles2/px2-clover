@@ -72,7 +72,11 @@ class main{
 
 		ob_start(); ?>
 <div style="position:fixed; right: 10px; bottom: 10px;">
+<?php if( $px->conf()->allow_pxcommands ){ ?>
 <button type="button" onclick="location.href='?PX=admin';">Pickles 2 Clover</button>
+<?php }else{ ?>
+<p>Pickles 2 Clover を利用するには、<code>$conf-&gt;allow_pxcommands</code>フラグを <code>1</code> に設定してください。</p>
+<?php } ?>
 </div>
 <?php
 		$src .= ob_get_clean();
