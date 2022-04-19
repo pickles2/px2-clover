@@ -9,11 +9,9 @@ class main{
 	/** Picklesオブジェクト */
 	private $px;
 
-	/** PXコマンド名 */
-	private $command = array();
+	/** 認証機能 */
+	private $auth;
 
-	/** px2dtconfig */
-	private $px2dtconfig;
 
 	/**
 	 * entry
@@ -52,7 +50,7 @@ class main{
 
 		$px->pxcmd()->register('admin', function($px){
 			(new self( $px ))->kick();
-		}, true);
+		});
 
 		return;
 	}
@@ -94,25 +92,45 @@ class main{
 	 */
 	private function __construct( $px ){
 		$this->px = $px;
+		$this->auth = new auth( $this->px );
 	}
 
 	/**
 	 * CMS管理画面を実行する
 	 */
 	private function kick(){
+		$this->command = $this->px->get_px_command();
+
+		switch( @$this->command[1] ){
+			case 'logout':
+				//各種情報の取得
+				$this->auth->logout();
+				break;
+		}
+
 		if( !$this->px->req()->is_cmd() ){
+			$this->auth->auth();
+		}
+
+		if( !$this->px->req()->is_cmd() ){
+			// --------------------------------------
+			// ブラウザへの応答
 			ob_start(); ?>
 <p>Pickles 2 Clover</p>
 <p><a href="<?= htmlspecialchars($this->px->href( $this->px->req()->get_request_file_path() )); ?>">戻る</a></p>
+<p><a href="?PX=admin.logout">ログアウト</a></p>
 <?php
 			echo ob_get_clean();
 			exit;
+
+		} else {
+			// --------------------------------------
+			// CLIへの応答
+			echo '{"title":"Pickles 2 Clover",'."\n";
+			echo '"result":false,'."\n";
+			echo '"message":"No Contents."'."\n";
+			echo '}'."\n";
+			exit;
 		}
-	
-		echo '{"title":"Pickles 2 Clover",'."\n";
-		echo '"result":false,'."\n";
-		echo '"message":"No Contents."'."\n";
-		echo '}'."\n";
-		exit;
 	}
 }
