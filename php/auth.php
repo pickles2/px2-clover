@@ -41,11 +41,28 @@ class auth{
 	 * ログアウトする
 	 */
 	public function logout(){
-		$this->px->req()->delete_session('ADMIN_USER_ID');
 		$pxcmd = $this->px->req()->get_param('PX');
-		if( $pxcmd == 'admin.logout' ){
-			$pxcmd = 'admin';
+		if( !$this->is_login() && $pxcmd == 'admin.logout' ){
+			ob_start(); ?>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>ログアウトしました</title>
+</head>
+<body>
+<p>ログアウトしました。</p>
+<p><a href="<?= htmlspecialchars($this->px->href( $this->px->req()->get_request_file_path() )); ?>">戻る</a></p>
+</body>
+</html>
+<?php
+			$src = ob_get_clean();
+			echo $src;
+			exit;
 		}
+
+
+		$this->px->req()->delete_session('ADMIN_USER_ID');
 		header('Location:'.$this->px->href( $this->px->req()->get_request_file_path().'?PX='.htmlspecialchars(''.$pxcmd) ));
 		exit;
 	}
