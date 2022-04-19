@@ -27,7 +27,7 @@ class auth{
 		if( $this->px->req()->get_param('ADMIN_USER_FLG') ){
 			if( $this->px->req()->get_param('ADMIN_USER_ID') == 'admin' && $this->px->req()->get_param('ADMIN_USER_PW') == 'admin' ){
 				$this->px->req()->set_session('ADMIN_USER_ID', $this->px->req()->get_param('ADMIN_USER_ID'));
-				header('Location:'.$this->px->href( $this->px->req()->get_request_file_path().'?PX='.htmlspecialchars($this->px->req()->get_param('PX')) ));
+				header('Location:'.$this->px->href( $this->px->req()->get_request_file_path().'?PX='.htmlspecialchars(''.$this->px->req()->get_param('PX')) ));
 				exit;
 			}
 		}
@@ -42,7 +42,11 @@ class auth{
 	 */
 	public function logout(){
 		$this->px->req()->delete_session('ADMIN_USER_ID');
-		header('Location:'.$this->px->href( $this->px->req()->get_request_file_path() ));
+		$pxcmd = $this->px->req()->get_param('PX');
+		if( $pxcmd == 'admin.logout' ){
+			$pxcmd = 'admin';
+		}
+		header('Location:'.$this->px->href( $this->px->req()->get_request_file_path().'?PX='.htmlspecialchars(''.$pxcmd) ));
 		exit;
 	}
 
@@ -76,6 +80,7 @@ class auth{
 	<div><button>ログイン</button></div>
 	<input type="hidden" name="ADMIN_USER_FLG" value="1" />
 </form>
+<p><a href="<?= htmlspecialchars($this->px->href( $this->px->req()->get_request_file_path() )); ?>">戻る</a></p>
 </body>
 </html>
 <?php

@@ -26,12 +26,12 @@ class main{
 
 		array_push(
 			$px->conf()->funcs->before_content,
-			__CLASS__.'::'.__FUNCTION__.'_pxcmd()'
+			__CLASS__.'::'.__FUNCTION__.'_pxcmd('.json_encode($options).')'
 		);
 
 		array_push(
 			$px->conf()->funcs->processor->html,
-			__CLASS__.'::'.__FUNCTION__.'_after_html()'
+			__CLASS__.'::'.__FUNCTION__.'_after_html('.json_encode($options).')'
 		);
 
 		return;
@@ -51,6 +51,10 @@ class main{
 		$px->pxcmd()->register('admin', function($px){
 			(new self( $px ))->kick();
 		});
+
+		if( isset($options->protect_preview) && $options->protect_preview ){
+			(new auth( $px ))->auth();
+		}
 
 		return;
 	}
