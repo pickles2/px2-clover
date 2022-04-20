@@ -55,6 +55,9 @@ class main{
 		if( isset($options->protect_preview) && $options->protect_preview ){
 			(new auth( $px ))->auth();
 		}
+		if( !is_null($px->req()->get_param('PX')) ){
+			(new auth( $px ))->auth();
+		}
 
 		return;
 	}
@@ -68,6 +71,12 @@ class main{
 	static public function register_after_html( $px = null, $options = null ){
 		if( count(func_get_args()) <= 1 ){
 			return __CLASS__.'::'.__FUNCTION__.'('.( is_array($px) ? json_encode($px) : '' ).')';
+		}
+		if( $px->req()->get_param('PX') || $px->req()->get_param('PICKLES2_CONTENTS_EDITOR') ){
+			return;
+		}
+		if( $px->is_publish_tool() ){
+			return;
 		}
 
 		$src = $px->bowl()->get( 'main' );

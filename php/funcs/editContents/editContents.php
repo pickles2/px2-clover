@@ -28,8 +28,8 @@ class editContents{
 	<title>contents editor</title>
 <?php
 
-		$client_resources_dist = $this->px->realpath_files_cache('/px2-clover/');
-		$path_client_resources = $this->px->path_files_cache('/px2-clover/');
+		$client_resources_dist = $this->px->realpath_plugin_files('/px2-clover/');
+		$path_client_resources = $this->px->path_plugin_files('/px2-clover/');
 		$this->px->fs()->mkdir_r($client_resources_dist); // ディレクトリが予め存在していないとファイル生成は失敗する。
 
 		$res = $this->px->internal_sub_request('/?PX=px2dthelper.px2ce.client_resources&dist='.urlencode($client_resources_dist));
