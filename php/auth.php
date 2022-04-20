@@ -27,7 +27,7 @@ class auth{
 		if( $this->px->req()->get_param('ADMIN_USER_FLG') ){
 			if( $this->px->req()->get_param('ADMIN_USER_ID') == 'admin' && $this->px->req()->get_param('ADMIN_USER_PW') == 'admin' ){
 				$this->px->req()->set_session('ADMIN_USER_ID', $this->px->req()->get_param('ADMIN_USER_ID'));
-				header('Location:'.$this->px->href( $this->px->req()->get_request_file_path().'?PX='.htmlspecialchars(''.$this->px->req()->get_param('PX')) ));
+				header('Location:'.'?PX='.htmlspecialchars(''.$this->px->req()->get_param('PX') ));
 				exit;
 			}
 		}

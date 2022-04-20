@@ -24,6 +24,15 @@ class main{
 			return __CLASS__.'::'.__FUNCTION__.'('.( is_array($px) ? json_encode($px) : '' ).')';
 		}
 
+		if( !$px->req()->is_cmd() ){
+			if( isset($options->protect_preview) && $options->protect_preview ){
+				(new auth( $px ))->auth();
+			}
+			if( !is_null($px->req()->get_param('PX')) && $px->req()->get_param('PX') !== 'admin.logout' ){
+				(new auth( $px ))->auth();
+			}
+		}
+
 		array_push(
 			$px->conf()->funcs->before_content,
 			__CLASS__.'::'.__FUNCTION__.'_pxcmd('.json_encode($options).')'
@@ -51,13 +60,6 @@ class main{
 		$px->pxcmd()->register('admin', function($px){
 			(new self( $px ))->kick();
 		});
-
-		if( isset($options->protect_preview) && $options->protect_preview ){
-			(new auth( $px ))->auth();
-		}
-		if( !is_null($px->req()->get_param('PX')) ){
-			(new auth( $px ))->auth();
-		}
 
 		return;
 	}
