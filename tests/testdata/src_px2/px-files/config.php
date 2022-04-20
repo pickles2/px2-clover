@@ -5,7 +5,7 @@ return call_user_func( function(){
 	$conf = new stdClass;
 
 	// project
-	$conf->name = 'px2-serve'; // サイト名
+	$conf->name = 'px2-clover'; // サイト名
 	$conf->domain = null; // ドメイン
 	$conf->path_controot = '/'; // コンテンツルートディレクトリ
 
@@ -106,6 +106,8 @@ return call_user_func( function(){
 		// PX=publish
 		'picklesFramework2\commands\publish::register' ,
 
+		// PX=px2dthelper
+		'tomk79\pickles2\px2dthelper\main::register' ,
 	];
 
 

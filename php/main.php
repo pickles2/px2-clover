@@ -105,31 +105,44 @@ class main{
 	private function kick(){
 		$this->command = $this->px->get_px_command();
 
-		switch( @$this->command[1] ){
-			case 'logout':
-				//各種情報の取得
-				$this->auth->logout();
-				break;
-		}
-
 		if( !$this->px->req()->is_cmd() ){
+			switch( @$this->command[1] ){
+				case 'logout':
+					// --------------------------------------
+					// ログアウト
+					$this->auth->logout();
+					break;
+			}
 			$this->auth->auth();
 		}
 
 		if( !$this->px->req()->is_cmd() ){
 			// --------------------------------------
 			// ブラウザへの応答
-			ob_start(); ?>
+			switch( @$this->command[1] ){
+				case 'edit_contents':
+					// --------------------------------------
+					// コンテンツを編集
+					$app = new funcs\editContents\editContents($this->px);
+					$app->start();
+					break;
+
+				default:
+					// --------------------------------------
+					// ダッシュボード
+					ob_start(); ?>
 <p>Pickles 2 Clover</p>
+<p><a href="?PX=admin.edit_contents">コンテンツを編集する</a></p>
 <p><a href="<?= htmlspecialchars($this->px->href( $this->px->req()->get_request_file_path() )); ?>">戻る</a></p>
 <p><a href="?PX=admin.logout">ログアウト</a></p>
 <?php
-			echo ob_get_clean();
-			exit;
-
+					echo ob_get_clean();
+					exit;
+					break;
+			}
 		} else {
 			// --------------------------------------
-			// CLIへの応答
+			// CLIへの応答 (非対応)
 			echo '{"title":"Pickles 2 Clover",'."\n";
 			echo '"result":false,'."\n";
 			echo '"message":"No Contents."'."\n";
