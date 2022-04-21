@@ -19,9 +19,9 @@ class editContents{
 	 * @param object $clover $cloverオブジェクト
 	 * @param object $px $pxオブジェクト
 	 */
-	public function __construct( $clover, $px ){
+	public function __construct( $clover ){
 		$this->clover = $clover;
-		$this->px = $px;
+		$this->px = $clover->px();
 	}
 
 	public function start(){

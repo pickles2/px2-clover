@@ -4,13 +4,13 @@ namespace tomk79\pickles2\px2clover;
 /**
  * px2-clover
  */
-class main{
+class register{
 
 	/** Picklesオブジェクト */
 	private $px;
 
-	/** 認証機能 */
-	private $auth;
+	/** px2-clover */
+	private $clover;
 
 
 	/**
@@ -19,7 +19,7 @@ class main{
 	 * @param object $px Picklesオブジェクト
 	 * @param object $options プラグイン設定
 	 */
-	static public function register( $px = null, $options = null ){
+	static public function clover( $px = null, $options = null ){
 		if( count(func_get_args()) <= 1 ){
 			return __CLASS__.'::'.__FUNCTION__.'('.( is_array($px) ? json_encode($px) : '' ).')';
 		}
@@ -37,12 +37,12 @@ class main{
 
 		array_push(
 			$px->conf()->funcs->before_content,
-			__CLASS__.'::'.__FUNCTION__.'_admin_console('.json_encode($options).')'
+			__CLASS__.'::admin_console('.json_encode($options).')'
 		);
 
 		array_push(
 			$px->conf()->funcs->processor->html,
-			__CLASS__.'::'.__FUNCTION__.'_after_html('.json_encode($options).')'
+			__CLASS__.'::after_html('.json_encode($options).')'
 		);
 
 		return;
@@ -54,7 +54,7 @@ class main{
 	 * @param object $px Picklesオブジェクト
 	 * @param object $options プラグイン設定
 	 */
-	static public function register_admin_console( $px = null, $options = null ){
+	static public function admin_console( $px = null, $options = null ){
 		if( count(func_get_args()) <= 1 ){
 			return __CLASS__.'::'.__FUNCTION__.'('.( is_array($px) ? json_encode($px) : '' ).')';
 		}
@@ -72,7 +72,7 @@ class main{
 	 * @param object $px Picklesオブジェクト
 	 * @param object $options プラグイン設定
 	 */
-	static public function register_after_html( $px = null, $options = null ){
+	static public function after_html( $px = null, $options = null ){
 		if( count(func_get_args()) <= 1 ){
 			return __CLASS__.'::'.__FUNCTION__.'('.( is_array($px) ? json_encode($px) : '' ).')';
 		}
@@ -109,19 +109,9 @@ class main{
 	 */
 	private function __construct( $px ){
 		$this->px = $px;
-		$this->auth = new auth( $this->px );
+		$this->clover = new clover( $this->px );
 	}
 
-
-	/** auth */
-	public function auth(){
-		return $this->auth;
-	}
-
-	/** px */
-	public function px(){
-		return $this->px;
-	}
 
 	/**
 	 * CMS管理画面をルーティングする
@@ -134,10 +124,10 @@ class main{
 				case 'logout':
 					// --------------------------------------
 					// ログアウト
-					$this->auth->logout();
+					$this->clover->auth()->logout();
 					break;
 			}
-			$this->auth->auth();
+			$this->clover->auth()->auth();
 		}
 
 		if( !$this->px->req()->is_cmd() ){
@@ -147,7 +137,7 @@ class main{
 				case 'edit_contents':
 					// --------------------------------------
 					// コンテンツを編集
-					$app = new funcs\editContents\editContents($this, $this->px);
+					$app = new funcs\editContents\editContents($this->clover);
 					$app->start();
 					break;
 
