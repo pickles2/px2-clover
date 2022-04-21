@@ -20,6 +20,12 @@ class clover{
 	public function __construct( $px ){
 		$this->px = $px;
 		$this->auth = new auth( $this->px );
+
+
+		// クライアントリソースを公開ディレクトリに配置
+		$client_resources_dist = $this->px->realpath_plugin_files('/');
+		$this->px->fs()->copy_r(__DIR__.'/../resources/', $client_resources_dist);
+
 	}
 
 

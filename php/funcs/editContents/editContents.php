@@ -34,27 +34,24 @@ class editContents{
 <?php
 
 		$client_resources_dist = $this->px->realpath_plugin_files('/edit-contents/');
-		$path_client_resources = $this->px->path_plugin_files('/edit-contents/');
+		$path_client_resources = $this->px->path_plugin_files('/');
 		$this->px->fs()->mkdir_r($client_resources_dist); // ディレクトリが予め存在していないとファイル生成は失敗する。
 
 		$res = $this->px->internal_sub_request('/?PX=px2dthelper.px2ce.client_resources&dist='.urlencode($client_resources_dist));
 		$res = json_decode($res, true);
 
 		foreach( $res['css'] as $css ){
-			echo '<link rel="stylesheet" href="'.htmlspecialchars($path_client_resources.$css).'" />'."\n";
+			echo '<link rel="stylesheet" href="'.htmlspecialchars($path_client_resources.'edit-contents/'.$css).'" />'."\n";
 		}
 
-		echo '<script src="data:text/javascript;base64,'.htmlspecialchars(base64_encode( file_get_contents(__DIR__.'/../../../resources/jquery-3.6.0.min.js') )).'"></script>'."\n";
+		echo '<script src="'.htmlspecialchars($path_client_resources.'jquery-3.6.0.min.js').'"></script>'."\n";
 		foreach( $res['js'] as $js ){
-			echo '<script src="'.htmlspecialchars($path_client_resources.$js).'"></script>'."\n";
+			echo '<script src="'.htmlspecialchars($path_client_resources.'edit-contents/'.$js).'"></script>'."\n";
 		}
 ?>
 </head>
 <body>
 <p>Pickles 2 Clover</p>
-<p>コンテンツ編集機能は開発中です。</p>
-<p><a href="?PX=admin">戻る</a></p>
-<p><a href="?PX=admin.logout">ログアウト</a></p>
 
 
 <div id="canvas" style="height: 400px; width: 100%;"></div>
@@ -113,7 +110,7 @@ class editContents{
 					return;
 				},
 				'complete': function(){
-					window.open('about:blank', '_self').close();
+					window.location.href = '?PX=admin';
 				},
 				'clipboard': {
 					'set': function( data, type, event, callback ){
