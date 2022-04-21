@@ -26,16 +26,18 @@ class main{
 
 		if( !$px->req()->is_cmd() ){
 			if( isset($options->protect_preview) && $options->protect_preview ){
+				// プレビュー全体で認証を要求する
 				(new auth( $px ))->auth();
 			}
 			if( !is_null($px->req()->get_param('PX')) && $px->req()->get_param('PX') !== 'admin.logout' ){
+				// PXコマンド全体で認証を要求する
 				(new auth( $px ))->auth();
 			}
 		}
 
 		array_push(
 			$px->conf()->funcs->before_content,
-			__CLASS__.'::'.__FUNCTION__.'_pxcmd('.json_encode($options).')'
+			__CLASS__.'::'.__FUNCTION__.'_admin_console('.json_encode($options).')'
 		);
 
 		array_push(
@@ -47,18 +49,18 @@ class main{
 	}
 
 	/**
-	 * entry: pxcmd
+	 * entry: CMS管理画面を登録する
 	 *
 	 * @param object $px Picklesオブジェクト
 	 * @param object $options プラグイン設定
 	 */
-	static public function register_pxcmd( $px = null, $options = null ){
+	static public function register_admin_console( $px = null, $options = null ){
 		if( count(func_get_args()) <= 1 ){
 			return __CLASS__.'::'.__FUNCTION__.'('.( is_array($px) ? json_encode($px) : '' ).')';
 		}
 
 		$px->pxcmd()->register('admin', function($px){
-			(new self( $px ))->kick();
+			(new self( $px ))->route();
 		});
 
 		return;
@@ -110,10 +112,21 @@ class main{
 		$this->auth = new auth( $this->px );
 	}
 
+
+	/** auth */
+	public function auth(){
+		return $this->auth;
+	}
+
+	/** px */
+	public function px(){
+		return $this->px;
+	}
+
 	/**
-	 * CMS管理画面を実行する
+	 * CMS管理画面をルーティングする
 	 */
-	private function kick(){
+	private function route(){
 		$this->command = $this->px->get_px_command();
 
 		if( !$this->px->req()->is_cmd() ){
@@ -134,7 +147,7 @@ class main{
 				case 'edit_contents':
 					// --------------------------------------
 					// コンテンツを編集
-					$app = new funcs\editContents\editContents($this->px);
+					$app = new funcs\editContents\editContents($this, $this->px);
 					$app->start();
 					break;
 
@@ -156,7 +169,7 @@ class main{
 			// CLIへの応答 (非対応)
 			echo '{"title":"Pickles 2 Clover",'."\n";
 			echo '"result":false,'."\n";
-			echo '"message":"No Contents."'."\n";
+			echo '"message":"Pickles 2 Clover is not support CLI."'."\n";
 			echo '}'."\n";
 			exit;
 		}

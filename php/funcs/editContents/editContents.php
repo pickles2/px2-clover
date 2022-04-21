@@ -6,6 +6,9 @@ namespace tomk79\pickles2\px2clover\funcs\editContents;
  */
 class editContents{
 
+	/** Cloverオブジェクト */
+	private $clover;
+
 	/** Picklesオブジェクト */
 	private $px;
 
@@ -13,9 +16,11 @@ class editContents{
 	/**
 	 * Constructor
 	 *
+	 * @param object $clover $cloverオブジェクト
 	 * @param object $px $pxオブジェクト
 	 */
-	public function __construct( $px ){
+	public function __construct( $clover, $px ){
+		$this->clover = $clover;
 		$this->px = $px;
 	}
 
@@ -64,6 +69,7 @@ class editContents{
 		// .envよりプレビューサーバーのURLを取得
 		var preview_url = '?';
 		var resizeTimer;
+		var csrf_token = <?= json_encode($this->clover->auth()->get_csrf_token(), JSON_UNESCAPED_SLASHES); ?>;
 
 		if( page_path ){
 			target_mode = 'page_content';
@@ -93,7 +99,7 @@ class editContents{
 						"method": 'post',
 						'data': {
 							'data': btoa(JSON.stringify(input)),
-							// _token: '{{ csrf_token() }}'
+							'ADMIN_USER_CSRF_TOKEN': csrf_token,
 						},
 						"error": function(error){
 							console.error('------ GPI Response Error:', typeof(error), error);
