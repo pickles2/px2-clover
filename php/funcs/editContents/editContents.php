@@ -33,13 +33,16 @@ class editContents{
 	<title>contents editor</title>
 <?php
 
-		$client_resources_dist = $this->px->realpath_plugin_files('/edit-contents/');
 		$path_client_resources = $this->px->path_plugin_files('/');
+		$client_resources_dist = $this->px->realpath_plugin_files('/edit-contents/');
 		$this->px->fs()->mkdir_r($client_resources_dist); // ディレクトリが予め存在していないとファイル生成は失敗する。
+
+		echo '<link rel="stylesheet" href="'.htmlspecialchars($path_client_resources.'px2style/dist/px2style.css').'" />'."\n";
+		echo '<script src="'.htmlspecialchars($path_client_resources.'px2style/dist/px2style.js').'"></script>'."\n";
+
 
 		$res = $this->px->internal_sub_request('/?PX=px2dthelper.px2ce.client_resources&dist='.urlencode($client_resources_dist));
 		$res = json_decode($res, true);
-
 		foreach( $res['css'] as $css ){
 			echo '<link rel="stylesheet" href="'.htmlspecialchars($path_client_resources.'edit-contents/'.$css).'" />'."\n";
 		}
