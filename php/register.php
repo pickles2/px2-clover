@@ -35,15 +35,9 @@ class register{
 			}
 		}
 
-		array_push(
-			$px->conf()->funcs->before_content,
-			__CLASS__.'::admin_console('.json_encode($options).')'
-		);
+		$px->conf()->funcs->before_content['px2-clover'] = __CLASS__.'::admin_console('.json_encode($options).')';
 
-		array_push(
-			$px->conf()->funcs->processor->html,
-			__CLASS__.'::after_html('.json_encode($options).')'
-		);
+		array_push( $px->conf()->funcs->processor->html, __CLASS__.'::after_html('.json_encode($options).')' );
 
 		return;
 	}
