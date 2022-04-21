@@ -78,6 +78,15 @@ class editContents{
 			page_path = '/'+theme_id+'/'+layout_id+'.html';
 		}
 
+		function base64_encode(orig) { return new Promise(function(rlv){
+			var r = new FileReader();
+			r.onload = function(){
+				var offset = r.result.indexOf(",");
+				rlv(r.result.slice(offset+1));
+			};
+			r.readAsDataURL(new Blob([orig]));
+		}); }
+
 		// Px2CE の初期化
 		var pickles2ContentsEditor = new Pickles2ContentsEditor(); // px2ce client
 		pickles2ContentsEditor.init(
@@ -94,21 +103,23 @@ class editContents{
 				'gpiBridge': function(input, callback){
 					console.log('====== GPI Request:', input);
 					console.log(JSON.stringify(input));
-					$.ajax({
-						"url": '?PX=px2dthelper.px2ce.gpi', // TODO: GPIのパス
-						"method": 'post',
-						'data': {
-							'data': btoa(JSON.stringify(input)),
-							'ADMIN_USER_CSRF_TOKEN': csrf_token,
-						},
-						"error": function(error){
-							console.error('------ GPI Response Error:', typeof(error), error);
-							callback(error);
-						},
-						"success": function(data){
-							console.log('------ GPI Response:', typeof(data), data);
-							callback(data);
-						}
+					base64_encode( JSON.stringify(input) ).then((encodedInput) => {
+						$.ajax({
+							"url": '?PX=px2dthelper.px2ce.gpi', // TODO: GPIのパス
+							"method": 'post',
+							'data': {
+								'data': encodedInput,
+								'ADMIN_USER_CSRF_TOKEN': csrf_token,
+							},
+							"error": function(error){
+								console.error('------ GPI Response Error:', typeof(error), error);
+								callback(error);
+							},
+							"success": function(data){
+								console.log('------ GPI Response:', typeof(data), data);
+								callback(data);
+							}
+						});
 					});
 					return;
 				},
