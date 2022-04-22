@@ -1,0 +1,10 @@
+{
+    "name": "基本モジュール - Basic Modules",
+    "sort":[
+        "text",
+        "image",
+        "table",
+        "a",
+        "hr"
+    ]
+}

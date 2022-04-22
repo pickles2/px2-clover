@@ -37,6 +37,21 @@ class editContents{
 		$client_resources_dist = $this->px->realpath_plugin_files('/edit-contents/');
 		$this->px->fs()->mkdir_r($client_resources_dist); // ディレクトリが予め存在していないとファイル生成は失敗する。
 
+		// jQuery
+		echo '<script src="'.htmlspecialchars($path_client_resources.'jquery-3.6.0.min.js').'"></script>'."\n";
+
+		// Ace Editor
+		echo '<script src="'.htmlspecialchars($path_client_resources.'ace/ace.js').'"></script>'."\n";
+
+		// Bootstrap 5
+		echo '<script src="'.htmlspecialchars($path_client_resources.'bootstrap5/js/bootstrap.min.js').'"></script>'."\n";
+
+		// Summernote Editor
+		echo '<script src="'.htmlspecialchars($path_client_resources.'summernote/summernote.js').'"></script>'."\n";
+
+		// Keypress
+		echo '<script src="'.htmlspecialchars($path_client_resources.'dmauro-Keypress/keypress-2.1.5.min.js').'"></script>'."\n";
+
 		echo '<link rel="stylesheet" href="'.htmlspecialchars($path_client_resources.'px2style/dist/px2style.css').'" />'."\n";
 		echo '<script src="'.htmlspecialchars($path_client_resources.'px2style/dist/px2style.js').'"></script>'."\n";
 
@@ -46,18 +61,38 @@ class editContents{
 		foreach( $res['css'] as $css ){
 			echo '<link rel="stylesheet" href="'.htmlspecialchars($path_client_resources.'edit-contents/'.$css).'" />'."\n";
 		}
-
-		echo '<script src="'.htmlspecialchars($path_client_resources.'jquery-3.6.0.min.js').'"></script>'."\n";
 		foreach( $res['js'] as $js ){
 			echo '<script src="'.htmlspecialchars($path_client_resources.'edit-contents/'.$js).'"></script>'."\n";
 		}
 ?>
+	<style>
+		:root {
+			--px2-main-color: #00a0e6;
+			--px2-text-color: #333;
+			--px2-background-color: #f9f9f9;
+		}
+		html, body {
+			padding: 0; margin: 0;
+			height: 100%;
+		}
+		body {
+			display: flex;
+			justify-content: center;
+			align-items: stretch;
+			align-content: stretch;
+		}
+		.pickles2-contents-editor--toolbar {
+			box-sizing: border-box; /* TODO: px2ceの側に書くべき */
+		}
+		#cont-canvas {
+			width: 100%;
+			height: 100%;
+		}
+	</style>
 </head>
 <body>
-<p>Pickles 2 Clover</p>
 
-
-<div id="canvas" style="height: 400px; width: 100%;"></div>
+<div id="cont-canvas"></div>
 
 
 <script type="text/javascript">
@@ -95,7 +130,7 @@ class editContents{
 				// これについては Px2CE の README を参照
 				// https://github.com/pickles2/node-pickles2-contents-editor
 				'page_path': page_path , // <- 編集対象ページのパス
-				'elmCanvas': document.getElementById('canvas'), // <- 編集画面を描画するための器となる要素
+				'elmCanvas': document.getElementById('cont-canvas'), // <- 編集画面を描画するための器となる要素
 				'preview':{
 					'origin': preview_url// プレビュー用サーバーの情報を設定します。
 				},

@@ -168,6 +168,7 @@ return call_user_func( function(){
 	$conf->plugins->px2dt = new stdClass;
 	$conf->plugins->px2dt->paths_module_template = [
 	];
+	$conf->plugins->px2dt->path_module_templates_dir = "./px-files/modules/";
 
 	return $conf;
 } );
