@@ -21,7 +21,8 @@
     "require": {
         "php": ">=7.3.0",
         "pickles2/px2style": ">=2.0",
-        "pickles2/px2-px2dthelper": ">=2.0"
+        "pickles2/px2-px2dthelper": ">=2.0",
+        "twig/twig": ">=3"
     },
     "require-dev": {
         "pickles2/px-fw-2.x": "~2",

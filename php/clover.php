@@ -12,6 +12,9 @@ class clover{
 	/** 認証機能 */
 	private $auth;
 
+	/** View機能 */
+	private $view;
+
 	/**
 	 * Constructor
 	 *
@@ -19,7 +22,8 @@ class clover{
 	 */
 	public function __construct( $px ){
 		$this->px = $px;
-		$this->auth = new auth( $this->px );
+		$this->auth = new auth( $this );
+		$this->view = new view( $this );
 
 
 		// クライアントリソースを公開ディレクトリに配置
@@ -29,14 +33,19 @@ class clover{
 	}
 
 
+	/** px */
+	public function px(){
+		return $this->px;
+	}
+
 	/** auth */
 	public function auth(){
 		return $this->auth;
 	}
 
-	/** px */
-	public function px(){
-		return $this->px;
+	/** view */
+	public function view(){
+		return $this->view;
 	}
 
 }

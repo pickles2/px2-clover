@@ -6,6 +6,9 @@ namespace tomk79\pickles2\px2clover;
  */
 class auth{
 
+	/** Cloverオブジェクト */
+	private $clover;
+
 	/** Picklesオブジェクト */
 	private $px;
 
@@ -15,10 +18,11 @@ class auth{
 	/**
 	 * Constructor
 	 *
-	 * @param object $px $pxオブジェクト
+	 * @param object $clover $cloverオブジェクト
 	 */
-	public function __construct( $px ){
-		$this->px = $px;
+	public function __construct( $clover ){
+		$this->clover = $clover;
+		$this->px = $this->clover->px();
 	}
 
 

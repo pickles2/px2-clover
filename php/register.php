@@ -25,13 +25,17 @@ class register{
 		}
 
 		if( !$px->req()->is_cmd() ){
+			$auth_needs = false;
 			if( isset($options->protect_preview) && $options->protect_preview ){
 				// プレビュー全体で認証を要求する
-				(new auth( $px ))->auth();
+				$auth_needs = true;
 			}
 			if( !is_null($px->req()->get_param('PX')) && $px->req()->get_param('PX') !== 'admin.logout' ){
 				// PXコマンド全体で認証を要求する
-				(new auth( $px ))->auth();
+				$auth_needs = true;
+			}
+			if( $auth_needs ){
+				(new clover( $px ))->auth()->auth();
 			}
 		}
 
