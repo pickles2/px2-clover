@@ -62,21 +62,12 @@ class auth{
 	public function logout(){
 		$pxcmd = $this->px->req()->get_param('PX');
 		if( !$this->is_login() && $pxcmd == 'admin.logout' ){
-			ob_start(); ?>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8" />
-<title>ログアウトしました</title>
-</head>
-<body>
-<p>ログアウトしました。</p>
-<p><a href="<?= htmlspecialchars($this->px->href( $this->px->req()->get_request_file_path() )); ?>">戻る</a></p>
-</body>
-</html>
-<?php
-			$src = ob_get_clean();
-			echo $src;
+			echo $this->clover->view()->bind(
+				'/system/logout.twig',
+				array(
+					'url_backto' => $this->px->href( $this->px->req()->get_request_file_path() ),
+				)
+			);
 			exit;
 		}
 
@@ -104,28 +95,14 @@ class auth{
 	 * ログイン画面を表示する
 	 */
 	public function login_page(){
-		ob_start(); ?>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8" />
-<title>LOGIN</title>
-</head>
-<body>
-<p>ログインしてください。</p>
-<form action="" method="post">
-	<div>ID: <input type="text" name="ADMIN_USER_ID" value="<?= htmlspecialchars( ''.$this->px->req()->get_param('ADMIN_USER_ID') ); ?>" /></div>
-	<div>PW: <input type="password" name="ADMIN_USER_PW" value="" /></div>
-	<div><button>ログイン</button></div>
-	<input type="hidden" name="ADMIN_USER_FLG" value="1" />
-	<input type="hidden" name="ADMIN_USER_CSRF_TOKEN" value="<?= htmlspecialchars($this->get_csrf_token()); ?>" />
-</form>
-<p><a href="<?= htmlspecialchars($this->px->href( $this->px->req()->get_request_file_path() )); ?>">戻る</a></p>
-</body>
-</html>
-<?php
-		$src = ob_get_clean();
-		echo $src;
+		echo $this->clover->view()->bind(
+			'/system/login.twig',
+			array(
+				'url_backto' => '?',
+				'ADMIN_USER_ID' => $this->px->req()->get_param('ADMIN_USER_ID'),
+				'csrf_token' => $this->get_csrf_token(),
+			)
+		);
 		exit;
 	}
 

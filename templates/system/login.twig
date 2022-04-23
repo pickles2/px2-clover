@@ -1,0 +1,18 @@
+{% extends "/layouts/default.twig" %}
+
+{% block title %}LOGIN{% endblock %}
+{% block head %}
+{% endblock %}
+{% block content %}
+<p>ログインしてください。</p>
+<form action="" method="post">
+	<div>ID: <input type="text" name="ADMIN_USER_ID" value="{{ ADMIN_USER_ID }}" /></div>
+	<div>PW: <input type="password" name="ADMIN_USER_PW" value="" /></div>
+	<div><button>ログイン</button></div>
+	<input type="hidden" name="ADMIN_USER_FLG" value="1" />
+	<input type="hidden" name="ADMIN_USER_CSRF_TOKEN" value="{{ csrf_token }}" />
+</form>
+<p><a href="{{ url_backto }}">戻る</a></p>
+{% endblock %}
+{% block foot %}
+{% endblock %}

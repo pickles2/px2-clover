@@ -142,13 +142,12 @@ class register{
 				default:
 					// --------------------------------------
 					// ダッシュボード
-					ob_start(); ?>
-<p>Pickles 2 Clover</p>
-<p><a href="?PX=admin.edit_contents">コンテンツを編集する</a></p>
-<p><a href="<?= htmlspecialchars($this->px->href( $this->px->req()->get_request_file_path() )); ?>">戻る</a></p>
-<p><a href="?PX=admin.logout">ログアウト</a></p>
-<?php
-					echo ob_get_clean();
+					echo $this->clover->view()->bind(
+						'/cont/pageInfo/pageInfo.twig',
+						array(
+							'url_backto' => $this->px->href( $this->px->req()->get_request_file_path() ),
+						)
+					);
 					exit;
 					break;
 			}
