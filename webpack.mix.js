@@ -46,5 +46,5 @@ mix
 
 	// --------------------------------------
 	// Static Frontend Libraries
-	.copyDirectory('vendor/pickles2/px2style/dist', 'resources/px2style/dist')
+	.copyDirectory('vendor/pickles2/px2style/dist', 'public/resources/px2style/dist')
 ;

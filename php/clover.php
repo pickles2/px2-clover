@@ -24,7 +24,7 @@ class clover{
 
 		// クライアントリソースを公開ディレクトリに配置
 		$client_resources_dist = $this->px->realpath_plugin_files('/');
-		$this->px->fs()->copy_r(__DIR__.'/../resources/', $client_resources_dist);
+		$this->px->fs()->copy_r(__DIR__.'/../public/resources/', $client_resources_dist);
 
 	}
 
