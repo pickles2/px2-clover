@@ -28,8 +28,8 @@ class editContents{
 	 * コンテンツ編集画面
 	 */
 	public function start(){
-		$path_client_resources = $this->px->path_plugin_files('/');
-		$client_resources_dist = $this->px->realpath_plugin_files('/edit-contents/');
+		$path_client_resources = $this->clover->path_files('/');
+		$client_resources_dist = $this->clover->realpath_files('/edit-contents/');
 		$this->px->fs()->mkdir_r($client_resources_dist); // ディレクトリが予め存在していないとファイル生成は失敗する。
 
 		$px2ce_res = $this->px->internal_sub_request('/?PX=px2dthelper.px2ce.client_resources&dist='.urlencode($client_resources_dist));

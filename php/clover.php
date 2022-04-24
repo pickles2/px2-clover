@@ -49,4 +49,34 @@ class clover{
 		return $this->view;
 	}
 
+	/** プラグイン専有の公開ディレクトリのパスを取得する */
+	public function path_files( $localpath = null ){
+		$rtn = $this->px->path_plugin_files($localpath);
+		return $rtn;
+	}
+
+	/** プラグイン専有の公開ディレクトリの内部パスを取得する */
+	public function realpath_files( $localpath = null ){
+		$rtn = $this->px->realpath_plugin_files($localpath);
+		return $rtn;
+	}
+
+	/** プラグイン専有の非公開データディレクトリの内部パスを取得する */
+	public function realpath_private_data_dir( $localpath = null ){
+		$rtn = $this->px->get_realpath_homedir();
+		$rtn .= '_sys/ram/data/';
+		$rtn .= 'px2-clover/';
+		if( !is_dir($rtn) ){
+			$this->px->fs()->mkdir_r($rtn);
+		}
+		$rtn = $this->px->fs()->get_realpath($rtn.$localpath);
+		return $rtn;
+	}
+
+	/** プラグイン専有の非公開キャッシュディレクトリの内部パスを取得する */
+	public function realpath_private_cache( $localpath = null ){
+		$rtn = $this->px->realpath_plugin_private_cache($localpath);
+		return $rtn;
+	}
+
 }

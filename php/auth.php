@@ -12,8 +12,15 @@ class auth{
 	/** Picklesオブジェクト */
 	private $px;
 
+	/** Picklesオブジェクト */
+	private $realpath_admin_users;
+
 	/** CSRFトークンの有効期限 */
 	private $csrf_token_expire = 3600;
+
+	/** 初期デフォルトアカウント */
+	private $default_admin_user_id = 'admin';
+	private $default_admin_user_pw = 'admin';
 
 	/**
 	 * Constructor
@@ -23,6 +30,12 @@ class auth{
 	public function __construct( $clover ){
 		$this->clover = $clover;
 		$this->px = $this->clover->px();
+
+		// 管理ユーザー定義ディレクトリ
+		$this->realpath_admin_users = $this->clover->realpath_private_data_dir('/admin_users/');
+		if( !is_dir($this->realpath_admin_users) ){
+			$this->px->fs()->mkdir_r($this->realpath_admin_users);
+		}
 	}
 
 
@@ -30,10 +43,6 @@ class auth{
 	 * 認証プロセス
 	 */
 	public function auth(){
-
-		// TODO: ID/PWは管理画面から設定できるようにする
-		$admin_id = 'admin';
-		$admin_pw = 'admin';
 
 		if( $this->px->req()->get_param('ADMIN_USER_FLG') ){
 			if( $_SERVER['REQUEST_METHOD'] !== 'POST' ){
@@ -44,8 +53,25 @@ class auth{
 				$this->login_page();
 				exit;
 			}
-			if( $this->px->req()->get_param('ADMIN_USER_ID') == $admin_id && $this->px->req()->get_param('ADMIN_USER_PW') == $admin_pw ){
-				$this->px->req()->set_session('ADMIN_USER_ID', $this->px->req()->get_param('ADMIN_USER_ID'));
+
+			$login_challenger_id = $this->px->req()->get_param('ADMIN_USER_ID');
+			if( !$this->validate_user_id($login_challenger_id) ){
+				// 不正な形式のID
+				$this->login_page();
+				exit;
+			}
+
+			$user_info = $this->get_admin_user_info( $login_challenger_id );
+			if( !is_array($user_info) ){
+				// 不正なユーザーデータ
+				$this->login_page();
+				exit;
+			}
+			$admin_id = $user_info['id'];
+			$admin_pw = $user_info['pw'];
+
+			if( $login_challenger_id == $admin_id && $this->password_hash($this->px->req()->get_param('ADMIN_USER_PW')) == $admin_pw ){
+				$this->px->req()->set_session('ADMIN_USER_ID', $login_challenger_id);
 				header('Location:'.'?PX='.htmlspecialchars(''.$this->px->req()->get_param('PX') ));
 				exit;
 			}
@@ -92,6 +118,13 @@ class auth{
 	}
 
 	/**
+	 * パスワードをハッシュ化する
+	 */
+	private function password_hash($password){
+		return hash('sha256', $password);
+	}
+
+	/**
 	 * ログイン画面を表示する
 	 */
 	public function login_page(){
@@ -106,6 +139,83 @@ class auth{
 		exit;
 	}
 
+
+	// --------------------------------------
+	// 管理ユーザー情報
+
+	/**
+	 * 現在のログインユーザーの情報を取得する
+	 */
+	public function get_login_user_info(){
+		$login_user_id = $this->px->req()->get_session('ADMIN_USER_ID');
+		if( !is_string($login_user_id) || !strlen($login_user_id) ){
+			// ログインしていない
+			return null;
+		}
+
+		if( !$this->validate_user_id($login_user_id) ){
+			// 不正な形式のID
+			return null;
+		}
+
+		$user_info = $this->get_admin_user_info( $login_user_id );
+		if( !is_array($user_info) ){
+			return null;
+		}
+		unset( $user_info['pw'] ); // パスワードハッシュは出さない
+		return $user_info;
+	}
+
+	/**
+	 * 現在のログインユーザーの情報を取得する
+	 *
+	 * このメソッドの戻り値には、パスワードハッシュが含まれます。
+	 */
+	private function get_admin_user_info($user_id){
+		if( !$this->validate_user_id($user_id) ){
+			// 不正な形式のID
+			return null;
+		}
+
+		$user_info = null;
+		if( is_dir($this->realpath_admin_users) && $this->px->fs()->ls($this->realpath_admin_users) ){
+			$filename = $user_id.'.json';
+			if( $this->px->fs()->is_file( $this->realpath_admin_users.$filename ) ){
+				$user_info = json_decode( file_get_contents($this->realpath_admin_users.$filename), true );
+				if( $user_info['id'] != $user_id ){
+					// ID値が不一致だったら
+					return null;
+				}
+			}
+		}elseif( $user_id == $this->default_admin_user_id ){
+			// デフォルトユーザー
+			$user_info = array(
+				'id' => $this->default_admin_user_id,
+				'pw' => $this->password_hash($this->default_admin_user_pw),
+				'name' => 'Administrator',
+				'lang' => 'ja',
+			);
+		}
+		return $user_info;
+	}
+
+	/**
+	 * Validation: ユーザーID
+	 */
+	private function validate_user_id( $user_id ){
+		if( !is_string($user_id) || !strlen($user_id) ){
+			return false;
+		}
+		if( !preg_match('/^[a-zA-Z0-9\_\-]+$/', $user_id) ){
+			// 不正な形式
+			return false;
+		}
+		return true;
+	}
+
+
+	// --------------------------------------
+	// CSRFトークン
 
 	/**
 	 * CSRFトークンを取得する
@@ -171,7 +281,7 @@ class auth{
 				case 'logout':
 				case 'edit_contents':
 					if( $_SERVER['REQUEST_METHOD'] == 'GET' ){
-						// AJAXではないGETのリクエストでは、CSRFトークンを要求しない
+						// 既知の特定の画面へのGETのリクエストでは、CSRFトークンを要求しない
 						return true;
 					}
 					break;

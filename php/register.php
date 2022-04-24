@@ -118,7 +118,7 @@ class register{
 		$this->command = $this->px->get_px_command();
 
 		if( !$this->px->req()->is_cmd() ){
-			switch( @$this->command[1] ){
+			switch( isset($this->command[1]) ? $this->command[1] : '' ){
 				case 'logout':
 					// --------------------------------------
 					// ログアウト
@@ -131,7 +131,7 @@ class register{
 		if( !$this->px->req()->is_cmd() ){
 			// --------------------------------------
 			// ブラウザへの応答
-			switch( @$this->command[1] ){
+			switch( isset($this->command[1]) ? $this->command[1] : '' ){
 				case 'edit_contents':
 					// --------------------------------------
 					// コンテンツを編集
