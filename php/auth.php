@@ -151,12 +151,35 @@ class auth{
 	 * 有効なCSRFトークンを受信したか
 	 */
 	private function is_valid_csrf_token_given(){
-		if( !isset($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ){
-			if( $_SERVER['REQUEST_METHOD'] == 'GET' ){
-				// AJAXではないGETのリクエストでは、CSRFトークンを要求しない
-				return true;
+
+		// --------------------------------------
+		// CSRFトークンの検証を行わない場合
+		$this->command = $this->px->get_px_command();
+		if( !count($this->command) ){
+			// プレビューリクエスト
+			if( !isset($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ){
+				if( $_SERVER['REQUEST_METHOD'] == 'GET' ){
+					// AJAXではないGETのリクエストでは、CSRFトークンを要求しない
+					return true;
+				}
+			}
+		}elseif( $this->command[0] == 'admin' ){
+			// px2-clover 管理画面
+			$subCmd = (isset( $this->command[1] ) ? $this->command[1] : '');
+			switch($subCmd){
+				case '':
+				case 'logout':
+				case 'edit_contents':
+					if( $_SERVER['REQUEST_METHOD'] == 'GET' ){
+						// AJAXではないGETのリクエストでは、CSRFトークンを要求しない
+						return true;
+					}
+					break;
 			}
 		}
+		// / CSRFトークンの検証を行わない場合
+		// --------------------------------------
+
 		$csrf_token = $this->px->req()->get_param('ADMIN_USER_CSRF_TOKEN');
 		if( !$csrf_token ){
 			$headers = getallheaders();
