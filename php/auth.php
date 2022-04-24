@@ -70,7 +70,7 @@ class auth{
 			$admin_id = $user_info['id'];
 			$admin_pw = $user_info['pw'];
 
-			if( $login_challenger_id == $admin_id && $this->password_hash($this->px->req()->get_param('ADMIN_USER_PW')) == $admin_pw ){
+			if( $login_challenger_id == $admin_id && password_verify($this->px->req()->get_param('ADMIN_USER_PW'), $admin_pw) ){
 				$this->px->req()->set_session('ADMIN_USER_ID', $login_challenger_id);
 				header('Location:'.'?PX='.htmlspecialchars(''.$this->px->req()->get_param('PX') ));
 				exit;
@@ -121,7 +121,7 @@ class auth{
 	 * パスワードをハッシュ化する
 	 */
 	public function password_hash($password){
-		return hash('sha256', $password);
+		return password_hash($password, PASSWORD_BCRYPT);
 	}
 
 	/**
