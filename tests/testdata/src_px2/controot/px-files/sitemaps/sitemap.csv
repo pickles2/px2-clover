@@ -1,2 +1,3 @@
-"* path","* content","* id","* title","* title_breadcrumb","* title_h1","* title_label","* title_full","* logical_path","* article_flg","* list_flg","* layout","* release_date","* update_date","* article_summary","* orderby","* keywords","* description","* category_top_flg","* **delete_flg"
-"/index.html",,,"HOME",,,,,,,1,"top",,,,,,,,
+"* path","* content","* id","* title","* title_breadcrumb","* title_h1","* title_label","* title_full","* logical_path","* list_flg","* layout","* orderby","* keywords","* description","* category_top_flg","* role","* proc_type","* **delete_flg","* article_flg","* release_date","* update_date","* article_summary"
+"/index.html",,,"HOME",,,,,,"1","top",,,,,,,,,,,
+"/subpage_a/index.html",,,"サブページA",,,,,,"1",,,,,"1",,,,,,,

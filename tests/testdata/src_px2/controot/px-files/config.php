@@ -5,7 +5,7 @@ return call_user_func( function(){
 	$conf = new stdClass;
 
 	// project
-	$conf->name = 'px2-serve (controot)'; // サイト名
+	$conf->name = 'px2-clover (controot)'; // サイト名
 	$conf->domain = null; // ドメイン
 	$conf->path_controot = '/controot/'; // コンテンツルートディレクトリ
 
@@ -29,7 +29,7 @@ return call_user_func( function(){
 	$conf->output_eol_coding = 'lf';
 	$conf->session_name = 'PXSID';
 	$conf->session_expire = 1800;
-	$conf->allow_pxcommands = 0; // PX Commands のウェブインターフェイスからの実行を許可
+	$conf->allow_pxcommands = 1; // PX Commands のウェブインターフェイスからの実行を許可
 
 	// commands
 	$conf->commands = new stdClass;
@@ -75,6 +75,11 @@ return call_user_func( function(){
 
 	// funcs: Before sitemap
 	$conf->funcs->before_sitemap = [
+		// px2-clover
+		tomk79\pickles2\px2clover\register::clover(array(
+			"protect_preview" => false, // プレビューに認証を要求するか？
+		)),
+
 		// PX=clearcache
 		'picklesFramework2\commands\clearcache::register' ,
 
@@ -99,6 +104,8 @@ return call_user_func( function(){
 		// PX=publish
 		'picklesFramework2\commands\publish::register' ,
 
+		// PX=px2dthelper
+		'tomk79\pickles2\px2dthelper\main::register' ,
 	];
 
 
@@ -159,6 +166,7 @@ return call_user_func( function(){
 	$conf->plugins->px2dt = new stdClass;
 	$conf->plugins->px2dt->paths_module_template = [
 	];
+	$conf->plugins->px2dt->path_module_templates_dir = "../px-files/modules/";
 
 	return $conf;
 } );

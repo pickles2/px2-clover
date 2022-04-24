@@ -25,11 +25,12 @@ class clover{
 		$this->auth = new auth( $this );
 		$this->view = new view( $this );
 
-
-		// クライアントリソースを公開ディレクトリに配置
-		$client_resources_dist = $this->px->realpath_plugin_files('/');
-		$this->px->fs()->copy_r(__DIR__.'/../public/resources/', $client_resources_dist);
-
+		$this->command = $this->px->get_px_command();
+		if( count($this->command) && $this->command[0] == 'admin' ){
+			// クライアントリソースを公開ディレクトリに配置
+			$client_resources_dist = $this->px->realpath_plugin_files('/');
+			$this->px->fs()->copy_r(__DIR__.'/../public/resources/', $client_resources_dist);
+		}
 	}
 
 
