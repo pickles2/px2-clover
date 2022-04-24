@@ -1,0 +1,19 @@
+{% extends "/layouts/plain.twig" %}
+
+{% block title %}ページ情報{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ path_client_resources }}cloverMain/cloverMain.css" />
+{% endblock %}
+{% block content %}
+
+<div id="cont-app"></div>
+
+{% endblock %}
+{% block foot %}
+<script>
+window.px2config = {
+    "path_controot": "{{ px2config.path_controot | e("js") }}",
+};
+</script>
+<script src="{{ path_client_resources }}cloverMain/cloverMain.js"></script>
+{% endblock %}

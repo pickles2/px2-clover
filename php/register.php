@@ -148,10 +148,12 @@ class register{
 
 				default:
 					// --------------------------------------
-					// ダッシュボード
+					// フロントエンド汎用テンプレート
 					echo $this->clover->view()->bind(
-						'/cont/pageInfo/pageInfo.twig',
+						'/cont/cloverMain.twig',
 						array(
+							'px2config' => $this->px->conf(),
+							'path_client_resources' => $this->clover->path_files(),
 							'url_backto' => $this->px->href( $this->px->req()->get_request_file_path() ),
 						)
 					);

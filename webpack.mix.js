@@ -45,6 +45,12 @@ mix
 
 
 	// --------------------------------------
+	// cloverMain Script
+	.js('src/cloverMain/cloverMain.jsx', 'public/resources/cloverMain/')
+	.sass('src/cloverMain/cloverMain.scss', 'public/resources/cloverMain/')
+
+
+	// --------------------------------------
 	// Static Frontend Libraries
 	.copyDirectory('vendor/pickles2/px2style/dist', 'public/resources/px2style/dist')
 ;
