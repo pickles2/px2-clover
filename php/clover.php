@@ -9,6 +9,9 @@ class clover{
 	/** Picklesオブジェクト */
 	private $px;
 
+	/** プラグインオプション */
+	private $options;
+
 	/** 認証機能 */
 	private $auth;
 
@@ -20,8 +23,10 @@ class clover{
 	 *
 	 * @param object $px $pxオブジェクト
 	 */
-	public function __construct( $px ){
+	public function __construct( $px, $options ){
 		$this->px = $px;
+		$this->options = (object) $options;
+
 		$this->auth = new auth( $this );
 		$this->view = new view( $this );
 
@@ -39,6 +44,12 @@ class clover{
 		return $this->px;
 	}
 
+	/** initializer */
+	public function initializer(){
+		$initializer = new initializer( $this );
+		return $initializer;
+	}
+
 	/** auth */
 	public function auth(){
 		return $this->auth;
@@ -48,6 +59,12 @@ class clover{
 	public function view(){
 		return $this->view;
 	}
+
+	/** プラグインオプションを取得 */
+	public function get_options(){
+		return $this->options;
+	}
+
 
 	/** プラグイン専有の公開ディレクトリのパスを取得する */
 	public function path_files( $localpath = null ){

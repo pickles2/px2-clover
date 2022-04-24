@@ -12,7 +12,7 @@ class auth{
 	/** Picklesオブジェクト */
 	private $px;
 
-	/** Picklesオブジェクト */
+	/** 管理ユーザー定義ディレクトリ */
 	private $realpath_admin_users;
 
 	/** CSRFトークンの有効期限 */
@@ -49,7 +49,7 @@ class auth{
 				$this->login_page();
 				exit;
 			}
-			if( !$this->is_valid_csrf_token_given() ){
+			if( $this->is_csrf_token_required() && !$this->is_valid_csrf_token_given() ){
 				$this->login_page();
 				exit;
 			}
@@ -111,7 +111,7 @@ class auth{
 		if( !is_string($ADMIN_USER_ID) || !strlen($ADMIN_USER_ID) ){
 			return false;
 		}
-		if( !$this->is_valid_csrf_token_given() ){
+		if( $this->is_csrf_token_required() && !$this->is_valid_csrf_token_given() ){
 			return false;
 		}
 		return true;
@@ -120,7 +120,7 @@ class auth{
 	/**
 	 * パスワードをハッシュ化する
 	 */
-	private function password_hash($password){
+	public function password_hash($password){
 		return hash('sha256', $password);
 	}
 
@@ -200,6 +200,30 @@ class auth{
 	}
 
 	/**
+	 * 管理ユーザーを作成する
+	 * @param string $user_id 作成するユーザーID
+	 * @param array|object $user_info 作成するユーザー情報
+	 */
+	public function create_admin_user( $user_id, $user_info ){
+		if( !$this->validate_user_id($user_id) ){
+			return false;
+		}
+		$realpath_json = $this->realpath_admin_users.'/'.$user_id.'.json';
+		if( is_file( $realpath_json ) ){
+			return false;
+		}
+		$user_info = (object) $user_info;
+		if( $user_info->id !== $user_id ){
+			return false;
+		}
+		$json_str = json_encode( $user_info, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE );
+		if( !$this->px->fs()->save_file($realpath_json, $json_str) ){
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Validation: ユーザーID
 	 */
 	private function validate_user_id( $user_id ){
@@ -258,19 +282,16 @@ class auth{
 	}
 
 	/**
-	 * 有効なCSRFトークンを受信したか
+	 * CSRFトークンの検証を行わない条件を調査
 	 */
-	private function is_valid_csrf_token_given(){
-
-		// --------------------------------------
-		// CSRFトークンの検証を行わない場合
+	private function is_csrf_token_required(){
 		$this->command = $this->px->get_px_command();
 		if( !count($this->command) ){
 			// プレビューリクエスト
 			if( !isset($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ){
 				if( $_SERVER['REQUEST_METHOD'] == 'GET' ){
 					// AJAXではないGETのリクエストでは、CSRFトークンを要求しない
-					return true;
+					return false;
 				}
 			}
 		}elseif( $this->command[0] == 'admin' ){
@@ -282,13 +303,18 @@ class auth{
 				case 'edit_contents':
 					if( $_SERVER['REQUEST_METHOD'] == 'GET' ){
 						// 既知の特定の画面へのGETのリクエストでは、CSRFトークンを要求しない
-						return true;
+						return false;
 					}
 					break;
 			}
 		}
-		// / CSRFトークンの検証を行わない場合
-		// --------------------------------------
+		return true;
+	}
+
+	/**
+	 * 有効なCSRFトークンを受信したか
+	 */
+	public function is_valid_csrf_token_given(){
 
 		$csrf_token = $this->px->req()->get_param('ADMIN_USER_CSRF_TOKEN');
 		if( !$csrf_token ){

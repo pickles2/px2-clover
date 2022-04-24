@@ -1,0 +1,20 @@
+{% extends "/layouts/default.twig" %}
+
+{% block title %}管理ユーザー登録{% endblock %}
+{% block head %}
+{% endblock %}
+{% block content %}
+<p>はじめに、管理者アカウントを登録してください。</p>
+<form action="" method="post">
+	<div>Name: <input type="text" name="ADMIN_USER_NAME" value="{{ ADMIN_USER_NAME }}" /></div>
+	<div>ID: <input type="text" name="ADMIN_USER_ID" value="{{ ADMIN_USER_ID }}" /></div>
+	<div>PW: <input type="password" name="ADMIN_USER_PW" value="" /></div>
+	<div>Language: <select name="ADMIN_USER_LANG">
+        <option value="ja">Japanese</option>
+    </select></div>
+	<div><button>作成する</button></div>
+	<input type="hidden" name="ADMIN_USER_CSRF_TOKEN" value="{{ csrf_token }}" />
+</form>
+{% endblock %}
+{% block foot %}
+{% endblock %}

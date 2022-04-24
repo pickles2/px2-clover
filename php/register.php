@@ -9,6 +9,9 @@ class register{
 	/** Picklesオブジェクト */
 	private $px;
 
+	/** プラグインオプション */
+	private $options;
+
 	/** px2-clover */
 	private $clover;
 
@@ -25,6 +28,10 @@ class register{
 		}
 
 		if( !$px->req()->is_cmd() ){
+			(new clover( $px, $options ))->initializer()->initialize();
+		}
+
+		if( !$px->req()->is_cmd() ){
 			$auth_needs = false;
 			if( isset($options->protect_preview) && $options->protect_preview ){
 				// プレビュー全体で認証を要求する
@@ -35,7 +42,7 @@ class register{
 				$auth_needs = true;
 			}
 			if( $auth_needs ){
-				(new clover( $px ))->auth()->auth();
+				(new clover( $px, $options ))->auth()->auth();
 			}
 		}
 
@@ -57,8 +64,8 @@ class register{
 			return __CLASS__.'::'.__FUNCTION__.'('.( is_array($px) ? json_encode($px) : '' ).')';
 		}
 
-		$px->pxcmd()->register('admin', function($px){
-			(new self( $px ))->route();
+		$px->pxcmd()->register('admin', function($px) use ($options){
+			(new self( $px, $options ))->route();
 		});
 
 		return;
@@ -105,9 +112,9 @@ class register{
 	 *
 	 * @param object $px $pxオブジェクト
 	 */
-	private function __construct( $px ){
+	private function __construct( $px, $options ){
 		$this->px = $px;
-		$this->clover = new clover( $this->px );
+		$this->clover = new clover( $this->px, $options );
 	}
 
 

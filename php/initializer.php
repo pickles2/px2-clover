@@ -1,0 +1,82 @@
+<?php
+namespace tomk79\pickles2\px2clover;
+
+/**
+ * px2-clover: initializer
+ */
+class initializer{
+
+	/** Cloverオブジェクト */
+	private $clover;
+
+	/** Picklesオブジェクト */
+	private $px;
+
+	/** 管理データ定義ディレクトリ */
+	private $realpath_private_data_dir;
+
+	/**
+	 * Constructor
+	 *
+	 * @param object $clover $cloverオブジェクト
+	 */
+	public function __construct( $clover ){
+		$this->clover = $clover;
+		$this->px = $this->clover->px();
+
+		// 管理データ定義ディレクトリ
+		$this->realpath_private_data_dir = $this->clover->realpath_private_data_dir();
+	}
+
+
+	/**
+	 * 初期化プロセス
+	 */
+	public function initialize(){
+		if( !is_dir($this->realpath_private_data_dir) ){
+			$this->px->fs()->mkdir_r($this->realpath_private_data_dir);
+		}
+
+		// 管理ユーザーデータ
+		if( !is_dir($this->realpath_private_data_dir.'admin_users/') ){
+			$this->px->fs()->mkdir_r($this->realpath_private_data_dir.'admin_users/');
+		}
+		if( !is_dir($this->realpath_private_data_dir.'admin_users/') || !count( $this->px->fs()->ls($this->realpath_private_data_dir.'admin_users/') ) ){
+			$this->initialize_admin_user_page();
+			exit;
+		}
+
+	}
+
+	/**
+	 * 管理ユーザーデータを初期化する画面
+	 */
+	private function initialize_admin_user_page(){
+		if( $this->px->req()->get_method() == 'post' ){
+			$user_info = array(
+				'name' => $this->px->req()->get_param('ADMIN_USER_NAME'),
+				'id' => $this->px->req()->get_param('ADMIN_USER_ID'),
+				'pw' => $this->clover->auth()->password_hash($this->px->req()->get_param('ADMIN_USER_PW')),
+				'lang' => $this->px->req()->get_param('ADMIN_USER_LANG'),
+			);
+			$result = $this->clover->auth()->create_admin_user($user_info['id'], $user_info);
+			if( $result ){
+				header('Location:'.'?PX=admin');
+				exit;
+			}
+		}
+
+		echo $this->clover->view()->bind(
+			'/system/initialize_admin_user.twig',
+			array(
+				'ADMIN_USER_NAME' => $this->px->req()->get_param('ADMIN_USER_NAME'),
+				'ADMIN_USER_ID' => $this->px->req()->get_param('ADMIN_USER_ID'),
+				'ADMIN_USER_LANG' => $this->px->req()->get_param('ADMIN_USER_LANG'),
+				'url_backto' => '?',
+				'csrf_token' => $this->clover->auth()->get_csrf_token(),
+			)
+		);
+		exit;
+	}
+
+}
