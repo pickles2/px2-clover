@@ -155,6 +155,7 @@ class register{
 							'px2config' => $this->px->conf(),
 							'path_client_resources' => $this->clover->path_files(),
 							'url_backto' => $this->px->href( $this->px->req()->get_request_file_path() ),
+							'csrf_token' => $this->clover->auth()->get_csrf_token(),
 						)
 					);
 					exit;

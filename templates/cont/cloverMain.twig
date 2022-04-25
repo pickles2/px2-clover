@@ -14,6 +14,7 @@
 window.px2config = {
     "path_controot": "{{ px2config.path_controot | e("js") }}",
 };
+window.csrf_token = "{{ csrf_token | e("js") }}";
 </script>
 <script src="{{ path_client_resources }}cloverMain/cloverMain.js"></script>
 {% endblock %}
