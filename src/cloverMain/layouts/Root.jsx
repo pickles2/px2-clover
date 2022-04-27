@@ -1,12 +1,13 @@
 import React, { useContext } from "react";
 import {MainContext} from '../context/MainContext';
-import PageInfo from '../views/PageInfo';
 import Link from '../components/Link';
 import $ from 'jquery';
 
 export default function Root(props){
 
 	const main = useContext(MainContext);
+
+	document.title = props.title + ' : Clover';
 
 	function clearcache(){
 		px2style.loading();
@@ -52,21 +53,35 @@ export default function Root(props){
 
 	return (
 		<>
-			<div>Pickles 2 Clover</div>
-			<hr />
-			<PageInfo />
-			<hr />
-			<p><Link href="?PX=admin.setting">Setting</Link></p>
-			<p><Link href="?PX=admin">Dashboard</Link></p>
-			<p><a href="?PX=admin.edit_contents">コンテンツを編集する</a></p>
-			<hr />
-			<ul>
-				<li><button type="button" onClick={publish}>パブリッシュ</button></li>
-				<li><button type="button" onClick={clearcache}>キャッシュを消去</button></li>
-			</ul>
-			<hr />
-			<p><a href="?">プレビューへ戻る</a></p>
-			<p><a href="?PX=admin.logout">ログアウト</a></p>
+			<div className="theme-layout">
+				<header className="theme-layout__header">
+					<div>Pickles 2 Clover</div>
+				</header>
+
+				<div className="theme-layout__main">
+					<nav className="theme-layout__left-navbar">
+						<ul>
+							<li><Link href="?PX=admin.config">Config</Link></li>
+							<li><Link href="?PX=admin">Dashboard</Link></li>
+							<li><a href="?PX=admin.edit_contents">コンテンツを編集する</a></li>
+							<li><button type="button" onClick={publish}>パブリッシュ</button></li>
+							<li><button type="button" onClick={clearcache}>キャッシュを消去</button></li>
+						</ul>
+					</nav>
+					<div className="theme-layout__main-center">
+						<h1>{props.title}</h1>
+						<main className="contents">
+							{props.contents}
+						</main>
+					</div>
+				</div>
+				<footer className="theme-layout__footer">
+					<ul>
+						<li><a href="?">プレビューへ戻る</a></li>
+						<li><a href="?PX=admin.logout">ログアウト</a></li>
+					</ul>
+				</footer>
+			</div>
 		</>
 	);
 }

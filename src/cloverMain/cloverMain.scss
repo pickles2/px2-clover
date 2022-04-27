@@ -1,4 +1,43 @@
-html, body {
+html, body, #cont-app {
     padding: 0;
     margin: 0;
+    height: 100%;
+}
+
+.theme-layout {
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+        padding: 10px 20px;
+        border-bottom: 1px solid #000;
+    }
+
+    &__main {
+        display: flex;
+        gap: 20px;
+    }
+    &__left-navbar {
+        width: 200px;
+    }
+    &__main-center {
+        width: calc(100% - 220px);
+    }
+
+    &__footer {
+        padding: 10px 20px;
+        border-top: 1px solid #000;
+        ul {
+            padding: 0px;
+            margin: 0px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            li {
+                list-style-type: none;
+                padding: 0px;
+                margin: 0px;
+            }
+        }
+    }
 }

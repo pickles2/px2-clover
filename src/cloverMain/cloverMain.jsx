@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import {MainContext} from './context/MainContext';
 import Root from "./layouts/Root";
+import Config from './views/Config';
+import PageInfo from './views/PageInfo';
 
 class Layout extends React.Component {
 
@@ -47,7 +49,7 @@ class Layout extends React.Component {
 			"setMainState": setMainState,
 		};
 
-		console.log(this.state);
+		// console.log(this.state);
 
 		window.addEventListener('popstate', (event) => {
 			const pagePath = parseUrl(location);
@@ -59,9 +61,22 @@ class Layout extends React.Component {
 	 * Renderer
 	 */
 	render() {
+		let title = "Pickles 2 Clover";
+		let content = {};
+		switch( this.state.PX ){
+			case 'admin.config':
+				content = <Config />;
+				break;
+			default:
+				content = <PageInfo />;
+				break;
+		}
 		return (
 			<MainContext.Provider value={this.state}>
-				<Root />
+				{<Root
+					title={title}
+					contents={content}
+					/>}
 			</MainContext.Provider>
 		);
 	}

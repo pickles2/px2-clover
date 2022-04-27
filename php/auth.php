@@ -253,7 +253,7 @@ class auth{
 			return $this->create_csrf_token();
 		}
 		foreach( $ADMIN_USER_CSRF_TOKEN as $token ){
-			if( $token['created_at'] < time() - $this->csrf_token_expire ){
+			if( $token['created_at'] < time() - ($this->csrf_token_expire / 2) ){
 				continue; // 有効期限が切れていたら評価できない
 			}
 			return $token['hash'];
@@ -300,6 +300,7 @@ class auth{
 			switch($subCmd){
 				case '':
 				case 'logout':
+				case 'config':
 				case 'edit_contents':
 					if( $_SERVER['REQUEST_METHOD'] == 'GET' ){
 						// 既知の特定の画面へのGETのリクエストでは、CSRFトークンを要求しない
