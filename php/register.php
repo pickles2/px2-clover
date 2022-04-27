@@ -139,6 +139,16 @@ class register{
 			// --------------------------------------
 			// ブラウザへの応答
 			switch( isset($this->command[1]) ? $this->command[1] : '' ){
+				case 'api':
+					// --------------------------------------
+					// API
+					switch( isset($this->command[2]) ? $this->command[2] : '' ){
+						case 'get_page_info':
+							$app = new funcs\api\getPageInfo($this->clover);
+							$app->start();
+							break;
+					}
+
 				case 'edit_contents':
 					// --------------------------------------
 					// コンテンツを編集

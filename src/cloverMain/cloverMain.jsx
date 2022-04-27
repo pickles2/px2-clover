@@ -4,6 +4,7 @@ import {MainContext} from './context/MainContext';
 import Root from "./layouts/Root";
 import Config from './views/Config';
 import PageInfo from './views/PageInfo';
+import iterate79 from 'iterate79';
 
 class Layout extends React.Component {
 
@@ -65,9 +66,11 @@ class Layout extends React.Component {
 		let content = {};
 		switch( this.state.PX ){
 			case 'admin.config':
+				title = "設定";
 				content = <Config />;
 				break;
 			default:
+				title = "ページ情報";
 				content = <PageInfo />;
 				break;
 		}
