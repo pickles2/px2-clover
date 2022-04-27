@@ -30,10 +30,32 @@ class getPageInfo{
 	public function start(){
 		$rtn = array();
 
+		// current page
 		$rtn['current_page_info'] = $this->px->site()->get_current_page_info();
+
+		// parent
 		$rtn['parent'] = $this->px->site()->get_parent();
-		$rtn['bros'] = $this->px->site()->get_bros();
-		$rtn['children'] = $this->px->site()->get_children();
+		if( is_string($rtn['parent']) ){
+			$rtn['parent'] = $this->px->site()->get_page_info( $rtn['parent'] );
+		}
+
+		// bros
+		$rtn['bros'] = array();
+		$bros = $this->px->site()->get_bros();
+		if( is_array($bros) ){
+			foreach($bros as $bro){
+				array_push( $rtn['bros'], $this->px->site()->get_page_info($bro) );
+			}
+		}
+
+		// children
+		$rtn['children'] = array();
+		$children = $this->px->site()->get_children();
+		if( is_array($children) ){
+			foreach($children as $child){
+				array_push( $rtn['children'], $this->px->site()->get_page_info($child) );
+			}
+		}
 
 		header('Content-type: text/json');
 		echo json_encode($rtn);

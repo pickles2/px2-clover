@@ -69,9 +69,10 @@ class Layout extends React.Component {
 				title = "設定";
 				content = <Config />;
 				break;
+			case 'admin.page_info':
 			default:
 				title = "ページ情報";
-				content = <PageInfo />;
+				content = <PageInfo path={this.state.path} PX={this.state.PX} />;
 				break;
 		}
 		return (
