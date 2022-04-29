@@ -61,7 +61,7 @@ export default function PageInfo(props){
 					{pageInfo.bros.map( ( bros_page_info )=>{
 						return (
 							<li key={bros_page_info.id}><Link href={bros_page_info.path + "?PX=admin.page_info"}>{bros_page_info.title}</Link>
-								{(typeof(pageInfo.bros) === typeof([]) && (<>
+								{(typeof(pageInfo.bros) === typeof([]) && bros_page_info.path == props.path && (<>
 									<ul>
 									{pageInfo.children.map( ( child_page_info )=>{
 										return (

@@ -9,7 +9,7 @@ $querystring = '';
 if( strpos($path, '?') !== false ){
     list($path, $querystring) = preg_split('/\?/', $path, 2);
 }
-if( strrpos($path, '/') === strlen($path)-1 || preg_match('/\.(?:html?|css|js)$/', $path) ){
+if( strrpos($path, '/') === strlen($path)-1 || preg_match('/\.(?:html|htm|css|js)$/', $path) ){
     $_SERVER['SCRIPT_FILENAME'] = realpath($path_entryScript);
     $_SERVER['SCRIPT_NAME'] = $script_name;
     $_SERVER['PATH_INFO'] = $path;

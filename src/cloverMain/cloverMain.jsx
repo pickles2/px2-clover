@@ -64,6 +64,14 @@ class Layout extends React.Component {
 	render() {
 		let title = "Pickles 2 Clover";
 		let content = {};
+		let current_path;
+		if( this.state.path ){
+			current_path = this.state.path;
+			if( current_path.match(/\/$/) ){
+				current_path += 'index.html';
+			}
+		}
+
 		switch( this.state.PX ){
 			case 'admin.config':
 				title = "設定";
@@ -72,7 +80,7 @@ class Layout extends React.Component {
 			case 'admin.page_info':
 			default:
 				title = "ページ情報";
-				content = <PageInfo path={this.state.path} PX={this.state.PX} />;
+				content = <PageInfo path={current_path} PX={this.state.PX} />;
 				break;
 		}
 		return (
