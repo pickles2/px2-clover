@@ -57,6 +57,15 @@ class getPageInfo{
 			}
 		}
 
+		// breadcrumb
+		$rtn['breadcrumb'] = array();
+		$breadcrumb = $this->px->site()->get_breadcrumb_array();
+		if( is_array($breadcrumb) ){
+			foreach($breadcrumb as $page_id){
+				array_push( $rtn['breadcrumb'], $this->px->site()->get_page_info($page_id) );
+			}
+		}
+
 		header('Content-type: text/json');
 		echo json_encode($rtn);
 		exit;
