@@ -48,7 +48,7 @@ class register{
 
 		$px->conf()->funcs->before_content['px2-clover'] = __CLASS__.'::admin_console('.json_encode($options).')';
 
-		array_push( $px->conf()->funcs->processor->html, __CLASS__.'::after_html('.json_encode($options).')' );
+		array_push( $px->conf()->funcs->before_output, __CLASS__.'::before_output('.json_encode($options).')' );
 
 		return;
 	}
@@ -72,12 +72,12 @@ class register{
 	}
 
 	/**
-	 * entry: after HTML
+	 * entry: Before Output
 	 *
 	 * @param object $px Picklesオブジェクト
 	 * @param object $options プラグイン設定
 	 */
-	static public function after_html( $px = null, $options = null ){
+	static public function before_output( $px = null, $options = null ){
 		if( count(func_get_args()) <= 1 ){
 			return __CLASS__.'::'.__FUNCTION__.'('.( is_array($px) ? json_encode($px) : '' ).')';
 		}
@@ -85,6 +85,9 @@ class register{
 			return;
 		}
 		if( $px->is_publish_tool() ){
+			return;
+		}
+		if( !preg_match('/(?:\.html?|\/)$/', $px->req()->get_request_file_path()) ){
 			return;
 		}
 

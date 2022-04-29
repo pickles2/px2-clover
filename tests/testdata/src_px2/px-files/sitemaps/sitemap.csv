@@ -1,4 +1,10 @@
 "* path","* content","* id","* title","* title_breadcrumb","* title_h1","* title_label","* title_full","* logical_path","* list_flg","* layout","* orderby","* keywords","* description","* category_top_flg","* role","* proc_type","* **delete_flg","* article_flg","* release_date","* update_date","* article_summary"
 "/index.html",,,"HOME",,,,,,"1","top",,,,,,,,,,,
 "/testpage_a/index.html",,,"Test Page A",,,,,,"1",,,,,"1",,,,,,,
+"/testpage_a/a.html",,,"Test Page A/A",,,,,"/testpage_a/index.html","1",,,,,,,,,,,,
 "/testpage_a/b.html",,,"Test Page A/B",,,,,"/testpage_a/index.html","1",,,,,,,,,,,,
+"/testpage_a/c.html",,,"Test Page A/C",,,,,"/testpage_a/index.html","1",,,,,,,,,,,,
+"/testpage_b/index.html",,,"Test Page B",,,,,,"1",,,,,"1",,,,,,,
+"/testpage_b/a.html",,,"Test Page B/A",,,,,"/testpage_b/index.html","1",,,,,,,,,,,,
+"/testpage_b/b.html",,,"Test Page B/B",,,,,"/testpage_b/index.html","1",,,,,,,,,,,,
+"/testpage_b/c.html",,,"Test Page B/C",,,,,"/testpage_b/index.html","1",,,,,,,,,,,,
