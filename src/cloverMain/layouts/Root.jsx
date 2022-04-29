@@ -69,11 +69,48 @@ export default function Root(props){
 						</ul>
 					</nav>
 					<div className="theme-layout__main-center">
+						{(main.pageInfo !== null && typeof(main.pageInfo.breadcrumb) === typeof([]) && (
+							<div className="theme-layout__breadcrumb">
+								<ul>
+								{main.pageInfo.breadcrumb.map( ( breadcrumb_info )=>{
+									return (
+										<li key={breadcrumb_info.id}><Link href={breadcrumb_info.path + "?PX=admin.page_info"}>{breadcrumb_info.title}</Link></li>
+									)
+								} )}
+								<li>{main.pageInfo.current_page_info.title}</li>
+								</ul>
+							</div>
+						))}
 						<h1>{props.title}</h1>
 						<main className="contents">
 							{props.contents}
 						</main>
 					</div>
+					<nav className="theme-layout__right-navbar">
+						{(main.pageInfo !== null && typeof(main.pageInfo.parent) === typeof({}) && (<>
+							<p><Link href={main.pageInfo.parent.path + "?PX=admin.page_info"}>{main.pageInfo.parent.title}</Link></p>
+						</>))}
+						{(main.pageInfo !== null && typeof(main.pageInfo.bros) === typeof([]) && (<>
+							<ul>
+							{main.pageInfo.bros.map( ( bros_page_info )=>{
+								return (
+									<li key={bros_page_info.id}><Link href={bros_page_info.path + "?PX=admin.page_info"}>{bros_page_info.title}</Link>
+										{(typeof(main.pageInfo.bros) === typeof([]) && bros_page_info.path == props.path && (<>
+											<ul>
+											{main.pageInfo.children.map( ( child_page_info )=>{
+												return (
+													<li key={child_page_info.id}><Link href={child_page_info.path + "?PX=admin.page_info"}>{child_page_info.title}</Link></li>
+												)
+											} )}
+											</ul>
+										</>)
+										)}
+									</li>
+								)
+							} )}
+							</ul>
+						</>))}
+					</nav>
 				</div>
 				<footer className="theme-layout__footer">
 					<ul>

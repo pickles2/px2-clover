@@ -21,7 +21,10 @@ html, body, #cont-app {
         width: 200px;
     }
     &__main-center {
-        width: calc(100% - 220px);
+        width: calc(100% - 440px);
+    }
+    &__right-navbar {
+        width: 200px;
     }
 
     &__footer {
