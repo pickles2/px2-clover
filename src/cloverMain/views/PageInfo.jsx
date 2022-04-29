@@ -1,41 +1,10 @@
 import React, { useContext, useState } from "react";
 import {MainContext} from '../context/MainContext';
 import Link from '../components/Link';
-import iterate79 from 'iterate79';
 
 export default function PageInfo(props){
 
 	const main = useContext(MainContext);
-
-	(()=>{
-		let tmpPageInfo = {};
-		try {
-			if( main.pageInfo !== null ){
-				return;
-			}
-		} catch(e) {}
-		iterate79.fnc({}, [
-			function(it1){
-				px2style.loading();
-				it1.next();
-			},
-			function(it1){
-				main.px2utils.getCurrentPageInfo((data)=>{
-					tmpPageInfo = data;
-					it1.next();
-				});
-			},
-			function(it1){
-				px2style.closeLoading();
-				if( tmpPageInfo.current_page_info ){
-					main.setMainState( {
-						"pageInfo": tmpPageInfo,
-					} );
-				}
-				it1.next();
-			},
-		]);
-	})();
 
 	return (
 		<>

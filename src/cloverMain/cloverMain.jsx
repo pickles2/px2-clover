@@ -4,6 +4,7 @@ import {MainContext} from './context/MainContext';
 import Root from "./layouts/Root";
 import Config from './views/Config';
 import PageInfo from './views/PageInfo';
+import iterate79 from 'iterate79';
 import Px2Utils from '../common/Px2Utils';
 
 class Layout extends React.Component {
@@ -31,6 +32,36 @@ class Layout extends React.Component {
 			};
 			return newState;
 		}
+		const updateCurrentPageInfo = ()=>{
+			let tmpPageInfo = {};
+			iterate79.fnc({}, [
+				(it1) => {
+					if( this.state.pageInfo !== null ){
+						return;
+					}
+					it1.next();
+				},
+				(it1) => {
+					px2style.loading();
+					it1.next();
+				},
+				(it1) => {
+					this.state.px2utils.getCurrentPageInfo((data)=>{
+						tmpPageInfo = data;
+						it1.next();
+					});
+				},
+				(it1) => {
+					px2style.closeLoading();
+					if( tmpPageInfo.current_page_info ){
+						this.state.setMainState( {
+							"pageInfo": tmpPageInfo,
+						} );
+					}
+					it1.next();
+				},
+			]);
+		}
 
 		const setMainState = (val) => {
 			this.setState((state) => val);
@@ -41,6 +72,8 @@ class Layout extends React.Component {
 			history.pushState({}, '', url);
 			newState.pageInfo = null;
 			this.setState(newState);
+
+			updateCurrentPageInfo();
 		};
 
 		const parsedUrl = parseUrl(location);
@@ -58,6 +91,8 @@ class Layout extends React.Component {
 
 		// console.log(this.state);
 
+
+		updateCurrentPageInfo();
 
 		window.addEventListener('popstate', (event) => {
 			const pagePath = parseUrl(location);
