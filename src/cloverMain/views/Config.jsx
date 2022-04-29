@@ -8,9 +8,10 @@ export default function Config(props){
 
 	return (
 		<>
-			<div>{main.PX}</div>
+			<p>この機能は開発中です。</p>
+			{/* <div>{main.PX}</div>
 			<p><Link href="?PX=admin.config">Config</Link></p>
-			<p><Link href="?PX=admin">Dashboard</Link></p>
+			<p><Link href="?PX=admin">Dashboard</Link></p> */}
 		</>
 	);
 }
