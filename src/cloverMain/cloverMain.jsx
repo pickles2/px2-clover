@@ -72,7 +72,6 @@ class Layout extends React.Component {
 			history.pushState({}, '', url);
 			newState.pageInfo = null;
 			this.setState(newState);
-
 			updateCurrentPageInfo();
 		};
 
@@ -95,8 +94,10 @@ class Layout extends React.Component {
 		updateCurrentPageInfo();
 
 		window.addEventListener('popstate', (event) => {
-			const pagePath = parseUrl(location);
-			this.setState(pagePath);
+			const newState = parseUrl(location);
+			newState.pageInfo = null;
+			this.setState(newState);
+			updateCurrentPageInfo();
 		});
 	}
 
