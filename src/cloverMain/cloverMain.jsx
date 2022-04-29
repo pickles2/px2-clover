@@ -4,7 +4,7 @@ import {MainContext} from './context/MainContext';
 import Root from "./layouts/Root";
 import Config from './views/Config';
 import PageInfo from './views/PageInfo';
-import iterate79 from 'iterate79';
+import Px2Utils from '../common/Px2Utils';
 
 class Layout extends React.Component {
 
@@ -35,22 +35,29 @@ class Layout extends React.Component {
 		const setMainState = (val) => {
 			this.setState((state) => val);
 		};
+
 		const link = (url) => {
-			const pagePath = parseUrl(url);
+			const newState = parseUrl(url);
 			history.pushState({}, '', url);
-			this.setState(pagePath);
+			newState.pageInfo = null;
+			this.setState(newState);
 		};
-		const pagePath = parseUrl(location);
+
+		const parsedUrl = parseUrl(location);
+		const px2utils = new Px2Utils();
 
 		// Initialize State
 		this.state = {
-			"path": pagePath.path,
-			"PX": pagePath.PX,
+			"path": parsedUrl.path,
+			"PX": parsedUrl.PX,
+			"pageInfo": null,
 			"link": link,
+			"px2utils": px2utils,
 			"setMainState": setMainState,
 		};
 
 		// console.log(this.state);
+
 
 		window.addEventListener('popstate', (event) => {
 			const pagePath = parseUrl(location);
