@@ -74,7 +74,7 @@ export default function Root(props){
 								<ul>
 								{main.pageInfo.breadcrumb.map( ( breadcrumb_info )=>{
 									return (
-										<li key={breadcrumb_info.id}><Link href={breadcrumb_info.path + "?PX=admin.page_info"}>{breadcrumb_info.title}</Link></li>
+										<li key={breadcrumb_info.id}><Link href={main.px2utils.href(breadcrumb_info.path + "?PX=admin.page_info")}>{breadcrumb_info.title}</Link></li>
 									)
 								} )}
 								<li>{main.pageInfo.current_page_info.title}</li>
@@ -88,18 +88,18 @@ export default function Root(props){
 					</div>
 					<nav className="theme-layout__right-navbar">
 						{(main.pageInfo !== null && typeof(main.pageInfo.parent) === typeof({}) && (<>
-							<p><Link href={main.pageInfo.parent.path + "?PX=admin.page_info"}>{main.pageInfo.parent.title}</Link></p>
+							<p><Link href={main.px2utils.href(main.pageInfo.parent.path + "?PX=admin.page_info")}>{main.pageInfo.parent.title}</Link></p>
 						</>))}
 						{(main.pageInfo !== null && typeof(main.pageInfo.bros) === typeof([]) && (<>
 							<ul>
 							{main.pageInfo.bros.map( ( bros_page_info )=>{
 								return (
-									<li key={bros_page_info.id}><Link href={bros_page_info.path + "?PX=admin.page_info"}>{bros_page_info.title}</Link>
-										{(typeof(main.pageInfo.bros) === typeof([]) && bros_page_info.path == props.path && (<>
+									<li key={bros_page_info.id}><Link href={main.px2utils.href(bros_page_info.path + "?PX=admin.page_info")}>{bros_page_info.title}</Link>
+										{(main.px2utils.href(bros_page_info.path) == main.px2utils.href(props.path) && (<>
 											<ul>
 											{main.pageInfo.children.map( ( child_page_info )=>{
 												return (
-													<li key={child_page_info.id}><Link href={child_page_info.path + "?PX=admin.page_info"}>{child_page_info.title}</Link></li>
+													<li key={child_page_info.id}><Link href={main.px2utils.href(child_page_info.path + "?PX=admin.page_info")}>{child_page_info.title}</Link></li>
 												)
 											} )}
 											</ul>

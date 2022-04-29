@@ -107,13 +107,7 @@ class Layout extends React.Component {
 	render() {
 		let title = "Pickles 2 Clover";
 		let content = {};
-		let current_path;
-		if( this.state.path ){
-			current_path = this.state.path;
-			if( current_path.match(/\/$/) ){
-				current_path += 'index.html';
-			}
-		}
+		let current_path = this.state.px2utils.trimContRoot(this.state.px2utils.href(this.state.path));
 
 		switch( this.state.PX ){
 			case 'admin.config':
@@ -131,6 +125,8 @@ class Layout extends React.Component {
 				{<Root
 					title={title}
 					contents={content}
+					path={current_path}
+					PX={this.state.PX}
 					/>}
 			</MainContext.Provider>
 		);

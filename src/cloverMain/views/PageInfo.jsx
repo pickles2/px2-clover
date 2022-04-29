@@ -20,7 +20,7 @@ export default function PageInfo(props){
 							<table className="px2-table">
 								<tbody>
 									<tr><th>id</th><td>{main.pageInfo.current_page_info.id}</td></tr>
-									<tr><th>title</th><td><Link href={main.pageInfo.current_page_info.path + "?PX=admin"}>{main.pageInfo.current_page_info.title}</Link></td></tr>
+									<tr><th>title</th><td><Link href={main.px2utils.href(main.pageInfo.current_page_info.path + "?PX=admin")}>{main.pageInfo.current_page_info.title}</Link></td></tr>
 									<tr><th>path</th><td>{main.pageInfo.current_page_info.path}</td></tr>
 								</tbody>
 							</table>
