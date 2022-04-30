@@ -67,7 +67,9 @@ class register{
 		if( count($command) && $command[0] == 'admin' ){
 			// クライアントリソースを公開ディレクトリに配置
 			$client_resources_dist = $px->realpath_plugin_files('/');
-			$px->fs()->copy_r(__DIR__.'/../public/resources/', $client_resources_dist);
+			if( !is_file( $client_resources_dist.'cloverMain/cloverMain.js' ) ){
+				$px->fs()->copy_r(__DIR__.'/../public/resources/', $client_resources_dist);
+			}
 		}
 
 		$px->pxcmd()->register('admin', function($px) use ($options){
