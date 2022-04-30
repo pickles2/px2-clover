@@ -105,7 +105,7 @@ class Layout extends React.Component {
 	 * Renderer
 	 */
 	render() {
-		let title = "Pickles 2 Clover";
+		let title = window.px2config.name;
 		let content = {};
 		let current_path = this.state.px2utils.trimContRoot(this.state.px2utils.href(this.state.path));
 

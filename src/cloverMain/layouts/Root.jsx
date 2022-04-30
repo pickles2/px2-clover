@@ -7,7 +7,7 @@ export default function Root(props){
 
 	const main = useContext(MainContext);
 
-	document.title = props.title + ' : Clover';
+	document.title = props.title + ' : ' + window.px2config.name;
 
 	function clearcache(){
 		px2style.loading();
@@ -55,7 +55,7 @@ export default function Root(props){
 		<>
 			<div className="theme-layout">
 				<header className="theme-layout__header">
-					<div>Pickles 2 Clover</div>
+					<div><a href={main.px2utils.href('/')}>{(window.px2config.name)}</a></div>
 				</header>
 
 				<div className="theme-layout__main">

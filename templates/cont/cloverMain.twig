@@ -12,6 +12,7 @@
 {% block foot %}
 <script>
 window.px2config = {
+    "name": "{{ px2config.name | e("js") }}",
     "path_controot": "{{ px2config.path_controot | e("js") }}",
     "default_directory_index": "{{ px2config.directory_index[0] | e("js") }}",
 };
