@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import {MainContext} from './context/MainContext';
 import Root from "./layouts/Root";
 import Config from './views/Config';
+import Sitemap from './views/Sitemap';
 import PageInfo from './views/PageInfo';
 import iterate79 from 'iterate79';
 import Px2Utils from '../common/Px2Utils';
@@ -110,6 +111,10 @@ class Layout extends React.Component {
 		let current_path = this.state.px2utils.trimContRoot(this.state.px2utils.href(this.state.path));
 
 		switch( this.state.PX ){
+			case 'admin.sitemap':
+				title = "サイトマップ";
+				content = <Sitemap />;
+				break;
 			case 'admin.config':
 				title = "設定";
 				content = <Config />;
