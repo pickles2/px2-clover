@@ -287,15 +287,16 @@ class auth{
 	private function is_csrf_token_required(){
 		$this->command = $this->px->get_px_command();
 		if( !count($this->command) ){
+			// --------------------------------------
 			// プレビューリクエスト
-			if( !isset($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ){
-				if( $_SERVER['REQUEST_METHOD'] == 'GET' ){
-					// AJAXではないGETのリクエストでは、CSRFトークンを要求しない
-					return false;
-				}
+			if( $_SERVER['REQUEST_METHOD'] == 'GET' ){
+				// PXコマンドなしのGETのリクエストでは、CSRFトークンを要求しない
+				return false;
 			}
 		}elseif( $this->command[0] == 'admin' ){
+			// --------------------------------------
 			// px2-clover 管理画面
+			// その他のPXコマンドではCSRFトークンが必要
 			$subCmd = (isset( $this->command[1] ) ? $this->command[1] : '');
 			switch($subCmd){
 				case '':
