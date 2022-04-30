@@ -47,8 +47,7 @@ class register{
 		}
 
 		$px->conf()->funcs->before_content['px2-clover'] = __CLASS__.'::admin_console('.json_encode($options).')';
-
-		array_push( $px->conf()->funcs->before_output, __CLASS__.'::before_output('.json_encode($options).')' );
+		$px->conf()->funcs->before_output['px2-clover'] = __CLASS__.'::before_output('.json_encode($options).')';
 
 		return;
 	}
@@ -62,6 +61,13 @@ class register{
 	static public function admin_console( $px = null, $options = null ){
 		if( count(func_get_args()) <= 1 ){
 			return __CLASS__.'::'.__FUNCTION__.'('.( is_array($px) ? json_encode($px) : '' ).')';
+		}
+
+		$command = $px->get_px_command();
+		if( count($command) && $command[0] == 'admin' ){
+			// クライアントリソースを公開ディレクトリに配置
+			$client_resources_dist = $px->realpath_plugin_files('/');
+			$px->fs()->copy_r(__DIR__.'/../public/resources/', $client_resources_dist);
 		}
 
 		$px->pxcmd()->register('admin', function($px) use ($options){
