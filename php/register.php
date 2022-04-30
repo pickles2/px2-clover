@@ -67,7 +67,7 @@ class register{
 		if( count($command) && $command[0] == 'admin' ){
 			// クライアントリソースを公開ディレクトリに配置
 			$client_resources_dist = $px->realpath_plugin_files('/');
-			if( !is_file( $client_resources_dist.'cloverMain/cloverMain.js' ) ){
+			if( !is_file( $client_resources_dist.'cloverMain/cloverMain.js' ) || $px->fs()->is_newer_a_than_b(__DIR__.'/../public/resources/'.'cloverMain/cloverMain.js', $client_resources_dist.'cloverMain/cloverMain.js') ){
 				$px->fs()->copy_r(__DIR__.'/../public/resources/', $client_resources_dist);
 			}
 		}

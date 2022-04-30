@@ -39,18 +39,47 @@ export default function Px2Utils(){
 			return path;
 		}
 
-		// TODO: GETパラメータを受け付けられるようにする
+		// GETパラメータを受け付けられるようにする
+		let [pathname, query] = path.split('?');
 
-		// TODO: パスパラメータ {$xxx}, {*xxx} を補完する
-
-		// デフォルトファイル名を補完する
-		if( path.match(/\/$/) ){
-			path += 'index.html';
+		// パスパラメータ {$xxx} を補完する
+		let tmpStr = pathname;
+		pathname = '';
+		while(1){
+			if(tmpStr.match(/^([\s\S]*?)\{\$([\s\S]+)\}([\s\S]*)$/)){
+				pathname += RegExp.$1;
+				pathname += RegExp.$2;
+				tmpStr = RegExp.$3;
+				continue;
+			}
+			pathname += tmpStr;
+			break;
 		}
 
-		// TODO: controot を補完する
+		// パスパラメータ {*xxx} を補完する
+		tmpStr = pathname;
+		pathname = '';
+		while(1){
+			if(tmpStr.match(/^([\s\S]*?)\{\*([\s\S]*)\}([\s\S]*)$/)){
+				pathname += RegExp.$1;
+				pathname += RegExp.$2;
+				tmpStr = RegExp.$3;
+				continue;
+			}
+			pathname += tmpStr;
+			break;
+		}
 
-		return path;
+		// デフォルトファイル名を補完する
+		if( pathname.match(/\/$/) ){
+			pathname += window.px2config.default_directory_index;
+		}
+
+		// controot を補完する
+		pathname = pathname.replace(/^\//, window.px2config.path_controot);
+
+		var rtn = pathname + (typeof(query)==typeof('') ? '?'+query : '');
+		return rtn;
 	}
 
 	/**
@@ -59,7 +88,9 @@ export default function Px2Utils(){
 	 * @returns 
 	 */
 	this.trimContRoot = function( path ){
-		// TODO: 実装する
+		if( path.indexOf(window.px2config.path_controot) === 0 ){
+			path = "/"+path.substr(window.px2config.path_controot.length);
+		}
 		return path;
 	}
 
