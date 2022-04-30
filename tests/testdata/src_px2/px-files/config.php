@@ -4,6 +4,9 @@ return call_user_func( function(){
 	// initialize
 	$conf = new stdClass;
 
+	// microtimeRecorder
+	$conf->mr = new \tomk79\microtimeRecorder( __DIR__.'/__record.txt' );
+
 	// project
 	$conf->name = 'px2-clover'; // サイト名
 	$conf->domain = null; // ドメイン

@@ -41,7 +41,7 @@ class getPageInfo{
 
 		// bros
 		$rtn['bros'] = array();
-		$bros = $this->px->site()->get_bros();
+		$bros = $this->px->site()->get_bros(null, array('filter'=>false));
 		if( is_array($bros) ){
 			foreach($bros as $bro){
 				array_push( $rtn['bros'], $this->px->site()->get_page_info($bro) );
@@ -50,7 +50,7 @@ class getPageInfo{
 
 		// children
 		$rtn['children'] = array();
-		$children = $this->px->site()->get_children();
+		$children = $this->px->site()->get_children(null, array('filter'=>false));
 		if( is_array($children) ){
 			foreach($children as $child){
 				array_push( $rtn['children'], $this->px->site()->get_page_info($child) );

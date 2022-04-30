@@ -28,7 +28,8 @@
         "pickles2/px2style": ">=2.0",
         "pickles2/px2-sitemapexcel": "~2",
         "tomk79/px2-serve": "~0",
-        "phpunit/phpunit": "~9.5"
+        "phpunit/phpunit": "~9.5",
+        "tomk79/microtime-recorder": "~0.1.2"
     },
     "autoload": {
         "psr-4": {
