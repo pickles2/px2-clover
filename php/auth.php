@@ -303,6 +303,7 @@ class auth{
 				case 'logout':
 				case 'config':
 				case 'page_info':
+				case 'sitemap':
 				case 'edit_contents':
 					if( $_SERVER['REQUEST_METHOD'] == 'GET' ){
 						// 既知の特定の画面へのGETのリクエストでは、CSRFトークンを要求しない

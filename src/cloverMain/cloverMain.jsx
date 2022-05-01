@@ -37,7 +37,7 @@ class Layout extends React.Component {
 			let tmpPageInfo = {};
 			iterate79.fnc({}, [
 				(it1) => {
-					if( this.state.pageInfo !== null ){
+					if( this.state.pageInfoLoaded ){
 						return;
 					}
 					it1.next();
@@ -57,6 +57,7 @@ class Layout extends React.Component {
 					if( tmpPageInfo.current_page_info ){
 						this.state.setMainState( {
 							"pageInfo": tmpPageInfo,
+							"pageInfoLoaded": true,
 						} );
 					}
 					it1.next();
@@ -71,7 +72,7 @@ class Layout extends React.Component {
 		const link = (url) => {
 			const newState = parseUrl(url);
 			history.pushState({}, '', url);
-			newState.pageInfo = null;
+			newState.pageInfoLoaded = false;
 			this.setState(newState);
 			updateCurrentPageInfo();
 		};
@@ -83,6 +84,7 @@ class Layout extends React.Component {
 		this.state = {
 			"path": parsedUrl.path,
 			"PX": parsedUrl.PX,
+			"pageInfoLoaded": false,
 			"pageInfo": null,
 			"link": link,
 			"px2utils": px2utils,
@@ -96,7 +98,7 @@ class Layout extends React.Component {
 
 		window.addEventListener('popstate', (event) => {
 			const newState = parseUrl(location);
-			newState.pageInfo = null;
+			newState.pageInfoLoaded = false;
 			this.setState(newState);
 			updateCurrentPageInfo();
 		});
