@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import {MainContext} from '../context/MainContext';
-import Link from '../components/Link';
 import $ from 'jquery';
 
 export default React.memo(function Sitemap(props){
@@ -9,6 +8,13 @@ export default React.memo(function Sitemap(props){
 	const [sitemapFileList, setSitemapFileList] = useState(false);
 
 	if( !sitemapFileList ){
+		loadSitemapFileList();
+	}
+
+	/**
+	 * サイトマップファイルの一覧を更新する
+	 */
+	function loadSitemapFileList(){
 		let tmpSitemapFileList;
 		$.ajax({
 			"url": "?PX=px2dthelper.sitemap.filelist",
@@ -41,7 +47,6 @@ export default React.memo(function Sitemap(props){
 			'?PX=px2dthelper.sitemap.download'
 		);
 		xhr.setRequestHeader( "Content-type", 'application/x-www-form-urlencoded');
-		xhr.setRequestHeader( "Cookie", document.cookie);
 		xhr.responseType = 'blob';
 		xhr.onload = function(e) {
 			if (this.status == 200) {
@@ -64,28 +69,21 @@ export default React.memo(function Sitemap(props){
 
 	/**
 	 * サイトマップファイルをアップロードする
-	 * @param {*} origFileName 
+	 * @param {*} form 
 	 */
-	function uploadSitemapFile( origFileName ){
-		// TODO: 実装する
-		alert(origFileName);
-		$.ajax({
-			"url": "?PX=px2dthelper.sitemap.upload",
-			"method": "post",
-			"data": {
-				'filefullname': origFileName,
-				'ADMIN_USER_CSRF_TOKEN': window.csrf_token,
-			},
-			"error": function(error){
-				console.error('------ admin.api.get_page_info Response Error:', typeof(error), error);
-			},
-			"success": function(data){
-				console.log('------ admin.api.get_page_info Response:', typeof(data), data);
-			},
-			"complete": function(){
-				alert('done');
-			},
+	function uploadSitemapFile( form ){
+		const formdata = new FormData(form);
+		// console.log(formdata, form);
+
+		var xhr = new XMLHttpRequest();
+		xhr.open(
+			'POST',
+			'?PX=px2dthelper.sitemap.upload'
+		);
+		xhr.upload.addEventListener('loadend', (evt) => {
+			loadSitemapFileList();
 		});
+		xhr.send(formdata);
 	}
 
 	return (
@@ -122,11 +120,18 @@ export default React.memo(function Sitemap(props){
 				</>
 				:<>
 				</>
-			}</>
-			}
-			{/* <div>{main.PX}</div>
-			<p><Link href="?PX=admin.config">Config</Link></p>
-			<p><Link href="?PX=admin">Dashboard</Link></p> */}
+			}</>}
+			<div>
+				<form action="?PX=px2dthelper.sitemap.upload" method="post" encType="multipart/form-data" onSubmit={function(e){
+					e.preventDefault();
+					uploadSitemapFile(e.target);
+				}}>
+					<div>filename: <input type="input" name="filefullname" defaultValue="" /></div>
+					<div>file: <input type="file" name="file" defaultValue="" /></div>
+					<button type="submit" className="px2-btn px2-btn--primary">アップロード</button>
+					<input type="hidden" name="ADMIN_USER_CSRF_TOKEN" defaultValue={window.csrf_token} />
+				</form>
+			</div>
 		</>
 	);
 });
