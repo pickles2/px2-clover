@@ -29,11 +29,20 @@ export default function PageInfo(props){
 					))}
 					{(typeof(main.pageInfo.current_page_info) === typeof({}) && (<>
 						<div className="px2-p">
-							<table className="px2-table">
+							<table className="px2-table" style={{width:'100%',}}>
 								<tbody>
 									<tr><th>id</th><td>{main.pageInfo.current_page_info.id}</td></tr>
 									<tr><th>title</th><td><Link href={main.px2utils.href(main.pageInfo.current_page_info.path + "?PX=admin")}>{main.pageInfo.current_page_info.title}</Link></td></tr>
 									<tr><th>path</th><td>{main.pageInfo.current_page_info.path}</td></tr>
+									{Object.keys(main.pageInfo.current_page_info).map( ( value, idx )=>{
+										if( ['id','title','path'].find(val => val==value) ){return;}
+										return (
+											<tr key={idx}>
+												<th>{value}</th>
+												<td>{main.pageInfo.current_page_info[value]}</td>
+											</tr>
+										)
+									} )}
 								</tbody>
 							</table>
 						</div>
