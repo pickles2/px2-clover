@@ -35,8 +35,57 @@ export default React.memo(function Sitemap(props){
 	 * @param {*} origFileName 
 	 */
 	function downloadSitemapFile( origFileName ){
-		// TODO: ダウンロード処理を実装する
+		var xhr = new XMLHttpRequest();
+		xhr.open(
+			'POST',
+			'?PX=px2dthelper.sitemap.download'
+		);
+		xhr.setRequestHeader( "Content-type", 'application/x-www-form-urlencoded');
+		xhr.setRequestHeader( "Cookie", document.cookie);
+		xhr.responseType = 'blob';
+		xhr.onload = function(e) {
+			if (this.status == 200) {
+				console.log(this.response);
+				var url = window.URL.createObjectURL(new Blob([this.response]));
+				var link = document.createElement('a');
+				link.href = url;
+				link.setAttribute('download', origFileName);
+				document.body.appendChild(link);
+				link.click();
+				document.body.removeChild(link);
+				return;
+			}
+		}
+		xhr.send(new URLSearchParams({
+			'filefullname': origFileName,
+			'ADMIN_USER_CSRF_TOKEN': window.csrf_token,
+		}).toString());
+	}
+
+	/**
+	 * サイトマップファイルをアップロードする
+	 * @param {*} origFileName 
+	 */
+	function uploadSitemapFile( origFileName ){
+		// TODO: 実装する
 		alert(origFileName);
+		$.ajax({
+			"url": "?PX=px2dthelper.sitemap.upload",
+			"method": "post",
+			"data": {
+				'filefullname': origFileName,
+				'ADMIN_USER_CSRF_TOKEN': window.csrf_token,
+			},
+			"error": function(error){
+				console.error('------ admin.api.get_page_info Response Error:', typeof(error), error);
+			},
+			"success": function(data){
+				console.log('------ admin.api.get_page_info Response:', typeof(data), data);
+			},
+			"complete": function(){
+				alert('done');
+			},
+		});
 	}
 
 	return (
