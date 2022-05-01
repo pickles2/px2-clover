@@ -60,6 +60,7 @@
 			// .envよりプレビューサーバーのURLを取得
 			var preview_url = '?';
 			var resizeTimer;
+			var backto = "{{ backto | e("js") }}";
 			var csrf_token = "{{ csrf_token | e("js") }}";
 
 			if( page_path ){
@@ -116,6 +117,10 @@
 						return;
 					},
 					'complete': function(){
+						if( backto == 'preview' ){
+							window.location.href = '?';
+							return;
+						}
 						window.location.href = '?PX=admin';
 					},
 					'clipboard': {

@@ -15,6 +15,18 @@ export default function PageInfo(props){
 
 			:<>{(main.pageInfo.current_page_info)
 				?<>
+					{(main.pageInfo !== null && typeof(main.pageInfo.breadcrumb) === typeof([]) && (
+						<div className="theme-layout__breadcrumb">
+							<ul>
+							{main.pageInfo.breadcrumb.map( ( breadcrumb_info )=>{
+								return (
+									<li key={breadcrumb_info.id}><Link href={main.px2utils.href(breadcrumb_info.path + "?PX=admin.page_info")}>{breadcrumb_info.title}</Link></li>
+								)
+							} )}
+							<li>{main.pageInfo.current_page_info.title}</li>
+							</ul>
+						</div>
+					))}
 					{(typeof(main.pageInfo.current_page_info) === typeof({}) && (<>
 						<div className="px2-p">
 							<table className="px2-table">

@@ -35,12 +35,15 @@ class editContents{
 		$px2ce_res = $this->px->internal_sub_request('/?PX=px2dthelper.px2ce.client_resources&dist='.urlencode($client_resources_dist));
 		$px2ce_res = json_decode($px2ce_res, true);
 
+		$backto = $this->px->req()->get_param('backto');
+
 		echo $this->clover->view()->bind(
 			'/cont/editContents/editContents.twig',
 			array(
 				'path_client_resources' => $path_client_resources,
 				'px2ce_res' => $px2ce_res,
 				'page_path' => $this->px->req()->get_request_file_path(),
+				'backto' => $backto,
 				'csrf_token' => $this->clover->auth()->get_csrf_token(),
 			)
 		);

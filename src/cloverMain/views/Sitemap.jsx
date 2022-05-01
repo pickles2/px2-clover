@@ -23,11 +23,10 @@ export default React.memo(function Sitemap(props){
 				'ADMIN_USER_CSRF_TOKEN': window.csrf_token,
 			},
 			"error": function(error){
-				console.error('------ admin.api.get_page_info Response Error:', typeof(error), error);
+				console.error('Error:', error);
 				tmpSitemapFileList = error;
 			},
 			"success": function(data){
-				console.log('------ admin.api.get_page_info Response:', typeof(data), data);
 				tmpSitemapFileList = data;
 			},
 			"complete": function(){
@@ -49,17 +48,18 @@ export default React.memo(function Sitemap(props){
 		xhr.setRequestHeader( "Content-type", 'application/x-www-form-urlencoded');
 		xhr.responseType = 'blob';
 		xhr.onload = function(e) {
-			if (this.status == 200) {
-				console.log(this.response);
-				var url = window.URL.createObjectURL(new Blob([this.response]));
-				var link = document.createElement('a');
-				link.href = url;
-				link.setAttribute('download', origFileName);
-				document.body.appendChild(link);
-				link.click();
-				document.body.removeChild(link);
+			if (this.status !== 200) {
+				alert('Failed to download.');
 				return;
 			}
+			var url = window.URL.createObjectURL(new Blob([this.response]));
+			var link = document.createElement('a');
+			link.href = url;
+			link.setAttribute('download', origFileName);
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+			return;
 		}
 		xhr.send(new URLSearchParams({
 			'filefullname': origFileName,
@@ -73,7 +73,6 @@ export default React.memo(function Sitemap(props){
 	 */
 	function uploadSitemapFile( form ){
 		const formdata = new FormData(form);
-		// console.log(formdata, form);
 
 		var xhr = new XMLHttpRequest();
 		xhr.open(
@@ -91,6 +90,10 @@ export default React.memo(function Sitemap(props){
 	 * @param {*} origFileName 
 	 */
 	function deleteSitemapFile( origFileName ){
+		if( !confirm( 'Delete file "' + origFileName + '.*" ?' ) ){
+			return;
+		}
+
 		$.ajax({
 			"url": "?PX=px2dthelper.sitemap.delete",
 			"method": "post",
@@ -99,10 +102,13 @@ export default React.memo(function Sitemap(props){
 				'ADMIN_USER_CSRF_TOKEN': window.csrf_token,
 			},
 			"error": function(error){
-				console.error('------ px2dthelper.sitemap.delete Response Error:', typeof(error), error);
+				console.error('Error:', error);
+				alert('Failed to Delete file.');
 			},
 			"success": function(data){
-				console.log('------ px2dthelper.sitemap.delete Response:', typeof(data), data);
+				if( !data.result ){
+					alert('Failed to Delete file.');
+				}
 			},
 			"complete": function(){
 				loadSitemapFileList();
