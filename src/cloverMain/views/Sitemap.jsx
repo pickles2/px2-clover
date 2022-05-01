@@ -86,6 +86,30 @@ export default React.memo(function Sitemap(props){
 		xhr.send(formdata);
 	}
 
+	/**
+	 * サイトマップファイルを削除する
+	 * @param {*} origFileName 
+	 */
+	function deleteSitemapFile( origFileName ){
+		$.ajax({
+			"url": "?PX=px2dthelper.sitemap.delete",
+			"method": "post",
+			"data": {
+				'filename': origFileName,
+				'ADMIN_USER_CSRF_TOKEN': window.csrf_token,
+			},
+			"error": function(error){
+				console.error('------ px2dthelper.sitemap.delete Response Error:', typeof(error), error);
+			},
+			"success": function(data){
+				console.log('------ px2dthelper.sitemap.delete Response:', typeof(data), data);
+			},
+			"complete": function(){
+				loadSitemapFileList();
+			},
+		});
+	}
+
 	return (
 		<>
 			{(!sitemapFileList)
@@ -112,6 +136,9 @@ export default React.memo(function Sitemap(props){
 										)
 									} )}
 									</ul>
+									<ul>
+										<li><a href="#" onClick={(e)=>{e.preventDefault();deleteSitemapFile(sitemapFileName);}}>delete</a></li>
+									</ul>
 								</li>
 							)
 						} )}
@@ -121,6 +148,7 @@ export default React.memo(function Sitemap(props){
 				:<>
 				</>
 			}</>}
+			<hr />
 			<div>
 				<form action="?PX=px2dthelper.sitemap.upload" method="post" encType="multipart/form-data" onSubmit={function(e){
 					e.preventDefault();
