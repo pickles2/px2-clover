@@ -30,6 +30,12 @@ class view{
 		$twig = new \Twig\Environment($loader, [
 			// 'cache' => $this->clover->realpath_private_cache('twig_cache/'),
 		]);
+
+		// 共通項目
+		$data['px2config'] = $this->px->conf();
+		$data['path_client_resources'] = $this->clover->path_files();
+		$data['csrf_token'] = $this->clover->auth()->get_csrf_token();
+
 		$rtn = $twig->render( $path_template, $data );
 		return $rtn;
 	}

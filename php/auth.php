@@ -128,14 +128,27 @@ class auth{
 	 * ログイン画面を表示する
 	 */
 	public function login_page(){
-		echo $this->clover->view()->bind(
-			'/system/login.twig',
-			array(
-				'url_backto' => '?',
-				'ADMIN_USER_ID' => $this->px->req()->get_param('ADMIN_USER_ID'),
-				'csrf_token' => $this->get_csrf_token(),
-			)
-		);
+		$this->px->set_status(403);
+
+		$command = $this->px->get_px_command();
+		if( isset($command[0]) && strlen($command[0]) && $command[0] == 'admin' ){
+			if( !isset($command[1]) || !strlen($command[1]) || $command[1] != 'api' ){
+				echo $this->clover->view()->bind(
+					'/system/login.twig',
+					array(
+						'url_backto' => '?',
+						'ADMIN_USER_ID' => $this->px->req()->get_param('ADMIN_USER_ID'),
+						'csrf_token' => $this->get_csrf_token(),
+					)
+				);
+				exit;
+			}
+		}
+		$this->px->header('Content-type: application/json');
+		echo json_encode(array(
+			'result' => false,
+			'message' => $this->px->get_status_message(),
+		));
 		exit;
 	}
 
