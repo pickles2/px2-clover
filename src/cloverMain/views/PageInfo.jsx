@@ -50,6 +50,14 @@ export default function PageInfo(props){
 								</tbody>
 							</table>
 						</div>
+						<div className="px2-p">
+							<table className="px2-table" style={{width:'100%',}}>
+								<tbody>
+									<tr><th>Originated CSV</th><td>{main.pageInfo.originated_csv.basename}</td></tr>
+									<tr><th>Originated CSV row</th><td>{main.pageInfo.originated_csv.row}</td></tr>
+								</tbody>
+							</table>
+						</div>
 					</>))}
 				</>
 			:<>
