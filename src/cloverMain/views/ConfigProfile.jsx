@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import React, { useContext, useState } from "react";
 import {MainContext} from '../context/MainContext';
 import Link from '../components/Link';
@@ -8,7 +9,31 @@ export default function ConfigProfile(props){
 
 	const updateProfile = (e) => {
 		e.preventDefault();
-		console.log(e.target);
+		var $form = $(e.target);
+		// console.log(e.target);
+		var newProfile = {
+			'id': $form.find('input[name=id]').val(),
+			'name': $form.find('input[name=name]').val(),
+			'lang': $form.find('input[name=lang]').val(),
+		};
+		if( $form.find('input[name=pw]').val().length ){
+			newProfile.pw = $form.find('input[name=pw]').val();
+		}
+		main.cloverUtils.updateProfile(
+			newProfile,
+			(result) => {
+				console.log(result);
+				if( !result.result ){
+					alert('Failed to update profile.');
+					return;
+				}
+				main.setMainState({
+					'profile': result.profile,
+					'profileLoaded': false,
+				});
+				main.link('?PX=admin.config');
+			}
+		);
 	}
 
 	return (

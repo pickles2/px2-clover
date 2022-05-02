@@ -48,6 +48,14 @@ class profile{
 		$rtn['result'] = true;
 		$rtn['message'] = 'OK';
 
+		$new_profile = array(
+			'id' => $this->px->req()->get_param('id'),
+			'name' => $this->px->req()->get_param('name'),
+			'lang' => $this->px->req()->get_param('lang'),
+			'pw' => $this->px->req()->get_param('pw'),
+		);
+		$result = $this->clover->auth()->update_login_user_info($new_profile);
+
 		// profile
 		$rtn['profile'] = $this->clover->auth()->get_login_user_info();
 

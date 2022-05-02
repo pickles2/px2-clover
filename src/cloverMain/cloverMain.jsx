@@ -83,6 +83,11 @@ class Layout extends React.Component {
 		};
 
 		const link = (url) => {
+			url = (url=>{
+				var a = document.createElement('a');
+				a.href = url;
+				return a.href;
+			})(url);
 			const newState = parseUrl(url);
 			history.pushState({}, '', url);
 			newState.pageInfoLoaded = false;

@@ -89,4 +89,27 @@ class clover{
 		return $rtn;
 	}
 
+
+	/**
+	 * 許可されたメソッドのみ通過できる
+	 */
+	public function allowed_method( $methodList ){
+		if( !is_array($methodList) ){
+			$methodList = array($methodList);
+		}
+		foreach($methodList as $key=>$val){
+			$methodList[$key] = strtolower($val);
+		}
+		if( array_search( strtolower($this->px->req()->get_method()), $methodList, true ) !== false ){
+			return true;
+		}
+
+		$this->px->header('Content-type: text/json');
+		$this->px->set_status(405);
+		echo json_encode(array(
+			'result' => false,
+			'message' => '405 Method Not Allowed.',
+		));
+		exit;
+	}
 }

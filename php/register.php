@@ -164,6 +164,7 @@ class register{
 							$app->get();
 							break;
 						case 'update_profile':
+							$this->clover->allowed_method('post');
 							$app = new funcs\api\profile($this->clover);
 							$app->update();
 							break;
