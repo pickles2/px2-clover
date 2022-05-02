@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {MainContext} from '../context/MainContext';
 import Link from '../components/Link';
 
@@ -8,10 +8,9 @@ export default function Config(props){
 
 	return (
 		<>
-			<p>この機能は開発中です。</p>
-			{/* <div>{main.PX}</div>
-			<p><Link href="?PX=admin.config">Config</Link></p>
-			<p><Link href="?PX=admin">Dashboard</Link></p> */}
+			<ul>
+				<li><Link href="?PX=admin.config.profile">プロフィールを編集する</Link></li>
+			</ul>
 		</>
 	);
 }

@@ -2,9 +2,9 @@
 namespace tomk79\pickles2\px2clover\funcs\api;
 
 /**
- * px2-clover: コンテンツ編集機能
+ * px2-clover: ページ情報API
  */
-class getPageInfo{
+class pageInfo{
 
 	/** Cloverオブジェクト */
 	private $clover;
@@ -25,10 +25,12 @@ class getPageInfo{
 	}
 
 	/**
-	 * コンテンツ編集画面
+	 * 取得
 	 */
-	public function start(){
+	public function get(){
 		$rtn = array();
+		$rtn['result'] = true;
+		$rtn['message'] = 'OK';
 
 		// current page
 		$rtn['current_page_info'] = $this->px->site()->get_current_page_info();
@@ -66,7 +68,7 @@ class getPageInfo{
 			}
 		}
 
-		header('Content-type: text/json');
+		$this->px->header('Content-type: text/json');
 		echo json_encode($rtn);
 		exit;
 	}

@@ -104,7 +104,7 @@ class register{
 		ob_start(); ?>
 <div style="position:fixed; right: 10px; bottom: 10px;">
 <?php if( $px->conf()->allow_pxcommands ){ ?>
-<button type="button" onclick="location.href='?PX=admin';">ページ情報</button>
+<button type="button" onclick="location.href='?PX=admin.page_info';">ページ情報</button>
 <button type="button" onclick="location.href='?PX=admin.edit_contents&backto=preview';">記事編集</button>
 <?php }else{ ?>
 <p>Pickles 2 Clover を利用するには、<code>$conf-&gt;allow_pxcommands</code>フラグを <code>1</code> に設定してください。</p>
@@ -156,8 +156,16 @@ class register{
 					// API
 					switch( isset($this->command[2]) ? $this->command[2] : '' ){
 						case 'get_page_info':
-							$app = new funcs\api\getPageInfo($this->clover);
-							$app->start();
+							$app = new funcs\api\pageInfo($this->clover);
+							$app->get();
+							break;
+						case 'get_profile':
+							$app = new funcs\api\profile($this->clover);
+							$app->get();
+							break;
+						case 'update_profile':
+							$app = new funcs\api\profile($this->clover);
+							$app->update();
 							break;
 					}
 

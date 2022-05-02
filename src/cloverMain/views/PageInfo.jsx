@@ -32,7 +32,7 @@ export default function PageInfo(props){
 							<table className="px2-table" style={{width:'100%',}}>
 								<tbody>
 									<tr><th>id</th><td>{main.pageInfo.current_page_info.id}</td></tr>
-									<tr><th>title</th><td><Link href={main.px2utils.href(main.pageInfo.current_page_info.path + "?PX=admin")}>{main.pageInfo.current_page_info.title}</Link></td></tr>
+									<tr><th>title</th><td><Link href={main.px2utils.href(main.pageInfo.current_page_info.path + "?PX=admin.page_info")}>{main.pageInfo.current_page_info.title}</Link></td></tr>
 									<tr><th>path</th><td>{main.pageInfo.current_page_info.path}</td></tr>
 									{Object.keys(main.pageInfo.current_page_info).map( ( value, idx )=>{
 										if( ['id','title','path'].find(val => val==value) ){return;}

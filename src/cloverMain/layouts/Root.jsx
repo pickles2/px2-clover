@@ -9,6 +9,9 @@ export default function Root(props){
 
 	document.title = props.title + ' : ' + window.px2config.name;
 
+	/**
+	 * キャッシュを削除する
+	 */
 	function clearcache(){
 		px2style.loading();
 		$.ajax({
@@ -30,7 +33,13 @@ export default function Root(props){
 		});
 	}
 
+	/**
+	 * パブリッシュを実行する
+	 */
 	function publish(){
+		if( !confirm('パブリッシュを実行しますか？') ){
+			return;
+		}
 		px2style.loading();
 		$.ajax({
 			"url": "?PX=publish.run",
@@ -55,7 +64,7 @@ export default function Root(props){
 		<>
 			<div className="theme-layout">
 				<header className="theme-layout__header">
-					<div><a href={main.px2utils.href('/')}>{(window.px2config.name)}</a></div>
+					<div><Link href={main.px2utils.href('/?PX=admin')}>{(window.px2config.name)}</Link> Admin Console</div>
 				</header>
 
 				<div className="theme-layout__main">
@@ -102,6 +111,11 @@ export default function Root(props){
 					</nav>
 				</div>
 				<footer className="theme-layout__footer">
+					{(main.profile && main.profile.name)
+						? <>
+							<div className="px2-text-align-center">Logged in as: {main.profile.name}</div>
+						</>
+						: <></>}
 					<ul>
 						<li><a href="?">プレビューへ戻る</a></li>
 						<li><a href="?PX=admin.logout">ログアウト</a></li>
