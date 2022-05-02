@@ -72,7 +72,11 @@ class auth{
 
 			if( $login_challenger_id == $admin_id && password_verify($this->px->req()->get_param('ADMIN_USER_PW'), $admin_pw) ){
 				$this->px->req()->set_session('ADMIN_USER_ID', $login_challenger_id);
-				header('Location:'.'?PX='.htmlspecialchars(''.$this->px->req()->get_param('PX') ));
+				$redirect_to = '?';
+				if( is_string($this->px->req()->get_param('PX')) ){
+					$redirect_to = '?PX='.htmlspecialchars( $this->px->req()->get_param('PX') );
+				}
+				$this->px->header('Location:'.$redirect_to);
 				exit;
 			}
 		}
@@ -131,24 +135,24 @@ class auth{
 		$this->px->set_status(403);
 
 		$command = $this->px->get_px_command();
-		if( isset($command[0]) && strlen($command[0]) && $command[0] == 'admin' ){
-			if( !isset($command[1]) || !strlen($command[1]) || $command[1] != 'api' ){
-				echo $this->clover->view()->bind(
-					'/system/login.twig',
-					array(
-						'url_backto' => '?',
-						'ADMIN_USER_ID' => $this->px->req()->get_param('ADMIN_USER_ID'),
-						'csrf_token' => $this->get_csrf_token(),
-					)
-				);
+		if( isset($command[0]) && $command[0] == 'admin' ){
+			if( isset($command[1]) && $command[1] == 'api' ){
+				$this->px->header('Content-type: application/json');
+				echo json_encode(array(
+					'result' => false,
+					'message' => $this->px->get_status_message(),
+				));
 				exit;
 			}
 		}
-		$this->px->header('Content-type: application/json');
-		echo json_encode(array(
-			'result' => false,
-			'message' => $this->px->get_status_message(),
-		));
+		echo $this->clover->view()->bind(
+			'/system/login.twig',
+			array(
+				'url_backto' => '?',
+				'ADMIN_USER_ID' => $this->px->req()->get_param('ADMIN_USER_ID'),
+				'csrf_token' => $this->get_csrf_token(),
+			)
+		);
 		exit;
 	}
 
@@ -386,7 +390,7 @@ class auth{
 	 */
 	private function is_csrf_token_required(){
 		$this->command = $this->px->get_px_command();
-		if( !count($this->command) ){
+		if( !count($this->command) || (count($this->command) == 1 && !strlen($this->command[0])) ){
 			// --------------------------------------
 			// プレビューリクエスト
 			if( $_SERVER['REQUEST_METHOD'] == 'GET' ){

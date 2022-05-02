@@ -37,7 +37,7 @@ class register{
 				// プレビュー全体で認証を要求する
 				$auth_needs = true;
 			}
-			if( !is_null($px->req()->get_param('PX')) && $px->req()->get_param('PX') !== 'admin.logout' ){
+			if( is_string($px->req()->get_param('PX')) && strlen($px->req()->get_param('PX')) && $px->req()->get_param('PX') !== 'admin.logout' ){
 				// PXコマンド全体で認証を要求する
 				$auth_needs = true;
 			}
