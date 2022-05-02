@@ -55,6 +55,10 @@ class profile{
 			'pw' => $this->px->req()->get_param('pw'),
 		);
 		$result = $this->clover->auth()->update_login_user_info($new_profile);
+		if( !$result ){
+			$rtn['result'] = false;
+			$rtn['message'] = 'Failed to update profile.';
+		}
 
 		// profile
 		$rtn['profile'] = $this->clover->auth()->get_login_user_info();

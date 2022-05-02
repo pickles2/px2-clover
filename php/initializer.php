@@ -56,10 +56,10 @@ class initializer{
 			$user_info = array(
 				'name' => $this->px->req()->get_param('ADMIN_USER_NAME'),
 				'id' => $this->px->req()->get_param('ADMIN_USER_ID'),
-				'pw' => $this->clover->auth()->password_hash($this->px->req()->get_param('ADMIN_USER_PW')),
+				'pw' => $this->px->req()->get_param('ADMIN_USER_PW'),
 				'lang' => $this->px->req()->get_param('ADMIN_USER_LANG'),
 			);
-			$result = $this->clover->auth()->create_admin_user($user_info['id'], $user_info);
+			$result = $this->clover->auth()->create_admin_user( $user_info );
 			if( $result ){
 				header('Location:'.'?PX=admin');
 				exit;

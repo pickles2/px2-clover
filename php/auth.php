@@ -210,6 +210,16 @@ class auth{
 			$user_info[$key] = $val;
 		}
 
+		if( !$this->validate_user_id($user_info['id']) ){
+			// 不正な形式のID
+			return false;
+		}
+		if( !$this->validate_user_info($user_info) ){
+			// 不正な形式のユーザー情報
+			return false;
+		}
+
+
 		// 新しいIDのためにファイル名を変更
 		$result = $this->px->fs()->rename(
 			$this->realpath_admin_users.urlencode($login_user_id).'.json',
@@ -267,21 +277,24 @@ class auth{
 
 	/**
 	 * 管理ユーザーを作成する
-	 * @param string $user_id 作成するユーザーID
+	 *
 	 * @param array|object $user_info 作成するユーザー情報
 	 */
-	public function create_admin_user( $user_id, $user_info ){
-		if( !$this->validate_user_id($user_id) ){
+	public function create_admin_user( $user_info ){
+		$user_info = (object) $user_info;
+		if( !$this->validate_user_id($user_info->id) ){
 			return false;
 		}
-		$realpath_json = $this->realpath_admin_users.'/'.$user_id.'.json';
+		$realpath_json = $this->realpath_admin_users.'/'.urlencode($user_info->id).'.json';
 		if( is_file( $realpath_json ) ){
 			return false;
 		}
-		$user_info = (object) $user_info;
-		if( $user_info->id !== $user_id ){
+		if( !$this->validate_user_info($user_info) ){
+			// 不正な形式のユーザー情報
 			return false;
 		}
+
+		$user_info->pw = $this->clover->auth()->password_hash($user_info->pw);
 		$json_str = json_encode( $user_info, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE );
 		if( !$this->px->fs()->save_file($realpath_json, $json_str) ){
 			return false;
@@ -298,6 +311,27 @@ class auth{
 		}
 		if( !preg_match('/^[a-zA-Z0-9\_\-]+$/', $user_id) ){
 			// 不正な形式
+			return false;
+		}
+		return true;
+	}
+	/**
+	 * Validation: ユーザー情報
+	 */
+	private function validate_user_info( $user_info ){
+		$user_info = (array) $user_info;
+
+		if( !$this->validate_user_id($user_info['id']) ){
+			// 不正な形式のID
+			return false;
+		}
+		if( !isset($user_info['name']) || !strlen($user_info['name']) ){
+			return false;
+		}
+		if( !isset($user_info['pw']) || !strlen($user_info['pw']) ){
+			return false;
+		}
+		if( !isset($user_info['lang']) || !strlen($user_info['lang']) ){
 			return false;
 		}
 		return true;

@@ -31,6 +31,7 @@ export default function ConfigProfile(props){
 					'profile': result.profile,
 					'profileLoaded': false,
 				});
+				alert('Your profile updated.');
 				main.link('?PX=admin.config');
 			}
 		);
