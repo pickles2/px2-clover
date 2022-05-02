@@ -14,8 +14,9 @@ export default React.memo(function Sitemap(props){
 	/**
 	 * サイトマップファイルの一覧を更新する
 	 */
-	function loadSitemapFileList(){
-		let tmpSitemapFileList;
+	function loadSitemapFileList( callback ){
+		callback = callback || function(){};
+		let tmpSitemapFileList = sitemapFileList;
 		$.ajax({
 			"url": "?PX=px2dthelper.sitemap.filelist",
 			"method": "post",
@@ -24,13 +25,18 @@ export default React.memo(function Sitemap(props){
 			},
 			"error": function(error){
 				console.error('Error:', error);
-				tmpSitemapFileList = error;
+				alert('Loading Error');
 			},
 			"success": function(data){
+				if( !data.result ){
+					alert('Loading Error');
+					return;
+				}
 				tmpSitemapFileList = data;
 			},
 			"complete": function(){
 				setSitemapFileList(tmpSitemapFileList);
+				callback( tmpSitemapFileList );
 			},
 		});
 	}
@@ -80,7 +86,13 @@ export default React.memo(function Sitemap(props){
 			'?PX=px2dthelper.sitemap.upload'
 		);
 		xhr.upload.addEventListener('loadend', (evt) => {
-			loadSitemapFileList();
+			loadSitemapFileList( (loadedData) => {
+				main.setMainState({
+					"pageInfoLoaded": false,
+				});
+				alert('Upload: done.');
+				main.link('?PX=admin.sitemap');
+			} );
 		});
 		xhr.send(formdata);
 	}

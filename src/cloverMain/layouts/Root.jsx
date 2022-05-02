@@ -70,10 +70,9 @@ export default function Root(props){
 				<div className="theme-layout__main">
 					<nav className="theme-layout__left-navbar">
 						<ul>
-							<li><Link href="?PX=admin.sitemap">サイトマップ</Link></li>
-							<li><Link href="?PX=admin.config">設定</Link></li>
-							<li><Link href="?PX=admin.page_info">ページ情報</Link></li>
-							<li><a href="?PX=admin.edit_contents">コンテンツを編集する</a></li>
+							<li><Link href="/?PX=admin.sitemap">サイトマップ</Link></li>
+							<li><Link href="/?PX=admin.config">設定</Link></li>
+							<li><Link href="/?PX=admin.page_info">ページ情報</Link></li>
 							<li><button type="button" onClick={publish}>パブリッシュ</button></li>
 							<li><button type="button" onClick={clearcache}>キャッシュを消去</button></li>
 						</ul>

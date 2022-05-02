@@ -15,6 +15,10 @@ export default function PageInfo(props){
 
 			:<>{(main.pageInfo.current_page_info)
 				?<>
+					<ul>
+						<li><a href="?PX=admin.edit_contents">コンテンツを編集する</a></li>
+						<li><a href="?">プレビューに戻る</a></li>
+					</ul>
 					{(main.pageInfo !== null && typeof(main.pageInfo.breadcrumb) === typeof([]) && (
 						<div className="theme-layout__breadcrumb">
 							<ul>
