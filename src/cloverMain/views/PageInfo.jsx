@@ -27,7 +27,6 @@ export default function PageInfo(props){
 							return;
 						}
 						pageInfoRaw = res;
-						console.log( pageInfoRaw );
 						it1.next();
 					}
 				);
@@ -65,11 +64,35 @@ export default function PageInfo(props){
 							e.preventDefault();
 							modal.lock();
 
-							// TODO: ページ情報の更新処理
-							setTimeout(()=>{
-								px2style.closeModal();
-								modal.unlock();
-							}, 1000);
+							var $inputs = modal.$modal.find('form input');
+							var new_page_info = {};
+							$inputs.each((idx, elm)=>{
+								var $elm = $(elm);
+								new_page_info[$elm.attr('name')] = $elm.val();
+							});
+
+							var params = {
+								'filefullname': main.pageInfo.originated_csv.basename,
+								'row': main.pageInfo.originated_csv.row,
+								'page_info': new_page_info,
+							};
+							main.px2utils.px2cmd(
+								'/?PX=px2dthelper.page.update_page_info_raw',
+								params,
+								function( res ){
+									if( !res.result ){
+										alert( 'Error: ' + res.message );
+										console.error('Error:', res);
+										return;
+									}
+									main.setMainState({
+										"pageInfoLoaded": false,
+									});
+									modal.unlock();
+									px2style.closeModal();
+									main.link('?PX=admin.page_info');
+								}
+							);
 						}
 					},
 				});
