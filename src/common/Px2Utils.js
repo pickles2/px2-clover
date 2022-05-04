@@ -30,6 +30,28 @@ export default function Px2Utils(){
 	}
 
 	/**
+	 * PX Command を実行する
+	 */
+	this.px2cmd= function( path, data, callback ){
+		data.ADMIN_USER_CSRF_TOKEN = window.csrf_token;
+		let tmpPageInfo;
+		$.ajax({
+			"url": path,
+			"method": "post",
+			"data": data,
+			"error": function(error){
+				console.error('PX Command Error:', error);
+			},
+			"success": function(data){
+				tmpPageInfo = data;
+			},
+			"complete": function(){
+				callback(tmpPageInfo);
+			},
+		});
+	}
+
+	/**
 	 * リンク先パスを補完する
 	 * @param {*} path controot を含まないパス 
 	 * @returns 

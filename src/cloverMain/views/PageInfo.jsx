@@ -1,10 +1,82 @@
 import React, { useContext } from "react";
 import {MainContext} from '../context/MainContext';
 import Link from '../components/Link';
+import iterate79 from 'iterate79';
 
 export default function PageInfo(props){
 
 	const main = useContext(MainContext);
+
+	function editPage(e){
+		e.preventDefault();
+		var pageInfoRaw = {};
+		var modal;
+		iterate79.fnc({}, [
+			(it1) => {
+				var params = {
+					'filefullname': main.pageInfo.originated_csv.basename,
+					'row': main.pageInfo.originated_csv.row,
+				};
+				main.px2utils.px2cmd(
+					'/?PX=px2dthelper.page.get_page_info_raw',
+					params,
+					function( res ){
+						if( !res.result ){
+							alert( 'Error: ' + res.message );
+							console.error('Error:', res);
+							return;
+						}
+						pageInfoRaw = res;
+						console.log( pageInfoRaw );
+						it1.next();
+					}
+				);
+			},
+			(it1) => {
+				var page_info = {};
+				for( var idx = 0; pageInfoRaw.page_info.length > idx; idx ++ ){
+					page_info[pageInfoRaw.sitemap_definition[idx]] = pageInfoRaw.page_info[idx];
+				}
+
+				var template = require('./PageInfo.files/template/editPage.twig');
+				var $body = $('<div>')
+					.append( template( {
+						"page_info": page_info,
+					} ) )
+				;
+				modal = px2style.modal({
+					'title': "ページ情報を編集する",
+					'body': $body,
+					'buttons':[
+						$('<button type="submit" class="px2-btn px2-btn--primary">')
+							.text('保存する')
+					],
+					'buttonsSecondary': [
+						$('<button type="button" class="px2-btn">')
+							.text('キャンセル')
+							.on('click', function(){
+								px2style.closeModal();
+							}),
+					],
+					'form': {
+						'action': 'javascript:;',
+						'method': 'post',
+						'submit': function(e){
+							e.preventDefault();
+							modal.lock();
+
+							// TODO: ページ情報の更新処理
+							setTimeout(()=>{
+								px2style.closeModal();
+								modal.unlock();
+							}, 1000);
+						}
+					},
+				});
+				it1.next();
+			},
+		]);
+	}
 
 	return (
 		<>
@@ -16,6 +88,7 @@ export default function PageInfo(props){
 			:<>{(main.pageInfo.current_page_info)
 				?<>
 					<ul>
+						<li><a href="?" onClick={editPage}>ページ情報を編集する</a></li>
 						<li><a href="?PX=admin.edit_contents">コンテンツを編集する</a></li>
 						<li><a href="?">プレビューに戻る</a></li>
 					</ul>
