@@ -9,6 +9,103 @@ export default function PageInfo(props){
 
 
 	/**
+	 * 新規ページ情報を追加する
+	 */
+	function createNewPage(e){
+		e.preventDefault();
+		var pageInfoRaw = {};
+		var modal;
+		iterate79.fnc({}, [
+			(it1) => {
+				var params = {
+					'filefullname': main.pageInfo.originated_csv.basename,
+					'row': main.pageInfo.originated_csv.row,
+				};
+				main.px2utils.px2cmd(
+					'/?PX=px2dthelper.page.get_page_info_raw',
+					params,
+					function( res ){
+						if( !res.result ){
+							alert( 'Error: ' + res.message );
+							console.error('Error:', res);
+							return;
+						}
+						pageInfoRaw = res;
+						it1.next();
+					}
+				);
+			},
+			(it1) => {
+				var page_info = {};
+				for( var idx = 0; pageInfoRaw.page_info.length > idx; idx ++ ){
+					page_info[pageInfoRaw.sitemap_definition[idx]] = pageInfoRaw.page_info[idx];
+				}
+
+				var template = require('./PageInfo.files/template/editPage.twig');
+				var $body = $('<div>')
+					.append( template( {
+						"page_info": page_info,
+					} ) )
+				;
+				modal = px2style.modal({
+					'title': "ページ情報を追加する",
+					'body': $body,
+					'buttons':[
+						$('<button type="submit" class="px2-btn px2-btn--primary">')
+							.text('保存する')
+					],
+					'buttonsSecondary': [
+						$('<button type="button" class="px2-btn">')
+							.text('キャンセル')
+							.on('click', function(){
+								px2style.closeModal();
+							}),
+					],
+					'form': {
+						'action': 'javascript:;',
+						'method': 'post',
+						'submit': function(e){
+							e.preventDefault();
+							modal.lock();
+
+							var $inputs = modal.$modal.find('form input');
+							var new_page_info = {};
+							$inputs.each((idx, elm)=>{
+								var $elm = $(elm);
+								new_page_info[$elm.attr('name')] = $elm.val();
+							});
+
+							var params = {
+								'filefullname': main.pageInfo.originated_csv.basename,
+								'row': (main.pageInfo.originated_csv.row + 1),
+								'page_info': new_page_info,
+							};
+							main.px2utils.px2cmd(
+								'/?PX=px2dthelper.page.add_page_info_raw',
+								params,
+								function( res ){
+									if( !res.result ){
+										alert( 'Error: ' + res.message );
+										console.error('Error:', res);
+										return;
+									}
+									main.setMainState({
+										"pageInfoLoaded": false,
+									});
+									modal.unlock();
+									px2style.closeModal();
+									main.link('?PX=admin.page_info');
+								}
+							);
+						}
+					},
+				});
+				it1.next();
+			},
+		]);
+	}
+
+	/**
 	 * カレントページ情報を更新する
 	 */
 	function editPage(e){
@@ -106,9 +203,9 @@ export default function PageInfo(props){
 	}
 
 	/**
-	 * 新規ページ情報を追加する
+	 * ページを削除する
 	 */
-	function createNewPage(e){
+	function deletePage(e){
 		e.preventDefault();
 		var pageInfoRaw = {};
 		var modal;
@@ -138,18 +235,17 @@ export default function PageInfo(props){
 					page_info[pageInfoRaw.sitemap_definition[idx]] = pageInfoRaw.page_info[idx];
 				}
 
-				var template = require('./PageInfo.files/template/editPage.twig');
+				var template = require('./PageInfo.files/template/deletePage.twig');
 				var $body = $('<div>')
 					.append( template( {
-						"page_info": page_info,
 					} ) )
 				;
 				modal = px2style.modal({
-					'title': "ページ情報を追加する",
+					'title': "ページ情報を削除する",
 					'body': $body,
 					'buttons':[
-						$('<button type="submit" class="px2-btn px2-btn--primary">')
-							.text('保存する')
+						$('<button type="submit" class="px2-btn px2-btn--danger">')
+							.text('削除する')
 					],
 					'buttonsSecondary': [
 						$('<button type="button" class="px2-btn">')
@@ -163,22 +259,13 @@ export default function PageInfo(props){
 						'method': 'post',
 						'submit': function(e){
 							e.preventDefault();
-							modal.lock();
-
-							var $inputs = modal.$modal.find('form input');
-							var new_page_info = {};
-							$inputs.each((idx, elm)=>{
-								var $elm = $(elm);
-								new_page_info[$elm.attr('name')] = $elm.val();
-							});
 
 							var params = {
 								'filefullname': main.pageInfo.originated_csv.basename,
-								'row': (main.pageInfo.originated_csv.row + 1),
-								'page_info': new_page_info,
+								'row': main.pageInfo.originated_csv.row,
 							};
 							main.px2utils.px2cmd(
-								'/?PX=px2dthelper.page.add_page_info_raw',
+								'/?PX=px2dthelper.page.delete_page_info_raw',
 								params,
 								function( res ){
 									if( !res.result ){
@@ -189,9 +276,8 @@ export default function PageInfo(props){
 									main.setMainState({
 										"pageInfoLoaded": false,
 									});
-									modal.unlock();
 									px2style.closeModal();
-									main.link('?PX=admin.page_info');
+									main.link('/?PX=admin.page_info');
 								}
 							);
 						}
@@ -201,6 +287,7 @@ export default function PageInfo(props){
 			},
 		]);
 	}
+
 
 	return (
 		<>
@@ -216,6 +303,7 @@ export default function PageInfo(props){
 						<li><a href="?" onClick={createNewPage}>ページ情報を追加する</a></li>
 						<li><a href="?PX=admin.edit_contents">コンテンツを編集する</a></li>
 						<li><a href="?">プレビューに戻る</a></li>
+						<li><a href="?" onClick={deletePage}>ページ情報を削除する</a></li>
 					</ul>
 					{(main.pageInfo !== null && typeof(main.pageInfo.breadcrumb) === typeof([]) && (
 						<div className="theme-layout__breadcrumb">
