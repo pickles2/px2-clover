@@ -390,7 +390,7 @@ class auth{
 	 */
 	private function is_csrf_token_required(){
 		$this->command = $this->px->get_px_command();
-		if( !count($this->command) || (count($this->command) == 1 && !strlen($this->command[0])) ){
+		if( !is_array($this->command) || !count($this->command) || (count($this->command) == 1 && !strlen($this->command[0])) ){
 			// --------------------------------------
 			// プレビューリクエスト
 			if( $_SERVER['REQUEST_METHOD'] == 'GET' ){
