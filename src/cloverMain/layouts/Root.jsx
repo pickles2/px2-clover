@@ -83,31 +83,6 @@ export default function Root(props){
 							{props.contents}
 						</main>
 					</div>
-					<nav className="theme-layout__right-navbar">
-						{(main.pageInfo !== null && typeof(main.pageInfo.parent) === typeof({}) && (<>
-							<p><Link href={main.px2utils.href(main.pageInfo.parent.path + "?PX=admin.page_info")}>{main.pageInfo.parent.title}</Link></p>
-						</>))}
-						{(main.pageInfo !== null && typeof(main.pageInfo.bros) === typeof([]) && (<>
-							<ul>
-							{main.pageInfo.bros.map( ( bros_page_info )=>{
-								return (
-									<li key={bros_page_info.id}><Link href={main.px2utils.href(bros_page_info.path + "?PX=admin.page_info")}>{bros_page_info.title}</Link>
-										{(main.px2utils.href(bros_page_info.path) == main.px2utils.href(props.path) && (<>
-											<ul>
-											{main.pageInfo.children.map( ( child_page_info )=>{
-												return (
-													<li key={child_page_info.id}><Link href={main.px2utils.href(child_page_info.path + "?PX=admin.page_info")}>{child_page_info.title}</Link></li>
-												)
-											} )}
-											</ul>
-										</>)
-										)}
-									</li>
-								)
-							} )}
-							</ul>
-						</>))}
-					</nav>
 				</div>
 				<footer className="theme-layout__footer">
 					{(main.profile && main.profile.name)

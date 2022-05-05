@@ -35,7 +35,8 @@ class Layout extends React.Component {
 			};
 			return newState;
 		}
-		const updateGlobalData = ()=>{
+		const updateGlobalData = ( callback )=>{
+			callback = callback || function(){};
 			let tmpNewState = {};
 			iterate79.fnc({}, [
 				(it1) => {
@@ -73,6 +74,7 @@ class Layout extends React.Component {
 				(it1) => {
 					px2style.closeLoading();
 					this.state.setMainState( tmpNewState );
+					callback();
 					it1.next();
 				},
 			]);
@@ -92,7 +94,9 @@ class Layout extends React.Component {
 			history.pushState({}, '', url);
 			newState.pageInfoLoaded = false;
 			this.setState(newState);
-			updateGlobalData();
+			updateGlobalData(()=>{
+				window.scrollTo(0,0);
+			});
 		};
 
 		const parsedUrl = parseUrl(location);
