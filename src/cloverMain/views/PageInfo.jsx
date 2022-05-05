@@ -359,27 +359,57 @@ export default function PageInfo(props){
 						'method': 'post',
 						'submit': function(e){
 							e.preventDefault();
+							modal.lock();
 
-							var params = {
-								'filefullname': originatedCsv.basename,
-								'row': originatedCsv.row,
-							};
-							main.px2utils.px2cmd(
-								'/?PX=px2dthelper.page.delete_page_info_raw',
-								params,
-								function( res ){
-									if( !res.result ){
-										alert( 'Error: ' + res.message );
-										console.error('Error:', res);
+							iterate79.fnc({}, [
+								(it2) => {
+									var isChecked = modal.$modal.find('[name=delete_contents]:checked').val();
+									console.log(isChecked);
+									if( !isChecked ){
+										it2.next();
 										return;
 									}
-									main.setMainState({
-										"pageInfoLoaded": false,
-									});
-									px2style.closeModal();
-									main.link('/?PX=admin.page_info');
-								}
-							);
+									main.px2utils.px2cmd(
+										'?PX=px2dthelper.content.delete',
+										{},
+										function( res ){
+											if( !res.result ){
+												alert( 'Error: ' + res.message );
+												console.error('Error:', res);
+												return;
+											}
+											it2.next();
+										}
+									);
+								},
+								(it2) => {
+									it2.next();
+								},
+								(it2) => {
+									var params = {
+										'filefullname': originatedCsv.basename,
+										'row': originatedCsv.row,
+									};
+									main.px2utils.px2cmd(
+										'/?PX=px2dthelper.page.delete_page_info_raw',
+										params,
+										function( res ){
+											if( !res.result ){
+												alert( 'Error: ' + res.message );
+												console.error('Error:', res);
+												return;
+											}
+											main.setMainState({
+												"pageInfoLoaded": false,
+											});
+											modal.unlock();
+											px2style.closeModal();
+											main.link('/?PX=admin.page_info');
+											it2.next();
+										}
+									);
+								},
+							]);
 						}
 					},
 				});
