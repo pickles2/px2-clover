@@ -2,7 +2,7 @@
 {% for key, value in page_info %}
 	<tr>
 		<th>{{ pageFieldLogicalName[key] or key }}</th>
-		{% if (key == 'path' or key == 'logical_path') %}
+		{% if (lockedField[key] == 'lock') %}
 			<td style="width: 30%;">{{ value }}<input type="hidden" name="{{ key }}" value="{{ value }}" /></td>
 		{% else %}
 			<td style="width: 70%;"><input type="text" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" /></td>

@@ -30,17 +30,69 @@ export default function PageInfo(props){
 
 
 	/**
+	 * 兄弟ページを新規追加する
+	 */
+	function createNewBros(e){
+		var basePageInfo = main.pageInfo.bros[main.pageInfo.bros.length - 1];
+		var baseLogicalPath = main.pageInfo.current_page_info.logical_path;
+		var basePagePath = main.px2utils.trimContRoot(main.px2utils.href( basePageInfo.path ));
+		return createNewPage(e, {
+			'logical_path': baseLogicalPath,
+			'path': basePagePath,
+		});
+	}
+
+	/**
+	 * 子ページを新規追加する
+	 */
+	function createNewChild(e){
+		var basePageInfo = main.pageInfo.current_page_info;
+		var baseLogicalPath = basePageInfo.logical_path + '>' + basePageInfo.path;
+		if( main.pageInfo.children && main.pageInfo.children.length ){
+			basePageInfo = main.pageInfo.children[main.pageInfo.children.length - 1];
+			baseLogicalPath = basePageInfo.logical_path;
+		}
+		baseLogicalPath = baseLogicalPath.replace(/^\>*/, '');
+		var basePagePath = main.px2utils.trimContRoot(main.px2utils.href( basePageInfo.path ));
+		return createNewPage(e, {
+			'logical_path': baseLogicalPath,
+			'path': basePagePath,
+		});
+	}
+
+	/**
 	 * 新規ページ情報を追加する
 	 */
-	function createNewPage(e){
+	function createNewPage(e, basePageInfo){
 		e.preventDefault();
 		var pageInfoRaw = {};
 		var modal;
+		var originatedCsv = main.pageInfo.originated_csv;
 		iterate79.fnc({}, [
 			(it1) => {
+				if( !basePageInfo ){
+					it1.next();
+					return;
+				}
+
+				main.px2utils.px2cmd(
+					basePageInfo.path + '?PX=admin.api.get_page_info',
+					{},
+					function( res ){
+						if( !res.result ){
+							alert( 'Error: ' + res.message );
+							console.error('Error:', res);
+							return;
+						}
+						originatedCsv = res.originated_csv;
+						it1.next();
+					}
+				);
+			},
+			(it1) => {
 				var params = {
-					'filefullname': main.pageInfo.originated_csv.basename,
-					'row': main.pageInfo.originated_csv.row,
+					'filefullname': originatedCsv.basename,
+					'row': originatedCsv.row,
 				};
 				main.px2utils.px2cmd(
 					'/?PX=px2dthelper.page.get_page_info_raw',
@@ -57,6 +109,20 @@ export default function PageInfo(props){
 				);
 			},
 			(it1) => {
+				if( !basePageInfo ){
+					it1.next();
+					return;
+				}
+				for(var idx in pageInfoRaw.sitemap_definition){
+					var key = pageInfoRaw.sitemap_definition[idx];
+					if(key == 'logical_path'){
+						pageInfoRaw.page_info[idx] = basePageInfo.logical_path;
+						break;
+					}
+				}
+				it1.next();
+			},
+			(it1) => {
 				var page_info = {};
 				for( var idx = 0; pageInfoRaw.page_info.length > idx; idx ++ ){
 					page_info[pageInfoRaw.sitemap_definition[idx]] = pageInfoRaw.page_info[idx];
@@ -67,6 +133,9 @@ export default function PageInfo(props){
 					.append( template( {
 						"page_info": page_info,
 						"pageFieldLogicalName": pageFieldLogicalName,
+						"lockedField": {
+							"logical_path": "lock",
+						},
 					} ) )
 				;
 				modal = px2style.modal({
@@ -99,8 +168,8 @@ export default function PageInfo(props){
 							});
 
 							var params = {
-								'filefullname': main.pageInfo.originated_csv.basename,
-								'row': (main.pageInfo.originated_csv.row + 1),
+								'filefullname': originatedCsv.basename,
+								'row': (originatedCsv.row + 1),
 								'page_info': new_page_info,
 							};
 							main.px2utils.px2cmd(
@@ -135,11 +204,12 @@ export default function PageInfo(props){
 		e.preventDefault();
 		var pageInfoRaw = {};
 		var modal;
+		var originatedCsv = main.pageInfo.originated_csv;
 		iterate79.fnc({}, [
 			(it1) => {
 				var params = {
-					'filefullname': main.pageInfo.originated_csv.basename,
-					'row': main.pageInfo.originated_csv.row,
+					'filefullname': originatedCsv.basename,
+					'row': originatedCsv.row,
 				};
 				main.px2utils.px2cmd(
 					'/?PX=px2dthelper.page.get_page_info_raw',
@@ -166,6 +236,10 @@ export default function PageInfo(props){
 					.append( template( {
 						"page_info": page_info,
 						"pageFieldLogicalName": pageFieldLogicalName,
+						"lockedField": {
+							"path": "lock",
+							"logical_path": "lock",
+						},
 					} ) )
 				;
 				modal = px2style.modal({
@@ -198,8 +272,8 @@ export default function PageInfo(props){
 							});
 
 							var params = {
-								'filefullname': main.pageInfo.originated_csv.basename,
-								'row': main.pageInfo.originated_csv.row,
+								'filefullname': originatedCsv.basename,
+								'row': originatedCsv.row,
 								'page_info': new_page_info,
 							};
 							main.px2utils.px2cmd(
@@ -234,11 +308,12 @@ export default function PageInfo(props){
 		e.preventDefault();
 		var pageInfoRaw = {};
 		var modal;
+		var originatedCsv = main.pageInfo.originated_csv;
 		iterate79.fnc({}, [
 			(it1) => {
 				var params = {
-					'filefullname': main.pageInfo.originated_csv.basename,
-					'row': main.pageInfo.originated_csv.row,
+					'filefullname': originatedCsv.basename,
+					'row': originatedCsv.row,
 				};
 				main.px2utils.px2cmd(
 					'/?PX=px2dthelper.page.get_page_info_raw',
@@ -286,8 +361,8 @@ export default function PageInfo(props){
 							e.preventDefault();
 
 							var params = {
-								'filefullname': main.pageInfo.originated_csv.basename,
-								'row': main.pageInfo.originated_csv.row,
+								'filefullname': originatedCsv.basename,
+								'row': originatedCsv.row,
 							};
 							main.px2utils.px2cmd(
 								'/?PX=px2dthelper.page.delete_page_info_raw',
@@ -385,12 +460,16 @@ export default function PageInfo(props){
 																<li key={child_page_info.id}><Link href={main.px2utils.href(child_page_info.path + "?PX=admin.page_info")}>{child_page_info.title}</Link></li>
 															)
 														} )}
+															<li><a href="?" onClick={createNewChild}>(+) ページを追加する</a></li>
 														</ul>
 													</>)
 													)}
 												</li>
 											)
 										} )}
+										{(!!main.pageInfo.current_page_info.id.length && (
+											<li><a href="?" onClick={createNewBros}>(+) ページを追加する</a></li>
+										))}
 										</ul>
 									</>))}
 								</div>
