@@ -4,6 +4,12 @@ html, body, #cont-app {
     height: 100%;
     background-color: var(--px2-background-color, #f9f9f9);
 }
+a {
+    color: #33a;
+    &:hover {
+        color: #972;
+    }
+}
 
 .theme-layout {
     display: flex;
@@ -28,6 +34,20 @@ html, body, #cont-app {
         width: 200px;
         @media all and (max-width: 680px){
             width: 100%;
+        }
+        a, button {
+            padding: 5px 10px;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        ul, li {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+        li {
+            margin-bottom: 1px;
         }
     }
     &__main-center {
@@ -54,27 +74,6 @@ html, body, #cont-app {
     }
 }
 
-.theme-layout__breadcrumb {
-    ul {
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-wrap: wrap;
-        li {
-            margin: 0;
-            padding: 0;
-            list-style-type: none;
-            &::after {
-                content: ">";
-                margin: 0 5px;
-            }
-        }
-        li:last-child {
-            &::after {
-                content: "";
-                margin: 0;
-                display: none;
-            }
-        }
-    }
+[data-px="admin.page_info"] {
+    @import "./views/PageInfo_files/cont.scss";
 }

@@ -73,13 +73,13 @@ export default function Root(props){
 							<li><Link href="/?PX=admin.sitemap">サイトマップ</Link></li>
 							<li><Link href="/?PX=admin.config">設定</Link></li>
 							<li><Link href="/?PX=admin.page_info">ページ情報</Link></li>
-							<li><button type="button" onClick={publish}>パブリッシュ</button></li>
-							<li><button type="button" onClick={clearcache}>キャッシュを消去</button></li>
+							<li><button type="button" onClick={publish} className="px2-btn">パブリッシュ</button></li>
+							<li><button type="button" onClick={clearcache} className="px2-btn">キャッシュを消去</button></li>
 						</ul>
 					</nav>
 					<div className="theme-layout__main-center">
 						<h1>{props.title}</h1>
-						<main className="contents">
+						<main className="contents" data-px={props.PX}>
 							{props.contents}
 						</main>
 					</div>

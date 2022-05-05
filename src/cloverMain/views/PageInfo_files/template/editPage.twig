@@ -1,0 +1,12 @@
+<table class="px2-table" style="width: 100%;">
+{% for key, value in page_info %}
+	<tr>
+		<th>{{ pageFieldLogicalName[key] or key }}</th>
+		{% if (key == 'path' or key == 'logical_path') %}
+			<td style="width: 30%;">{{ value }}<input type="hidden" name="{{ key }}" value="{{ value }}" /></td>
+		{% else %}
+			<td style="width: 70%;"><input type="text" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" /></td>
+		{% endif %}
+	</tr>
+{% endfor %}
+</table>

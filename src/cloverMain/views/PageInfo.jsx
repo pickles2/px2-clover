@@ -6,6 +6,27 @@ import iterate79 from 'iterate79';
 export default function PageInfo(props){
 
 	const main = useContext(MainContext);
+	const pageFieldLogicalName = {
+		"path": "ページのパス",
+		"content": "コンテンツファイルの格納先",
+		"id": "ページID",
+		"title": "ページタイトル",
+		"title_breadcrumb": "ページタイトル(パン屑表示用)",
+		"title_h1": "ページタイトル(H1表示用)",
+		"title_label": "ページタイトル(リンク表示用)",
+		"title_full": "ページタイトル(タイトルタグ用)",
+		"logical_path": "論理構造上のパス",
+		"list_flg": "一覧表示フラグ",
+		"layout": "レイアウト",
+		"orderby": "表示順",
+		"keywords": "metaキーワード",
+		"description": "metaディスクリプション",
+		"category_top_flg": "カテゴリトップフラグ",
+		"role": "ロール",
+		"proc_type": "コンテンツの処理方法",
+
+		"**delete_flg": "(削除フラグ)",
+	};
 
 
 	/**
@@ -41,15 +62,17 @@ export default function PageInfo(props){
 					page_info[pageInfoRaw.sitemap_definition[idx]] = pageInfoRaw.page_info[idx];
 				}
 
-				var template = require('./PageInfo.files/template/editPage.twig');
+				var template = require('./PageInfo_files/template/editPage.twig');
 				var $body = $('<div>')
 					.append( template( {
 						"page_info": page_info,
+						"pageFieldLogicalName": pageFieldLogicalName,
 					} ) )
 				;
 				modal = px2style.modal({
 					'title': "ページ情報を追加する",
 					'body': $body,
+					'width': '680px',
 					'buttons':[
 						$('<button type="submit" class="px2-btn px2-btn--primary">')
 							.text('保存する')
@@ -138,15 +161,17 @@ export default function PageInfo(props){
 					page_info[pageInfoRaw.sitemap_definition[idx]] = pageInfoRaw.page_info[idx];
 				}
 
-				var template = require('./PageInfo.files/template/editPage.twig');
+				var template = require('./PageInfo_files/template/editPage.twig');
 				var $body = $('<div>')
 					.append( template( {
 						"page_info": page_info,
+						"pageFieldLogicalName": pageFieldLogicalName,
 					} ) )
 				;
 				modal = px2style.modal({
 					'title': "ページ情報を編集する",
 					'body': $body,
+					'width': '680px',
 					'buttons':[
 						$('<button type="submit" class="px2-btn px2-btn--primary">')
 							.text('保存する')
@@ -235,7 +260,7 @@ export default function PageInfo(props){
 					page_info[pageInfoRaw.sitemap_definition[idx]] = pageInfoRaw.page_info[idx];
 				}
 
-				var template = require('./PageInfo.files/template/deletePage.twig');
+				var template = require('./PageInfo_files/template/deletePage.twig');
 				var $body = $('<div>')
 					.append( template( {
 					} ) )
@@ -298,15 +323,16 @@ export default function PageInfo(props){
 
 			:<>{(main.pageInfo.current_page_info)
 				?<>
-					<ul>
-						<li><a href="?" onClick={editPage}>ページ情報を編集する</a></li>
-						<li><a href="?" onClick={createNewPage}>ページ情報を追加する</a></li>
-						<li><a href="?PX=admin.edit_contents">コンテンツを編集する</a></li>
-						<li><a href="?">プレビューに戻る</a></li>
-						<li><a href="?" onClick={deletePage}>ページ情報を削除する</a></li>
-					</ul>
+					<div className="cont-menubar">
+						<ul>
+							<li><a href="?" onClick={editPage}>ページ情報を編集する</a></li>
+							<li><a href="?" onClick={createNewPage}>ページ情報を追加する</a></li>
+							<li><a href="?PX=admin.edit_contents">コンテンツを編集する</a></li>
+							<li><a href="?">プレビューに戻る</a></li>
+						</ul>
+					</div>
 					{(main.pageInfo !== null && typeof(main.pageInfo.breadcrumb) === typeof([]) && (
-						<div className="theme-layout__breadcrumb">
+						<div className="cont-layout-breadcrumb">
 							<ul>
 							{main.pageInfo.breadcrumb.map( ( breadcrumb_info )=>{
 								return (
@@ -317,60 +343,76 @@ export default function PageInfo(props){
 							</ul>
 						</div>
 					))}
+					<div className="cont-layout">
+						{(typeof(main.pageInfo.current_page_info) === typeof({}) && (<>
+							<div className="cont-layout__main">
+								<table className="px2-table" style={{width:'100%',}}>
+									<colgroup>
+										<col style={{width: "30%"}} />
+										<col style={{width: "70%"}} />
+									</colgroup>
+									<tbody>
+										<tr><th>{pageFieldLogicalName['id']}</th><td>{main.pageInfo.current_page_info.id}</td></tr>
+										<tr><th>{pageFieldLogicalName['title']}</th><td><Link href={main.px2utils.href(main.pageInfo.current_page_info.path + "?PX=admin.page_info")}>{main.pageInfo.current_page_info.title}</Link></td></tr>
+										<tr><th>{pageFieldLogicalName['path']}</th><td>{main.pageInfo.current_page_info.path}</td></tr>
+										{Object.keys(main.pageInfo.current_page_info).map( ( key, idx )=>{
+											if( ['id','title','path'].find(val => val==key) ){return;}
+											return (
+												<tr key={idx}>
+													<th>{pageFieldLogicalName[key] || key}</th>
+													<td>{main.pageInfo.current_page_info[key]}</td>
+												</tr>
+											)
+										} )}
+									</tbody>
+								</table>
+							</div>
+
+							<nav className="cont-layout__right-navibar">
+								<div className="cont-pagenavi">
+									{(main.pageInfo !== null && typeof(main.pageInfo.parent) === typeof({}) && (<>
+										<div className="cont-pagenavi__parent"><Link href={main.px2utils.href(main.pageInfo.parent.path + "?PX=admin.page_info")}>{main.pageInfo.parent.title}</Link></div>
+									</>))}
+									{(main.pageInfo !== null && typeof(main.pageInfo.bros) === typeof([]) && (<>
+										<ul>
+										{main.pageInfo.bros.map( ( bros_page_info )=>{
+											return (
+												<li key={bros_page_info.id} className={(bros_page_info.id == main.pageInfo.current_page_info.id ? "cont-pagenavi__current" : "")}><Link href={main.px2utils.href(bros_page_info.path + "?PX=admin.page_info")}>{bros_page_info.title}</Link>
+													{(main.px2utils.href(bros_page_info.path) == main.px2utils.href(props.path) && (<>
+														<ul>
+														{main.pageInfo.children.map( ( child_page_info )=>{
+															return (
+																<li key={child_page_info.id}><Link href={main.px2utils.href(child_page_info.path + "?PX=admin.page_info")}>{child_page_info.title}</Link></li>
+															)
+														} )}
+														</ul>
+													</>)
+													)}
+												</li>
+											)
+										} )}
+										</ul>
+									</>))}
+								</div>
+							</nav>
+						</>))}
+					</div>
 					{(typeof(main.pageInfo.current_page_info) === typeof({}) && (<>
 						<div className="px2-p">
 							<table className="px2-table" style={{width:'100%',}}>
-								<tbody>
-									<tr><th>id</th><td>{main.pageInfo.current_page_info.id}</td></tr>
-									<tr><th>title</th><td><Link href={main.px2utils.href(main.pageInfo.current_page_info.path + "?PX=admin.page_info")}>{main.pageInfo.current_page_info.title}</Link></td></tr>
-									<tr><th>path</th><td>{main.pageInfo.current_page_info.path}</td></tr>
-									{Object.keys(main.pageInfo.current_page_info).map( ( value, idx )=>{
-										if( ['id','title','path'].find(val => val==value) ){return;}
-										return (
-											<tr key={idx}>
-												<th>{value}</th>
-												<td>{main.pageInfo.current_page_info[value]}</td>
-											</tr>
-										)
-									} )}
-								</tbody>
-							</table>
-						</div>
-
-						<nav>
-							{(main.pageInfo !== null && typeof(main.pageInfo.parent) === typeof({}) && (<>
-								<p><Link href={main.px2utils.href(main.pageInfo.parent.path + "?PX=admin.page_info")}>{main.pageInfo.parent.title}</Link></p>
-							</>))}
-							{(main.pageInfo !== null && typeof(main.pageInfo.bros) === typeof([]) && (<>
-								<ul>
-								{main.pageInfo.bros.map( ( bros_page_info )=>{
-									return (
-										<li key={bros_page_info.id}><Link href={main.px2utils.href(bros_page_info.path + "?PX=admin.page_info")}>{bros_page_info.title}</Link>
-											{(main.px2utils.href(bros_page_info.path) == main.px2utils.href(props.path) && (<>
-												<ul>
-												{main.pageInfo.children.map( ( child_page_info )=>{
-													return (
-														<li key={child_page_info.id}><Link href={main.px2utils.href(child_page_info.path + "?PX=admin.page_info")}>{child_page_info.title}</Link></li>
-													)
-												} )}
-												</ul>
-											</>)
-											)}
-										</li>
-									)
-								} )}
-								</ul>
-							</>))}
-						</nav>
-
-						<div className="px2-p">
-							<table className="px2-table" style={{width:'100%',}}>
+								<colgroup>
+									<col style={{width: "30%"}} />
+									<col style={{width: "70%"}} />
+								</colgroup>
 								<tbody>
 									<tr><th>Originated CSV</th><td>{main.pageInfo.originated_csv.basename}</td></tr>
 									<tr><th>Originated CSV row</th><td>{main.pageInfo.originated_csv.row}</td></tr>
 								</tbody>
 							</table>
 						</div>
+					</>))}
+					{(typeof(main.pageInfo.current_page_info) === typeof({}) && !!main.pageInfo.current_page_info.id.length && (<>
+						<p className="px2-text-align-center"><button type="button" onClick={deletePage} className="px2-btn px2-btn--danger">このページを削除する</button></p>
 					</>))}
 				</>
 			:<>
