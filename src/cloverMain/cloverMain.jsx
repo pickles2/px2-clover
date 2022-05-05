@@ -4,6 +4,7 @@ import {MainContext} from './context/MainContext';
 import Root from "./layouts/Root";
 import Config from './views/Config';
 import ConfigProfile from './views/ConfigProfile';
+import ConfigScheduler from './views/ConfigScheduler';
 import Sitemap from './views/Sitemap';
 import PageInfo from './views/PageInfo';
 import iterate79 from 'iterate79';
@@ -150,6 +151,10 @@ class Layout extends React.Component {
 			case 'admin.config.profile':
 				title = "プロフィール設定";
 				content = <ConfigProfile />;
+				break;
+			case 'admin.config.scheduler':
+				title = "タスクスケジュール設定";
+				content = <ConfigScheduler />;
 				break;
 			case 'admin.page_info':
 				title = "ページ情報";

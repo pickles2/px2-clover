@@ -168,6 +168,10 @@ class register{
 							$app = new funcs\api\profile($this->clover);
 							$app->update();
 							break;
+						case 'scheduler_status':
+							$app = new funcs\api\scheduler($this->clover);
+							$app->status();
+							break;
 					}
 
 				case 'edit_contents':
@@ -191,7 +195,21 @@ class register{
 			}
 		} else {
 			// --------------------------------------
-			// CLIへの応答 (非対応)
+			// CLIへの応答
+			switch( isset($this->command[1]) ? $this->command[1] : '' ){
+				case 'api':
+					// --------------------------------------
+					// API
+					switch( isset($this->command[2]) ? $this->command[2] : '' ){
+						case 'scheduler_run':
+							$this->clover->allowed_method(['command']);
+							$app = new funcs\api\scheduler($this->clover);
+							$app->run();
+							break;
+					}
+					break;
+			}
+
 			echo '{"title":"Pickles 2 Clover",'."\n";
 			echo '"result":false,'."\n";
 			echo '"message":"Pickles 2 Clover is not support CLI."'."\n";
