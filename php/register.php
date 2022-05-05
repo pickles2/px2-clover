@@ -168,6 +168,11 @@ class register{
 							$app = new funcs\api\profile($this->clover);
 							$app->update();
 							break;
+						case 'scheduler_setting_hint':
+							$this->clover->allowed_method('post');
+							$app = new funcs\api\scheduler($this->clover);
+							$app->setting_hint();
+							break;
 						case 'scheduler_status':
 							$app = new funcs\api\scheduler($this->clover);
 							$app->status();

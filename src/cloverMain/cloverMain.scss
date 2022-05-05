@@ -10,6 +10,13 @@ a {
         color: #972;
     }
 }
+pre.code {
+    code {
+        display: block;
+        overflow: auto;
+        max-width: 100%;
+    }
+}
 
 .theme-layout {
     display: flex;

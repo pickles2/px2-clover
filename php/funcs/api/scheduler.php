@@ -72,6 +72,43 @@ class scheduler{
 	}
 
 	/**
+	 * 設定のためのヒント情報を取得する
+	 */
+	public function setting_hint(){
+		$this->px->header('Content-type: text/json');
+
+		$script_filename = null;
+		if( isset($_SERVER['SCRIPT_FILENAME']) && strlen($_SERVER['SCRIPT_FILENAME']) ){
+			$script_filename = $_SERVER['SCRIPT_FILENAME'];
+		}
+
+		$path_php = 'php';
+		if( isset($this->px->conf()->commands->php) && strlen($this->px->conf()->commands->php) ){
+			$path_php = $this->px->conf()->commands->php;
+		}
+
+		$user = null;
+		$group = null;
+
+		try {
+			$user = exec('whoami');
+			// $group = exec('groups ' .$user);
+			// $group = explode(' ', $group);
+		}
+		catch(e){}
+
+		echo json_encode(array(
+			'result' => true,
+			'message' => 'OK',
+			'path_php' => $path_php,
+			'script_filename' => $script_filename,
+			'user' => $user,
+			// 'group' => $group,
+		));
+		exit;
+	}
+
+	/**
 	 * タスクスケジュールを実行する
 	 */
 	public function run(){
