@@ -12,21 +12,24 @@ export default function ConfigScheduler(props){
 
 	const getSchedulerStatus = () => {
 
+		function _getSchedulerStatus(){
+			main.px2utils.px2cmd(
+				'/?PX=admin.api.scheduler_status',
+				{},
+				function( res ){
+					if( !res.result ){
+						console.error('Error:', res);
+					}
+					updateSchedulerStatus(res);
+				}
+			);
+		};
 		useEffect(() => {
 			let timer = setInterval(() => {
-
-				main.px2utils.px2cmd(
-					'/?PX=admin.api.scheduler_status',
-					{},
-					function( res ){
-						if( !res.result ){
-							console.error('Error:', res);
-						}
-						updateSchedulerStatus(res);
-					}
-				);
-
+				_getSchedulerStatus();
 			}, 5 * 1000);
+			_getSchedulerStatus();
+
 			return () => {
 				clearInterval(timer);
 			};
