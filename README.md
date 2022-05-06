@@ -26,7 +26,7 @@ composer require tomk79/px2-clover;
 
 ## 更新履歴 - Change log
 
-### tomk79/px2-clover v0.1.0 (リリース日未定)
+### tomk79/px2-clover v0.1.0 (2022年5月6日)
 
 - Initial Release
 
