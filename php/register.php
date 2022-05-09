@@ -64,9 +64,9 @@ class register{
 		}
 
 		$command = $px->get_px_command();
-		if( is_array($command) && count($command) && $command[0] == 'admin' ){
+		$client_resources_dist = $px->realpath_plugin_files('/');
+		if( is_array($command) && count($command) && $command[0] == 'admin' || !is_file( $client_resources_dist.'cloverMain/cloverMain.js' ) ){
 			// クライアントリソースを公開ディレクトリに配置
-			$client_resources_dist = $px->realpath_plugin_files('/');
 			if( !is_file( $client_resources_dist.'cloverMain/cloverMain.js' ) || $px->fs()->is_newer_a_than_b(__DIR__.'/../public/resources/'.'cloverMain/cloverMain.js', $client_resources_dist.'cloverMain/cloverMain.js') ){
 				$px->fs()->copy_r(__DIR__.'/../public/resources/', $client_resources_dist);
 			}
@@ -102,10 +102,12 @@ class register{
 		$src = $px->bowl()->get( 'main' );
 
 		$clover = new clover( $px, $options );
+		$path_client_resources = $clover->path_files('/');
 		$src .= $clover->view()->bind(
 			'/preview/footer.twig',
 			array(
 				'px2conf' => $px->conf(),
+				'path_client_resources' => $path_client_resources,
 			)
 		);
 

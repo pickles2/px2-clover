@@ -1,0 +1,18 @@
+// preview footer
+.px2-clover-footer-menubar {
+    &,
+    input,
+    textarea,
+    select,
+    option,
+    button {
+    	font-family: "Hiragino Sans", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","Meiryo","メイリオ", "YuGothic", "Yu Gothic", "游ゴシック体", "游ゴシック", sans-serif, system-ui;
+    }
+
+    & {
+        position:fixed; right: 10px; bottom: 10px;
+    }
+
+
+    @import "../../vendor/pickles2/px2style/dist/px2style";
+}

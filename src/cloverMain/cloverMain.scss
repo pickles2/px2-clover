@@ -4,6 +4,9 @@ html, body, #cont-app {
     height: 100%;
     background-color: var(--px2-background-color, #f9f9f9);
 }
+body,input,textarea,select,option,button{
+	font-family: "Hiragino Sans", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","Meiryo","メイリオ", "YuGothic", "Yu Gothic", "游ゴシック体", "游ゴシック", sans-serif, system-ui;
+}
 a {
     color: #33a;
     &:hover {

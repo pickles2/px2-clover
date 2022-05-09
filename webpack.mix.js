@@ -49,6 +49,11 @@ mix
 	.js('src/cloverMain/cloverMain.jsx', 'public/resources/cloverMain/')
 	.sass('src/cloverMain/cloverMain.scss', 'public/resources/cloverMain/')
 
+	// --------------------------------------
+	// previewFooter Script
+	.js('src/previewFooter/previewFooter.js', 'public/resources/previewFooter/')
+	.sass('src/previewFooter/previewFooter.scss', 'public/resources/previewFooter/')
+
 
 	// --------------------------------------
 	// Static Frontend Libraries
