@@ -4,11 +4,22 @@
 	<meta charset="utf-8" />
 	<title>{% block title %}{% endblock %}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	{# jQuery #}
+	<script>{{ include('/layouts/auth_files/jquery-3.6.0.min.js') }}</script>
+
+	{# px2style #}
+	<style>{{ include('/layouts/auth_files/px2style/dist/px2style.css') }}</style>
+	<script>{{ include('/layouts/auth_files/px2style/dist/px2style.js') }}</script>
+
 	<style>
 	html, body {
 		margin: 0;
 		margin: 0;
 		background-color: #f6f6f6;
+	}
+	body,input,textarea,select,option,button{
+		font-family: "Hiragino Sans", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","Meiryo","メイリオ", "YuGothic", "Yu Gothic", "游ゴシック体", "游ゴシック", sans-serif, system-ui;
 	}
 	.theme-frame {
 		margin: 30px auto;

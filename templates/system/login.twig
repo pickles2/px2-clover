@@ -6,9 +6,9 @@
 {% block content %}
 <p>ログインしてください。</p>
 <form action="" method="post">
-	<div>ID: <input type="text" name="ADMIN_USER_ID" value="{{ ADMIN_USER_ID }}" /></div>
-	<div>PW: <input type="password" name="ADMIN_USER_PW" value="" /></div>
-	<div><button>ログイン</button></div>
+	<div>ID: <input type="text" name="ADMIN_USER_ID" value="{{ ADMIN_USER_ID }}" class="px2-input" /></div>
+	<div>PW: <input type="password" name="ADMIN_USER_PW" value="" class="px2-input" /></div>
+	<div><button type="submit" class="px2-btn px2-btn--primary">ログイン</button></div>
 	<input type="hidden" name="ADMIN_USER_FLG" value="1" />
 	<input type="hidden" name="ADMIN_USER_CSRF_TOKEN" value="{{ csrf_token }}" />
 </form>

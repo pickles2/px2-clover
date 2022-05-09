@@ -106,8 +106,6 @@ class register{
 		$src .= $clover->view()->bind(
 			'/preview/footer.twig',
 			array(
-				'px2conf' => $px->conf(),
-				'path_client_resources' => $path_client_resources,
 			)
 		);
 

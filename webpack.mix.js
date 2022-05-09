@@ -58,4 +58,6 @@ mix
 	// --------------------------------------
 	// Static Frontend Libraries
 	.copyDirectory('vendor/pickles2/px2style/dist', 'public/resources/px2style/dist')
+	.copyDirectory('vendor/pickles2/px2style/dist', 'templates/layouts/auth_files/px2style/dist')
+	.copyDirectory('public/resources/jquery-3.6.0.min.js', 'templates/layouts/auth_files/jquery-3.6.0.min.js')
 ;

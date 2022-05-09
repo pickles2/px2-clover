@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="{{ path_client_resources }}previewFooter/previewFooter.css" />
 <script src="{{ path_client_resources }}previewFooter/previewFooter.js"></script>
 <div class="px2-clover-footer-menubar">
-{% if px2conf.allow_pxcommands %}
+{% if px2config.allow_pxcommands %}
 <button type="button" class="px2-btn" onclick="location.href='?PX=admin.page_info';">ページ情報</button>
 <button type="button" class="px2-btn" onclick="location.href='?PX=admin.edit_contents&backto=preview';">記事編集</button>
 {% else %}
