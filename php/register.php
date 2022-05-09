@@ -101,17 +101,13 @@ class register{
 
 		$src = $px->bowl()->get( 'main' );
 
-		ob_start(); ?>
-<div style="position:fixed; right: 10px; bottom: 10px;">
-<?php if( $px->conf()->allow_pxcommands ){ ?>
-<button type="button" onclick="location.href='?PX=admin.page_info';">ページ情報</button>
-<button type="button" onclick="location.href='?PX=admin.edit_contents&backto=preview';">記事編集</button>
-<?php }else{ ?>
-<p>Pickles 2 Clover を利用するには、<code>$conf-&gt;allow_pxcommands</code>フラグを <code>1</code> に設定してください。</p>
-<?php } ?>
-</div>
-<?php
-		$src .= ob_get_clean();
+		$clover = new clover( $px, $options );
+		$src .= $clover->view()->bind(
+			'/preview/footer.twig',
+			array(
+				'px2conf' => $px->conf(),
+			)
+		);
 
 		$px->bowl()->replace( $src, 'main' );
 
