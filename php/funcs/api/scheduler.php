@@ -176,7 +176,7 @@ class scheduler{
 		if( !is_dir( $this->realpath_admin_scheduler.'logs/' ) ){
 			$this->px->fs()->mkdir( $this->realpath_admin_scheduler.'logs/' );
 		}
-		$realpath_log = $this->realpath_admin_scheduler.'logs/scheduler.txt';
+		$realpath_log = $this->realpath_admin_scheduler.'logs/scheduler-'.date('Y-m-d').'.txt';
 		$log_row = array(
 			date('Y-m-d H:i:s'),
 			getmypid(),

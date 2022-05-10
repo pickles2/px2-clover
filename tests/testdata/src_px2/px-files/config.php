@@ -33,6 +33,7 @@ return call_user_func( function(){
 	$conf->session_name = 'PXSID';
 	$conf->session_expire = 1800;
 	$conf->allow_pxcommands = 1; // PX Commands のウェブインターフェイスからの実行を許可
+	$conf->default_timezone = 'Asia/Tokyo';
 
 	// commands
 	$conf->commands = new stdClass;
