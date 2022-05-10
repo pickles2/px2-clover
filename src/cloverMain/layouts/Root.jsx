@@ -9,57 +9,6 @@ export default function Root(props){
 
 	document.title = props.title + ' : ' + window.px2config.name;
 
-	/**
-	 * キャッシュを削除する
-	 */
-	function clearcache(){
-		px2style.loading();
-		$.ajax({
-			"url": "?PX=clearcache",
-			"method": "post",
-			"data": {
-				'ADMIN_USER_CSRF_TOKEN': window.csrf_token,
-			},
-			"error": function(error){
-				console.error('------ clearcache Response Error:', typeof(error), error);
-			},
-			"success": function(data){
-				console.log('------ clearcache Response:', typeof(data), data);
-			},
-			"complete": function(){
-				alert('clearcache done.');
-				px2style.closeLoading();
-			},
-		});
-	}
-
-	/**
-	 * パブリッシュを実行する
-	 */
-	function publish(){
-		if( !confirm('パブリッシュを実行しますか？') ){
-			return;
-		}
-		px2style.loading();
-		$.ajax({
-			"url": "?PX=publish.run",
-			"method": "post",
-			"data": {
-				'ADMIN_USER_CSRF_TOKEN': window.csrf_token,
-			},
-			"error": function(error){
-				console.error('------ publish Response Error:', typeof(error), error);
-			},
-			"success": function(data){
-				console.log('------ publish Response:', typeof(data), data);
-			},
-			"complete": function(){
-				alert('publish done.');
-				px2style.closeLoading();
-			},
-		});
-	}
-
 	return (
 		<>
 			<div className="theme-layout">
@@ -73,8 +22,8 @@ export default function Root(props){
 							<li><Link href="/?PX=admin.sitemap">サイトマップ</Link></li>
 							<li><Link href="/?PX=admin.config">設定</Link></li>
 							<li><Link href="/?PX=admin.page_info">ページ情報</Link></li>
-							<li><button type="button" onClick={publish} className="px2-btn">パブリッシュ</button></li>
-							<li><button type="button" onClick={clearcache} className="px2-btn">キャッシュを消去</button></li>
+							<li><Link href="/?PX=admin.publish">パブリッシュ</Link></li>
+							<li><Link href="/?PX=admin.clearcache">キャッシュを消去</Link></li>
 						</ul>
 					</nav>
 					<div className="theme-layout__main-center">

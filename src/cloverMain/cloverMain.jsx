@@ -2,11 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 import {MainContext} from './context/MainContext';
 import Root from "./layouts/Root";
+import ClearCache from './views/ClearCache';
 import Config from './views/Config';
 import ConfigProfile from './views/ConfigProfile';
 import ConfigScheduler from './views/ConfigScheduler';
 import Sitemap from './views/Sitemap';
 import PageInfo from './views/PageInfo';
+import Publish from './views/Publish';
 import iterate79 from 'iterate79';
 import CloverUtils from '../common/CloverUtils';
 import Px2Utils from '../common/Px2Utils';
@@ -159,6 +161,14 @@ class Layout extends React.Component {
 			case 'admin.page_info':
 				title = "ページ情報";
 				content = <PageInfo path={current_path} PX={this.state.PX} />;
+				break;
+			case 'admin.publish':
+				title = "パブリッシュ";
+				content = <Publish />;
+				break;
+			case 'admin.clearcache':
+				title = "キャッシュを消去";
+				content = <ClearCache />;
 				break;
 			case 'admin':
 			default:

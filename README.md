@@ -26,6 +26,13 @@ composer require tomk79/px2-clover;
 
 ## 更新履歴 - Change log
 
+### tomk79/px2-clover v0.1.1 (リリース日未定)
+
+- パブリッシュ画面を追加。
+- キャッシュを消去画面を追加。
+- 見た目に関する様々な変更。
+- その他の変更。
+
 ### tomk79/px2-clover v0.1.0 (2022年5月6日)
 
 - Initial Release

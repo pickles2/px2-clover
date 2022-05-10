@@ -107,7 +107,11 @@ return call_user_func( function(){
 		'picklesFramework2\commands\api::register' ,
 
 		// PX=publish
-		'picklesFramework2\commands\publish::register' ,
+		'picklesFramework2\commands\publish::register('.json_encode(array(
+			'paths_ignore' => array(
+				"/caches/p/px2-clover/*",
+			),
+		)).')' ,
 
 		// PX=px2dthelper
 		'tomk79\pickles2\px2dthelper\main::register' ,

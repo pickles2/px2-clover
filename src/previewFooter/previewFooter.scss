@@ -1,5 +1,7 @@
 // preview footer
 .px2-clover-footer-menubar {
+    @import "../../vendor/pickles2/px2style/dist/px2style";
+
     &,
     input,
     textarea,
@@ -11,8 +13,9 @@
 
     & {
         position:fixed; right: 10px; bottom: 10px;
+        padding: 10px 20px;
+        background-color: rgba(120, 120, 120, 0.8);
+        border-radius: 20px;
     }
 
-
-    @import "../../vendor/pickles2/px2style/dist/px2style";
 }
