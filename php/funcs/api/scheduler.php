@@ -112,23 +112,78 @@ class scheduler{
 	 * タスクスケジュールを実行する
 	 */
 	public function run(){
+		$started_time = time();
+		$this->log('======== start: scheduler');
+
+		$this->px->header('Content-type: text/json');
+
 		if( !is_dir( $this->realpath_admin_scheduler ) ){
 			$this->px->fs()->mkdir( $this->realpath_admin_scheduler );
 		}
-		$realpath_status_json = $this->realpath_admin_scheduler.'/status.json';
+		$realpath_status_json = $this->realpath_admin_scheduler.'status.json';
 
 		$json = array(
 			'last_run_at' => date('Y-m-d H:i:s'),
 		);
 		$str_json = json_encode($json);
-		$this->px->fs()->save_file( $realpath_status_json, $str_json );
+		if( !$this->px->fs()->save_file( $realpath_status_json, $str_json ) ){
+			$this->log('--- Error: Failed to write status.json');
+			echo json_encode(array(
+				'result' => false,
+				'message' => 'Failed to write status.json',
+			));
+			exit;
+		}
 
-		$this->px->header('Content-type: text/json');
+		// 排他ロックの開始
+		if( !$this->px->lock('px2-clover--task-scheduler', 60*30) ){
+			$this->log('--- Exit: Application Locked.');
+			echo json_encode(array(
+				'result' => false,
+				'message' => 'Application Locked.',
+			));
+			exit;
+		}
+
+		if( !is_dir( $this->realpath_admin_scheduler.'queue/' ) ){
+			$this->px->fs()->mkdir( $this->realpath_admin_scheduler.'queue/' );
+		}
+		if( !is_dir( $this->realpath_admin_scheduler.'progress/' ) ){
+			$this->px->fs()->mkdir( $this->realpath_admin_scheduler.'progress/' );
+		}
+		if( !is_dir( $this->realpath_admin_scheduler.'done/' ) ){
+			$this->px->fs()->mkdir( $this->realpath_admin_scheduler.'done/' );
+		}
+		if( !is_dir( $this->realpath_admin_scheduler.'logs/' ) ){
+			$this->px->fs()->mkdir( $this->realpath_admin_scheduler.'logs/' );
+		}
+
+		// 排他ロックの解除
+		$this->px->unlock('px2-clover--task-scheduler');
+
+		$this->log('--- Exit ('.(time() - $started_time).')');
 		echo json_encode(array(
 			'result' => true,
 			'message' => 'OK',
 		));
 		exit;
+	}
+
+	/**
+	 * タスクスケジュールの実行ログを出力する
+	 */
+	private function log( $row ){
+		if( !is_dir( $this->realpath_admin_scheduler.'logs/' ) ){
+			$this->px->fs()->mkdir( $this->realpath_admin_scheduler.'logs/' );
+		}
+		$realpath_log = $this->realpath_admin_scheduler.'logs/scheduler.txt';
+		$log_row = array(
+			date('Y-m-d H:i:s'),
+			getmypid(),
+			trim($row),
+		);
+		file_put_contents( $realpath_log, implode('	', $log_row)."\n", FILE_APPEND|LOCK_EX );
+		return;
 	}
 
 }
