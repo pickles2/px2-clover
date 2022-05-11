@@ -18,6 +18,9 @@
         ]
     } ,
     "minimum-stability": "dev",
+    "config": {
+        "process-timeout": 0
+    },
     "require": {
         "php": ">=7.3.0",
         "pickles2/px-fw-2.x": "~2.1",

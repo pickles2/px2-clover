@@ -80,7 +80,8 @@ class scheduler{
 		}
 
 		// create new queue
-		$filename = date('Ymd_His', $time).'_'.urlencode($name).'.json';
+		// NOTE: タイムゾーン設定があとから変更されても設定時刻が変わらないように、ファイル名中の時刻情報は GMT で命名する。
+		$filename = gmdate('Ymd_His', $time).'_'.urlencode($name).'.json';
 		$data = array(
 			'service' => $service,
 			'time' => $time,
@@ -146,7 +147,12 @@ class scheduler{
 		$ls = $this->px->fs()->ls($realpath_queue);
 		foreach($ls as $basename){
 			if( preg_match('/^([0-9]{4})([0-9]{2})([0-9]{2})\_([0-9]{2})([0-9]{2})([0-9]{2})\_(.*)\.json$/s', $basename, $matched) ){
-				$time = strtotime($matched[1].'-'.$matched[2].'-'.$matched[3].' '.$matched[4].':'.$matched[5].':'.$matched[6]);
+
+				// NOTE: タイムゾーン設定があとから変更されても設定時刻が変わらないように、ファイル名中の時刻情報は GMT で命名されている。
+				$tmp_datetime = new \DateTime($matched[1].'-'.$matched[2].'-'.$matched[3].' '.$matched[4].':'.$matched[5].':'.$matched[6], new \DateTimeZone('UTC'));
+				$time = $tmp_datetime->getTimestamp();
+				unset($tmp_datetime);
+
 				if( $time < time() ){
 					$json_content = file_get_contents($realpath_queue.$basename);
 					$result_checkout = $this->px->fs()->rename(
