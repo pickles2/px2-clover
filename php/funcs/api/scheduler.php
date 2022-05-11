@@ -1,5 +1,6 @@
 <?php
 namespace tomk79\pickles2\px2clover\funcs\api;
+use tomk79\pickles2\px2clover\helpers\scheduler as schedulerHelper;
 
 /**
  * px2-clover: プロフィール情報API
@@ -11,6 +12,9 @@ class scheduler{
 
 	/** Picklesオブジェクト */
 	private $px;
+
+	/** ヘルパーオブジェクト */
+	private $schedulerHelper;
 
 	/** タスクスケジューラ管理ディレクトリ */
 	private $realpath_admin_scheduler;
@@ -24,9 +28,10 @@ class scheduler{
 	public function __construct( $clover ){
 		$this->clover = $clover;
 		$this->px = $clover->px();
+		$this->schedulerHelper = new schedulerHelper($clover);
 
 		// タスクスケジューラ管理ディレクトリ
-		$this->realpath_admin_scheduler = $this->clover->realpath_private_data_dir('/scheduler/');
+		$this->realpath_admin_scheduler = $this->schedulerHelper->realpath_admin_scheduler();
 	}
 
 	/**
@@ -113,13 +118,10 @@ class scheduler{
 	 */
 	public function run(){
 		$started_time = time();
-		$this->log('======== start: scheduler');
+		$this->schedulerHelper->log('======== start: scheduler');
 
 		$this->px->header('Content-type: text/json');
 
-		if( !is_dir( $this->realpath_admin_scheduler ) ){
-			$this->px->fs()->mkdir( $this->realpath_admin_scheduler );
-		}
 		$realpath_status_json = $this->realpath_admin_scheduler.'status.json';
 
 		$json = array(
@@ -127,7 +129,7 @@ class scheduler{
 		);
 		$str_json = json_encode($json);
 		if( !$this->px->fs()->save_file( $realpath_status_json, $str_json ) ){
-			$this->log('--- Error: Failed to write status.json');
+			$this->schedulerHelper->log('--- Error: Failed to write status.json');
 			echo json_encode(array(
 				'result' => false,
 				'message' => 'Failed to write status.json',
@@ -137,7 +139,7 @@ class scheduler{
 
 		// 排他ロックの開始
 		if( !$this->px->lock('px2-clover--task-scheduler', 60*30) ){
-			$this->log('--- Exit: Application Locked.');
+			$this->schedulerHelper->log('--- Exit: Application Locked.');
 			echo json_encode(array(
 				'result' => false,
 				'message' => 'Application Locked.',
@@ -145,45 +147,15 @@ class scheduler{
 			exit;
 		}
 
-		if( !is_dir( $this->realpath_admin_scheduler.'queue/' ) ){
-			$this->px->fs()->mkdir( $this->realpath_admin_scheduler.'queue/' );
-		}
-		if( !is_dir( $this->realpath_admin_scheduler.'progress/' ) ){
-			$this->px->fs()->mkdir( $this->realpath_admin_scheduler.'progress/' );
-		}
-		if( !is_dir( $this->realpath_admin_scheduler.'done/' ) ){
-			$this->px->fs()->mkdir( $this->realpath_admin_scheduler.'done/' );
-		}
-		if( !is_dir( $this->realpath_admin_scheduler.'logs/' ) ){
-			$this->px->fs()->mkdir( $this->realpath_admin_scheduler.'logs/' );
-		}
-
 		// 排他ロックの解除
 		$this->px->unlock('px2-clover--task-scheduler');
 
-		$this->log('--- Exit ('.(time() - $started_time).')');
+		$this->schedulerHelper->log('--- Exit ('.(time() - $started_time).'sec)');
 		echo json_encode(array(
 			'result' => true,
 			'message' => 'OK',
 		));
 		exit;
-	}
-
-	/**
-	 * タスクスケジュールの実行ログを出力する
-	 */
-	private function log( $row ){
-		if( !is_dir( $this->realpath_admin_scheduler.'logs/' ) ){
-			$this->px->fs()->mkdir( $this->realpath_admin_scheduler.'logs/' );
-		}
-		$realpath_log = $this->realpath_admin_scheduler.'logs/scheduler-'.date('Y-m-d').'.txt';
-		$log_row = array(
-			date('Y-m-d H:i:s'),
-			getmypid(),
-			trim($row),
-		);
-		file_put_contents( $realpath_log, implode('	', $log_row)."\n", FILE_APPEND|LOCK_EX );
-		return;
 	}
 
 }
