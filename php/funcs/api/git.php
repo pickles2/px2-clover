@@ -30,11 +30,8 @@ class git{
 	public function commit(){
 		$this->px->header('Content-type: text/json');
 
-		// TODO: git コマンドは Web SAPI から直接実行できないようなので、 scheduler queue に登録する処理を書く。
-
-		$rtn = array();
-		$rtn['result'] = false;
-		$rtn['message'] = 'Under construction.';
+		$gitHelper = new \tomk79\pickles2\px2clover\helpers\git( $this->clover );
+		$rtn = $gitHelper->commit();
 
 		echo json_encode($rtn);
 		exit;
