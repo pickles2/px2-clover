@@ -151,6 +151,10 @@ class register{
 					// --------------------------------------
 					// API
 					switch( isset($this->command[2]) ? $this->command[2] : '' ){
+						case 'health_check':
+							$app = new funcs\api\healthChecker($this->clover);
+							$app->status();
+							break;
 						case 'get_page_info':
 							$app = new funcs\api\pageInfo($this->clover);
 							$app->get();
@@ -193,10 +197,6 @@ class register{
 							$this->clover->allowed_method('post');
 							$app = new funcs\api\scheduler($this->clover);
 							$app->setting_hint();
-							break;
-						case 'scheduler_status':
-							$app = new funcs\api\scheduler($this->clover);
-							$app->status();
 							break;
 						case 'scheduler_add_queue':
 							$this->clover->allowed_method('post');

@@ -5,17 +5,17 @@ import $ from 'jquery';
 export default React.memo(function History(props){
 
 	const main = useContext(MainContext);
-	const [ schedulerStatus, updateSchedulerStatus] = useState({"is_available": null});
+	const [ healthCheckStatus, updateHealthCheckStatus] = useState({"is_available": null});
 
 	const pollingUpdateStatus = () => {
 		main.px2utils.px2cmd(
-			'/?PX=admin.api.scheduler_status',
+			'/?PX=admin.api.health_check',
 			{},
 			function( res ){
 				if( !res.result ){
 					console.error('Error:', res);
 				}
-				updateSchedulerStatus(res);
+				updateHealthCheckStatus(res);
 			}
 		);
 		return;
@@ -36,9 +36,9 @@ export default React.memo(function History(props){
 	 * コミットする
 	 */
 	function commit(){
-		console.log('--- scheduler available:', schedulerStatus.is_available);
+		console.log('--- scheduler available:', healthCheckStatus.is_available);
 
-		if( schedulerStatus.is_available ){
+		if( healthCheckStatus.is_available ){
 			// --------------------------------------
 			// スケジューラが利用可能な場合
 			// キューを発行する
@@ -72,9 +72,9 @@ export default React.memo(function History(props){
 	 * プッシュする
 	 */
 	function push(){
-		console.log('--- scheduler available:', schedulerStatus.is_available);
+		console.log('--- scheduler available:', healthCheckStatus.is_available);
 
-		if( schedulerStatus.is_available ){
+		if( healthCheckStatus.is_available ){
 			// --------------------------------------
 			// スケジューラが利用可能な場合
 			// キューを発行する
@@ -108,9 +108,9 @@ export default React.memo(function History(props){
 	 * プルする
 	 */
 	function pull(){
-		console.log('--- scheduler available:', schedulerStatus.is_available);
+		console.log('--- scheduler available:', healthCheckStatus.is_available);
 
-		if( schedulerStatus.is_available ){
+		if( healthCheckStatus.is_available ){
 			// --------------------------------------
 			// スケジューラが利用可能な場合
 			// キューを発行する
@@ -144,9 +144,9 @@ export default React.memo(function History(props){
 	 * フェッチする
 	 */
 	function fetch(){
-		console.log('--- scheduler available:', schedulerStatus.is_available);
+		console.log('--- scheduler available:', healthCheckStatus.is_available);
 
-		if( schedulerStatus.is_available ){
+		if( healthCheckStatus.is_available ){
 			// --------------------------------------
 			// スケジューラが利用可能な場合
 			// キューを発行する

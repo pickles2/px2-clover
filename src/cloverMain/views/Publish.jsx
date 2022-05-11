@@ -5,17 +5,17 @@ import $ from 'jquery';
 export default React.memo(function Publish(props){
 
 	const main = useContext(MainContext);
-	const [ schedulerStatus, updateSchedulerStatus] = useState({"is_available": null});
+	const [ healthCheckStatus, updateHealthCheckStatus] = useState({"is_available": null});
 
 	const pollingUpdateStatus = () => {
 		main.px2utils.px2cmd(
-			'/?PX=admin.api.scheduler_status',
+			'/?PX=admin.api.health_check',
 			{},
 			function( res ){
 				if( !res.result ){
 					console.error('Error:', res);
 				}
-				updateSchedulerStatus(res);
+				updateHealthCheckStatus(res);
 			}
 		);
 		return;
@@ -35,12 +35,12 @@ export default React.memo(function Publish(props){
 	 * パブリッシュを実行する
 	 */
 	function publish(){
-		console.log('--- scheduler available:', schedulerStatus.is_available);
+		console.log('--- scheduler available:', healthCheckStatus.is_available);
 
 		if( !confirm('パブリッシュを実行しますか？') ){
 			return;
 		}
-		if( schedulerStatus.is_available ){
+		if( healthCheckStatus.is_available ){
 			// --------------------------------------
 			// スケジューラが利用可能な場合
 			// キューを発行する
@@ -87,7 +87,7 @@ export default React.memo(function Publish(props){
 
 	return (
 		<>
-			{(schedulerStatus.is_available === null)
+			{(healthCheckStatus.is_available === null)
 				?<>
 					<p>...</p>
 				</>
