@@ -3,7 +3,7 @@ import {MainContext} from '../context/MainContext';
 import Link from '../components/Link';
 import $ from 'jquery';
 
-export default function Root(props){
+export default React.memo(function Root(props){
 
 	const main = useContext(MainContext);
 
@@ -20,10 +20,11 @@ export default function Root(props){
 					<nav className="theme-layout__left-navbar">
 						<ul>
 							<li><Link href="/?PX=admin.sitemap">サイトマップ</Link></li>
-							<li><Link href="/?PX=admin.config">設定</Link></li>
 							<li><Link href="/?PX=admin.page_info">ページ情報</Link></li>
 							<li><Link href="/?PX=admin.publish">パブリッシュ</Link></li>
+							<li><Link href="/?PX=admin.history">履歴</Link></li>
 							<li><Link href="/?PX=admin.clearcache">キャッシュを消去</Link></li>
+							<li><Link href="/?PX=admin.config">設定</Link></li>
 						</ul>
 					</nav>
 					<div className="theme-layout__main-center">
@@ -47,4 +48,4 @@ export default function Root(props){
 			</div>
 		</>
 	);
-}
+});

@@ -164,6 +164,11 @@ class register{
 							$app = new funcs\api\profile($this->clover);
 							$app->update();
 							break;
+						case 'git_commit':
+							$this->clover->allowed_method('post');
+							$app = new funcs\api\git($this->clover);
+							$app->commit();
+							break;
 						case 'scheduler_setting_hint':
 							$this->clover->allowed_method('post');
 							$app = new funcs\api\scheduler($this->clover);
