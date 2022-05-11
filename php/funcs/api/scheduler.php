@@ -100,7 +100,7 @@ class scheduler{
 			// $group = exec('groups ' .$user);
 			// $group = explode(' ', $group);
 		}
-		catch(e){}
+		catch(Exception $e){}
 
 		echo json_encode(array(
 			'result' => true,
