@@ -28,8 +28,6 @@ class git{
 	 * コミットする
 	 */
 	public function commit(){
-		$this->px->header('Content-type: text/json');
-
 		$rtn = array();
 		$rtn['result'] = true;
 		$rtn['message'] = 'OK';
@@ -49,6 +47,75 @@ class git{
 			'commit',
 			'-m',
 			'clover commit',
+		));
+		if( !$res_cmd['result'] ){
+			return array(
+				'result' => false,
+				'message' => $res_cmd['stdout'].$res_cmd['stderr'],
+			);
+		}
+
+		return $rtn;
+	}
+
+	/**
+	 * プッシュする
+	 */
+	public function push(){
+		$this->px->header('Content-type: text/json');
+
+		$rtn = array();
+		$rtn['result'] = true;
+		$rtn['message'] = 'OK';
+
+		$res_cmd = $this->exec_git_command(array(
+			'push',
+		));
+		if( !$res_cmd['result'] ){
+			return array(
+				'result' => false,
+				'message' => $res_cmd['stdout'].$res_cmd['stderr'],
+			);
+		}
+
+		return $rtn;
+	}
+
+	/**
+	 * プルする
+	 */
+	public function pull(){
+		$this->px->header('Content-type: text/json');
+
+		$rtn = array();
+		$rtn['result'] = true;
+		$rtn['message'] = 'OK';
+
+		$res_cmd = $this->exec_git_command(array(
+			'pull',
+		));
+		if( !$res_cmd['result'] ){
+			return array(
+				'result' => false,
+				'message' => $res_cmd['stdout'].$res_cmd['stderr'],
+			);
+		}
+
+		return $rtn;
+	}
+
+	/**
+	 * フェッチする
+	 */
+	public function fetch(){
+		$this->px->header('Content-type: text/json');
+
+		$rtn = array();
+		$rtn['result'] = true;
+		$rtn['message'] = 'OK';
+
+		$res_cmd = $this->exec_git_command(array(
+			'fetch',
 		));
 		if( !$res_cmd['result'] ){
 			return array(
