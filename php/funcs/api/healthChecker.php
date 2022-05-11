@@ -35,33 +35,33 @@ class healthChecker{
 		$schedulerHelper = new schedulerHelper($this->clover);
 		$realpath_admin_scheduler = $schedulerHelper->realpath_admin_scheduler();
 		$realpath_status_json = $realpath_admin_scheduler.'/status.json';
-		if( !is_file($realpath_status_json) ){
-			echo json_encode(array(
-				'result' => false,
-				'message' => 'Task Scheduler is not active.',
-			));
-			exit;
-		}
 
-		$str_json = file_get_contents($realpath_status_json);
-		$scheduler_status_json = json_decode( $str_json );
-		if( !is_object($scheduler_status_json) || !isset($scheduler_status_json->last_run_at) || !is_string($scheduler_status_json->last_run_at) ){
-			echo json_encode(array(
-				'result' => false,
-				'message' => 'Task Scheduler is not active.',
-			));
-			exit;
+		$scheduler_status_json = (object) array();
+		if( is_file($realpath_status_json) ){
+			$str_json = file_get_contents($realpath_status_json);
+			$scheduler_status_json = json_decode( $str_json );
+		}
+		if( !is_object($scheduler_status_json) ){
+			$scheduler_status_json = (object) array();
+		}
+		if( !isset($scheduler_status_json->last_run_at) || !is_string($scheduler_status_json->last_run_at) ){
+			$scheduler_status_json->last_run_at = null;
 		}
 
 		$scheduler_is_available = false;
-		$timestamp_last_run_at = strtotime( $scheduler_status_json->last_run_at );
-		$scheduler_elapsed = time() - $timestamp_last_run_at;
-		if( $scheduler_elapsed < (5 * 60) ){
-			$scheduler_is_available = true;
+		$timestamp_last_run_at = null;
+		$scheduler_elapsed = null;
+		if( $scheduler_status_json->last_run_at ){
+			$timestamp_last_run_at = strtotime( $scheduler_status_json->last_run_at );
+			$scheduler_elapsed = time() - $timestamp_last_run_at;
+			if( $scheduler_elapsed < (5 * 60) ){
+				$scheduler_is_available = true;
+			}
 		}
 
 		$scheduler_queue_files = $this->px->fs()->ls($realpath_admin_scheduler.'queue/');
 		$scheduler_progress_files = $this->px->fs()->ls($realpath_admin_scheduler.'progress/');
+
 
 		// --------------------------------------
 		// パブリッシュ関連の情報収集

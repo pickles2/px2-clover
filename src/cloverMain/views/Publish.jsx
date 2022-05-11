@@ -5,7 +5,7 @@ import $ from 'jquery';
 export default React.memo(function Publish(props){
 
 	const main = useContext(MainContext);
-	const [ healthCheckStatus, updateHealthCheckStatus] = useState({"scheduler":{"is_available": null}});
+	const [ healthCheckStatus, updateHealthCheckStatus] = useState({"scheduler":{"is_available": null, "elapsed": null}});
 
 	const pollingUpdateStatus = () => {
 		main.px2utils.px2cmd(

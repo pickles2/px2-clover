@@ -8,7 +8,7 @@ export default function ConfigScheduler(props){
 
 	const main = useContext(MainContext);
 	const [ schedulerHint, updateSchedulerHint] = useState({});
-	const [ healthCheckStatus, updateHealthCheckStatus] = useState({"scheduler":{"is_available": null}});
+	const [ healthCheckStatus, updateHealthCheckStatus] = useState({"scheduler":{"is_available": null, "elapsed": null}});
 
 	const pollingUpdateStatus = () => {
 		main.px2utils.px2cmd(
