@@ -53,6 +53,7 @@ class scheduler{
 		// service
 		switch( $service ){
 			case 'publish':
+			case 'git-commit':
 				break;
 			default:
 				$this->px->error('Service undefined.');
@@ -60,7 +61,7 @@ class scheduler{
 		}
 
 		// name
-		if( !preg_match( '/^[a-z0-9\_]*$/', $name ) ){
+		if( !preg_match( '/^[a-z0-9\_\-]*$/', $name ) ){
 			$this->px->error('Queue name "'.$name.'" is illegal format.');
 			return false;
 		}
@@ -94,6 +95,29 @@ class scheduler{
 	}
 
 	/**
+	 * タスクスケジュールをキャンセルする
+	 */
+	public function cancel_queue( $name ){
+		$realpath_queue = $this->realpath_admin_scheduler().'queue/';
+
+		// name
+		if( !preg_match( '/^[a-z0-9\_\-]*$/', $name ) ){
+			$this->px->error('Queue name "'.$name.'" is illegal format.');
+			return false;
+		}
+		$queued_queue = $this->find_queue_by_name( $name );
+		if( !$queued_queue ){
+			$this->px->error('Queue "'.$name.'" is not queued.');
+			return false;
+		}
+
+		// remove queue
+		$filename = $queued_queue['basename'];
+		$result = $this->px->fs()->rm($realpath_queue.$filename);
+		return !!$result;
+	}
+
+	/**
 	 * キュー名から、キューを探す
 	 */
 	public function find_queue_by_name( $name ){
@@ -103,7 +127,10 @@ class scheduler{
 			if( preg_match('/^([0-9]{8})\_([0-9]{6})\_(.*)\.json$/s', $basename, $matched) ){
 				if( $matched[3] == $name ){
 					$json_content = file_get_contents($realpath_queue.$basename);
-					return json_decode($json_content);
+					return array(
+						"basename" => $basename,
+						"queue" => json_decode($json_content),
+					);
 				}
 			}
 		}
@@ -161,6 +188,10 @@ class scheduler{
 				$this->px->internal_sub_request(
 					'/?PX=publish.run'
 				);
+				break;
+			case "git-commit":
+				$gitHelper = new \tomk79\pickles2\px2clover\helpers\git( $this->clover );
+				$result = $gitHelper->commit();
 				break;
 			default:
 				break;

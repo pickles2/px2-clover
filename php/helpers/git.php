@@ -39,11 +39,10 @@ class git{
 			'.',
 		));
 		if( !$res_cmd['result'] ){
-			echo json_encode(array(
+			return array(
 				'result' => false,
 				'message' => $res_cmd['stdout'].$res_cmd['stderr'],
-			));
-			exit;
+			);
 		}
 
 		$res_cmd = $this->exec_git_command(array(
@@ -52,15 +51,13 @@ class git{
 			'clover commit',
 		));
 		if( !$res_cmd['result'] ){
-			echo json_encode(array(
+			return array(
 				'result' => false,
 				'message' => $res_cmd['stdout'].$res_cmd['stderr'],
-			));
-			exit;
+			);
 		}
 
-		echo json_encode($rtn);
-		exit;
+		return $rtn;
 	}
 
 
@@ -72,6 +69,9 @@ class git{
 		while( 1 ){
 			if( file_exists( $current_dir.'/.git' ) ){
 				return $current_dir;
+			}
+			if( file_exists( $current_dir.'/composer.json' ) ){
+				break;
 			}
 			if( $current_dir == $this->px->fs()->get_realpath($current_dir.'../') ){
 				// これ以上階層を上がれない場合
@@ -126,8 +126,10 @@ class git{
 		$return_var = proc_close($proc);
 		ob_get_clean();
 
+		$rtn['result'] = true;
 		$rtn['stdout'] = $io[1]; // stdout
 		if( strlen( ''.$io[2] ) ){
+			$rtn['result'] = false;
 			$rtn['stderr'] = $io[2]; // stderr
 		}
 

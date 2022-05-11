@@ -7,7 +7,7 @@ export default React.memo(function Publish(props){
 	const main = useContext(MainContext);
 	const [ schedulerStatus, updateSchedulerStatus] = useState({"is_available": null});
 
-	useEffect(() => {
+	const pollingUpdateStatus = () => {
 		main.px2utils.px2cmd(
 			'/?PX=admin.api.scheduler_status',
 			{},
@@ -18,13 +18,25 @@ export default React.memo(function Publish(props){
 				updateSchedulerStatus(res);
 			}
 		);
-		return () => {};
+		return;
+	}
+	useEffect(() => {
+		pollingUpdateStatus();
+		let timer = setInterval(() => {
+			pollingUpdateStatus();
+		}, 5 * 1000);
+
+		return () => {
+			clearInterval(timer);
+		};
 	}, []);
 
 	/**
 	 * パブリッシュを実行する
 	 */
 	function publish(){
+		console.log('--- scheduler available:', schedulerStatus.is_available);
+
 		if( !confirm('パブリッシュを実行しますか？') ){
 			return;
 		}
@@ -32,7 +44,6 @@ export default React.memo(function Publish(props){
 			// --------------------------------------
 			// スケジューラが利用可能な場合
 			// キューを発行する
-			console.log('/?PX=admin.api.scheduler_add_queue');
 			px2style.loading();
 			main.px2utils.px2cmd(
 				"/?PX=admin.api.scheduler_add_queue",
@@ -50,7 +61,6 @@ export default React.memo(function Publish(props){
 			// --------------------------------------
 			// スケジューラが利用できない場合
 			// 直接実行する
-			console.log('?PX=publish.run');
 			px2style.loading();
 			main.px2utils.px2cmd("?PX=publish.run", {}, (data)=>{
 				console.log('------ publish Response:', data);

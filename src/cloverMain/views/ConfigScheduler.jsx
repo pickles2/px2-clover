@@ -10,34 +10,29 @@ export default function ConfigScheduler(props){
 	const [ schedulerHint, updateSchedulerHint] = useState({});
 	const [ schedulerStatus, updateSchedulerStatus] = useState({"is_available": null});
 
-	const getSchedulerStatus = () => {
-
-		function _getSchedulerStatus(){
-			main.px2utils.px2cmd(
-				'/?PX=admin.api.scheduler_status',
-				{},
-				function( res ){
-					if( !res.result ){
-						console.error('Error:', res);
-					}
-					updateSchedulerStatus(res);
+	const pollingUpdateStatus = () => {
+		main.px2utils.px2cmd(
+			'/?PX=admin.api.scheduler_status',
+			{},
+			function( res ){
+				if( !res.result ){
+					console.error('Error:', res);
 				}
-			);
-		};
-		useEffect(() => {
-			let timer = setInterval(() => {
-				_getSchedulerStatus();
-			}, 5 * 1000);
-			_getSchedulerStatus();
-
-			return () => {
-				clearInterval(timer);
-			};
-		}, []);
-
-		return schedulerStatus;
+				updateSchedulerStatus(res);
+			}
+		);
+		return;
 	}
-	getSchedulerStatus();
+	useEffect(() => {
+		pollingUpdateStatus();
+		let timer = setInterval(() => {
+			pollingUpdateStatus();
+		}, 5 * 1000);
+
+		return () => {
+			clearInterval(timer);
+		};
+	}, []);
 
 	const getSchedulerHint = () => {
 
@@ -70,7 +65,7 @@ export default function ConfigScheduler(props){
 				<p>ユーザー {schedulerHint.user} で、次のように crontab を設定してください。</p>
 				<pre className="code"><code>{(()=>{
 					return (<>
-						* * * * * {schedulerHint.path_php} {schedulerHint.script_filename} "/?PX=admin.api.scheduler_run"
+						* * * * * {schedulerHint.path_php} {schedulerHint.script_filename} &quot;/?PX=admin.api.scheduler_run&quot; &gt; /dev/null 2&gt;&amp;1
 					</>);
 				})()}</code></pre>
 			</div>

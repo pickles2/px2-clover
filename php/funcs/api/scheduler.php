@@ -62,7 +62,7 @@ class scheduler{
 		$is_available = false;
 		$timestamp_last_run_at = strtotime( $json->last_run_at );
 		$elapsed = time() - $timestamp_last_run_at;
-		if( $elapsed < (60 * 10) ){
+		if( $elapsed < (5 * 60) ){
 			$is_available = true;
 		}
 
@@ -139,8 +139,19 @@ class scheduler{
 	/**
 	 * タスクスケジュールをキャンセルする
 	 */
-	public function cancel_queue(){
+	public function cancel_queue( $name ){
 		$this->px->header('Content-type: text/json');
+
+		$result = $this->schedulerHelper->cancel_queue($name);
+		$errors = $this->px->get_errors();
+		if( !$result ){
+			echo json_encode(array(
+				'result' => false,
+				'message' => implode(', ', $errors),
+			));
+			exit;
+		}
+
 		echo json_encode(array(
 			'result' => true,
 			'message' => 'OK',
@@ -188,7 +199,10 @@ class scheduler{
 			if( !$nextTask ){
 				break;
 			}
-			$this->schedulerHelper->execute_current_task($nextTask['basename']);
+			try {
+				$this->schedulerHelper->execute_current_task($nextTask['basename']);
+			}catch(Exception $e){
+			}
 			continue;
 		}
 
