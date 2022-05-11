@@ -70,6 +70,21 @@ export default React.memo(function Publish(props){
 		}
 	}
 
+	/**
+	 * パブリッシュを中断する
+	 */
+	function publishStop(){
+		if( !confirm('パブリッシュを中断しますか？') ){
+			return;
+		}
+		px2style.loading();
+		main.px2utils.px2cmd("?PX=admin.api.publish_stop", {}, (data)=>{
+			console.log('------ publish_stop Response:', data);
+				alert('publish_stop done.');
+				px2style.closeLoading();
+		});
+	}
+
 	return (
 		<>
 			{(schedulerStatus.is_available === null)
@@ -78,6 +93,7 @@ export default React.memo(function Publish(props){
 				</>
 				:<>
 					<p><button type="button" onClick={publish} className="px2-btn px2-btn--primary">パブリッシュ</button></p>
+					<p><button type="button" onClick={publishStop} className="px2-btn">パブリッシュを中断</button></p>
 				</>}
 		</>
 	);
