@@ -5,7 +5,7 @@ import $ from 'jquery';
 export default React.memo(function Publish(props){
 
 	const main = useContext(MainContext);
-	const [ healthCheckStatus, updateHealthCheckStatus] = useState({"is_available": null});
+	const [ healthCheckStatus, updateHealthCheckStatus] = useState({"scheduler":{"is_available": null}});
 
 	const pollingUpdateStatus = () => {
 		main.px2utils.px2cmd(
@@ -35,12 +35,12 @@ export default React.memo(function Publish(props){
 	 * パブリッシュを実行する
 	 */
 	function publish(){
-		console.log('--- scheduler available:', healthCheckStatus.is_available);
+		console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
 
 		if( !confirm('パブリッシュを実行しますか？') ){
 			return;
 		}
-		if( healthCheckStatus.is_available ){
+		if( healthCheckStatus.scheduler.is_available ){
 			// --------------------------------------
 			// スケジューラが利用可能な場合
 			// キューを発行する
@@ -49,7 +49,7 @@ export default React.memo(function Publish(props){
 				"/?PX=admin.api.scheduler_add_queue",
 				{
 					"service": "publish",
-					"name": "publish",
+					"name": "clover-manual-publish",
 				},
 				(data)=>{
 					console.log('------ scheduler_add_queue Response:', data);
@@ -87,13 +87,19 @@ export default React.memo(function Publish(props){
 
 	return (
 		<>
-			{(healthCheckStatus.is_available === null)
+			{(healthCheckStatus.scheduler.is_available === null)
 				?<>
 					<p>...</p>
 				</>
 				:<>
-					<p><button type="button" onClick={publish} className="px2-btn px2-btn--primary">パブリッシュ</button></p>
-					<p><button type="button" onClick={publishStop} className="px2-btn">パブリッシュを中断</button></p>
+					{(!healthCheckStatus.publish.is_running)
+						?<>
+							<p><button type="button" onClick={publish} className="px2-btn px2-btn--primary">パブリッシュ</button></p>
+						</>
+						:<>
+							<p>パブリッシュ中です...</p>
+							<p><button type="button" onClick={publishStop} className="px2-btn">パブリッシュを中断</button></p>
+						</>}
 				</>}
 		</>
 	);

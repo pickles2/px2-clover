@@ -5,7 +5,7 @@ import $ from 'jquery';
 export default React.memo(function History(props){
 
 	const main = useContext(MainContext);
-	const [ healthCheckStatus, updateHealthCheckStatus] = useState({"is_available": null});
+	const [ healthCheckStatus, updateHealthCheckStatus] = useState({"scheduler":{"is_available": null}});
 
 	const pollingUpdateStatus = () => {
 		main.px2utils.px2cmd(
@@ -36,9 +36,9 @@ export default React.memo(function History(props){
 	 * コミットする
 	 */
 	function commit(){
-		console.log('--- scheduler available:', healthCheckStatus.is_available);
+		console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
 
-		if( healthCheckStatus.is_available ){
+		if( healthCheckStatus.scheduler.is_available ){
 			// --------------------------------------
 			// スケジューラが利用可能な場合
 			// キューを発行する
@@ -47,7 +47,7 @@ export default React.memo(function History(props){
 				"/?PX=admin.api.scheduler_add_queue",
 				{
 					"service": "git-commit",
-					"name": "git-commit",
+					"name": "clover-manual-git-commit",
 				},
 				(data)=>{
 					console.log('------ scheduler_add_queue Response:', data);
@@ -72,9 +72,9 @@ export default React.memo(function History(props){
 	 * プッシュする
 	 */
 	function push(){
-		console.log('--- scheduler available:', healthCheckStatus.is_available);
+		console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
 
-		if( healthCheckStatus.is_available ){
+		if( healthCheckStatus.scheduler.is_available ){
 			// --------------------------------------
 			// スケジューラが利用可能な場合
 			// キューを発行する
@@ -83,7 +83,7 @@ export default React.memo(function History(props){
 				"/?PX=admin.api.scheduler_add_queue",
 				{
 					"service": "git-push",
-					"name": "git-push",
+					"name": "clover-manual-git-push",
 				},
 				(data)=>{
 					console.log('------ scheduler_add_queue Response:', data);
@@ -108,9 +108,9 @@ export default React.memo(function History(props){
 	 * プルする
 	 */
 	function pull(){
-		console.log('--- scheduler available:', healthCheckStatus.is_available);
+		console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
 
-		if( healthCheckStatus.is_available ){
+		if( healthCheckStatus.scheduler.is_available ){
 			// --------------------------------------
 			// スケジューラが利用可能な場合
 			// キューを発行する
@@ -119,7 +119,7 @@ export default React.memo(function History(props){
 				"/?PX=admin.api.scheduler_add_queue",
 				{
 					"service": "git-pull",
-					"name": "git-pull",
+					"name": "clover-manual-git-pull",
 				},
 				(data)=>{
 					console.log('------ scheduler_add_queue Response:', data);
@@ -144,9 +144,9 @@ export default React.memo(function History(props){
 	 * フェッチする
 	 */
 	function fetch(){
-		console.log('--- scheduler available:', healthCheckStatus.is_available);
+		console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
 
-		if( healthCheckStatus.is_available ){
+		if( healthCheckStatus.scheduler.is_available ){
 			// --------------------------------------
 			// スケジューラが利用可能な場合
 			// キューを発行する
@@ -155,7 +155,7 @@ export default React.memo(function History(props){
 				"/?PX=admin.api.scheduler_add_queue",
 				{
 					"service": "git-fetch",
-					"name": "git-fetch",
+					"name": "clover-manual-git-fetch",
 				},
 				(data)=>{
 					console.log('------ scheduler_add_queue Response:', data);

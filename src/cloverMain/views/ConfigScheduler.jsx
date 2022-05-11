@@ -8,13 +8,14 @@ export default function ConfigScheduler(props){
 
 	const main = useContext(MainContext);
 	const [ schedulerHint, updateSchedulerHint] = useState({});
-	const [ healthCheckStatus, updateHealthCheckStatus] = useState({"is_available": null});
+	const [ healthCheckStatus, updateHealthCheckStatus] = useState({"scheduler":{"is_available": null}});
 
 	const pollingUpdateStatus = () => {
 		main.px2utils.px2cmd(
 			'/?PX=admin.api.health_check',
 			{},
 			function( res ){
+				console.log('-- status:', res);
 				if( !res.result ){
 					console.error('Error:', res);
 				}
@@ -57,8 +58,8 @@ export default function ConfigScheduler(props){
 		<>
 			<p>タスクスケジュールの実行設定の状態を確認します。</p>
 			<div>
-				Status: <code>{(healthCheckStatus.is_available===null ? '---' : (healthCheckStatus.is_available ? 'available' : 'not available'))}</code><br />
-				Elapsed: <code>{(healthCheckStatus.elapsed)}</code><br />
+				Status: <code>{(healthCheckStatus.scheduler.is_available===null ? '---' : (healthCheckStatus.scheduler.is_available ? 'available' : 'not available'))}</code><br />
+				Elapsed: <code>{(healthCheckStatus.scheduler.elapsed)}</code><br />
 			</div>
 			<div>
 				<p>cron での設定例</p>
