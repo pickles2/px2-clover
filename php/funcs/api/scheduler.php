@@ -114,6 +114,41 @@ class scheduler{
 	}
 
 	/**
+	 * タスクスケジュールを追加する
+	 */
+	public function add_queue($service, $time, $name, $options = array()){
+		$this->px->header('Content-type: text/json');
+
+		$result = $this->schedulerHelper->add_queue($service, $time, $name, $options);
+		$errors = $this->px->get_errors();
+		if( !$result ){
+			echo json_encode(array(
+				'result' => false,
+				'message' => implode(', ', $errors),
+			));
+			exit;
+		}
+
+		echo json_encode(array(
+			'result' => true,
+			'message' => 'OK',
+		));
+		exit;
+	}
+
+	/**
+	 * タスクスケジュールをキャンセルする
+	 */
+	public function cancel_queue(){
+		$this->px->header('Content-type: text/json');
+		echo json_encode(array(
+			'result' => true,
+			'message' => 'OK',
+		));
+		exit;
+	}
+
+	/**
 	 * タスクスケジュールを実行する
 	 */
 	public function run(){
@@ -146,6 +181,17 @@ class scheduler{
 			));
 			exit;
 		}
+
+
+		// タスクを実行する
+		while( $nextTask = $this->schedulerHelper->checkout_next_task() ){
+			if( !$nextTask ){
+				break;
+			}
+			$this->schedulerHelper->execute_current_task($nextTask['basename']);
+			continue;
+		}
+
 
 		// 排他ロックの解除
 		$this->px->unlock('px2-clover--task-scheduler');

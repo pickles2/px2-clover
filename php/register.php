@@ -178,6 +178,20 @@ class register{
 							$app = new funcs\api\scheduler($this->clover);
 							$app->status();
 							break;
+						case 'scheduler_add_queue':
+							$this->clover->allowed_method('post');
+							$service = $this->px->req()->get_param('service');
+							$time = $this->px->req()->get_param('time');
+							$name = $this->px->req()->get_param('name');
+							$options = array();
+							$app = new funcs\api\scheduler($this->clover);
+							$app->add_queue($service, $time, $name, $options);
+							break;
+						case 'scheduler_cancel_queue':
+							$this->clover->allowed_method('post');
+							$app = new funcs\api\scheduler($this->clover);
+							$app->cancel_queue();
+							break;
 					}
 
 				case 'edit_contents':

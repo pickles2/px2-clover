@@ -44,6 +44,152 @@ class scheduler{
 
 
 	/**
+	 * タスクスケジュールを追加する
+	 */
+	public function add_queue($service, $time, $name, $options = array()){
+		$realpath_queue = $this->realpath_admin_scheduler().'queue/';
+		$options = (object) $options;
+
+		// service
+		switch( $service ){
+			case 'publish':
+				break;
+			default:
+				$this->px->error('Service undefined.');
+				return false;
+		}
+
+		// name
+		if( !preg_match( '/^[a-z0-9\_]*$/', $name ) ){
+			$this->px->error('Queue name "'.$name.'" is illegal format.');
+			return false;
+		}
+		$queued_queue = $this->find_queue_by_name( $name );
+		if( $queued_queue ){
+			$this->px->error('Queue "'.$name.'" is already queued.');
+			return false;
+		}
+
+		// time
+		if( is_string($time) ){
+			$time = strtotime($time);
+		}
+		if( !$time ){
+			$time = time();
+		}
+
+		// create new queue
+		$filename = date('Ymd_His', $time).'_'.urlencode($name).'.json';
+		$data = array(
+			'service' => $service,
+			'time' => $time,
+			'name' => $name,
+			'options' => $options,
+		);
+		$this->px->fs()->save_file(
+			$realpath_queue.$filename,
+			json_encode($data, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)
+		);
+		return true;
+	}
+
+	/**
+	 * キュー名から、キューを探す
+	 */
+	public function find_queue_by_name( $name ){
+		$realpath_queue = $this->realpath_admin_scheduler().'queue/';
+		$ls = $this->px->fs()->ls($realpath_queue);
+		foreach($ls as $basename){
+			if( preg_match('/^([0-9]{8})\_([0-9]{6})\_(.*)\.json$/s', $basename, $matched) ){
+				if( $matched[3] == $name ){
+					$json_content = file_get_contents($realpath_queue.$basename);
+					return json_decode($json_content);
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 次の実行可能なキューをチェックアウトする
+	 */
+	public function checkout_next_task(){
+		$realpath_progress = $this->realpath_admin_scheduler().'progress/';
+		$realpath_queue = $this->realpath_admin_scheduler().'queue/';
+		$ls = $this->px->fs()->ls($realpath_queue);
+		foreach($ls as $basename){
+			if( preg_match('/^([0-9]{4})([0-9]{2})([0-9]{2})\_([0-9]{2})([0-9]{2})([0-9]{2})\_(.*)\.json$/s', $basename, $matched) ){
+				$time = strtotime($matched[1].'-'.$matched[2].'-'.$matched[3].' '.$matched[4].':'.$matched[5].':'.$matched[6]);
+				if( $time < time() ){
+					$json_content = file_get_contents($realpath_queue.$basename);
+					$result_checkout = $this->px->fs()->rename(
+						$realpath_queue.$basename,
+						$realpath_progress.$basename
+					);
+					if( !$result_checkout ){
+						return false;
+					}
+					return array(
+						"basename" => $basename,
+						"queue" => json_decode($json_content),
+					);
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * タスクを実行する
+	 */
+	public function execute_current_task( $basename ){
+		clearstatcache();
+		$realpath_progress = $this->realpath_admin_scheduler().'progress/';
+		if( !is_file($realpath_progress.$basename) ){
+			return false;
+		}
+		$json_content = file_get_contents($realpath_progress.$basename);
+		$json = json_decode($json_content);
+
+		$rtn = array(
+			"result" => true,
+			"completed" => null,
+		);
+
+		switch( $json->service ){
+			case "publish":
+				$this->px->internal_sub_request(
+					'/?PX=publish.run'
+				);
+				break;
+			default:
+				break;
+		}
+
+		$rtn["completed"] = $this->complete_current_task( $basename );
+		return $rtn;
+	}
+
+	/**
+	 * タスクを完了する
+	 */
+	private function complete_current_task( $basename ){
+		$realpath_progress = $this->realpath_admin_scheduler().'progress/';
+		$realpath_done = $this->realpath_admin_scheduler().'done/';
+		if( !is_file($realpath_progress.$basename) ){
+			return false;
+		}
+		$result_complete = $this->px->fs()->rename(
+			$realpath_progress.$basename,
+			$realpath_done.$basename
+		);
+		if( !$result_complete ){
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * スケジューラ関連ファイルの管理ディレクトリを取得する
 	 */
 	public function realpath_admin_scheduler(){
