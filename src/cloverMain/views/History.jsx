@@ -178,10 +178,13 @@ export default React.memo(function History(props){
 
 	return (
 		<>
+			<p>現在の状態を保存するには、「コミットする」ボタンをクリックしてください。</p>
 			<p><button type="button" onClick={commit} className="px2-btn">コミットする</button></p>
+			{/*
 			<p><button type="button" onClick={push} className="px2-btn">プッシュする</button></p>
 			<p><button type="button" onClick={pull} className="px2-btn">プルする</button></p>
 			<p><button type="button" onClick={fetch} className="px2-btn">フェッチする</button></p>
+			*/}
 		</>
 	);
 });
