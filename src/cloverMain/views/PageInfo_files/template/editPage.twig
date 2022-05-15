@@ -1,7 +1,7 @@
 <table class="px2-table" style="width: 100%;">
 {% for key, value in page_info %}
 	<tr>
-		<th>{{ pageFieldLogicalName[key] or key }}</th>
+		<th>{{ sitemapDefinition[key].label or key }}</th>
 		{% if (lockedField[key] == 'lock') %}
 			<td style="width: 30%;">{{ value }}<input type="hidden" name="{{ key }}" value="{{ value }}" /></td>
 		{% else %}

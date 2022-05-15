@@ -23,6 +23,14 @@ return call_user_func( function(){
 		'index.html'
 	);
 
+	// sitemap
+	$conf->custom_sitemap_definition = array(
+		'release_date' => array(
+			'label' => '公開日',
+			'type' => 'date',
+		),
+	);
+
 
 	// system
 	$conf->file_default_permission = '775';

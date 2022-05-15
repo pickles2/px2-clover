@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {MainContext} from '../context/MainContext';
 import Link from '../components/Link';
 import iterate79 from 'iterate79';
@@ -6,28 +6,40 @@ import iterate79 from 'iterate79';
 export default function PageInfo(props){
 
 	const main = useContext(MainContext);
-	const pageFieldLogicalName = {
-		"path": "ページのパス",
-		"content": "コンテンツファイルの格納先",
-		"id": "ページID",
-		"title": "ページタイトル",
-		"title_breadcrumb": "ページタイトル(パン屑表示用)",
-		"title_h1": "ページタイトル(H1表示用)",
-		"title_label": "ページタイトル(リンク表示用)",
-		"title_full": "ページタイトル(タイトルタグ用)",
-		"logical_path": "論理構造上のパス",
-		"list_flg": "一覧表示フラグ",
-		"layout": "レイアウト",
-		"orderby": "表示順",
-		"keywords": "metaキーワード",
-		"description": "metaディスクリプション",
-		"category_top_flg": "カテゴリトップフラグ",
-		"role": "ロール",
-		"proc_type": "コンテンツの処理方法",
+	const [ sitemapDefinition, updateSitemapDefinition] = useState({
+		"path": {"label": "ページのパス"},
+		"content": {"label": "コンテンツファイルの格納先"},
+		"id": {"label": "ページID"},
+		"title": {"label": "ページタイトル"},
+		"title_breadcrumb": {"label": "ページタイトル(パン屑表示用)"},
+		"title_h1": {"label": "ページタイトル(H1表示用)"},
+		"title_label": {"label": "ページタイトル(リンク表示用)"},
+		"title_full": {"label": "ページタイトル(タイトルタグ用)"},
+		"logical_path": {"label": "論理構造上のパス"},
+		"list_flg": {"label": "一覧表示フラグ"},
+		"layout": {"label": "レイアウト"},
+		"orderby": {"label": "表示順"},
+		"keywords": {"label": "metaキーワード"},
+		"description": {"label": "metaディスクリプション"},
+		"category_top_flg": {"label": "カテゴリトップフラグ"},
+		"role": {"label": "ロール"},
+		"proc_type": {"label": "コンテンツの処理方法"},
 
-		"**delete_flg": "(削除フラグ)",
-	};
+		"**delete_flg": {"label": "(削除フラグ)"},
+	});
 
+	useEffect(() => {
+		main.px2utils.px2cmd(
+			'/?PX=api.get.sitemap_definition',
+			{},
+			function( res ){
+				updateSitemapDefinition(res);
+				return;
+			}
+		);
+		return () => {
+		};
+	}, []);
 
 	/**
 	 * 兄弟ページを新規追加する
@@ -132,7 +144,7 @@ export default function PageInfo(props){
 				var $body = $('<div>')
 					.append( template( {
 						"page_info": page_info,
-						"pageFieldLogicalName": pageFieldLogicalName,
+						"sitemapDefinition": sitemapDefinition,
 						"lockedField": {
 							"logical_path": "lock",
 						},
@@ -235,7 +247,7 @@ export default function PageInfo(props){
 				var $body = $('<div>')
 					.append( template( {
 						"page_info": page_info,
-						"pageFieldLogicalName": pageFieldLogicalName,
+						"sitemapDefinition": sitemapDefinition,
 						"lockedField": {
 							"path": "lock",
 							"logical_path": "lock",
@@ -457,14 +469,14 @@ export default function PageInfo(props){
 										<col style={{width: "70%"}} />
 									</colgroup>
 									<tbody>
-										<tr><th>{pageFieldLogicalName['id']}</th><td>{main.pageInfo.current_page_info.id}</td></tr>
-										<tr><th>{pageFieldLogicalName['title']}</th><td><Link href={main.px2utils.href(main.pageInfo.current_page_info.path + "?PX=admin.page_info")}>{main.pageInfo.current_page_info.title}</Link></td></tr>
-										<tr><th>{pageFieldLogicalName['path']}</th><td>{main.pageInfo.current_page_info.path}</td></tr>
+										<tr><th>{sitemapDefinition['id'].label}</th><td>{main.pageInfo.current_page_info.id}</td></tr>
+										<tr><th>{sitemapDefinition['title'].label}</th><td><Link href={main.px2utils.href(main.pageInfo.current_page_info.path + "?PX=admin.page_info")}>{main.pageInfo.current_page_info.title}</Link></td></tr>
+										<tr><th>{sitemapDefinition['path'].label}</th><td>{main.pageInfo.current_page_info.path}</td></tr>
 										{Object.keys(main.pageInfo.current_page_info).map( ( key, idx )=>{
 											if( ['id','title','path'].find(val => val==key) ){return;}
 											return (
 												<tr key={idx}>
-													<th>{pageFieldLogicalName[key] || key}</th>
+													<th>{(sitemapDefinition[key] ? sitemapDefinition[key].label : key)}</th>
 													<td>{main.pageInfo.current_page_info[key]}</td>
 												</tr>
 											)
