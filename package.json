@@ -9,16 +9,13 @@
         "prod": "npm run production",
         "production": "mix --production"
     },
-    "dependencies": {
-        "cheerio": "*",
-        "url-parse": "^1.5.10"
-    },
     "devDependencies": {
         "@babel/core": "^7.17.8",
         "@babel/preset-env": "^7.16.11",
         "@babel/preset-react": "^7.16.7",
         "axios": "^0.25",
         "babel-loader": "^8.2.4",
+        "cheerio": "*",
         "dateformat": "^5.0.3",
         "iterate79": "^1.1.1",
         "jquery": "^3.6.0",
@@ -33,6 +30,7 @@
         "sass": "^1.49.9",
         "sass-loader": "^12.6.0",
         "twig-loader": "^0.5.5",
+        "url-parse": "^1.5.10",
         "utils79": "^0.0.5"
     }
 }
