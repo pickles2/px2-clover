@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import {MainContext} from './context/MainContext';
 import Root from "./layouts/Root";
+import Dashboard from './views/Dashboard';
 import ClearCache from './views/ClearCache';
 import Config from './views/Config';
 import ConfigProfile from './views/ConfigProfile';
@@ -178,7 +179,7 @@ class Layout extends React.Component {
 			case 'admin':
 			default:
 				title = "ダッシュボード";
-				content = <PageInfo path={current_path} PX={this.state.PX} />;
+				content = <Dashboard />;
 				break;
 		}
 		return (

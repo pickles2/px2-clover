@@ -13,7 +13,16 @@ export default React.memo(function Root(props){
 		<>
 			<div className="theme-layout">
 				<header className="theme-layout__header">
-					<div><Link href={main.px2utils.href('/?PX=admin')}>{(window.px2config.name)}</Link> Admin Console</div>
+					<div className="theme-layout__header__inner">
+						<div className="theme-layout__title">
+							<span className="theme-layout__title-pj-name">
+								<Link href={main.px2utils.href('/?PX=admin')}>{(window.px2config.name)}</Link>
+							</span>
+							<span className="theme-layout__title-console-name">
+								Admin Console
+							</span>
+						</div>
+					</div>
 				</header>
 
 				<div className="theme-layout__main">
