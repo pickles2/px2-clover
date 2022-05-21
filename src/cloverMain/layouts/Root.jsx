@@ -28,10 +28,14 @@ export default React.memo(function Root(props){
 						</ul>
 					</nav>
 					<div className="theme-layout__main-center">
-						<h1>{props.title}</h1>
-						<main className="contents" data-px={props.PX}>
-							{props.contents}
-						</main>
+						<div className="theme-layout__main-center-h1">
+							<h1>{props.title}</h1>
+						</div>
+						<div className="theme-layout__main-center-main">
+							<main className="contents" data-px={props.PX}>
+								{props.contents}
+							</main>
+						</div>
 					</div>
 				</div>
 				<footer className="theme-layout__footer">
