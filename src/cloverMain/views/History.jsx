@@ -43,7 +43,7 @@ export default React.memo(function History(props){
 				main.px2utils.px2cmd("?PX=admin.api.git", {
 					'git': JSON.stringify(cmdAry),
 				}, (data)=>{
-					callback(data.exitcode, data.stdout+data.stderr);
+					callback(data.exitcode, (data.stdout?data.stdout:'')+(data.stderr?data.stderr:''));
 					px2style.closeLoading();
 				});
 			},

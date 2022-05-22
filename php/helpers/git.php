@@ -54,7 +54,7 @@ class git{
 			);
 		}
 
-		$rtn['exitcode'] = 0;
+		$rtn['exitcode'] = $res_cmd['exitcode'];
 		$rtn['stdout'] = $res_cmd['stdout'];
 		$rtn['stderr'] = $res_cmd['stderr'];
 
@@ -251,12 +251,21 @@ class git{
 			}
 			fclose($pipe);
 		}
+
+		$stat = array();
+		do {
+			$stat = proc_get_status($proc);
+			// waiting
+			usleep(1);
+		} while( $stat['running'] );
+
 		$return_var = proc_close($proc);
 		ob_get_clean();
 
 		$rtn['result'] = true;
+		$rtn['exitcode'] = $stat['exitcode'];
 		$rtn['stdout'] = $io[1]; // stdout
-		if( strlen( ''.$io[2] ) ){
+		if( isset($io[2]) && strlen( $io[2] ) ){
 			$rtn['result'] = false;
 			$rtn['stderr'] = $io[2]; // stderr
 		}
