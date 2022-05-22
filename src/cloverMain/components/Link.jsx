@@ -31,7 +31,15 @@ export default function Link(props){
 		}
 
 		let parsedUrl = parseUrl(props.href);
-		if( main.PX == parsedUrl.PX ){
+		let splitedMainPX = main.PX.split('.');
+		let splitedPropsPX = parsedUrl.PX.split('.');
+		let isMissmatch = false;
+		for( let idx in splitedPropsPX ){
+			if( splitedMainPX[idx] != splitedPropsPX[idx] ){
+				isMissmatch = true;
+			}
+		}
+		if( !isMissmatch ){
 			return 'current';
 		}
 		return null;
