@@ -25,6 +25,29 @@ class git{
 	}
 
 	/**
+	 * 状態を知る
+	 */
+	public function status(){
+		$rtn = array();
+		$rtn['result'] = true;
+		$rtn['message'] = 'OK';
+
+		$res_cmd = $this->exec_git_command(array(
+			'status',
+		));
+		if( !$res_cmd['result'] ){
+			return array(
+				'result' => false,
+				'message' => $res_cmd['stdout'].$res_cmd['stderr'],
+			);
+		}
+
+		$rtn['status'] = $res_cmd['stdout'].$res_cmd['stderr'];
+
+		return $rtn;
+	}
+
+	/**
 	 * コミットする
 	 */
 	public function commit(){
@@ -59,9 +82,9 @@ class git{
 	}
 
 	/**
-	 * プッシュする
+	 * フェッチする
 	 */
-	public function push(){
+	public function fetch(){
 		$this->px->header('Content-type: text/json');
 
 		$rtn = array();
@@ -69,7 +92,8 @@ class git{
 		$rtn['message'] = 'OK';
 
 		$res_cmd = $this->exec_git_command(array(
-			'push',
+			'fetch',
+			'--prune',
 		));
 		if( !$res_cmd['result'] ){
 			return array(
@@ -105,9 +129,9 @@ class git{
 	}
 
 	/**
-	 * フェッチする
+	 * プッシュする
 	 */
-	public function fetch(){
+	public function push(){
 		$this->px->header('Content-type: text/json');
 
 		$rtn = array();
@@ -115,7 +139,7 @@ class git{
 		$rtn['message'] = 'OK';
 
 		$res_cmd = $this->exec_git_command(array(
-			'fetch',
+			'push',
 		));
 		if( !$res_cmd['result'] ){
 			return array(

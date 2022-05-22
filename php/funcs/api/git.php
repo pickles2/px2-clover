@@ -38,14 +38,26 @@ class git{
 	}
 
 	/**
-	 * プッシュする
+	 * 状態を知る
 	 */
-	public function push(){
+	public function status(){
+		$this->px->header('Content-type: text/json');
+
+		$gitHelper = new \tomk79\pickles2\px2clover\helpers\git( $this->clover );
+		$rtn = $gitHelper->status();
+
+		echo json_encode($rtn);
+		exit;
+	}
+
+	/**
+	 * フェッチする
+	 */
+	public function fetch(){
 		$this->px->header('Content-type: text/json');
 
 		$gitHelper = new \tomk79\pickles2\px2clover\helpers\git( $this->clover );
 		$rtn = $gitHelper->fetch();
-		$rtn = $gitHelper->push();
 
 		echo json_encode($rtn);
 		exit;
@@ -66,13 +78,14 @@ class git{
 	}
 
 	/**
-	 * フェッチする
+	 * プッシュする
 	 */
-	public function fetch(){
+	public function push(){
 		$this->px->header('Content-type: text/json');
 
 		$gitHelper = new \tomk79\pickles2\px2clover\helpers\git( $this->clover );
 		$rtn = $gitHelper->fetch();
+		$rtn = $gitHelper->push();
 
 		echo json_encode($rtn);
 		exit;

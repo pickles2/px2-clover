@@ -69,9 +69,22 @@ export default React.memo(function History(props){
 	}
 
 	/**
-	 * プッシュする
+	 * 状態を知る
 	 */
-	function push(){
+	function status(){
+		console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
+		px2style.loading();
+		main.px2utils.px2cmd("?PX=admin.api.git_status", {}, (data)=>{
+			console.log('------ git-status Response:', data);
+			alert('git-status done.');
+			px2style.closeLoading();
+		});
+	}
+
+	/**
+	 * フェッチする
+	 */
+	function fetch(){
 		console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
 
 		if( healthCheckStatus.scheduler.is_available ){
@@ -82,12 +95,12 @@ export default React.memo(function History(props){
 			main.px2utils.px2cmd(
 				"/?PX=admin.api.scheduler_add_queue",
 				{
-					"service": "git-push",
-					"name": "clover-manual-git-push",
+					"service": "git-fetch",
+					"name": "clover-manual-git-fetch",
 				},
 				(data)=>{
 					console.log('------ scheduler_add_queue Response:', data);
-						alert('git-push queue を登録しました。');
+						alert('git-fetch queue を登録しました。');
 						px2style.closeLoading();
 				}
 			);
@@ -96,9 +109,9 @@ export default React.memo(function History(props){
 			// スケジューラが利用できない場合
 			// 直接実行する
 			px2style.loading();
-			main.px2utils.px2cmd("?PX=admin.api.git_push", {}, (data)=>{
-				console.log('------ git-push Response:', data);
-				alert('git-push done.');
+			main.px2utils.px2cmd("?PX=admin.api.git_fetch", {}, (data)=>{
+				console.log('------ git-fetch Response:', data);
+				alert('git-fetch done.');
 				px2style.closeLoading();
 			});
 		}
@@ -141,9 +154,9 @@ export default React.memo(function History(props){
 	}
 
 	/**
-	 * フェッチする
+	 * プッシュする
 	 */
-	function fetch(){
+	function push(){
 		console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
 
 		if( healthCheckStatus.scheduler.is_available ){
@@ -154,12 +167,12 @@ export default React.memo(function History(props){
 			main.px2utils.px2cmd(
 				"/?PX=admin.api.scheduler_add_queue",
 				{
-					"service": "git-fetch",
-					"name": "clover-manual-git-fetch",
+					"service": "git-push",
+					"name": "clover-manual-git-push",
 				},
 				(data)=>{
 					console.log('------ scheduler_add_queue Response:', data);
-						alert('git-fetch queue を登録しました。');
+						alert('git-push queue を登録しました。');
 						px2style.closeLoading();
 				}
 			);
@@ -168,19 +181,21 @@ export default React.memo(function History(props){
 			// スケジューラが利用できない場合
 			// 直接実行する
 			px2style.loading();
-			main.px2utils.px2cmd("?PX=admin.api.git_fetch", {}, (data)=>{
-				console.log('------ git-fetch Response:', data);
-				alert('git-fetch done.');
+			main.px2utils.px2cmd("?PX=admin.api.git_push", {}, (data)=>{
+				console.log('------ git-push Response:', data);
+				alert('git-push done.');
 				px2style.closeLoading();
 			});
 		}
 	}
+
 
 	return (
 		<>
 			<p>現在の状態を保存するには、「コミットする」ボタンをクリックしてください。</p>
 			<p><button type="button" onClick={commit} className="px2-btn">コミットする</button></p>
 			<hr />
+			<p><button type="button" onClick={status} className="px2-btn">状態を知る</button></p>
 			<p><button type="button" onClick={fetch} className="px2-btn">フェッチする</button></p>
 			<p><button type="button" onClick={pull} className="px2-btn">プルする</button></p>
 			<hr />
