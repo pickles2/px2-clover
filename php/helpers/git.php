@@ -56,13 +56,13 @@ class git{
 		if( !$res_cmd['result'] ){
 			return array(
 				'result' => false,
-				'message' => $res_cmd['stdout'].$res_cmd['stderr'],
+				'message' => $this->conceal_confidentials($res_cmd['stdout']).$this->conceal_confidentials($res_cmd['stderr']),
 			);
 		}
 
 		$rtn['exitcode'] = $res_cmd['exitcode'];
-		$rtn['stdout'] = $res_cmd['stdout'];
-		$rtn['stderr'] = $res_cmd['stderr'];
+		$rtn['stdout'] = $this->conceal_confidentials($res_cmd['stdout']);
+		$rtn['stderr'] = $this->conceal_confidentials($res_cmd['stderr']);
 
 		return $rtn;
 	}
@@ -81,11 +81,11 @@ class git{
 		if( !$res_cmd['result'] ){
 			return array(
 				'result' => false,
-				'message' => $res_cmd['stdout'].$res_cmd['stderr'],
+				'message' => $this->conceal_confidentials($res_cmd['stdout']).$this->conceal_confidentials($res_cmd['stderr']),
 			);
 		}
 
-		$rtn['status'] = $res_cmd['stdout'].$res_cmd['stderr'];
+		$rtn['status'] = $this->conceal_confidentials($res_cmd['stdout']).$this->conceal_confidentials($res_cmd['stderr']);
 
 		return $rtn;
 	}
@@ -105,7 +105,7 @@ class git{
 		if( !$res_cmd['result'] ){
 			return array(
 				'result' => false,
-				'message' => $res_cmd['stdout'].$res_cmd['stderr'],
+				'message' => $this->conceal_confidentials($res_cmd['stdout']).$this->conceal_confidentials($res_cmd['stderr']),
 			);
 		}
 
@@ -117,7 +117,7 @@ class git{
 		if( !$res_cmd['result'] ){
 			return array(
 				'result' => false,
-				'message' => $res_cmd['stdout'].$res_cmd['stderr'],
+				'message' => $this->conceal_confidentials($res_cmd['stdout']).$this->conceal_confidentials($res_cmd['stderr']),
 			);
 		}
 
@@ -143,7 +143,7 @@ class git{
 		if( !$res_cmd['result'] ){
 			return array(
 				'result' => false,
-				'message' => $res_cmd['stdout'].$res_cmd['stderr'],
+				'message' => $this->conceal_confidentials($res_cmd['stdout']).$this->conceal_confidentials($res_cmd['stderr']),
 			);
 		}
 
@@ -168,7 +168,7 @@ class git{
 		if( !$res_cmd['result'] ){
 			return array(
 				'result' => false,
-				'message' => $res_cmd['stdout'].$res_cmd['stderr'],
+				'message' => $this->conceal_confidentials($res_cmd['stdout']).$this->conceal_confidentials($res_cmd['stderr']),
 			);
 		}
 
@@ -193,7 +193,7 @@ class git{
 		if( !$res_cmd['result'] ){
 			return array(
 				'result' => false,
-				'message' => $res_cmd['stdout'].$res_cmd['stderr'],
+				'message' => $this->conceal_confidentials($res_cmd['stdout']).$this->conceal_confidentials($res_cmd['stderr']),
 			);
 		}
 
@@ -248,6 +248,23 @@ class git{
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * gitコマンドの結果から、秘匿な情報を隠蔽する
+	 * @param string $str 出力テキスト
+	 * @return string 秘匿情報を隠蔽加工したテキスト
+	 */
+	private function conceal_confidentials($str){
+		if( is_null($str) ){
+			return $str;
+		}
+
+		// gitリモートリポジトリのURLに含まれるパスワードを隠蔽
+		// ただし、アカウント名は残す。
+		$str = preg_replace('/((?:[a-zA-Z\-\_]+))\:\/\/([^\s\/\\\\]*?\:)([^\s\/\\\\]*)\@/si', '$1://$2********@', $str);
+
+		return $str;
 	}
 
 	/**
