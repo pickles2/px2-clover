@@ -173,30 +173,30 @@ class register{
 							$app = new funcs\api\git($this->clover);
 							$app->git();
 							break;
-						case 'git_status':
-							$app = new funcs\api\git($this->clover);
-							$app->status();
-							break;
-						case 'git_commit':
-							$this->clover->allowed_method('post');
-							$app = new funcs\api\git($this->clover);
-							$app->commit();
-							break;
-						case 'git_fetch':
-							$this->clover->allowed_method('post');
-							$app = new funcs\api\git($this->clover);
-							$app->fetch();
-							break;
-						case 'git_pull':
-							$this->clover->allowed_method('post');
-							$app = new funcs\api\git($this->clover);
-							$app->pull();
-							break;
-						case 'git_push':
-							$this->clover->allowed_method('post');
-							$app = new funcs\api\git($this->clover);
-							$app->push();
-							break;
+						// case 'git_status':
+						// 	$app = new funcs\api\git($this->clover);
+						// 	$app->status();
+						// 	break;
+						// case 'git_commit':
+						// 	$this->clover->allowed_method('post');
+						// 	$app = new funcs\api\git($this->clover);
+						// 	$app->commit();
+						// 	break;
+						// case 'git_fetch':
+						// 	$this->clover->allowed_method('post');
+						// 	$app = new funcs\api\git($this->clover);
+						// 	$app->fetch();
+						// 	break;
+						// case 'git_pull':
+						// 	$this->clover->allowed_method('post');
+						// 	$app = new funcs\api\git($this->clover);
+						// 	$app->pull();
+						// 	break;
+						// case 'git_push':
+						// 	$this->clover->allowed_method('post');
+						// 	$app = new funcs\api\git($this->clover);
+						// 	$app->push();
+						// 	break;
 						case 'publish_stop':
 							$this->clover->allowed_method('post');
 							$app = new funcs\api\publish($this->clover);

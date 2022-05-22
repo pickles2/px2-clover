@@ -34,11 +34,18 @@ class git{
 
 		if( !is_array( $git_command_array ) || !count( $git_command_array ) ){
 			return array(
+				'result' => false,
+				'message' => 'Invalid Command.',
+			);
+		}
+		if( !$this->is_valid_command($git_command_array) ){
+			return array(
 				'result' => true,
-				'message' => 'OK',
+				'message' => 'Invalid Command.',
 			);
 		}
 
+		// Gitコマンドを実行する
 		$res_cmd = $this->exec_git_command( $git_command_array );
 		if( !$res_cmd['result'] ){
 			return array(
@@ -257,4 +264,52 @@ class git{
 		chdir($cd);
 		return $rtn;
 	}
+
+	/**
+	 * Gitコマンドに不正がないか確認する
+	 */
+	private function is_valid_command( $git_sub_command ){
+
+		if( !is_array($git_sub_command) ){
+			// 配列で受け取る
+			return false;
+		}
+
+		// 許可されたコマンド
+		switch( $git_sub_command[0] ){
+			case 'init':
+			case 'clone':
+			case 'config':
+			case 'status':
+			case 'branch':
+			case 'log':
+			case 'diff':
+			case 'show':
+			case 'remote':
+			case 'fetch':
+			case 'checkout':
+			case 'add':
+			case 'rm':
+			case 'reset':
+			case 'clean':
+			case 'commit':
+			case 'merge':
+			case 'push':
+			case 'pull':
+				break;
+			default:
+				return false;
+				break;
+		}
+
+		// 不正なオプション
+		foreach( $git_sub_command as $git_sub_command_row ){
+			if( preg_match( '/^\-\-output(?:\=.*)?$/', $git_sub_command_row ) ){
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 }
