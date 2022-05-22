@@ -1,5 +1,5 @@
 <?php
-namespace tomk79\pickles2\px2clover;
+namespace tomk79\pickles2\px2clover\helpers;
 
 /**
  * px2-clover: crypt

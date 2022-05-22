@@ -12,6 +12,8 @@ class git{
 	/** Picklesオブジェクト */
 	private $px;
 
+	/** Clover設定オブジェクト */
+	private $cloverConfig;
 
 	/**
 	 * Constructor
@@ -22,6 +24,7 @@ class git{
 	public function __construct( $clover ){
 		$this->clover = $clover;
 		$this->px = $clover->px();
+		$this->cloverConfig = $this->clover->conf();
 	}
 
 	/**
@@ -46,7 +49,10 @@ class git{
 		}
 
 		// Gitコマンドを実行する
+		$this->set_remote_origin();
 		$res_cmd = $this->exec_git_command( $git_command_array );
+		$this->clear_remote_origin();
+
 		if( !$res_cmd['result'] ){
 			return array(
 				'result' => false,
@@ -128,10 +134,12 @@ class git{
 		$rtn['result'] = true;
 		$rtn['message'] = 'OK';
 
+		$this->set_remote_origin();
 		$res_cmd = $this->exec_git_command(array(
 			'fetch',
 			'--prune',
 		));
+		$this->clear_remote_origin();
 		if( !$res_cmd['result'] ){
 			return array(
 				'result' => false,
@@ -152,9 +160,11 @@ class git{
 		$rtn['result'] = true;
 		$rtn['message'] = 'OK';
 
+		$this->set_remote_origin();
 		$res_cmd = $this->exec_git_command(array(
 			'pull',
 		));
+		$this->clear_remote_origin();
 		if( !$res_cmd['result'] ){
 			return array(
 				'result' => false,
@@ -175,9 +185,11 @@ class git{
 		$rtn['result'] = true;
 		$rtn['message'] = 'OK';
 
+		$this->set_remote_origin();
 		$res_cmd = $this->exec_git_command(array(
 			'push',
 		));
+		$this->clear_remote_origin();
 		if( !$res_cmd['result'] ){
 			return array(
 				'result' => false,
@@ -188,6 +200,95 @@ class git{
 		return $rtn;
 	}
 
+
+	/**
+	 * origin をセットする
+	 */
+	public function set_remote_origin(){
+		if( !$this->has_valid_git_config() ){
+			return false;
+		}
+
+		$git_remote = $this->url_bind_confidentials();
+		if( !strlen($git_remote) ){
+			return true;
+		}
+		$this->exec_git_command(array('remote', 'add', 'origin', $git_remote));
+		$this->exec_git_command(array('remote', 'set-url', 'origin', $git_remote));
+		return true;
+	}
+
+	/**
+	 * origin を削除する
+	 */
+	public function clear_remote_origin(){
+		if( !$this->has_valid_git_config() ){
+			return false;
+		}
+
+		if( isset($this->cloverConfig['history']['git_remote']) && strlen(''.$this->cloverConfig['history']['git_remote']) ){
+			$git_remote = $this->cloverConfig['history']['git_remote'];
+			$this->exec_git_command(array('remote', 'add', 'origin', $git_remote));
+			$this->exec_git_command(array('remote', 'set-url', 'origin', $git_remote));
+		}else{
+			$this->exec_git_command(array('remote', 'remove', 'origin'));
+		}
+		return true;
+	}
+
+	/**
+	 * 有効なGit設定がされているか？
+	 */
+	private function has_valid_git_config(){
+		if( !isset($this->cloverConfig['history']['git_remote']) || !strlen(''.$this->cloverConfig['history']['git_remote']) ){
+			return false;
+		}
+		$git_remote = $this->cloverConfig['history']['git_remote'];
+		if( !preg_match( '/^(?:https?)\:\/\/(?:.+)\.git$/si', $git_remote ) ){
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * URLに認証情報を埋め込む
+	 */
+	private function url_bind_confidentials($url = null, $user_name = null, $password = null){
+		$crypt = new crypt( $this->clover );
+		$this->cloverConfig = $this->clover->conf();
+		if( isset($this->cloverConfig['history']['git_remote']) && !strlen(''.$url) ){
+			$url = $this->cloverConfig['history']['git_remote'];
+		}
+		if( isset($this->cloverConfig['history']['git_id']) && !strlen(''.$user_name) ){
+			$user_name = $this->cloverConfig['history']['git_id'];
+		}
+		if( isset($this->cloverConfig['history']['git_pw']) && strlen($crypt->decrypt($this->cloverConfig['history']['git_pw'])) && !strlen(''.$password) ){
+			$password = $crypt->decrypt($this->cloverConfig['history']['git_pw']);
+		}
+		if( !strlen($url) ){
+			return null;
+		}
+
+		$parsed_git_url = parse_url($url);
+		$rtn = '';
+		$rtn .= $parsed_git_url['scheme'].'://';
+		if( strlen($user_name) ){
+			$rtn .= urlencode($user_name);
+			if( strlen($password) ){
+				$rtn .= ':'.urlencode($password);
+			}
+			$rtn .= '@';
+		}
+		$rtn .= $parsed_git_url['host'];
+		if( array_key_exists('port', $parsed_git_url) && strlen($parsed_git_url['port']) ){
+			$rtn .= ':'.$parsed_git_url['port'];
+		}
+		$rtn .= $parsed_git_url['path'];
+		if( array_key_exists('query', $parsed_git_url) && strlen($parsed_git_url['query']) ){
+			$rtn .= '?'.$parsed_git_url['query'];
+		}
+		return $rtn;
+	}
 
 	/**
 	 * Gitのルートディレクトリを取得する

@@ -53,7 +53,7 @@ class config{
 	public function update( $new_config ){
 
 		$config = $this->get();
-		$crypt = new crypt( $this->clover );
+		$crypt = new helpers\crypt( $this->clover );
 
 		if( isset($new_config['history']['git_remote']) ){ $config['history']['git_remote'] = $new_config['history']['git_remote']; }
 		if( isset($new_config['history']['git_id']) ){ $config['history']['git_id'] = $new_config['history']['git_id']; }
