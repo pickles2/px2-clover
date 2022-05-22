@@ -2,23 +2,22 @@
 
 {% block title %}ページ情報{% endblock %}
 {% block head %}
-<link rel="stylesheet" href="{{ path_client_resources }}gitui79/gitui79.css" />
-<link rel="stylesheet" href="{{ path_client_resources }}cloverMain/cloverMain.css" />
+    <link rel="stylesheet" href="{{ path_client_resources }}gitui79/gitui79.css" />
+    <link rel="stylesheet" href="{{ path_client_resources }}cloverMain/cloverMain.css" />
+    <style>
+        :root {
+            --px2-main-color: #00a0e6;
+            --px2-text-color: #333;
+            --px2-background-color: #f9f9f9;
+        }
+    </style>
 {% endblock %}
 {% block content %}
 
-<div id="cont-app"></div>
+    <div id="cont-app"></div>
 
 {% endblock %}
 {% block foot %}
-<script>
-window.px2config = {
-    "name": "{{ px2config.name | e("js") }}",
-    "path_controot": "{{ px2config.path_controot | e("js") }}",
-    "default_directory_index": "{{ px2config.directory_index[0] | e("js") }}",
-};
-window.csrf_token = "{{ csrf_token | e("js") }}";
-</script>
-<script src="{{ path_client_resources }}gitui79/gitui79.js"></script>
-<script src="{{ path_client_resources }}cloverMain/cloverMain.js"></script>
+    <script src="{{ path_client_resources }}gitui79/gitui79.js"></script>
+    <script src="{{ path_client_resources }}cloverMain/cloverMain.js"></script>
 {% endblock %}

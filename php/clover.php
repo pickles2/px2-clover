@@ -58,6 +58,11 @@ class clover{
 		return $this->options;
 	}
 
+	/** Cloverの設定を取得する */
+	public function conf(){
+		$config = new config($this);
+		return $config->get();
+	}
 
 	/** プラグイン専有の公開ディレクトリのパスを取得する */
 	public function path_files( $localpath = null ){

@@ -91,6 +91,8 @@ export default React.memo(function Sitemap(props){
 					"pageInfoLoaded": false,
 				});
 				alert('Upload: done.');
+
+				main.cloverUtils.autoCommit();
 				main.link('?PX=admin.sitemap');
 			} );
 		});
@@ -123,6 +125,7 @@ export default React.memo(function Sitemap(props){
 				}
 			},
 			"complete": function(){
+				main.cloverUtils.autoCommit();
 				loadSitemapFileList();
 			},
 		});

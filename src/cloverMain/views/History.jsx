@@ -5,39 +5,40 @@ import $ from 'jquery';
 export default React.memo(function History(props){
 
 	const main = useContext(MainContext);
-	const [ healthCheckStatus, updateHealthCheckStatus] = useState({"scheduler":{"is_available": null, "elapsed": null}});
 
-	const pollingUpdateStatus = () => {
-		main.px2utils.px2cmd(
-			'/?PX=admin.api.health_check',
-			{},
-			function( res ){
-				if( !res.result ){
-					console.error('Error:', res);
-				}
-				updateHealthCheckStatus(res);
-			}
-		);
-		return;
-	}
-	useEffect(() => {
-		pollingUpdateStatus();
-		let timer = setInterval(() => {
-			pollingUpdateStatus();
-		}, 5 * 1000);
+	// const [ healthCheckStatus, updateHealthCheckStatus] = useState({"scheduler":{"is_available": null, "elapsed": null}});
 
-		return () => {
-			clearInterval(timer);
-		};
-	}, []);
+	// const pollingUpdateStatus = () => {
+	// 	main.px2utils.px2cmd(
+	// 		'/?PX=admin.api.health_check',
+	// 		{},
+	// 		function( res ){
+	// 			if( !res.result ){
+	// 				console.error('Error:', res);
+	// 			}
+	// 			updateHealthCheckStatus(res);
+	// 		}
+	// 	);
+	// 	return;
+	// }
+	// useEffect(() => {
+	// 	pollingUpdateStatus();
+	// 	let timer = setInterval(() => {
+	// 		pollingUpdateStatus();
+	// 	}, 5 * 1000);
+
+	// 	return () => {
+	// 		clearInterval(timer);
+	// 	};
+	// }, []);
 
 	useEffect(() => {
 		const $contGit = document.querySelector('.cont-git');
 		const gitUi79 = new GitUi79(
 			$contGit,
 			function(cmdAry, callback){
-				var result = [];
-				console.log('=-=-=-=-=-=-= GPI Request:', cmdAry, callback);
+				// var result = [];
+				// console.log('=-=-=-=-=-=-= GPI Request:', cmdAry, callback);
 
 				px2style.loading();
 				main.px2utils.px2cmd("?PX=admin.api.git", {
@@ -58,162 +59,162 @@ export default React.memo(function History(props){
 	}, []);
 
 
-	/**
-	 * コミットする
-	 */
-	function commit(){
-		console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
+	// /**
+	//  * コミットする
+	//  */
+	// function commit(){
+	// 	console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
 
-		if( healthCheckStatus.scheduler.is_available ){
-			// --------------------------------------
-			// スケジューラが利用可能な場合
-			// キューを発行する
-			px2style.loading();
-			main.px2utils.px2cmd(
-				"/?PX=admin.api.scheduler_add_queue",
-				{
-					"service": "git-commit",
-					"name": "clover-manual-git-commit",
-				},
-				(data)=>{
-					console.log('------ scheduler_add_queue Response:', data);
-						alert('git-commit queue を登録しました。');
-						px2style.closeLoading();
-				}
-			);
-		}else{
-			// --------------------------------------
-			// スケジューラが利用できない場合
-			// 直接実行する
-			px2style.loading();
-			main.px2utils.px2cmd("?PX=admin.api.git_commit", {}, (data)=>{
-				console.log('------ git-commit Response:', data);
-				alert('git-commit done.');
-				px2style.closeLoading();
-			});
-		}
-	}
+	// 	if( healthCheckStatus.scheduler.is_available ){
+	// 		// --------------------------------------
+	// 		// スケジューラが利用可能な場合
+	// 		// キューを発行する
+	// 		px2style.loading();
+	// 		main.px2utils.px2cmd(
+	// 			"/?PX=admin.api.scheduler_add_queue",
+	// 			{
+	// 				"service": "git-commit",
+	// 				"name": "clover-manual-git-commit",
+	// 			},
+	// 			(data)=>{
+	// 				console.log('------ scheduler_add_queue Response:', data);
+	// 					alert('git-commit queue を登録しました。');
+	// 					px2style.closeLoading();
+	// 			}
+	// 		);
+	// 	}else{
+	// 		// --------------------------------------
+	// 		// スケジューラが利用できない場合
+	// 		// 直接実行する
+	// 		px2style.loading();
+	// 		main.px2utils.px2cmd("?PX=admin.api.git_commit", {}, (data)=>{
+	// 			console.log('------ git-commit Response:', data);
+	// 			alert('git-commit done.');
+	// 			px2style.closeLoading();
+	// 		});
+	// 	}
+	// }
 
-	/**
-	 * 状態を知る
-	 */
-	function status(){
-		console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
-		px2style.loading();
-		main.px2utils.px2cmd("?PX=admin.api.git_status", {}, (data)=>{
-			console.log('------ git-status Response:', data);
-			alert('git-status done.');
-			px2style.closeLoading();
-		});
-	}
+	// /**
+	//  * 状態を知る
+	//  */
+	// function status(){
+	// 	console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
+	// 	px2style.loading();
+	// 	main.px2utils.px2cmd("?PX=admin.api.git_status", {}, (data)=>{
+	// 		console.log('------ git-status Response:', data);
+	// 		alert('git-status done.');
+	// 		px2style.closeLoading();
+	// 	});
+	// }
 
-	/**
-	 * フェッチする
-	 */
-	function fetch(){
-		console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
+	// /**
+	//  * フェッチする
+	//  */
+	// function fetch(){
+	// 	console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
 
-		if( healthCheckStatus.scheduler.is_available ){
-			// --------------------------------------
-			// スケジューラが利用可能な場合
-			// キューを発行する
-			px2style.loading();
-			main.px2utils.px2cmd(
-				"/?PX=admin.api.scheduler_add_queue",
-				{
-					"service": "git-fetch",
-					"name": "clover-manual-git-fetch",
-				},
-				(data)=>{
-					console.log('------ scheduler_add_queue Response:', data);
-						alert('git-fetch queue を登録しました。');
-						px2style.closeLoading();
-				}
-			);
-		}else{
-			// --------------------------------------
-			// スケジューラが利用できない場合
-			// 直接実行する
-			px2style.loading();
-			main.px2utils.px2cmd("?PX=admin.api.git_fetch", {}, (data)=>{
-				console.log('------ git-fetch Response:', data);
-				alert('git-fetch done.');
-				px2style.closeLoading();
-			});
-		}
-	}
+	// 	if( healthCheckStatus.scheduler.is_available ){
+	// 		// --------------------------------------
+	// 		// スケジューラが利用可能な場合
+	// 		// キューを発行する
+	// 		px2style.loading();
+	// 		main.px2utils.px2cmd(
+	// 			"/?PX=admin.api.scheduler_add_queue",
+	// 			{
+	// 				"service": "git-fetch",
+	// 				"name": "clover-manual-git-fetch",
+	// 			},
+	// 			(data)=>{
+	// 				console.log('------ scheduler_add_queue Response:', data);
+	// 					alert('git-fetch queue を登録しました。');
+	// 					px2style.closeLoading();
+	// 			}
+	// 		);
+	// 	}else{
+	// 		// --------------------------------------
+	// 		// スケジューラが利用できない場合
+	// 		// 直接実行する
+	// 		px2style.loading();
+	// 		main.px2utils.px2cmd("?PX=admin.api.git_fetch", {}, (data)=>{
+	// 			console.log('------ git-fetch Response:', data);
+	// 			alert('git-fetch done.');
+	// 			px2style.closeLoading();
+	// 		});
+	// 	}
+	// }
 
-	/**
-	 * プルする
-	 */
-	function pull(){
-		console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
+	// /**
+	//  * プルする
+	//  */
+	// function pull(){
+	// 	console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
 
-		if( healthCheckStatus.scheduler.is_available ){
-			// --------------------------------------
-			// スケジューラが利用可能な場合
-			// キューを発行する
-			px2style.loading();
-			main.px2utils.px2cmd(
-				"/?PX=admin.api.scheduler_add_queue",
-				{
-					"service": "git-pull",
-					"name": "clover-manual-git-pull",
-				},
-				(data)=>{
-					console.log('------ scheduler_add_queue Response:', data);
-						alert('git-pull queue を登録しました。');
-						px2style.closeLoading();
-				}
-			);
-		}else{
-			// --------------------------------------
-			// スケジューラが利用できない場合
-			// 直接実行する
-			px2style.loading();
-			main.px2utils.px2cmd("?PX=admin.api.git_pull", {}, (data)=>{
-				console.log('------ git-pull Response:', data);
-				alert('git-pull done.');
-				px2style.closeLoading();
-			});
-		}
-	}
+	// 	if( healthCheckStatus.scheduler.is_available ){
+	// 		// --------------------------------------
+	// 		// スケジューラが利用可能な場合
+	// 		// キューを発行する
+	// 		px2style.loading();
+	// 		main.px2utils.px2cmd(
+	// 			"/?PX=admin.api.scheduler_add_queue",
+	// 			{
+	// 				"service": "git-pull",
+	// 				"name": "clover-manual-git-pull",
+	// 			},
+	// 			(data)=>{
+	// 				console.log('------ scheduler_add_queue Response:', data);
+	// 					alert('git-pull queue を登録しました。');
+	// 					px2style.closeLoading();
+	// 			}
+	// 		);
+	// 	}else{
+	// 		// --------------------------------------
+	// 		// スケジューラが利用できない場合
+	// 		// 直接実行する
+	// 		px2style.loading();
+	// 		main.px2utils.px2cmd("?PX=admin.api.git_pull", {}, (data)=>{
+	// 			console.log('------ git-pull Response:', data);
+	// 			alert('git-pull done.');
+	// 			px2style.closeLoading();
+	// 		});
+	// 	}
+	// }
 
-	/**
-	 * プッシュする
-	 */
-	function push(){
-		console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
+	// /**
+	//  * プッシュする
+	//  */
+	// function push(){
+	// 	console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
 
-		if( healthCheckStatus.scheduler.is_available ){
-			// --------------------------------------
-			// スケジューラが利用可能な場合
-			// キューを発行する
-			px2style.loading();
-			main.px2utils.px2cmd(
-				"/?PX=admin.api.scheduler_add_queue",
-				{
-					"service": "git-push",
-					"name": "clover-manual-git-push",
-				},
-				(data)=>{
-					console.log('------ scheduler_add_queue Response:', data);
-						alert('git-push queue を登録しました。');
-						px2style.closeLoading();
-				}
-			);
-		}else{
-			// --------------------------------------
-			// スケジューラが利用できない場合
-			// 直接実行する
-			px2style.loading();
-			main.px2utils.px2cmd("?PX=admin.api.git_push", {}, (data)=>{
-				console.log('------ git-push Response:', data);
-				alert('git-push done.');
-				px2style.closeLoading();
-			});
-		}
-	}
+	// 	if( healthCheckStatus.scheduler.is_available ){
+	// 		// --------------------------------------
+	// 		// スケジューラが利用可能な場合
+	// 		// キューを発行する
+	// 		px2style.loading();
+	// 		main.px2utils.px2cmd(
+	// 			"/?PX=admin.api.scheduler_add_queue",
+	// 			{
+	// 				"service": "git-push",
+	// 				"name": "clover-manual-git-push",
+	// 			},
+	// 			(data)=>{
+	// 				console.log('------ scheduler_add_queue Response:', data);
+	// 					alert('git-push queue を登録しました。');
+	// 					px2style.closeLoading();
+	// 			}
+	// 		);
+	// 	}else{
+	// 		// --------------------------------------
+	// 		// スケジューラが利用できない場合
+	// 		// 直接実行する
+	// 		px2style.loading();
+	// 		main.px2utils.px2cmd("?PX=admin.api.git_push", {}, (data)=>{
+	// 			console.log('------ git-push Response:', data);
+	// 			alert('git-push done.');
+	// 			px2style.closeLoading();
+	// 		});
+	// 	}
+	// }
 
 
 	return (

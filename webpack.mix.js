@@ -45,6 +45,11 @@ mix
 
 
 	// --------------------------------------
+	// cloverCommon Script
+	.js('src/cloverCommon/cloverCommon.js', 'public/resources/cloverCommon/')
+	.sass('src/cloverCommon/cloverCommon.scss', 'public/resources/cloverCommon/')
+
+	// --------------------------------------
 	// cloverMain Script
 	.js('src/cloverMain/cloverMain.jsx', 'public/resources/cloverMain/')
 	.sass('src/cloverMain/cloverMain.scss', 'public/resources/cloverMain/')

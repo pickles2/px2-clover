@@ -13,8 +13,8 @@ import PageInfo from './views/PageInfo';
 import Publish from './views/Publish';
 import History from './views/History';
 import iterate79 from 'iterate79';
-import CloverUtils from '../common/CloverUtils';
-import Px2Utils from '../common/Px2Utils';
+import CloverUtils from '../_libs/CloverUtils';
+import Px2Utils from '../_libs/Px2Utils';
 
 class Layout extends React.Component {
 

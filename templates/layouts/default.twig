@@ -23,6 +23,22 @@
 		{% endblock %}
 	</div>
 
+
+	{# -------------------------------------- #}
+    <script>
+    window.px2config = {
+        "name": "{{ px2config.name | e("js") }}",
+        "path_controot": "{{ px2config.path_controot | e("js") }}",
+        "default_directory_index": "{{ px2config.directory_index[0] | e("js") }}",
+    };
+    window.clover_config = {
+        "history": {
+            "auto_commit": "{{ clover_config.history.auto_commit | e("js") }}",
+        }
+    };
+    window.csrf_token = "{{ csrf_token | e("js") }}";
+    </script>
+
 	{% block foot %}
 	{% endblock %}
 </body>

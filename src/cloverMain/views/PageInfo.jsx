@@ -198,6 +198,8 @@ export default function PageInfo(props){
 									});
 									modal.unlock();
 									px2style.closeModal();
+
+									main.cloverUtils.autoCommit();
 									main.link('?PX=admin.page_info');
 								}
 							);
@@ -302,6 +304,8 @@ export default function PageInfo(props){
 									});
 									modal.unlock();
 									px2style.closeModal();
+
+									main.cloverUtils.autoCommit();
 									main.link('?PX=admin.page_info');
 								}
 							);
@@ -416,6 +420,8 @@ export default function PageInfo(props){
 											});
 											modal.unlock();
 											px2style.closeModal();
+
+											main.cloverUtils.autoCommit();
 											main.link('/?PX=admin.page_info');
 											it2.next();
 										}

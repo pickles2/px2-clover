@@ -1,4 +1,6 @@
 export default function CloverUtils(){
+	const $ = require('jquery');
+	const _ = require('lodash');
 
 	/**
 	 * ログインユーザーのプロフィール情報を取得する
@@ -96,6 +98,35 @@ export default function CloverUtils(){
 				callback(result);
 			},
 		});
+	}
+
+	var timer_autoCommit;
+	this.autoCommit = function(){
+		// auto_commit 設定が有効な場合、
+		// コミット要求を投げる
+		if( !clover_config.history.auto_commit ){
+			return;
+		}
+		clearTimeout(timer_autoCommit);
+		timer_autoCommit = setTimeout(function(){
+			console.log('===== auto_commit');
+			$.ajax({
+				"url": '?PX=admin.api.git_commit',
+				"method": 'post',
+				'data': {
+					'ADMIN_USER_CSRF_TOKEN': csrf_token,
+				},
+				"error": function(error){
+					console.error('------ git_commit Error:', typeof(error), error);
+				},
+				"success": function(data){
+					console.log('------ git_commit Response:', typeof(data), data);
+				},
+				"complete": function(){
+					console.log('===== auto_commit: done');
+				},
+			});
+		}, 2000);
 	}
 
 }
