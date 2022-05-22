@@ -24,6 +24,11 @@ composer require tomk79/px2-clover;
 ```
 
 
+## 環境変数
+
+- `APP_KEY`: 暗号・復号 に使用するキー
+
+
 ## 更新履歴 - Change log
 
 ### tomk79/px2-clover v0.1.1 (リリース日未定)
