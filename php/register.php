@@ -168,6 +168,11 @@ class register{
 							$app = new funcs\api\profile($this->clover);
 							$app->update();
 							break;
+						case 'git':
+							$this->clover->allowed_method('post');
+							$app = new funcs\api\git($this->clover);
+							$app->git();
+							break;
 						case 'git_status':
 							$app = new funcs\api\git($this->clover);
 							$app->status();

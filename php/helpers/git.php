@@ -25,6 +25,36 @@ class git{
 	}
 
 	/**
+	 * Gitコマンドを直接実行する
+	 */
+	public function git( $git_command_array = array() ){
+		$rtn = array();
+		$rtn['result'] = true;
+		$rtn['message'] = 'OK';
+
+		if( !is_array( $git_command_array ) || !count( $git_command_array ) ){
+			return array(
+				'result' => true,
+				'message' => 'OK',
+			);
+		}
+
+		$res_cmd = $this->exec_git_command( $git_command_array );
+		if( !$res_cmd['result'] ){
+			return array(
+				'result' => false,
+				'message' => $res_cmd['stdout'].$res_cmd['stderr'],
+			);
+		}
+
+		$rtn['exitcode'] = 0;
+		$rtn['stdout'] = $res_cmd['stdout'];
+		$rtn['stderr'] = $res_cmd['stderr'];
+
+		return $rtn;
+	}
+
+	/**
 	 * 状態を知る
 	 */
 	public function status(){

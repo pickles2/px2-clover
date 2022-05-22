@@ -25,6 +25,21 @@ class git{
 	}
 
 	/**
+	 * Gitコマンドを直接実行する
+	 */
+	public function git(){
+		$this->px->header('Content-type: text/json');
+
+		$gitHelper = new \tomk79\pickles2\px2clover\helpers\git( $this->clover );
+		$json_git_command = $this->px->req()->get_param('git');
+		$git_command_array = json_decode($json_git_command);
+		$rtn = $gitHelper->git( $git_command_array );
+
+		echo json_encode($rtn);
+		exit;
+	}
+
+	/**
 	 * コミットする
 	 */
 	public function commit(){

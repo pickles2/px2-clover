@@ -2,6 +2,7 @@
 
 {% block title %}ページ情報{% endblock %}
 {% block head %}
+<link rel="stylesheet" href="{{ path_client_resources }}gitui79/gitui79.css" />
 <link rel="stylesheet" href="{{ path_client_resources }}cloverMain/cloverMain.css" />
 {% endblock %}
 {% block content %}
@@ -18,5 +19,6 @@ window.px2config = {
 };
 window.csrf_token = "{{ csrf_token | e("js") }}";
 </script>
+<script src="{{ path_client_resources }}gitui79/gitui79.js"></script>
 <script src="{{ path_client_resources }}cloverMain/cloverMain.js"></script>
 {% endblock %}

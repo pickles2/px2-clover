@@ -31,6 +31,32 @@ export default React.memo(function History(props){
 		};
 	}, []);
 
+	useEffect(() => {
+		const $contGit = document.querySelector('.cont-git');
+		const gitUi79 = new GitUi79(
+			$contGit,
+			function(cmdAry, callback){
+				var result = [];
+				console.log('=-=-=-=-=-=-= GPI Request:', cmdAry, callback);
+
+				px2style.loading();
+				main.px2utils.px2cmd("?PX=admin.api.git", {
+					'git': JSON.stringify(cmdAry),
+				}, (data)=>{
+					callback(data.exitcode, data.stdout+data.stderr);
+					px2style.closeLoading();
+				});
+			},
+			{}
+		);
+		gitUi79.init(function(){
+			console.log('gitUi79: Standby.');
+		});
+
+		return () => {
+		};
+	}, []);
+
 
 	/**
 	 * コミットする
@@ -192,6 +218,7 @@ export default React.memo(function History(props){
 
 	return (
 		<>
+			{/*
 			<p>現在の状態を保存するには、「コミットする」ボタンをクリックしてください。</p>
 			<p><button type="button" onClick={commit} className="px2-btn">コミットする</button></p>
 			<hr />
@@ -200,6 +227,9 @@ export default React.memo(function History(props){
 			<p><button type="button" onClick={pull} className="px2-btn">プルする</button></p>
 			<hr />
 			<p><button type="button" onClick={push} className="px2-btn">プッシュする</button></p>
+			<hr />
+			*/}
+			<div className="cont-git"></div>
 		</>
 	);
 });
