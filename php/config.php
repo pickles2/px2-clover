@@ -53,10 +53,11 @@ class config{
 	public function update( $new_config ){
 
 		$config = $this->get();
+		$crypt = new crypt( $this->clover );
 
 		if( isset($new_config['history']['git_remote']) ){ $config['history']['git_remote'] = $new_config['history']['git_remote']; }
 		if( isset($new_config['history']['git_id']) ){ $config['history']['git_id'] = $new_config['history']['git_id']; }
-		if( isset($new_config['history']['git_pw']) ){ $config['history']['git_pw'] = $new_config['history']['git_pw']; }
+		if( isset($new_config['history']['git_pw']) ){ $config['history']['git_pw'] = $crypt->encrypt($new_config['history']['git_pw']); }
 		if( isset($new_config['history']['auto_commit']) ){ $config['history']['auto_commit'] = $new_config['history']['auto_commit']; }
 
 
