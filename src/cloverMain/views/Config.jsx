@@ -10,6 +10,7 @@ export default function Config(props){
 		<>
 			<ul>
 				<li><Link href="?PX=admin.config.profile">プロフィールを編集する</Link></li>
+				<li><Link href="?PX=admin.config.history">履歴管理設定</Link></li>
 				<li><Link href="?PX=admin.config.scheduler">タスクスケジュール設定</Link></li>
 			</ul>
 		</>

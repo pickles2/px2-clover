@@ -6,6 +6,7 @@ import Dashboard from './views/Dashboard';
 import ClearCache from './views/ClearCache';
 import Config from './views/Config';
 import ConfigProfile from './views/ConfigProfile';
+import ConfigHistory from './views/ConfigHistory';
 import ConfigScheduler from './views/ConfigScheduler';
 import Sitemap from './views/Sitemap';
 import PageInfo from './views/PageInfo';
@@ -45,7 +46,7 @@ class Layout extends React.Component {
 			let tmpNewState = {};
 			iterate79.fnc({}, [
 				(it1) => {
-					if( this.state.pageInfoLoaded && this.state.profileLoaded ){
+					if( this.state.pageInfoLoaded && this.state.configLoaded && this.state.profileLoaded ){
 						return;
 					}
 					it1.next();
@@ -62,6 +63,17 @@ class Layout extends React.Component {
 					this.state.cloverUtils.getProfile((data)=>{
 						tmpNewState.profile = data.profile;
 						tmpNewState.profileLoaded = true;
+						it1.next();
+					});
+				},
+				(it1) => {
+					if( this.state.configLoaded ){
+						it1.next();
+						return;
+					}
+					this.state.cloverUtils.getConfig((data)=>{
+						tmpNewState.config = data.config;
+						tmpNewState.configLoaded = true;
 						it1.next();
 					});
 				},
@@ -116,6 +128,8 @@ class Layout extends React.Component {
 			"pageInfo": null,
 			"profileLoaded": false,
 			"profile": null,
+			"configLoaded": false,
+			"config": null,
 			"link": link,
 			"cloverUtils": cloverUtils,
 			"px2utils": px2utils,
@@ -171,6 +185,10 @@ class Layout extends React.Component {
 			case 'admin.config.profile':
 				title = "プロフィール設定";
 				content = <ConfigProfile />;
+				break;
+			case 'admin.config.history':
+				title = "履歴管理設定";
+				content = <ConfigHistory />;
 				break;
 			case 'admin.config.scheduler':
 				title = "タスクスケジュール設定";

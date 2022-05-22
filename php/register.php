@@ -193,6 +193,15 @@ class register{
 							$app = new funcs\api\publish($this->clover);
 							$app->stop();
 							break;
+						case 'get_config':
+							$app = new funcs\api\config($this->clover);
+							$app->get();
+							break;
+						case 'update_config':
+							$this->clover->allowed_method('post');
+							$app = new funcs\api\config($this->clover);
+							$app->update();
+							break;
 						case 'scheduler_setting_hint':
 							$this->clover->allowed_method('post');
 							$app = new funcs\api\scheduler($this->clover);
