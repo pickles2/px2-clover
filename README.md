@@ -13,15 +13,51 @@ composer require tomk79/px2-clover;
 
 ### セットアップ
 
-`px-files/config.php` に、 `tomk79\pickles2\px2clover\main::register()` の設定を追加する。
+`px-files/config.php` の先頭に、 `tomk79\pickles2\px2clover\main::register()` の設定を追加する。
 
 ```php
 	// funcs: Before sitemap
 	$conf->funcs->before_sitemap = [
 		// px2-clover
-		tomk79\pickles2\px2clover\main::register(),
+		tomk79\pickles2\px2clover\main::register( array(
+			/* any options... */
+		) ),
+
+		// ...other plugins
 	];
 ```
+
+
+`$conf->allow_pxcommands` を有効に設定します。
+この設定により、すべてのPXコマンドがブラウザから実行できるようになります。
+通常、この設定は無効にすることが推奨されていますが、 Clover CMS が、他のすべてのPXコマンドの実行に認証を求め、保護するため、安全に使うことができます。
+
+```php
+$conf->allow_pxcommands = 1;
+```
+
+### プラグインオプション
+
+必要に応じて、追加のオプションを設定できます。
+
+```php
+	// funcs: Before sitemap
+	$conf->funcs->before_sitemap = [
+		// px2-clover
+		tomk79\pickles2\px2clover\main::register( array(
+			"protect_preview" => true, // プレビューに認証を要求するか？
+		) ),
+	];
+```
+
+
+### 管理画面から設定
+
+ここまでの設定ができたら、ブラウザでプレビューにアクセスし、管理画面から設定を続けます。
+詳しくは管理画面の指示に従ってください。
+
+通常、プレビュー画面の右下に管理メニューが表示され、管理画面へ遷移できます。
+管理画面のURLは、 プレビューに `PX=admin` を付与したもの(例: `https://yourdomain/?PX=admin`) になります。
 
 
 ## 環境変数
