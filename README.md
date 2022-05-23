@@ -67,6 +67,10 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
+### tomk79/px2-clover v0.1.2 (リリース日未定)
+
+- パブリッシュが重くなる問題を修正した。
+
 ### tomk79/px2-clover v0.1.1 (2022年5月22日)
 
 - パブリッシュ画面を追加。
