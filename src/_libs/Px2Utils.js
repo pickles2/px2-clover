@@ -32,23 +32,49 @@ export default function Px2Utils(){
 	/**
 	 * PX Command を実行する
 	 */
-	this.px2cmd= function( path, data, callback ){
+	this.px2cmd= function( path, data, ...args ){
+		const callback = args[args.length - 1];
 		data.ADMIN_USER_CSRF_TOKEN = window.csrf_token;
-		let tmpPageInfo;
+		let pageInfo;
+		let error;
+
+		var lastResponseLength = false;
 		$.ajax({
 			"url": path,
 			"method": "post",
 			"data": data,
-			"error": function(error){
-				console.error('PX Command Error:', error);
+			"cache": false,
+			"timeout": 30000,
+			"xhrFields": {
+				"onprogress": function(oEvent){
+					console.log('onprogress');
+
+                    var thisResponse, response = oEvent.currentTarget.response;
+                    if(lastResponseLength === false)
+                    {
+                        thisResponse = response;
+                        lastResponseLength = response.length;
+                    }
+                    else
+                    {
+                        thisResponse = response.substring(lastResponseLength);
+                        lastResponseLength = response.length;
+                    }
+                    console.log(thisResponse);
+				},
 			},
-			"success": function(data){
-				tmpPageInfo = data;
-			},
-			"complete": function(){
-				callback(tmpPageInfo);
-			},
-		});
+		})
+		.done(function(data){
+			pageInfo = data;
+		})
+		.fail(function(data){
+			console.error('PX Command Error:', data);
+			error = data;
+		})
+		.always(function(){
+			callback(pageInfo, error);
+		})
+		;
 	}
 
 	/**
