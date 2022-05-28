@@ -51,10 +51,10 @@ export default React.memo(function Publish(props){
 					"service": "publish",
 					"name": "clover-manual-publish",
 				},
-				(data)=>{
-					console.log('------ scheduler_add_queue Response:', data);
-						alert('publish queue を登録しました。');
-						px2style.closeLoading();
+				function(data, error){
+					console.log('------ scheduler_add_queue Response:', data, error);
+					alert('publish queue を登録しました。');
+					px2style.closeLoading();
 				}
 			);
 		}else{
@@ -62,11 +62,25 @@ export default React.memo(function Publish(props){
 			// スケジューラが利用できない場合
 			// 直接実行する
 			px2style.loading();
-			main.px2utils.px2cmd("?PX=publish.run", {}, (data)=>{
-				console.log('------ publish Response:', data);
-					alert('publish done.');
+			main.px2utils.px2cmd(
+				"?PX=publish.run",
+				{},
+				{
+					"timeout": 60 * 1000, // 60秒待つ
+					"progress": function(progress){
+						console.log('-- progress:', progress);
+					}
+				},
+				function(data, error){
+					console.log('------ publish Response:', data, error);
+					if( error ){
+						alert('publish error.');
+					}else{
+						alert('publish done.');
+					}
 					px2style.closeLoading();
-			});
+				}
+			);
 		}
 	}
 
@@ -78,10 +92,10 @@ export default React.memo(function Publish(props){
 			return;
 		}
 		px2style.loading();
-		main.px2utils.px2cmd("?PX=admin.api.publish_stop", {}, (data)=>{
-			console.log('------ publish_stop Response:', data);
-				alert('publish_stop done.');
-				px2style.closeLoading();
+		main.px2utils.px2cmd("?PX=admin.api.publish_stop", {}, function(data, error){
+			console.log('------ publish_stop Response:', data, error);
+			alert('publish_stop done.');
+			px2style.closeLoading();
 		});
 	}
 

@@ -11,23 +11,24 @@ export default React.memo(function ClearCache(props){
 	 */
 	function clearcache(){
 		px2style.loading();
-		$.ajax({
-			"url": "?PX=clearcache",
-			"method": "post",
-			"data": {
-				'ADMIN_USER_CSRF_TOKEN': window.csrf_token,
+		main.px2utils.px2cmd(
+			"?PX=clearcache",
+			{},
+			{
+				"progress": function(progress){
+					console.log('progress:', progress);
+				},
 			},
-			"error": function(error){
-				console.error('------ clearcache Response Error:', typeof(error), error);
-			},
-			"success": function(data){
-				console.log('------ clearcache Response:', typeof(data), data);
-			},
-			"complete": function(){
-				alert('clearcache done.');
+			function(data, error){
+				console.log('------ clearcache Response:', data, error);
+				if( error ){
+					alert('clearcache error.');
+				}else{
+					alert('clearcache done.');
+				}
 				px2style.closeLoading();
-			},
-		});
+			}
+		);
 	}
 
 	return (
