@@ -18,6 +18,9 @@ class clover{
 	/** View機能 */
 	private $view;
 
+	/** 言語機能 */
+	private $lang;
+
 	/**
 	 * Constructor
 	 *
@@ -29,6 +32,7 @@ class clover{
 
 		$this->auth = new helpers\auth( $this );
 		$this->view = new view( $this );
+		$this->lang = new helpers\lang( $this );
 	}
 
 
@@ -51,6 +55,11 @@ class clover{
 	/** view */
 	public function view(){
 		return $this->view;
+	}
+
+	/** lang */
+	public function lang(){
+		return $this->lang;
 	}
 
 	/** プラグインオプションを取得 */

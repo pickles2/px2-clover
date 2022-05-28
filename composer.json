@@ -25,6 +25,7 @@
         "php": ">=7.3.0",
         "pickles2/px-fw-2.x": "~2.1",
         "pickles2/px2-px2dthelper": "~2.1.0",
+        "tomk79/langbank": "~0.2",
         "twig/twig": ">=3"
     },
     "require-dev": {

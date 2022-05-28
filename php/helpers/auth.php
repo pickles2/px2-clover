@@ -50,21 +50,21 @@ class auth{
 				exit;
 			}
 			if( $this->is_csrf_token_required() && !$this->is_valid_csrf_token_given() ){
-				$this->login_page();
+				$this->login_page('csrf_token_expired');
 				exit;
 			}
 
 			$login_challenger_id = $this->px->req()->get_param('ADMIN_USER_ID');
 			if( !$this->validate_user_id($login_challenger_id) ){
 				// 不正な形式のID
-				$this->login_page();
+				$this->login_page('invalid_user_id');
 				exit;
 			}
 
 			$user_info = $this->get_admin_user_info( $login_challenger_id );
 			if( !is_array($user_info) ){
 				// 不正なユーザーデータ
-				$this->login_page();
+				$this->login_page('failed');
 				exit;
 			}
 			$admin_id = $user_info['id'];
@@ -77,6 +77,11 @@ class auth{
 					$redirect_to = '?PX='.htmlspecialchars( $this->px->req()->get_param('PX') );
 				}
 				$this->px->header('Location:'.$redirect_to);
+				exit;
+			}
+
+			if( !$this->is_login() ){
+				$this->login_page('failed');
 				exit;
 			}
 		}
@@ -131,7 +136,7 @@ class auth{
 	/**
 	 * ログイン画面を表示する
 	 */
-	public function login_page(){
+	private function login_page( $error_message = null ){
 		$this->px->set_status(403);
 
 		$command = $this->px->get_px_command();
@@ -145,12 +150,14 @@ class auth{
 				exit;
 			}
 		}
+
 		echo $this->clover->view()->bind(
 			'/system/login.twig',
 			array(
 				'url_backto' => '?',
 				'ADMIN_USER_ID' => $this->px->req()->get_param('ADMIN_USER_ID'),
 				'csrf_token' => $this->get_csrf_token(),
+				'error_message' => $error_message ? $this->clover->lang()->get('login_error.'.$error_message) : null,
 			)
 		);
 		exit;
