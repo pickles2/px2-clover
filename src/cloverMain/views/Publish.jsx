@@ -66,7 +66,7 @@ export default React.memo(function Publish(props){
 				"?PX=publish.run",
 				{},
 				{
-					"timeout": 60 * 1000, // 60秒待つ
+					"timeout": 30 * 60 * 1000, // 30分待つ
 					"progress": function(progress){
 						console.log('-- progress:', progress);
 					}
@@ -94,7 +94,7 @@ export default React.memo(function Publish(props){
 		px2style.loading();
 		main.px2utils.px2cmd("?PX=admin.api.publish_stop", {}, function(data, error){
 			console.log('------ publish_stop Response:', data, error);
-			alert('publish_stop done.');
+			alert('publish stopped.');
 			px2style.closeLoading();
 		});
 	}

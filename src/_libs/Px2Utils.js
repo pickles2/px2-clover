@@ -8,25 +8,8 @@ export default function Px2Utils(){
 	 * @returns 
 	 */
 	this.getCurrentPageInfo= function( callback ){
-		let tmpPageInfo;
-		$.ajax({
-			"url": "?PX=admin.api.get_page_info",
-			"method": "post",
-			"data": {
-				'ADMIN_USER_CSRF_TOKEN': window.csrf_token,
-			},
-			"error": function(error){
-				// console.error('------ admin.api.get_page_info Response Error:', typeof(error), error);
-				tmpPageInfo = error;
-			},
-			"success": function(data){
-				// console.log('------ admin.api.get_page_info Response:', typeof(data), data);
-				tmpPageInfo = data;
-			},
-			"complete": function(){
-				callback(tmpPageInfo);
-			},
-		});
+		this.px2cmd("?PX=admin.api.get_page_info", {}, callback);
+		return;
 	}
 
 	/**
@@ -40,7 +23,7 @@ export default function Px2Utils(){
 		const callback = args[args.length - 1];
 
 		params.ADMIN_USER_CSRF_TOKEN = window.csrf_token;
-		let pageInfo;
+		let pxCmdStdOut;
 		let error;
 
 		let lastResponseLength = false;
@@ -71,17 +54,22 @@ export default function Px2Utils(){
 		}
 
 		$.ajax(ajaxOptions)
-			.done(function(data){
-				pageInfo = data;
+			.done(function(data, textStatus, jqXHR){
+				pxCmdStdOut = data;
 			})
-			.fail(function(data){
-				console.error('PX Command Error:', data);
-				error = data;
+			.fail(function(jqXHR, textStatus, error){
+				if( jqXHR.status == 403 ){
+					// alert('You logged out.');
+					window.location.reload();
+				}
+				console.error('PX Command Error:', jqXHR, textStatus, error);
+				error = error;
 			})
 			.always(function(){
-				callback(pageInfo, error);
+				callback(pxCmdStdOut, error);
 			})
 		;
+		return;
 	}
 
 	/**

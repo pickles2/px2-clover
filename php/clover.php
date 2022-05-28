@@ -27,7 +27,7 @@ class clover{
 		$this->px = $px;
 		$this->options = (object) $options;
 
-		$this->auth = new auth( $this );
+		$this->auth = new helpers\auth( $this );
 		$this->view = new view( $this );
 	}
 
@@ -60,7 +60,7 @@ class clover{
 
 	/** Cloverの設定を取得する */
 	public function conf(){
-		$config = new config($this);
+		$config = new helpers\config($this);
 		return $config->get();
 	}
 
