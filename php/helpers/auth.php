@@ -76,6 +76,7 @@ class auth{
 				if( is_string($this->px->req()->get_param('PX')) ){
 					$redirect_to = '?PX='.htmlspecialchars( $this->px->req()->get_param('PX') );
 				}
+				$this->px->req()->set_cookie('LANG', $user_info['lang']);
 				$this->px->header('Location:'.$redirect_to);
 				exit;
 			}
