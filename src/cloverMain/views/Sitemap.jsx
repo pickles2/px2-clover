@@ -74,6 +74,38 @@ export default React.memo(function Sitemap(props){
 	}
 
 	/**
+	 * アップロードダイアログを開く
+	 */
+	function openUploadSitemapFileDialog(){
+		var template = require('./Sitemap_files/templates/upload.twig');
+		var $body = $('<div>')
+			.append( template( {
+				"csrf_token": window.csrf_token,
+			} ) )
+		;
+		const modal = px2style.modal({
+			"title": "サイトマップファイルをアップロード",
+			"body": $body,
+			'buttons':[
+				$('<button type="button" class="px2-btn px2-btn--primary">')
+					.text('アップロードする')
+					.on('click', function(e){
+						e.preventDefault();
+						uploadSitemapFile( $body.find('form').get(0) );
+						px2style.closeModal();
+					})
+			],
+			'buttonsSecondary': [
+				$('<button type="button" class="px2-btn">')
+					.text('キャンセル')
+					.on('click', function(){
+						px2style.closeModal();
+					}),
+			],
+		});
+	}
+
+	/**
 	 * サイトマップファイルをアップロードする
 	 * @param {*} form 
 	 */
@@ -170,17 +202,7 @@ export default React.memo(function Sitemap(props){
 				</>
 			}</>}
 			<hr />
-			<div>
-				<form action="?PX=px2dthelper.sitemap.upload" method="post" encType="multipart/form-data" onSubmit={function(e){
-					e.preventDefault();
-					uploadSitemapFile(e.target);
-				}}>
-					<div>filename: <input type="input" name="filefullname" defaultValue="" /></div>
-					<div>file: <input type="file" name="file" defaultValue="" /></div>
-					<button type="submit" className="px2-btn px2-btn--primary">アップロード</button>
-					<input type="hidden" name="ADMIN_USER_CSRF_TOKEN" defaultValue={window.csrf_token} />
-				</form>
-			</div>
+			<p><button type="button" className="px2-btn" onClick={openUploadSitemapFileDialog}>アップロード</button></p>
 		</>
 	);
 });

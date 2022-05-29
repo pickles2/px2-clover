@@ -24,7 +24,7 @@ class config{
 	public function __construct( $clover ){
 		$this->clover = $clover;
 		$this->px = $clover->px();
-		$this->cloverConfig = new \tomk79\pickles2\px2clover\config( $clover );
+		$this->cloverConfig = new \tomk79\pickles2\px2clover\helpers\config( $clover );
 	}
 
 	/**

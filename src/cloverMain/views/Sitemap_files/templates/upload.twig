@@ -1,0 +1,22 @@
+<form action="?PX=px2dthelper.sitemap.upload" method="post" encType="multipart/form-data">
+	<input type="hidden" name="ADMIN_USER_CSRF_TOKEN" value={{ csrf_token }} />
+
+	<p>サイトマップファイルをアップロードします。</p>
+	<p>同名のファイルがすでに存在する場合は、上書きされます。</p>
+
+	<div class="px2-form-input-list">
+		<ul class="px2-form-input-list__ul">
+			<li class="px2-form-input-list__li">
+				<div class="px2-form-input-list__label"><label for="input-file">ファイル</label></div>
+				<div class="px2-form-input-list__input"><input type="file" id="input-file" name="file" value="" /></div>
+			</li>
+			<li class="px2-form-input-list__li">
+				<div class="px2-form-input-list__label"><label htmlFor="input-filename">ファイル名</label></div>
+				<div class="px2-form-input-list__input">
+					<p class="px2-note">拡張子を含めたファイル名を指定してください。省略時は、アップロードファイルのファイル名で保存します。</p>
+					<input type="text" id="input-filename" name="filefullname" value="" class="px2-input px2-input--block" />
+				</div>
+			</li>
+		</ul>
+	</div>
+</form>
