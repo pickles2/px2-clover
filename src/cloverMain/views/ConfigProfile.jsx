@@ -14,7 +14,7 @@ export default function ConfigProfile(props){
 		var newProfile = {
 			'id': $form.find('input[name=id]').val(),
 			'name': $form.find('input[name=name]').val(),
-			'lang': $form.find('input[name=lang]').val(),
+			'lang': $form.find('select[name=lang]').val(),
 		};
 		if( $form.find('input[name=pw]').val().length ){
 			newProfile.pw = $form.find('input[name=pw]').val();
@@ -32,7 +32,7 @@ export default function ConfigProfile(props){
 					'profileLoaded': false,
 				});
 				alert('Your profile updated.');
-				main.link('?PX=admin.config');
+				window.location.href = '?PX=admin.config';
 			}
 		);
 	}
@@ -46,26 +46,34 @@ export default function ConfigProfile(props){
 				: <>
 					<form onSubmit={updateProfile} method="post">
 						<div className="px2-p">
-						<table className="px2-table" style={{width:"100%"}}>
-							<tbody>
-								<tr>
-									<th>名前</th>
-									<td><input type="text" name="name" defaultValue={main.profile.name} className="px2-input" /></td>
-								</tr>
-								<tr>
-									<th>ID</th>
-									<td><input type="text" name="id" defaultValue={main.profile.id} className="px2-input" /></td>
-								</tr>
-								<tr>
-									<th>言語</th>
-									<td><input type="text" name="lang" defaultValue={main.profile.lang} className="px2-input" /></td>
-								</tr>
-								<tr>
-									<th>パスワード</th>
-									<td><input type="password" name="pw" defaultValue="" className="px2-input" /></td>
-								</tr>
-							</tbody>
-						</table>
+							<div className="px2-form-input-list">
+								<ul className="px2-form-input-list__ul">
+									<li className="px2-form-input-list__li">
+										<div className="px2-form-input-list__label"><label htmlFor="input-name">名前</label></div>
+										<div className="px2-form-input-list__input"><input type="text" id="input-name" name="name" defaultValue={main.profile.name} className="px2-input" /></div>
+									</li>
+									<li className="px2-form-input-list__li px2-form-input-list__li--required">
+										<div className="px2-form-input-list__label"><label htmlFor="input-id">ID</label></div>
+										<div className="px2-form-input-list__input"><input type="text" id="input-id" name="id" defaultValue={main.profile.id} className="px2-input" /></div>
+									</li>
+									<li className="px2-form-input-list__li">
+										<div className="px2-form-input-list__label"><label htmlFor="input-lang">言語</label></div>
+										<div className="px2-form-input-list__input">
+											<select id="input-lang" name="lang" className="px2-input" defaultValue={main.profile.lang}>
+												<option value="en">English</option>
+												<option value="ja">Japanese</option>
+											</select>
+										</div>
+									</li>
+									<li className="px2-form-input-list__li">
+										<div className="px2-form-input-list__label"><label htmlFor="input-pw">パスワード</label></div>
+										<div className="px2-form-input-list__input">
+											<p className="px2-note">パスワードを変更する場合のみ入力してください。</p>
+											<input type="password" id="input-pw" name="pw" defaultValue="" className="px2-input" />
+										</div>
+									</li>
+								</ul>
+							</div>
 						</div>
 						<p><button type="submit" className="px2-btn px2-btn--primary">保存する</button></p>
 					</form>
