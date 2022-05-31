@@ -226,7 +226,8 @@ class auth{
 			// 不正な形式のID
 			return false;
 		}
-		if( !$this->validate_user_info($user_info) ){
+		$user_info_validated = $this->validate_user_info($user_info);
+		if( !$user_info_validated->is_valid ){
 			// 不正な形式のユーザー情報
 			return false;
 		}
@@ -303,7 +304,8 @@ class auth{
 		if( is_file( $realpath_json ) ){
 			return false;
 		}
-		if( !$this->validate_user_info($user_info) ){
+		$user_info_validated = $this->validate_user_info($user_info);
+		if( !$user_info_validated->is_valid ){
 			// 不正な形式のユーザー情報
 			return false;
 		}
@@ -329,40 +331,67 @@ class auth{
 		}
 		return true;
 	}
+
 	/**
 	 * Validation: ユーザー情報
 	 */
 	private function validate_user_info( $user_info ){
+		$rtn = (object) array(
+			'is_valid' => true,
+			'message' => 'OK',
+		);
 		$user_info = (array) $user_info;
 
 		if( !$this->validate_user_id($user_info['id']) ){
 			// 不正な形式のID
-			return false;
+			return (object) array(
+				'is_valid' => false,
+				'message' => '不正な形式のIDです。',
+			);
 		}
 		if( !isset($user_info['name']) || !strlen($user_info['name']) ){
-			return false;
+			return (object) array(
+				'is_valid' => false,
+				'message' => '必ず入力してください。',
+			);
 		}
 		if( !isset($user_info['pw']) || !strlen($user_info['pw']) ){
-			return false;
+			return (object) array(
+				'is_valid' => false,
+				'message' => '必ず入力してください。',
+			);
 		}
 		if( !isset($user_info['lang']) || !strlen($user_info['lang']) ){
-			return false;
+			return (object) array(
+				'is_valid' => false,
+				'message' => '必ず選択してください。',
+			);
 		}
 		if( isset($user_info['email']) && is_string($user_info['email']) && strlen($user_info['email']) ){
 			if( !preg_match('/^[^@\/\\\\]+\@[^@\/\\\\]+$/', $user_info['email']) ){
-				return false;
+				return (object) array(
+					'is_valid' => false,
+					'message' => '不正な形式のメールアドレスです。',
+				);
 			}
 		}
 		if( !isset($user_info['role']) || !strlen($user_info['role']) ){
-			return false;
+			return (object) array(
+				'is_valid' => false,
+				'message' => '必ず選択してください。',
+			);
 		}
 		switch( $user_info['role'] ){
 			case 'admin':
 				break;
 			default:
+				return (object) array(
+					'is_valid' => false,
+					'message' => 'ロールの値が不正です。',
+				);
 				return false;
 		}
-		return true;
+		return $rtn;
 	}
 
 
