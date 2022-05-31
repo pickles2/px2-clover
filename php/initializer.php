@@ -62,7 +62,7 @@ class initializer{
 				'role' => 'admin',
 			);
 			$result = $this->clover->auth()->create_admin_user( $user_info );
-			if( $result ){
+			if( $result->result ){
 				header('Location:'.'?PX=admin');
 				exit;
 			}

@@ -195,20 +195,33 @@ class auth{
 	 * 現在のログインユーザーの情報を取得する
 	 */
 	public function update_login_user_info( $new_profile ){
+		$result = (object) array(
+			'result' => true,
+			'message' => 'OK',
+		);
 		$login_user_id = $this->px->req()->get_session('ADMIN_USER_ID');
 		if( !is_string($login_user_id) || !strlen($login_user_id) ){
 			// ログインしていない
-			return false;
+			return (object) array(
+				'result' => false,
+				'message' => 'ログインしてください。',
+			);
 		}
 
 		if( !$this->validate_user_id($login_user_id) ){
 			// 不正な形式のID
-			return false;
+			return (object) array(
+				'result' => false,
+				'message' => 'ログインユーザーのIDが不正です。',
+			);
 		}
 
 		$user_info = $this->get_admin_user_info( $login_user_id );
 		if( !is_array($user_info) ){
-			return false;
+			return (object) array(
+				'result' => false,
+				'message' => 'ユーザー情報の取得に失敗しました。',
+			);
 		}
 		foreach( $new_profile as $key=>$val ){
 			if( $key == 'pw' ){
@@ -224,34 +237,46 @@ class auth{
 
 		if( !$this->validate_user_id($user_info['id']) ){
 			// 不正な形式のID
-			return false;
+			return (object) array(
+				'result' => false,
+				'message' => 'ユーザーIDが不正です。',
+			);
 		}
 		$user_info_validated = $this->validate_user_info($user_info);
 		if( !$user_info_validated->is_valid ){
 			// 不正な形式のユーザー情報
-			return false;
+			return (object) array(
+				'result' => false,
+				'message' => $user_info_validated->message,
+			);
 		}
 
 
 		// 新しいIDのためにファイル名を変更
-		$result = $this->px->fs()->rename(
+		$res_rename = $this->px->fs()->rename(
 			$this->realpath_admin_users.urlencode($login_user_id).'.json',
 			$this->realpath_admin_users.urlencode($user_info['id']).'.json'
 		);
-		if( !$result ){
-			return false;
+		if( !$res_rename ){
+			return (object) array(
+				'result' => false,
+				'message' => 'ユーザーIDの変更に失敗しました。',
+			);
 		}
 
 		$realpath_json = $this->realpath_admin_users.urlencode($user_info['id']).'.json';
 		$json_str = json_encode( $user_info, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE );
 		if( !$this->px->fs()->save_file($realpath_json, $json_str) ){
-			return false;
+			return (object) array(
+				'result' => false,
+				'message' => 'ユーザー情報の保存に失敗しました。',
+			);
 		}
 
 		// ログインユーザーの情報を更新
 		$this->px->req()->set_session('ADMIN_USER_ID', $user_info['id']);
-		$user_info = $this->get_admin_user_info( $user_info['id'] );
-		return $user_info;
+
+		return $result;
 	}
 
 
@@ -296,26 +321,42 @@ class auth{
 	 * @param array|object $user_info 作成するユーザー情報
 	 */
 	public function create_admin_user( $user_info ){
+		$result = (object) array(
+			'result' => true,
+			'message' => 'OK',
+		);
 		$user_info = (object) $user_info;
 		if( !$this->validate_user_id($user_info->id) ){
-			return false;
+			return (object) array(
+				'result' => false,
+				'message' => 'ユーザーIDが不正です。',
+			);
 		}
 		$realpath_json = $this->realpath_admin_users.'/'.urlencode($user_info->id).'.json';
 		if( is_file( $realpath_json ) ){
-			return false;
+			return (object) array(
+				'result' => false,
+				'message' => 'すでに存在します。',
+			);
 		}
 		$user_info_validated = $this->validate_user_info($user_info);
 		if( !$user_info_validated->is_valid ){
 			// 不正な形式のユーザー情報
-			return false;
+			return (object) array(
+				'result' => false,
+				'message' => $user_info_validated->message,
+			);
 		}
 
 		$user_info->pw = $this->clover->auth()->password_hash($user_info->pw);
 		$json_str = json_encode( $user_info, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE );
 		if( !$this->px->fs()->save_file($realpath_json, $json_str) ){
-			return false;
+			return (object) array(
+				'result' => false,
+				'message' => 'ユーザー情報の保存に失敗しました。',
+			);
 		}
-		return true;
+		return $result;
 	}
 
 	/**
