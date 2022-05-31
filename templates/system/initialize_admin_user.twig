@@ -10,9 +10,10 @@
 	<div>ID: <input type="text" name="ADMIN_USER_ID" value="{{ ADMIN_USER_ID }}" class="px2-input" /></div>
 	<div>PW: <input type="password" name="ADMIN_USER_PW" value="" class="px2-input" /></div>
 	<div>Language: <select name="ADMIN_USER_LANG" class="px2-input">
-        <option value="en">English</option>
-        <option value="ja">Japanese</option>
+        <option value="en"{{ ( ADMIN_USER_LANG == "en" ? ' selected="selected"' : "" ) }}>English</option>
+        <option value="ja"{{ ( ADMIN_USER_LANG == "ja" ? ' selected="selected"' : "" ) }}>Japanese</option>
     </select></div>
+	<div>E-mail: <input type="email" name="admin_user_email" value="{{ admin_user_email }}" class="px2-input" /></div>
 	<div><button type="submit" class="px2-btn px2-btn--primary">作成する</button></div>
 	<input type="hidden" name="ADMIN_USER_CSRF_TOKEN" value="{{ csrf_token }}" />
 </form>

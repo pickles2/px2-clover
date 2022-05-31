@@ -282,6 +282,8 @@ class auth{
 				'pw' => $this->password_hash($this->default_admin_user_pw),
 				'name' => 'Administrator',
 				'lang' => 'ja',
+				'email' => null,
+				'role' => null,
 			);
 		}
 		return $user_info;
@@ -345,6 +347,20 @@ class auth{
 		}
 		if( !isset($user_info['lang']) || !strlen($user_info['lang']) ){
 			return false;
+		}
+		if( isset($user_info['email']) && is_string($user_info['email']) && strlen($user_info['email']) ){
+			if( !preg_match('/^[^@\/\\\\]+\@[^@\/\\\\]+$/', $user_info['email']) ){
+				return false;
+			}
+		}
+		if( !isset($user_info['role']) || !strlen($user_info['role']) ){
+			return false;
+		}
+		switch( $user_info['role'] ){
+			case 'admin':
+				break;
+			default:
+				return false;
 		}
 		return true;
 	}

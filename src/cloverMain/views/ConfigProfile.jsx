@@ -15,6 +15,8 @@ export default function ConfigProfile(props){
 			'id': $form.find('input[name=id]').val(),
 			'name': $form.find('input[name=name]').val(),
 			'lang': $form.find('select[name=lang]').val(),
+			'email': $form.find('input[name=email]').val(),
+			'role': $form.find('select[name=role]').val(),
 		};
 		if( $form.find('input[name=pw]').val().length ){
 			newProfile.pw = $form.find('input[name=pw]').val();
@@ -57,6 +59,13 @@ export default function ConfigProfile(props){
 										<div className="px2-form-input-list__input"><input type="text" id="input-id" name="id" defaultValue={main.profile.id} className="px2-input" /></div>
 									</li>
 									<li className="px2-form-input-list__li">
+										<div className="px2-form-input-list__label"><label htmlFor="input-pw">パスワード</label></div>
+										<div className="px2-form-input-list__input">
+											<p className="px2-note">パスワードを変更する場合のみ入力してください。</p>
+											<input type="password" id="input-pw" name="pw" defaultValue="" className="px2-input" />
+										</div>
+									</li>
+									<li className="px2-form-input-list__li">
 										<div className="px2-form-input-list__label"><label htmlFor="input-lang">言語</label></div>
 										<div className="px2-form-input-list__input">
 											<select id="input-lang" name="lang" className="px2-input" defaultValue={main.profile.lang}>
@@ -66,10 +75,15 @@ export default function ConfigProfile(props){
 										</div>
 									</li>
 									<li className="px2-form-input-list__li">
-										<div className="px2-form-input-list__label"><label htmlFor="input-pw">パスワード</label></div>
+										<div className="px2-form-input-list__label"><label htmlFor="input-email">メールアドレス</label></div>
+										<div className="px2-form-input-list__input"><input type="text" id="input-email" name="email" defaultValue={main.profile.email} className="px2-input" /></div>
+									</li>
+									<li className="px2-form-input-list__li">
+										<div className="px2-form-input-list__label"><label htmlFor="input-role">ロール</label></div>
 										<div className="px2-form-input-list__input">
-											<p className="px2-note">パスワードを変更する場合のみ入力してください。</p>
-											<input type="password" id="input-pw" name="pw" defaultValue="" className="px2-input" />
+											<select id="input-role" name="role" className="px2-input" defaultValue={main.profile.role}>
+												<option value="admin">Admin</option>
+											</select>
 										</div>
 									</li>
 								</ul>

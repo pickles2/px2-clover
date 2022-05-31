@@ -53,6 +53,8 @@ class profile{
 			'name' => $this->px->req()->get_param('name'),
 			'lang' => $this->px->req()->get_param('lang'),
 			'pw' => $this->px->req()->get_param('pw'),
+			'email' => $this->px->req()->get_param('email'),
+			'role' => $this->px->req()->get_param('role'),
 		);
 		$result = $this->clover->auth()->update_login_user_info($new_profile);
 		if( !$result ){

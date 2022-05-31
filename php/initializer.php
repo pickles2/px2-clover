@@ -58,6 +58,8 @@ class initializer{
 				'id' => $this->px->req()->get_param('ADMIN_USER_ID'),
 				'pw' => $this->px->req()->get_param('ADMIN_USER_PW'),
 				'lang' => $this->px->req()->get_param('ADMIN_USER_LANG'),
+				'email' => $this->px->req()->get_param('admin_user_email'),
+				'role' => 'admin',
 			);
 			$result = $this->clover->auth()->create_admin_user( $user_info );
 			if( $result ){
@@ -72,6 +74,7 @@ class initializer{
 				'ADMIN_USER_NAME' => $this->px->req()->get_param('ADMIN_USER_NAME'),
 				'ADMIN_USER_ID' => $this->px->req()->get_param('ADMIN_USER_ID'),
 				'ADMIN_USER_LANG' => $this->px->req()->get_param('ADMIN_USER_LANG'),
+				'admin_user_email' => $this->px->req()->get_param('admin_user_email'),
 				'url_backto' => '?',
 				'csrf_token' => $this->clover->auth()->get_csrf_token(),
 			)
