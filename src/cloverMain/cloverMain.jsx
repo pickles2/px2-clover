@@ -13,8 +13,11 @@ import PageInfo from './views/PageInfo';
 import Publish from './views/Publish';
 import History from './views/History';
 import iterate79 from 'iterate79';
+import LangBank from 'langbank';
 import CloverUtils from '../_libs/CloverUtils';
 import Px2Utils from '../_libs/Px2Utils';
+
+const languageCsv = require('../../public/resources/data/language.csv');
 
 class Layout extends React.Component {
 
@@ -46,7 +49,7 @@ class Layout extends React.Component {
 			let tmpNewState = {};
 			iterate79.fnc({}, [
 				(it1) => {
-					if( this.state.pageInfoLoaded && this.state.configLoaded && this.state.profileLoaded ){
+					if( this.state.profileLoaded && this.state.lbLoaded && this.state.pageInfoLoaded && this.state.configLoaded ){
 						return;
 					}
 					it1.next();
@@ -63,6 +66,21 @@ class Layout extends React.Component {
 					this.state.cloverUtils.getProfile((data)=>{
 						tmpNewState.profile = data.profile;
 						tmpNewState.profileLoaded = true;
+						it1.next();
+					});
+				},
+				(it1) => {
+					if( this.state.lbLoaded ){
+						it1.next();
+						return;
+					}
+					const lb = new LangBank(languageCsv, ()=>{
+						let lang = 'ja';
+						lang = ( this.state.profile && this.state.profile.lang ? this.state.profile.lang : lang);
+						lang = ( tmpNewState.profile && tmpNewState.profile.lang ? tmpNewState.profile.lang : lang);
+						lb.setLang( lang );
+						tmpNewState.lb = lb;
+						tmpNewState.lbLoaded = true;
 						it1.next();
 					});
 				},
@@ -124,10 +142,12 @@ class Layout extends React.Component {
 		this.state = {
 			"path": parsedUrl.path,
 			"PX": parsedUrl.PX,
-			"pageInfoLoaded": false,
-			"pageInfo": null,
 			"profileLoaded": false,
 			"profile": null,
+			"lbLoaded": false,
+			"lb": null,
+			"pageInfoLoaded": false,
+			"pageInfo": null,
 			"configLoaded": false,
 			"config": null,
 			"link": link,
@@ -137,7 +157,6 @@ class Layout extends React.Component {
 		};
 
 		// console.log(this.state);
-
 
 		updateGlobalData();
 

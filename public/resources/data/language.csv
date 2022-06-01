@@ -3,6 +3,7 @@ login_error.csrf_token_expired,"Token Expired.","トークンが無効です。"
 login_error.invalid_user_id,"Invalid User ID.","ユーザーIDの形式が不正です。"
 login_error.failed,"Failed to login.","認証情報が正しくありません。"
 ui_label.ok,OK,OK,OK,OK
+ui_label.save,Save,保存する,保存,保存
 ui_label.cancel,Cancel,キャンセル,取消,取消
 ui_label.close,Close,閉じる,关闭,關閉
 ui_label.finished,Finished,完了,,

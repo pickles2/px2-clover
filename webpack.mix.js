@@ -16,6 +16,19 @@ mix
 		module: {
 			rules:[
 				{
+					test: /\.txt$/i,
+					use: ['raw-loader'],
+				},
+				{
+					test: /\.csv$/i,
+					loader: 'csv-loader',
+					options: {
+						dynamicTyping: true,
+						header: false,
+						skipEmptyLines: false,
+					},
+				},
+				{
 					test:/\.twig$/,
 					use:['twig-loader']
 				},
@@ -38,7 +51,8 @@ mix
 			fallback: {
 				"fs": false,
 				"path": false,
-				"crypto": false
+				"crypto": false,
+				"stream": false,
 			}
 		}
 	})

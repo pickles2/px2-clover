@@ -157,10 +157,10 @@ export default function ConfigProfile(props){
 						</div>
 						<div className="px2-form-submit-area">
 							<ul className="px2-form-submit-area__btns">
-								<li><button type="submit" className="px2-btn px2-btn--primary">保存する</button></li>
+								<li><button type="submit" className="px2-btn px2-btn--primary">{ main.lb.get('ui_label.save') }</button></li>
 							</ul>
 							<ul className="px2-form-submit-area__backward-btns">
-								<li><Link href="?PX=admin.config">キャンセル</Link></li>
+								<li><Link href="?PX=admin.config">{ main.lb.get('ui_label.cancel') }</Link></li>
 							</ul>
 						</div>
 					</form>
