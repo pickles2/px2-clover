@@ -6,7 +6,7 @@ import iterate79 from 'iterate79';
 export default function PageInfo(props){
 
 	const main = useContext(MainContext);
-	const [ sitemapDefinition, updateSitemapDefinition] = useState({
+	const [sitemapDefinition, updateSitemapDefinition] = useState({
 		"path": {"label": "ページのパス"},
 		"content": {"label": "コンテンツファイルの格納先"},
 		"id": {"label": "ページID"},

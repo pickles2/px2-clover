@@ -55,7 +55,7 @@ class auth{
 			}
 
 			$login_challenger_id = $this->px->req()->get_param('ADMIN_USER_ID');
-			if( !$this->validate_user_id($login_challenger_id) ){
+			if( !$this->validate_admin_user_id($login_challenger_id) ){
 				// 不正な形式のID
 				$this->login_page('invalid_user_id');
 				exit;
@@ -178,7 +178,7 @@ class auth{
 			return null;
 		}
 
-		if( !$this->validate_user_id($login_user_id) ){
+		if( !$this->validate_admin_user_id($login_user_id) ){
 			// 不正な形式のID
 			return null;
 		}
@@ -192,16 +192,23 @@ class auth{
 	}
 
 	/**
-	 * 現在のログインユーザーの情報を取得する
+	 * 現在のログインユーザーの情報を更新する
 	 */
 	public function update_login_user_info( $new_profile ){
+		$login_user_id = $this->px->req()->get_session('ADMIN_USER_ID');
+		return $this->update_admin_user_info( $login_user_id, $new_profile );
+	}
+
+	/**
+	 * 管理者ユーザーの情報を更新する
+	 */
+	public function update_admin_user_info( $target_user_id, $new_profile ){
 		$result = (object) array(
 			'result' => true,
 			'message' => 'OK',
 			'errors' => (object) array(),
 		);
-		$login_user_id = $this->px->req()->get_session('ADMIN_USER_ID');
-		if( !is_string($login_user_id) || !strlen($login_user_id) ){
+		if( !is_string($target_user_id) || !strlen($target_user_id) ){
 			// ログインしていない
 			return (object) array(
 				'result' => false,
@@ -210,7 +217,7 @@ class auth{
 			);
 		}
 
-		if( !$this->validate_user_id($login_user_id) ){
+		if( !$this->validate_admin_user_id($target_user_id) ){
 			// 不正な形式のID
 			return (object) array(
 				'result' => false,
@@ -219,7 +226,7 @@ class auth{
 			);
 		}
 
-		$user_info = $this->get_admin_user_info( $login_user_id );
+		$user_info = $this->get_admin_user_info( $target_user_id );
 		if( !is_array($user_info) ){
 			return (object) array(
 				'result' => false,
@@ -239,7 +246,7 @@ class auth{
 			$user_info[$key] = $val;
 		}
 
-		$user_info_validated = $this->validate_user_info($user_info);
+		$user_info_validated = $this->validate_admin_user_info($user_info);
 		if( !$user_info_validated->is_valid ){
 			// 不正な形式のユーザー情報
 			return (object) array(
@@ -250,7 +257,7 @@ class auth{
 		}
 
 
-		if( $login_user_id != $user_info['id'] && $this->px->fs()->is_file($this->realpath_admin_users.urlencode($user_info['id']).'.json') ){
+		if( $target_user_id != $user_info['id'] && $this->px->fs()->is_file($this->realpath_admin_users.urlencode($user_info['id']).'.json') ){
 			// 既に存在します。
 			return (object) array(
 				'result' => false,
@@ -263,7 +270,7 @@ class auth{
 
 		// 新しいIDのためにファイル名を変更
 		$res_rename = $this->px->fs()->rename(
-			$this->realpath_admin_users.urlencode($login_user_id).'.json',
+			$this->realpath_admin_users.urlencode($target_user_id).'.json',
 			$this->realpath_admin_users.urlencode($user_info['id']).'.json'
 		);
 		if( !$res_rename ){
@@ -292,12 +299,31 @@ class auth{
 
 
 	/**
+	 * 管理者ユーザーの一覧を取得する
+	 */
+	public function get_admin_user_list(){
+		if( !is_dir($this->realpath_admin_users) ){
+			return array();
+		}
+		$filelist = $this->px->fs()->ls($this->realpath_admin_users);
+		$rtn = array();
+		foreach( $filelist as $basename ){
+			$src_json = $this->px->fs()->read_file($this->realpath_admin_users.'/'.$basename);
+			$json = json_decode($src_json, true);
+			unset($json['pw']); // パスワードハッシュはクライアントに送出しない
+			array_push($rtn, $json);
+		}
+		return $rtn;
+	}
+
+
+	/**
 	 * 管理者ユーザーの情報を取得する
 	 *
 	 * このメソッドの戻り値には、パスワードハッシュが含まれます。
 	 */
 	private function get_admin_user_info($user_id){
-		if( !$this->validate_user_id($user_id) ){
+		if( !$this->validate_admin_user_id($user_id) ){
 			// 不正な形式のID
 			return null;
 		}
@@ -338,7 +364,7 @@ class auth{
 			'errors' => (object) array(),
 		);
 		$user_info = (object) $user_info;
-		if( !$this->validate_user_id($user_info->id) ){
+		if( !$this->validate_admin_user_id($user_info->id) ){
 			return (object) array(
 				'result' => false,
 				'message' => 'ユーザーIDが不正です。',
@@ -353,7 +379,7 @@ class auth{
 				'errors' => (object) array(),
 			);
 		}
-		$user_info_validated = $this->validate_user_info($user_info);
+		$user_info_validated = $this->validate_admin_user_info($user_info);
 		if( !$user_info_validated->is_valid ){
 			// 不正な形式のユーザー情報
 			return (object) array(
@@ -378,7 +404,7 @@ class auth{
 	/**
 	 * Validation: ユーザーID
 	 */
-	private function validate_user_id( $user_id ){
+	private function validate_admin_user_id( $user_id ){
 		if( !is_string($user_id) || !strlen($user_id) ){
 			return false;
 		}
@@ -392,7 +418,7 @@ class auth{
 	/**
 	 * Validation: ユーザー情報
 	 */
-	private function validate_user_info( $user_info ){
+	private function validate_admin_user_info( $user_info ){
 		$rtn = (object) array(
 			'is_valid' => true,
 			'message' => null,
@@ -400,7 +426,7 @@ class auth{
 		);
 		$user_info = (array) $user_info;
 
-		if( !$this->validate_user_id($user_info['id']) ){
+		if( !$this->validate_admin_user_id($user_info['id']) ){
 			// 不正な形式のID
 			$rtn->is_valid = false;
 			$rtn->errors->id = array('不正な形式のIDです。');

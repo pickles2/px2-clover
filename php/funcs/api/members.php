@@ -33,7 +33,7 @@ class members{
 		$rtn['message'] = 'OK';
 
 		// members
-		$rtn['members'] = array($this->clover->auth()->get_login_user_info());
+		$rtn['list'] = $this->clover->auth()->get_admin_user_list();
 
 		$this->px->header('Content-type: text/json');
 		echo json_encode($rtn);
