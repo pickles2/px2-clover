@@ -157,6 +157,10 @@ class register{
 							$app = new funcs\api\healthChecker($this->clover);
 							$app->status();
 							break;
+						case 'csrf_token':
+							$app = new funcs\api\csrfToken($this->clover);
+							$app->get();
+							break;
 						case 'get_page_info':
 							$app = new funcs\api\pageInfo($this->clover);
 							$app->get();

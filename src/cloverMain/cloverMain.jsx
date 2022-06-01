@@ -14,8 +14,6 @@ import Publish from './views/Publish';
 import History from './views/History';
 import iterate79 from 'iterate79';
 import LangBank from 'langbank';
-import CloverUtils from '../_libs/CloverUtils';
-import Px2Utils from '../_libs/Px2Utils';
 
 const languageCsv = require('../../public/resources/data/language.csv');
 
@@ -135,8 +133,6 @@ class Layout extends React.Component {
 		};
 
 		const parsedUrl = parseUrl(location);
-		const cloverUtils = new CloverUtils();
-		const px2utils = new Px2Utils();
 
 		// Initialize State
 		this.state = {
@@ -151,8 +147,8 @@ class Layout extends React.Component {
 			"configLoaded": false,
 			"config": null,
 			"link": link,
-			"cloverUtils": cloverUtils,
-			"px2utils": px2utils,
+			"cloverUtils": window.cloverUtils,
+			"px2utils": window.px2utils,
 			"setMainState": setMainState,
 		};
 

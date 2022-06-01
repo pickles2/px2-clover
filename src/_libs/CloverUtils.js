@@ -114,7 +114,7 @@ export default function CloverUtils(){
 				"url": '?PX=admin.api.git_commit',
 				"method": 'post',
 				'data': {
-					'ADMIN_USER_CSRF_TOKEN': csrf_token,
+					'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
 				},
 				"error": function(error){
 					console.error('------ git_commit Error:', typeof(error), error);
@@ -128,5 +128,37 @@ export default function CloverUtils(){
 			});
 		}, 2000);
 	}
+
+
+	// --------------------------------------
+	// CSRFトークンの更新
+	$(window).on('click', _.debounce(
+		function (e) {
+			console.log('=-=-=-=-=-=-= csrf_token update;');
+			$.ajax({
+				"url": '?PX=admin.api.csrf_token',
+				"method": 'post',
+				'data': {
+					'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
+				},
+				"error": function(error){
+				},
+				"success": function(data){
+					console.log( 'CSRF Token:', $('meta[name="csrf-token"]').attr('content'), 'to', data.token );
+					$('meta[name="csrf-token"]')
+						.attr({
+							'content': data.token,
+						});
+				},
+				"complete": function(){
+				},
+			});
+
+		},
+		5 * 60 * 1000,
+		{
+			maxWait: 10 * 60 * 1000,
+		}
+	));
 
 }
