@@ -6,6 +6,7 @@ import Dashboard from './views/Dashboard';
 import ClearCache from './views/ClearCache';
 import Config from './views/Config';
 import ConfigProfile from './views/ConfigProfile';
+import ConfigMembers from './views/ConfigMembers';
 import ConfigHistory from './views/ConfigHistory';
 import ConfigScheduler from './views/ConfigScheduler';
 import Sitemap from './views/Sitemap';
@@ -200,6 +201,10 @@ class Layout extends React.Component {
 			case 'admin.config.profile':
 				title = "プロフィール設定";
 				content = <ConfigProfile />;
+				break;
+			case 'admin.config.members':
+				title = "メンバー一覧";
+				content = <ConfigMembers />;
 				break;
 			case 'admin.config.history':
 				title = "履歴管理設定";

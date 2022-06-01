@@ -174,35 +174,20 @@ class register{
 							$app = new funcs\api\profile($this->clover);
 							$app->update();
 							break;
+						case 'get_members':
+							$app = new funcs\api\members($this->clover);
+							$app->get_list();
+							break;
 						case 'git':
 							$this->clover->allowed_method('post');
 							$app = new funcs\api\git($this->clover);
 							$app->git();
 							break;
-						// case 'git_status':
-						// 	$app = new funcs\api\git($this->clover);
-						// 	$app->status();
-						// 	break;
 						case 'git_commit':
 							$this->clover->allowed_method('post');
 							$app = new funcs\api\git($this->clover);
 							$app->commit();
 							break;
-						// case 'git_fetch':
-						// 	$this->clover->allowed_method('post');
-						// 	$app = new funcs\api\git($this->clover);
-						// 	$app->fetch();
-						// 	break;
-						// case 'git_pull':
-						// 	$this->clover->allowed_method('post');
-						// 	$app = new funcs\api\git($this->clover);
-						// 	$app->pull();
-						// 	break;
-						// case 'git_push':
-						// 	$this->clover->allowed_method('post');
-						// 	$app = new funcs\api\git($this->clover);
-						// 	$app->push();
-						// 	break;
 						case 'publish_stop':
 							$this->clover->allowed_method('post');
 							$app = new funcs\api\publish($this->clover);

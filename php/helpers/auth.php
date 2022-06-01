@@ -250,6 +250,17 @@ class auth{
 		}
 
 
+		if( $login_user_id != $user_info['id'] && $this->px->fs()->is_file($this->realpath_admin_users.urlencode($user_info['id']).'.json') ){
+			// 既に存在します。
+			return (object) array(
+				'result' => false,
+				'message' => '新しいユーザーIDは既に存在します。',
+				'errors' => (object) array(
+					'id' => array('新しいユーザーIDは既に存在します。'),
+				),
+			);
+		}
+
 		// 新しいIDのためにファイル名を変更
 		$res_rename = $this->px->fs()->rename(
 			$this->realpath_admin_users.urlencode($login_user_id).'.json',
