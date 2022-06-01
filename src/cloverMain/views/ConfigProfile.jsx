@@ -68,8 +68,8 @@ export default function ConfigProfile(props){
 											<input type="text" id="input-name" name="name" defaultValue={main.profile.name} className={"px2-input px2-input--block"+(hasValidationError('name') ? ' px2-input--error' : '')} />
 											{(hasValidationError('name'))
 												? <>
-													{validationErrors.name.map((errorText) => {
-														return <p className={"px2-error"}>{errorText}</p>;
+													{validationErrors.name.map((errorText, index) => {
+														return <p key={index} className={"px2-error"}>{errorText}</p>;
 													})}
 												</>
 												: <>
@@ -82,8 +82,8 @@ export default function ConfigProfile(props){
 											<input type="text" id="input-id" name="id" defaultValue={main.profile.id} className={"px2-input px2-input--block"+(hasValidationError('id') ? ' px2-input--error' : '')} />
 											{(hasValidationError('id'))
 												? <>
-													{validationErrors.id.map((errorText) => {
-														return <p className={"px2-error"}>{errorText}</p>;
+													{validationErrors.id.map((errorText, index) => {
+														return <p key={index} className={"px2-error"}>{errorText}</p>;
 													})}
 												</>
 												: <>
@@ -97,8 +97,8 @@ export default function ConfigProfile(props){
 											<input type="password" id="input-pw" name="pw" defaultValue="" className={"px2-input px2-input--block"+(hasValidationError('pw') ? ' px2-input--error' : '')} />
 											{(hasValidationError('pw'))
 												? <>
-													{validationErrors.pw.map((errorText) => {
-														return <p className={"px2-error"}>{errorText}</p>;
+													{validationErrors.pw.map((errorText, index) => {
+														return <p key={index} className={"px2-error"}>{errorText}</p>;
 													})}
 												</>
 												: <>
@@ -114,8 +114,8 @@ export default function ConfigProfile(props){
 											</select>
 											{(hasValidationError('lang'))
 												? <>
-													{validationErrors.lang.map((errorText) => {
-														return <p className={"px2-error"}>{errorText}</p>;
+													{validationErrors.lang.map((errorText, index) => {
+														return <p key={index} className={"px2-error"}>{errorText}</p>;
 													})}
 												</>
 												: <>
@@ -128,8 +128,8 @@ export default function ConfigProfile(props){
 											<input type="text" id="input-email" name="email" defaultValue={main.profile.email} className={"px2-input px2-input--block"+(hasValidationError('email') ? ' px2-input--error' : '')} />
 											{(hasValidationError('email'))
 												? <>
-													{validationErrors.email.map((errorText) => {
-														return <p className={"px2-error"}>{errorText}</p>;
+													{validationErrors.email.map((errorText, index) => {
+														return <p key={index} className={"px2-error"}>{errorText}</p>;
 													})}
 												</>
 												: <>
@@ -144,8 +144,8 @@ export default function ConfigProfile(props){
 											</select>
 											{(hasValidationError('role'))
 												? <>
-													{validationErrors.role.map((errorText) => {
-														return <p className={"px2-error"}>{errorText}</p>;
+													{validationErrors.role.map((errorText, index) => {
+														return <p key={index} className={"px2-error"}>{errorText}</p>;
 													})}
 												</>
 												: <>
