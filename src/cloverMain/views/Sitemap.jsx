@@ -21,7 +21,7 @@ export default React.memo(function Sitemap(props){
 			"url": "?PX=px2dthelper.sitemap.filelist",
 			"method": "post",
 			"data": {
-				'ADMIN_USER_CSRF_TOKEN': window.csrf_token,
+				'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
 			},
 			"error": function(error){
 				console.error('Error:', error);
@@ -69,7 +69,7 @@ export default React.memo(function Sitemap(props){
 		}
 		xhr.send(new URLSearchParams({
 			'filefullname': origFileName,
-			'ADMIN_USER_CSRF_TOKEN': window.csrf_token,
+			'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
 		}).toString());
 	}
 
@@ -80,7 +80,7 @@ export default React.memo(function Sitemap(props){
 		var template = require('./Sitemap_files/templates/upload.twig');
 		var $body = $('<div>')
 			.append( template( {
-				"csrf_token": window.csrf_token,
+				"csrf_token": $('meta[name="csrf-token"]').attr('content'),
 			} ) )
 		;
 		const modal = px2style.modal({
@@ -145,7 +145,7 @@ export default React.memo(function Sitemap(props){
 			"method": "post",
 			"data": {
 				'filename': origFileName,
-				'ADMIN_USER_CSRF_TOKEN': window.csrf_token,
+				'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
 			},
 			"error": function(error){
 				console.error('Error:', error);

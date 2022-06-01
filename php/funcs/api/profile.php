@@ -35,6 +35,9 @@ class profile{
 		// profile
 		$rtn['profile'] = $this->clover->auth()->get_login_user_info();
 
+		// update language config
+		$this->px->req()->set_cookie('LANG', $rtn['profile']['lang']);
+
 		$this->px->header('Content-type: text/json');
 		echo json_encode($rtn);
 		exit;
@@ -66,6 +69,9 @@ class profile{
 
 		// profile
 		$rtn['profile'] = $this->clover->auth()->get_login_user_info();
+
+		// update language config
+		$this->px->req()->set_cookie('LANG', $rtn['profile']['lang']);
 
 		$this->px->header('Content-type: text/json');
 		echo json_encode($rtn);

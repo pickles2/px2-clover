@@ -76,7 +76,6 @@ class initializer{
 				'ADMIN_USER_LANG' => $this->px->req()->get_param('ADMIN_USER_LANG'),
 				'admin_user_email' => $this->px->req()->get_param('admin_user_email'),
 				'url_backto' => '?',
-				'csrf_token' => $this->clover->auth()->get_csrf_token(),
 			)
 		);
 		exit;

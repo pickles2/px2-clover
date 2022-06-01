@@ -4,6 +4,7 @@
 	<meta charset="utf-8" />
 	<title>{% block title %}{% endblock %}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="csrf-token" content="{{ csrf_token }}" />
 
 	{# jQuery #}
 	<script src="{{ path_client_resources }}jquery-3.6.0.min.js"></script>
@@ -32,7 +33,6 @@
             "auto_commit": "{{ clover_config.history.auto_commit | e("js") }}",
         }
     };
-    window.csrf_token = "{{ csrf_token | e("js") }}";
     </script>
 
 	{% block foot %}

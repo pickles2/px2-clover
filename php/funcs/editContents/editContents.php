@@ -44,7 +44,6 @@ class editContents{
 				'px2ce_res' => $px2ce_res,
 				'page_path' => $this->px->req()->get_request_file_path(),
 				'backto' => $backto,
-				'csrf_token' => $this->clover->auth()->get_csrf_token(),
 			)
 		);
 		exit;

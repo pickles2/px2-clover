@@ -11,7 +11,7 @@ export default function CloverUtils(){
 			"url": "?PX=admin.api.get_profile",
 			"method": "post",
 			"data": {
-				'ADMIN_USER_CSRF_TOKEN': window.csrf_token,
+				'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
 			},
 			"error": function(error){
 				// console.error('------ admin.api.get_profile Response Error:', typeof(error), error);
@@ -33,7 +33,7 @@ export default function CloverUtils(){
 	this.updateProfile = function( newProfile, callback ){
 		let result;
 		let data = newProfile;
-		data.ADMIN_USER_CSRF_TOKEN = window.csrf_token;
+		data.ADMIN_USER_CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 		$.ajax({
 			"url": "?PX=admin.api.update_profile",
 			"method": "post",
@@ -61,7 +61,7 @@ export default function CloverUtils(){
 			"url": "?PX=admin.api.get_config",
 			"method": "post",
 			"data": {
-				'ADMIN_USER_CSRF_TOKEN': window.csrf_token,
+				'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
 			},
 			"error": function(error){
 				// console.error('------ admin.api.get_profile Response Error:', typeof(error), error);
@@ -83,7 +83,7 @@ export default function CloverUtils(){
 	this.updateConfig = function( newConfig, callback ){
 		let result;
 		let data = newConfig;
-		data.ADMIN_USER_CSRF_TOKEN = window.csrf_token;
+		data.ADMIN_USER_CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 		$.ajax({
 			"url": "?PX=admin.api.update_config",
 			"method": "post",

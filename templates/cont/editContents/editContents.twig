@@ -66,7 +66,6 @@
 			var preview_url = '?';
 			var resizeTimer;
 			var backto = "{{ backto | e("js") }}";
-			var csrf_token = "{{ csrf_token | e("js") }}";
 
 			if( page_path ){
 				target_mode = 'page_content';
@@ -103,7 +102,7 @@
 								"method": 'post',
 								'data': {
 									'data': encodedInput,
-									'ADMIN_USER_CSRF_TOKEN': csrf_token,
+									'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
 								},
 								"error": function(error){
 									console.error('------ GPI Response Error:', typeof(error), error);
