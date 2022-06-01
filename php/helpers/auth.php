@@ -198,6 +198,7 @@ class auth{
 		$result = (object) array(
 			'result' => true,
 			'message' => 'OK',
+			'errors' => (object) array(),
 		);
 		$login_user_id = $this->px->req()->get_session('ADMIN_USER_ID');
 		if( !is_string($login_user_id) || !strlen($login_user_id) ){
@@ -205,6 +206,7 @@ class auth{
 			return (object) array(
 				'result' => false,
 				'message' => 'ログインしてください。',
+				'errors' => (object) array(),
 			);
 		}
 
@@ -213,6 +215,7 @@ class auth{
 			return (object) array(
 				'result' => false,
 				'message' => 'ログインユーザーのIDが不正です。',
+				'errors' => (object) array(),
 			);
 		}
 
@@ -221,6 +224,7 @@ class auth{
 			return (object) array(
 				'result' => false,
 				'message' => 'ユーザー情報の取得に失敗しました。',
+				'errors' => (object) array(),
 			);
 		}
 		foreach( $new_profile as $key=>$val ){
@@ -235,19 +239,13 @@ class auth{
 			$user_info[$key] = $val;
 		}
 
-		if( !$this->validate_user_id($user_info['id']) ){
-			// 不正な形式のID
-			return (object) array(
-				'result' => false,
-				'message' => 'ユーザーIDが不正です。',
-			);
-		}
 		$user_info_validated = $this->validate_user_info($user_info);
 		if( !$user_info_validated->is_valid ){
 			// 不正な形式のユーザー情報
 			return (object) array(
 				'result' => false,
 				'message' => $user_info_validated->message,
+				'errors' => $user_info_validated->errors,
 			);
 		}
 
@@ -261,6 +259,7 @@ class auth{
 			return (object) array(
 				'result' => false,
 				'message' => 'ユーザーIDの変更に失敗しました。',
+				'errors' => (object) array(),
 			);
 		}
 
@@ -270,6 +269,7 @@ class auth{
 			return (object) array(
 				'result' => false,
 				'message' => 'ユーザー情報の保存に失敗しました。',
+				'errors' => (object) array(),
 			);
 		}
 
@@ -324,12 +324,14 @@ class auth{
 		$result = (object) array(
 			'result' => true,
 			'message' => 'OK',
+			'errors' => (object) array(),
 		);
 		$user_info = (object) $user_info;
 		if( !$this->validate_user_id($user_info->id) ){
 			return (object) array(
 				'result' => false,
 				'message' => 'ユーザーIDが不正です。',
+				'errors' => (object) array(),
 			);
 		}
 		$realpath_json = $this->realpath_admin_users.'/'.urlencode($user_info->id).'.json';
@@ -337,6 +339,7 @@ class auth{
 			return (object) array(
 				'result' => false,
 				'message' => 'すでに存在します。',
+				'errors' => (object) array(),
 			);
 		}
 		$user_info_validated = $this->validate_user_info($user_info);
@@ -345,6 +348,7 @@ class auth{
 			return (object) array(
 				'result' => false,
 				'message' => $user_info_validated->message,
+				'errors' => $user_info_validated->errors,
 			);
 		}
 
@@ -354,6 +358,7 @@ class auth{
 			return (object) array(
 				'result' => false,
 				'message' => 'ユーザー情報の保存に失敗しました。',
+				'errors' => (object) array(),
 			);
 		}
 		return $result;
@@ -379,58 +384,50 @@ class auth{
 	private function validate_user_info( $user_info ){
 		$rtn = (object) array(
 			'is_valid' => true,
-			'message' => 'OK',
+			'message' => null,
+			'errors' => (object) array(),
 		);
 		$user_info = (array) $user_info;
 
 		if( !$this->validate_user_id($user_info['id']) ){
 			// 不正な形式のID
-			return (object) array(
-				'is_valid' => false,
-				'message' => '不正な形式のIDです。',
-			);
+			$rtn->is_valid = false;
+			$rtn->errors->id = array('不正な形式のIDです。');
 		}
 		if( !isset($user_info['name']) || !strlen($user_info['name']) ){
-			return (object) array(
-				'is_valid' => false,
-				'message' => '必ず入力してください。',
-			);
+			$rtn->is_valid = false;
+			$rtn->errors->name = array('必ず入力してください。');
 		}
 		if( !isset($user_info['pw']) || !strlen($user_info['pw']) ){
-			return (object) array(
-				'is_valid' => false,
-				'message' => '必ず入力してください。',
-			);
+			$rtn->is_valid = false;
+			$rtn->errors->pw = array('必ず入力してください。');
 		}
 		if( !isset($user_info['lang']) || !strlen($user_info['lang']) ){
-			return (object) array(
-				'is_valid' => false,
-				'message' => '必ず選択してください。',
-			);
+			$rtn->is_valid = false;
+			$rtn->errors->lang = array('必ず選択してください。');
 		}
 		if( isset($user_info['email']) && is_string($user_info['email']) && strlen($user_info['email']) ){
 			if( !preg_match('/^[^@\/\\\\]+\@[^@\/\\\\]+$/', $user_info['email']) ){
-				return (object) array(
-					'is_valid' => false,
-					'message' => '不正な形式のメールアドレスです。',
-				);
+				$rtn->is_valid = false;
+				$rtn->errors->email = array('不正な形式のメールアドレスです。');
 			}
 		}
 		if( !isset($user_info['role']) || !strlen($user_info['role']) ){
-			return (object) array(
-				'is_valid' => false,
-				'message' => '必ず選択してください。',
-			);
+			$rtn->is_valid = false;
+			$rtn->errors->role = array('必ず選択してください。');
 		}
 		switch( $user_info['role'] ){
 			case 'admin':
 				break;
 			default:
-				return (object) array(
-					'is_valid' => false,
-					'message' => 'ロールの値が不正です。',
-				);
-				return false;
+				$rtn->is_valid = false;
+				$rtn->errors->role = array('ロールの値が不正です。');
+				break;
+		}
+		if( $rtn->is_valid ){
+			$rtn->message = 'OK';
+		}else{
+			$rtn->message = 'Validation Error';
 		}
 		return $rtn;
 	}

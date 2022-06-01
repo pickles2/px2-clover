@@ -47,6 +47,7 @@ class profile{
 		$rtn = array();
 		$rtn['result'] = true;
 		$rtn['message'] = 'OK';
+		$rtn['errors'] = (object) array();
 
 		$new_profile = array(
 			'id' => $this->px->req()->get_param('id'),
@@ -59,7 +60,8 @@ class profile{
 		$result = $this->clover->auth()->update_login_user_info($new_profile);
 		if( !$result->result ){
 			$rtn['result'] = false;
-			$rtn['message'] = 'Failed to update profile.';
+			$rtn['message'] = 'Failed to update profile. ('.$result->message.')';
+			$rtn['errors'] = $result->errors;
 		}
 
 		// profile
