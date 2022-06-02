@@ -196,7 +196,23 @@ class auth{
 	 */
 	public function update_login_user_info( $new_profile ){
 		$login_user_id = $this->px->req()->get_session('ADMIN_USER_ID');
-		return $this->update_admin_user_info( $login_user_id, $new_profile );
+		if( !is_string($login_user_id) || !strlen($login_user_id) ){
+			// ログインしていない
+			return (object) array(
+				'result' => false,
+				'message' => 'ログインしてください。',
+				'errors' => (object) array(),
+			);
+		}
+
+		$rtn = $this->update_admin_user_info( $login_user_id, $new_profile );
+
+		if( $rtn->result ){
+			// ログインユーザーの情報を更新
+			$this->px->req()->set_session('ADMIN_USER_ID', $user_info['id']);
+		}
+
+		return $rtn;
 	}
 
 	/**
@@ -209,10 +225,10 @@ class auth{
 			'errors' => (object) array(),
 		);
 		if( !is_string($target_user_id) || !strlen($target_user_id) ){
-			// ログインしていない
+			// 更新対象が未指定
 			return (object) array(
 				'result' => false,
-				'message' => 'ログインしてください。',
+				'message' => '更新対象を指定してください。',
 				'errors' => (object) array(),
 			);
 		}
@@ -291,9 +307,6 @@ class auth{
 			);
 		}
 
-		// ログインユーザーの情報を更新
-		$this->px->req()->set_session('ADMIN_USER_ID', $user_info['id']);
-
 		return $result;
 	}
 
@@ -364,7 +377,7 @@ class auth{
 			'errors' => (object) array(),
 		);
 		$user_info = (object) $user_info;
-		if( !$this->validate_admin_user_id($user_info->id) ){
+		if( !isset($user_info->id) || !$this->validate_admin_user_id($user_info->id) ){
 			return (object) array(
 				'result' => false,
 				'message' => 'ユーザーIDが不正です。',
@@ -400,6 +413,56 @@ class auth{
 		}
 		return $result;
 	}
+
+	/**
+	 * 管理者ユーザーの情報を削除する
+	 */
+	public function delete_admin_user_info( $target_user_id ){
+		$result = (object) array(
+			'result' => true,
+			'message' => 'OK',
+			'errors' => (object) array(),
+		);
+		if( !is_string($target_user_id) || !strlen($target_user_id) ){
+			// 削除対象が未指定
+			return (object) array(
+				'result' => false,
+				'message' => '削除対象を指定してください。',
+				'errors' => (object) array(),
+			);
+		}
+
+		if( !$this->validate_admin_user_id($target_user_id) ){
+			// 不正な形式のID
+			return (object) array(
+				'result' => false,
+				'message' => 'ログインユーザーのIDが不正です。',
+				'errors' => (object) array(),
+			);
+		}
+
+		$user_info = $this->get_admin_user_info( $target_user_id );
+		if( !is_array($user_info) ){
+			return (object) array(
+				'result' => false,
+				'message' => 'ユーザー情報の取得に失敗しました。',
+				'errors' => (object) array(),
+			);
+		}
+
+		$realpath_json = $this->realpath_admin_users.urlencode($user_info['id']).'.json';
+		if( !$this->px->fs()->rm($realpath_json) ){
+			return (object) array(
+				'result' => false,
+				'message' => 'ユーザー情報の削除に失敗しました。',
+				'errors' => (object) array(),
+			);
+		}
+
+		return $result;
+	}
+
+
 
 	/**
 	 * Validation: ユーザーID

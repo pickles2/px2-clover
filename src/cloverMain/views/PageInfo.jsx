@@ -140,7 +140,7 @@ export default function PageInfo(props){
 					page_info[pageInfoRaw.sitemap_definition[idx]] = pageInfoRaw.page_info[idx];
 				}
 
-				var template = require('./PageInfo_files/template/editPage.twig');
+				var template = require('./PageInfo_files/templates/editPage.twig');
 				var $body = $('<div>')
 					.append( template( {
 						"page_info": page_info,
@@ -245,7 +245,7 @@ export default function PageInfo(props){
 					page_info[pageInfoRaw.sitemap_definition[idx]] = pageInfoRaw.page_info[idx];
 				}
 
-				var template = require('./PageInfo_files/template/editPage.twig');
+				var template = require('./PageInfo_files/templates/editPage.twig');
 				var $body = $('<div>')
 					.append( template( {
 						"page_info": page_info,
@@ -351,7 +351,7 @@ export default function PageInfo(props){
 					page_info[pageInfoRaw.sitemap_definition[idx]] = pageInfoRaw.page_info[idx];
 				}
 
-				var template = require('./PageInfo_files/template/deletePage.twig');
+				var template = require('./PageInfo_files/templates/deletePage.twig');
 				var $body = $('<div>')
 					.append( template( {
 					} ) )

@@ -1,0 +1,78 @@
+<div class="px2-p">
+	<div class="px2-form-input-list">
+		<ul class="px2-form-input-list__ul">
+			<li class="px2-form-input-list__li px2-form-input-list__li--required">
+				<div class="px2-form-input-list__label"><label for="input-name">名前</label></div>
+				<div class="px2-form-input-list__input">
+					<input type="text" id="input-name" name="name" value="{{ values.name }}" class="px2-input px2-input--block" />
+					{% if errors.name %}
+						{% for errorText in errors.name %}
+							<p  class="px2-error">{{ errorText }}</p>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</li>
+			<li class="px2-form-input-list__li px2-form-input-list__li--required">
+				<div class="px2-form-input-list__label"><label for="input-id">ID</label></div>
+				<div class="px2-form-input-list__input">
+					<input type="text" id="input-id" name="id" value="{{ values.id }}" class="px2-input px2-input--block" />
+					{% if errors.id %}
+						{% for errorText in errors.id %}
+							<p  class="px2-error">{{ errorText }}</p>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</li>
+			<li class="px2-form-input-list__li">
+				<div class="px2-form-input-list__label"><label for="input-pw">パスワード</label></div>
+				<div class="px2-form-input-list__input">
+					<p class="px2-note">パスワードを変更する場合のみ入力してください。</p>
+					<input type="password" id="input-pw" name="pw" value="" class="px2-input px2-input--block" />
+					{% if errors.pw %}
+						{% for errorText in errors.pw %}
+							<p  class="px2-error">{{ errorText }}</p>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</li>
+			<li class="px2-form-input-list__li">
+				<div class="px2-form-input-list__label"><label for="input-lang">言語</label></div>
+				<div class="px2-form-input-list__input">
+					<select id="input-lang" name="lang" class="px2-input">
+						<option value="en"{{ values.lang == 'en' ? ' selected="selected"' : "" }}>English</option>
+						<option value="ja"{{ values.lang == 'ja' ? ' selected="selected"' : "" }}>Japanese</option>
+					</select>
+					{% if errors.lang %}
+						{% for errorText in errors.lang %}
+							<p  class="px2-error">{{ errorText }}</p>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</li>
+			<li class="px2-form-input-list__li">
+				<div class="px2-form-input-list__label"><label for="input-email">メールアドレス</label></div>
+				<div class="px2-form-input-list__input">
+					<input type="text" id="input-email" name="email" value="{{ values.email }}" class="px2-input px2-input--block" />
+					{% if errors.email %}
+						{% for errorText in errors.email %}
+							<p  class="px2-error">{{ errorText }}</p>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</li>
+			<li class="px2-form-input-list__li">
+				<div class="px2-form-input-list__label"><label for="input-role">ロール</label></div>
+				<div class="px2-form-input-list__input">
+					<select id="input-role" name="role" class="px2-input">
+						<option value="admin"{{ values.role == 'admin' ? ' selected="selected"' : "" }}>Admin</option>
+					</select>
+					{% if errors.role %}
+						{% for errorText in errors.role %}
+							<p  class="px2-error">{{ errorText }}</p>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
