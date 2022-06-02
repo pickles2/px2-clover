@@ -69,14 +69,14 @@ export default function ConfigMembers(props){
 							modal.lock();
 
 							var params = {
-								'name': $body.find('[name=name]').val(),
-								'id': $body.find('[name=id]').val(),
-								'email': $body.find('[name=email]').val(),
-								'lang': $body.find('select[name=lang]').val(),
-								'role': $body.find('select[name=role]').val(),
+								'name': modal.$modal.find('[name=name]').val(),
+								'id': modal.$modal.find('[name=id]').val(),
+								'email': modal.$modal.find('[name=email]').val(),
+								'lang': modal.$modal.find('select[name=lang]').val(),
+								'role': modal.$modal.find('select[name=role]').val(),
 							};
 							if( $body.find('[name=pw]').val().length ){
-								params.pw = $body.find('[name=pw]').val();
+								params.pw = modal.$modal.find('[name=pw]').val();
 							}
 							main.px2utils.px2cmd(
 								'/?PX=admin.api.create_new_member',
@@ -86,12 +86,10 @@ export default function ConfigMembers(props){
 										alert( 'Error: ' + res.message );
 										console.error('Error:', res);
 
-										$body.html('')
-											.append( template( {
-												"values": params,
-												"errors": res.errors,
-											} ) )
-										;
+										modal.replaceBody( template( {
+											"values": params,
+											"errors": res.errors,
+										} ) );
 
 										modal.unlock();
 										return;
@@ -168,12 +166,10 @@ export default function ConfigMembers(props){
 										alert( 'Error: ' + res.message );
 										console.error('Error:', res);
 
-										$body.html('')
-											.append( template( {
-												"values": params,
-												"errors": res.errors,
-											} ) )
-										;
+										modal.replaceBody( template( {
+											"values": params,
+											"errors": res.errors,
+										} ) );
 
 										modal.unlock();
 										return;
