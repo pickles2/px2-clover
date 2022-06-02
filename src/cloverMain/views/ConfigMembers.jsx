@@ -34,8 +34,9 @@ export default function ConfigMembers(props){
 		iterate79.fnc({}, [
 			(it1) => {
 				var template = require('./ConfigMembers_files/templates/edit.twig');
-				var $body = $('<div>')
-					.append( template( {
+				modal = px2style.modal({
+					'title': "メンバーを追加する",
+					'body': template( {
 						"values": {
 							'name': '',
 							'id': '',
@@ -44,11 +45,7 @@ export default function ConfigMembers(props){
 							'lang': '',
 							'role': '',
 						},
-					} ) )
-				;
-				modal = px2style.modal({
-					'title': "メンバーを追加する",
-					'body': $body,
+					} ),
 					'width': '680px',
 					'buttons':[
 						$('<button type="submit" class="px2-btn px2-btn--primary">')
@@ -75,7 +72,7 @@ export default function ConfigMembers(props){
 								'lang': modal.$modal.find('select[name=lang]').val(),
 								'role': modal.$modal.find('select[name=role]').val(),
 							};
-							if( $body.find('[name=pw]').val().length ){
+							if( modal.$modal.find('[name=pw]').val().length ){
 								params.pw = modal.$modal.find('[name=pw]').val();
 							}
 							main.px2utils.px2cmd(
@@ -83,9 +80,7 @@ export default function ConfigMembers(props){
 								params,
 								function( res ){
 									if( !res.result ){
-										alert( 'Error: ' + res.message );
 										console.error('Error:', res);
-
 										modal.replaceBody( template( {
 											"values": params,
 											"errors": res.errors,
@@ -119,14 +114,11 @@ export default function ConfigMembers(props){
 		iterate79.fnc({}, [
 			(it1) => {
 				var template = require('./ConfigMembers_files/templates/edit.twig');
-				var $body = $('<div>')
-					.append( template( {
-						"values": memberInfo,
-					} ) )
-				;
 				modal = px2style.modal({
 					'title': "メンバーを追加する",
-					'body': $body,
+					'body': template( {
+						"values": memberInfo,
+					} ),
 					'width': '680px',
 					'buttons':[
 						$('<button type="submit" class="px2-btn px2-btn--primary">')
@@ -148,14 +140,14 @@ export default function ConfigMembers(props){
 
 							var params = {
 								'target_id': targetId,
-								'name': $body.find('[name=name]').val(),
-								'id': $body.find('[name=id]').val(),
-								'email': $body.find('[name=email]').val(),
-								'lang': $body.find('select[name=lang]').val(),
-								'role': $body.find('select[name=role]').val(),
+								'name': modal.$modal.find('[name=name]').val(),
+								'id': modal.$modal.find('[name=id]').val(),
+								'email': modal.$modal.find('[name=email]').val(),
+								'lang': modal.$modal.find('select[name=lang]').val(),
+								'role': modal.$modal.find('select[name=role]').val(),
 							};
-							if( $body.find('[name=pw]').val().length ){
-								params.pw = $body.find('[name=pw]').val();
+							if( modal.$modal.find('[name=pw]').val().length ){
+								params.pw = modal.$modal.find('[name=pw]').val();
 							}
 
 							main.px2utils.px2cmd(
@@ -163,7 +155,6 @@ export default function ConfigMembers(props){
 								params,
 								function( res ){
 									if( !res.result ){
-										alert( 'Error: ' + res.message );
 										console.error('Error:', res);
 
 										modal.replaceBody( template( {

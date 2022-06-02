@@ -1,7 +1,7 @@
 <div class="px2-p">
 	<div class="px2-form-input-list">
 		<ul class="px2-form-input-list__ul">
-			<li class="px2-form-input-list__li px2-form-input-list__li--required">
+			<li class="px2-form-input-list__li px2-form-input-list__li--required{{ errors.name ? ' px2-form-input-list__li--error' : '' }}">
 				<div class="px2-form-input-list__label"><label for="input-name">名前</label></div>
 				<div class="px2-form-input-list__input">
 					<input type="text" id="input-name" name="name" value="{{ values.name }}" class="px2-input px2-input--block" />
@@ -12,7 +12,7 @@
 					{% endif %}
 				</div>
 			</li>
-			<li class="px2-form-input-list__li px2-form-input-list__li--required">
+			<li class="px2-form-input-list__li px2-form-input-list__li--required{{ errors.id ? ' px2-form-input-list__li--error' : '' }}">
 				<div class="px2-form-input-list__label"><label for="input-id">ID</label></div>
 				<div class="px2-form-input-list__input">
 					<input type="text" id="input-id" name="id" value="{{ values.id }}" class="px2-input px2-input--block" />
@@ -23,7 +23,7 @@
 					{% endif %}
 				</div>
 			</li>
-			<li class="px2-form-input-list__li">
+			<li class="px2-form-input-list__li{{ errors.pw ? ' px2-form-input-list__li--error' : '' }}">
 				<div class="px2-form-input-list__label"><label for="input-pw">パスワード</label></div>
 				<div class="px2-form-input-list__input">
 					<p class="px2-note">パスワードを変更する場合のみ入力してください。</p>
@@ -35,7 +35,7 @@
 					{% endif %}
 				</div>
 			</li>
-			<li class="px2-form-input-list__li">
+			<li class="px2-form-input-list__li{{ errors.lang ? ' px2-form-input-list__li--error' : '' }}">
 				<div class="px2-form-input-list__label"><label for="input-lang">言語</label></div>
 				<div class="px2-form-input-list__input">
 					<select id="input-lang" name="lang" class="px2-input">
@@ -49,7 +49,7 @@
 					{% endif %}
 				</div>
 			</li>
-			<li class="px2-form-input-list__li">
+			<li class="px2-form-input-list__li{{ errors.email ? ' px2-form-input-list__li--error' : '' }}">
 				<div class="px2-form-input-list__label"><label for="input-email">メールアドレス</label></div>
 				<div class="px2-form-input-list__input">
 					<input type="text" id="input-email" name="email" value="{{ values.email }}" class="px2-input px2-input--block" />
@@ -60,7 +60,7 @@
 					{% endif %}
 				</div>
 			</li>
-			<li class="px2-form-input-list__li">
+			<li class="px2-form-input-list__li{{ errors.role ? ' px2-form-input-list__li--error' : '' }}">
 				<div class="px2-form-input-list__label"><label for="input-role">ロール</label></div>
 				<div class="px2-form-input-list__input">
 					<select id="input-role" name="role" class="px2-input">
