@@ -21,6 +21,9 @@ class clover{
 	/** 言語機能 */
 	private $lang;
 
+	/** ログ管理機能 */
+	private $logger;
+
 	/**
 	 * Constructor
 	 *
@@ -33,6 +36,7 @@ class clover{
 		$this->auth = new helpers\auth( $this );
 		$this->view = new view( $this );
 		$this->lang = new helpers\lang( $this );
+		$this->logger = new helpers\logger( $this );
 	}
 
 
@@ -60,6 +64,11 @@ class clover{
 	/** lang */
 	public function lang(){
 		return $this->lang;
+	}
+
+	/** logger */
+	public function logger(){
+		return $this->logger;
 	}
 
 	/** プラグインオプションを取得 */
