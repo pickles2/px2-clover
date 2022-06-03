@@ -56,7 +56,7 @@ class logger{
 			$trace[0]['file'], // 呼び出したスクリプトファイル
 			$trace[0]['line'], // 呼び出した行番号
 		);
-		error_log( implode("\t", $log)."\n", 3, $this->realpath_logs.'log-'.date('Y-m-d').'.tsv' );
+		error_log( $this->px->fs()->mk_csv( array($log) ), 3, $this->realpath_logs.'log-'.date('Y-m-d').'.csv' );
 		return;
 	}
 
@@ -84,7 +84,7 @@ class logger{
 			$trace[0]['file'], // 呼び出したスクリプトファイル
 			$trace[0]['line'], // 呼び出した行番号
 		);
-		error_log( implode("\t", $log)."\n", 3, $this->realpath_logs.'errorlog-'.date('Y-m-d').'.tsv' );
+		error_log( $this->px->fs()->mk_csv( array($log) ), 3, $this->realpath_logs.'errorlog-'.date('Y-m-d').'.csv' );
 
 		$log = array(
 			date('Y-m-d H:i:s'), // 時刻
@@ -94,7 +94,7 @@ class logger{
 			$trace[0]['file'], // 呼び出したスクリプトファイル
 			$trace[0]['line'], // 呼び出した行番号
 		);
-		error_log( implode("\t", $log)."\n", 3, $this->realpath_logs.'log-'.date('Y-m-d').'.tsv' );
+		error_log( $this->px->fs()->mk_csv( array($log) ), 3, $this->realpath_logs.'log-'.date('Y-m-d').'.csv' );
 		return;
 	}
 

@@ -45,18 +45,21 @@ class auth{
 	public function auth(){
 
 		if( $this->px->req()->get_param('ADMIN_USER_FLG') ){
+			$login_challenger_id = $this->px->req()->get_param('ADMIN_USER_ID');
 			if( $_SERVER['REQUEST_METHOD'] !== 'POST' ){
 				$this->login_page();
 				exit;
 			}
+
 			if( $this->is_csrf_token_required() && !$this->is_valid_csrf_token_given() ){
+				$this->clover->logger()->error_log('User \''.$login_challenger_id.'\' failed to logged in. Invalid CSRF Token.');
 				$this->login_page('csrf_token_expired');
 				exit;
 			}
 
-			$login_challenger_id = $this->px->req()->get_param('ADMIN_USER_ID');
 			if( !$this->validate_admin_user_id($login_challenger_id) ){
 				// 不正な形式のID
+				$this->clover->logger()->error_log('User \''.$login_challenger_id.'\' failed to logged in. Invalid user ID format.');
 				$this->login_page('invalid_user_id');
 				exit;
 			}
@@ -64,6 +67,7 @@ class auth{
 			$user_info = $this->get_admin_user_info( $login_challenger_id );
 			if( !is_array($user_info) ){
 				// 不正なユーザーデータ
+				$this->clover->logger()->error_log('User \''.$login_challenger_id.'\' failed to logged in. User undefined.');
 				$this->login_page('failed');
 				exit;
 			}
@@ -77,11 +81,13 @@ class auth{
 					$redirect_to = '?PX='.htmlspecialchars( $this->px->req()->get_param('PX') );
 				}
 				$this->px->req()->set_cookie('LANG', $user_info['lang']);
+				$this->clover->logger()->log('User \''.$login_challenger_id.'\' logged in.');
 				$this->px->header('Location:'.$redirect_to);
 				exit;
 			}
 
 			if( !$this->is_login() ){
+				$this->clover->logger()->error_log('User \''.$login_challenger_id.'\' failed to logged in.');
 				$this->login_page('failed');
 				exit;
 			}
@@ -90,6 +96,7 @@ class auth{
 			$this->login_page();
 			exit;
 		}
+
 	}
 
 	/**
@@ -107,8 +114,9 @@ class auth{
 			exit;
 		}
 
-
+		$user_id = $this->px->req()->get_session('ADMIN_USER_ID');
 		$this->px->req()->delete_session('ADMIN_USER_ID');
+		$this->clover->logger()->log('User \''.$user_id.'\' logged out.');
 		header('Location:'.$this->px->href( $this->px->req()->get_request_file_path().'?PX='.htmlspecialchars(''.$pxcmd) ));
 		exit;
 	}
