@@ -385,7 +385,7 @@ class auth{
 			}
 		}elseif( $user_id == $this->default_admin_user_id ){
 			// デフォルトユーザー
-			$user_info = array(
+			$user_info = (object) array(
 				'id' => $this->default_admin_user_id,
 				'pw' => $this->password_hash($this->default_admin_user_pw),
 				'name' => 'Administrator',
@@ -394,7 +394,7 @@ class auth{
 				'role' => null,
 			);
 		}
-		return (object) $user_info;
+		return $user_info;
 	}
 
 	/**
