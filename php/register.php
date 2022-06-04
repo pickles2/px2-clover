@@ -28,10 +28,13 @@ class register{
 		}
 
 		if( !$px->req()->is_cmd() ){
-			(new clover( $px, $options ))->initializer()->initialize();
-		}
 
-		if( !$px->req()->is_cmd() ){
+			// 初期化
+			$clover = new clover( $px, $options );
+			$clover->initializer()->initialize();
+
+
+			// 認証
 			$auth_needs = false;
 			if( isset($options->protect_preview) && $options->protect_preview ){
 				// プレビュー全体で認証を要求する
@@ -42,7 +45,7 @@ class register{
 				$auth_needs = true;
 			}
 			if( $auth_needs ){
-				(new clover( $px, $options ))->auth()->auth();
+				$clover->auth()->auth();
 			}
 		}
 
@@ -104,7 +107,6 @@ class register{
 		$src = $px->bowl()->get( 'main' );
 
 		$clover = new clover( $px, $options );
-		$path_client_resources = $clover->path_files('/');
 		$src .= $clover->view()->bind(
 			'/preview/footer.twig',
 			array(

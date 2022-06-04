@@ -148,28 +148,37 @@ class auth{
 	private function login_page( $error_message = null ){
 		$this->px->set_status(403);
 
+		$is_html_page = false;
+
 		$command = $this->px->get_px_command();
-		if( isset($command[0]) && $command[0] == 'admin' ){
-			if( isset($command[1]) && $command[1] == 'api' ){
-				$this->px->header('Content-type: application/json');
-				echo json_encode(array(
-					'result' => false,
-					'message' => $this->px->get_status_message(),
-				));
-				exit;
-			}
+		if( !isset($command[0]) ){
+			// プレビューにはHTMLを返す
+			$is_html_page = true;
+		}elseif( $command[0] == 'admin' && (!isset($command[1]) || $command[1] != 'api') ){
+			// 管理画面(api以外)にはHTMLを返す
+			$is_html_page = true;
 		}
 
-		echo $this->clover->view()->bind(
-			'/system/login.twig',
-			array(
-				'url_backto' => '?',
-				'ADMIN_USER_ID' => $this->px->req()->get_param('ADMIN_USER_ID'),
-				'csrf_token' => $this->get_csrf_token(),
-				'error_message' => $error_message ? $this->clover->lang()->get('login_error.'.$error_message) : null,
-			)
-		);
+		if( $is_html_page ){
+			echo $this->clover->view()->bind(
+				'/system/login.twig',
+				array(
+					'url_backto' => '?',
+					'ADMIN_USER_ID' => $this->px->req()->get_param('ADMIN_USER_ID'),
+					'csrf_token' => $this->get_csrf_token(),
+					'error_message' => $error_message ? $this->clover->lang()->get('login_error.'.$error_message) : null,
+				)
+			);
+			exit;
+		}
+
+		$this->px->header('Content-type: application/json');
+		echo json_encode(array(
+			'result' => false,
+			'message' => $this->px->get_status_message(),
+		));
 		exit;
+
 	}
 
 
