@@ -254,6 +254,16 @@ class register{
 							$app = new funcs\api\scheduler($this->clover);
 							$app->cancel_queue();
 							break;
+						case 'start_maintenance_mode':
+							$this->clover->allowed_method('post');
+							$app = new funcs\api\maintenanceMode($this->clover);
+							$app->start();
+							break;
+						case 'exit_maintenance_mode':
+							$this->clover->allowed_method('post');
+							$app = new funcs\api\maintenanceMode($this->clover);
+							$app->exit();
+							break;
 					}
 
 				case 'edit_contents':
