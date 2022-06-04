@@ -217,7 +217,11 @@ class auth{
 
 		if( $rtn->result ){
 			// ログインユーザーの情報を更新
-			$this->px->req()->set_session('ADMIN_USER_ID', $user_info['id']);
+			$new_login_user_id = $login_user_id;
+			if( isset($new_profile['id']) && is_string($new_profile['id']) ){
+				$new_login_user_id = $new_profile['id'];
+			}
+			$this->px->req()->set_session('ADMIN_USER_ID', $new_login_user_id);
 		}
 
 		return $rtn;
