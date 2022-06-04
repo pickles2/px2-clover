@@ -52,14 +52,14 @@ class auth{
 			}
 
 			if( $this->is_csrf_token_required() && !$this->is_valid_csrf_token_given() ){
-				$this->clover->logger()->error_log('User \''.$login_challenger_id.'\' failed to logged in. Invalid CSRF Token.');
+				$this->clover->logger()->error_log('Failed to logged in user \''.$login_challenger_id.'\'. Invalid CSRF Token.');
 				$this->login_page('csrf_token_expired');
 				exit;
 			}
 
 			if( !$this->validate_admin_user_id($login_challenger_id) ){
 				// 不正な形式のID
-				$this->clover->logger()->error_log('User \''.$login_challenger_id.'\' failed to logged in. Invalid user ID format.');
+				$this->clover->logger()->error_log('Failed to logged in user \''.$login_challenger_id.'\'. Invalid user ID format.');
 				$this->login_page('invalid_user_id');
 				exit;
 			}
@@ -67,7 +67,7 @@ class auth{
 			$user_info = $this->get_admin_user_info( $login_challenger_id );
 			if( !is_array($user_info) ){
 				// 不正なユーザーデータ
-				$this->clover->logger()->error_log('User \''.$login_challenger_id.'\' failed to logged in. User undefined.');
+				$this->clover->logger()->error_log('Failed to logged in user \''.$login_challenger_id.'\'. User undefined.');
 				$this->login_page('failed');
 				exit;
 			}
@@ -87,7 +87,7 @@ class auth{
 			}
 
 			if( !$this->is_login() ){
-				$this->clover->logger()->error_log('User \''.$login_challenger_id.'\' failed to logged in.');
+				$this->clover->logger()->error_log('Failed to logged in user \''.$login_challenger_id.'\'.');
 				$this->login_page('failed');
 				exit;
 			}
@@ -318,6 +318,15 @@ class auth{
 				'errors' => (object) array(),
 			);
 		}
+
+		$log_message = 'Admin user \''.$user_info['id'].'\' info updated.';
+		if($target_user_id != $user_info['id']){
+			$log_message .= '; ID changed \''.$target_user_id.'\' to \''.$user_info['id'].'\'';
+		}
+		if(isset($new_profile['pw']) && is_string($new_profile['pw']) && strlen($new_profile['pw'])){
+			$log_message .= '; Password changed';
+		}
+		$this->clover->logger()->log($log_message);
 
 		return $result;
 	}

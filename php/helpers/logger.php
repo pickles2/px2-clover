@@ -48,6 +48,11 @@ class logger{
 			$message = json_encode($arg_list);
 		}
 
+		$remote_addr = null;
+		if( isset($_SERVER["REMOTE_ADDR"]) ){
+			$remote_addr = $_SERVER["REMOTE_ADDR"];
+		}
+
 		$log = array(
 			date('Y-m-d H:i:s'), // 時刻
 			getmypid(), // プロセスID
@@ -55,6 +60,7 @@ class logger{
 			$message, // ログメッセージ
 			$trace[0]['file'], // 呼び出したスクリプトファイル
 			$trace[0]['line'], // 呼び出した行番号
+			$remote_addr, // IPアドレス
 		);
 		error_log( $this->px->fs()->mk_csv( array($log) ), 3, $this->realpath_logs.'log-'.date('Y-m-d').'.csv' );
 		return;
@@ -76,6 +82,11 @@ class logger{
 			$message = json_encode($arg_list);
 		}
 
+		$remote_addr = null;
+		if( isset($_SERVER["REMOTE_ADDR"]) ){
+			$remote_addr = $_SERVER["REMOTE_ADDR"];
+		}
+
 		$log = array(
 			date('Y-m-d H:i:s'), // 時刻
 			getmypid(), // プロセスID
@@ -83,6 +94,7 @@ class logger{
 			$message, // ログメッセージ
 			$trace[0]['file'], // 呼び出したスクリプトファイル
 			$trace[0]['line'], // 呼び出した行番号
+			$remote_addr, // IPアドレス
 		);
 		error_log( $this->px->fs()->mk_csv( array($log) ), 3, $this->realpath_logs.'errorlog-'.date('Y-m-d').'.csv' );
 
@@ -93,6 +105,7 @@ class logger{
 			'Error: '.$message, // ログメッセージ
 			$trace[0]['file'], // 呼び出したスクリプトファイル
 			$trace[0]['line'], // 呼び出した行番号
+			$remote_addr, // IPアドレス
 		);
 		error_log( $this->px->fs()->mk_csv( array($log) ), 3, $this->realpath_logs.'log-'.date('Y-m-d').'.csv' );
 		return;
