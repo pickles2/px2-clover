@@ -65,14 +65,14 @@ class auth{
 			}
 
 			$user_info = $this->get_admin_user_info( $login_challenger_id );
-			if( !is_array($user_info) ){
+			if( !is_object($user_info) ){
 				// 不正なユーザーデータ
 				$this->clover->logger()->error_log('Failed to logged in user \''.$login_challenger_id.'\'. User undefined.');
 				$this->login_page('failed');
 				exit;
 			}
-			$admin_id = $user_info['id'];
-			$admin_pw = $user_info['pw'];
+			$admin_id = $user_info->id;
+			$admin_pw = $user_info->pw;
 
 			if( $login_challenger_id == $admin_id && password_verify($this->px->req()->get_param('ADMIN_USER_PW'), $admin_pw) ){
 				$this->px->req()->set_session('ADMIN_USER_ID', $login_challenger_id);
@@ -80,7 +80,7 @@ class auth{
 				if( is_string($this->px->req()->get_param('PX')) ){
 					$redirect_to = '?PX='.htmlspecialchars( $this->px->req()->get_param('PX') );
 				}
-				$this->px->req()->set_cookie('LANG', $user_info['lang']);
+				$this->px->req()->set_cookie('LANG', $user_info->lang);
 				$this->clover->logger()->log('User \''.$login_challenger_id.'\' logged in.');
 				$this->px->header('Location:'.$redirect_to);
 				exit;
@@ -201,10 +201,10 @@ class auth{
 		}
 
 		$user_info = $this->get_admin_user_info( $login_user_id );
-		if( !is_array($user_info) ){
+		if( !is_object($user_info) ){
 			return null;
 		}
-		unset( $user_info['pw'] ); // パスワードハッシュは出さない
+		unset( $user_info->pw ); // パスワードハッシュは出さない
 		return $user_info;
 	}
 
@@ -212,6 +212,7 @@ class auth{
 	 * 現在のログインユーザーの情報を更新する
 	 */
 	public function update_login_user_info( $new_profile ){
+		$new_profile = (object) $new_profile;
 		$login_user_id = $this->px->req()->get_session('ADMIN_USER_ID');
 		if( !is_string($login_user_id) || !strlen($login_user_id) ){
 			// ログインしていない
@@ -227,8 +228,8 @@ class auth{
 		if( $rtn->result ){
 			// ログインユーザーの情報を更新
 			$new_login_user_id = $login_user_id;
-			if( isset($new_profile['id']) && is_string($new_profile['id']) ){
-				$new_login_user_id = $new_profile['id'];
+			if( isset($new_profile->id) && is_string($new_profile->id) ){
+				$new_login_user_id = $new_profile->id;
 			}
 			$this->px->req()->set_session('ADMIN_USER_ID', $new_login_user_id);
 		}
@@ -240,6 +241,7 @@ class auth{
 	 * 管理者ユーザーの情報を更新する
 	 */
 	public function update_admin_user_info( $target_user_id, $new_profile ){
+		$new_profile = (object) $new_profile;
 		$result = (object) array(
 			'result' => true,
 			'message' => 'OK',
@@ -264,7 +266,7 @@ class auth{
 		}
 
 		$user_info = $this->get_admin_user_info( $target_user_id );
-		if( !is_array($user_info) ){
+		if( !is_object($user_info) ){
 			return (object) array(
 				'result' => false,
 				'message' => 'ユーザー情報の取得に失敗しました。',
@@ -276,11 +278,11 @@ class auth{
 				if( !is_string($val) || !strlen($val) ){
 					continue;
 				}
-				$user_info[$key] = $this->password_hash($val);
+				$user_info->{$key} = $this->password_hash($val);
 				continue;
 			}
 
-			$user_info[$key] = $val;
+			$user_info->{$key} = $val;
 		}
 
 		$user_info_validated = $this->validate_admin_user_info($user_info);
@@ -294,7 +296,7 @@ class auth{
 		}
 
 
-		if( $target_user_id != $user_info['id'] && $this->px->fs()->is_file($this->realpath_admin_users.urlencode($user_info['id']).'.json') ){
+		if( $target_user_id != $user_info->id && $this->px->fs()->is_file($this->realpath_admin_users.urlencode($user_info->id).'.json') ){
 			// 既に存在します。
 			return (object) array(
 				'result' => false,
@@ -308,7 +310,7 @@ class auth{
 		// 新しいIDのためにファイル名を変更
 		$res_rename = $this->px->fs()->rename(
 			$this->realpath_admin_users.urlencode($target_user_id).'.json',
-			$this->realpath_admin_users.urlencode($user_info['id']).'.json'
+			$this->realpath_admin_users.urlencode($user_info->id).'.json'
 		);
 		if( !$res_rename ){
 			return (object) array(
@@ -318,7 +320,7 @@ class auth{
 			);
 		}
 
-		$realpath_json = $this->realpath_admin_users.urlencode($user_info['id']).'.json';
+		$realpath_json = $this->realpath_admin_users.urlencode($user_info->id).'.json';
 		$json_str = json_encode( $user_info, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE );
 		if( !$this->px->fs()->save_file($realpath_json, $json_str) ){
 			return (object) array(
@@ -328,11 +330,11 @@ class auth{
 			);
 		}
 
-		$log_message = 'Admin user \''.$user_info['id'].'\' info updated.';
-		if($target_user_id != $user_info['id']){
-			$log_message .= '; ID changed \''.$target_user_id.'\' to \''.$user_info['id'].'\'';
+		$log_message = 'Admin user \''.$user_info->id.'\' info updated.';
+		if($target_user_id != $user_info->id){
+			$log_message .= '; ID changed \''.$target_user_id.'\' to \''.$user_info->id.'\'';
 		}
-		if(isset($new_profile['pw']) && is_string($new_profile['pw']) && strlen($new_profile['pw'])){
+		if(isset($new_profile->pw) && is_string($new_profile->pw) && strlen($new_profile->pw)){
 			$log_message .= '; Password changed';
 		}
 		$this->clover->logger()->log($log_message);
@@ -375,8 +377,8 @@ class auth{
 		if( is_dir($this->realpath_admin_users) && $this->px->fs()->ls($this->realpath_admin_users) ){
 			$filename = $user_id.'.json';
 			if( $this->px->fs()->is_file( $this->realpath_admin_users.$filename ) ){
-				$user_info = json_decode( file_get_contents($this->realpath_admin_users.$filename), true );
-				if( $user_info['id'] != $user_id ){
+				$user_info = json_decode( file_get_contents($this->realpath_admin_users.$filename) );
+				if( $user_info->id != $user_id ){
 					// ID値が不一致だったら
 					return null;
 				}
@@ -392,7 +394,7 @@ class auth{
 				'role' => null,
 			);
 		}
-		return $user_info;
+		return (object) $user_info;
 	}
 
 	/**
@@ -480,7 +482,7 @@ class auth{
 			);
 		}
 
-		$realpath_json = $this->realpath_admin_users.urlencode($user_info['id']).'.json';
+		$realpath_json = $this->realpath_admin_users.urlencode($user_info->id).'.json';
 		if( !$this->px->fs()->rm($realpath_json) ){
 			return (object) array(
 				'result' => false,
@@ -519,7 +521,7 @@ class auth{
 		);
 		$user_info = (array) $user_info;
 
-		if( !$this->validate_admin_user_id($user_info['id']) ){
+		if( !$this->validate_admin_user_id($user_info->id) ){
 			// 不正な形式のID
 			$rtn->is_valid = false;
 			$rtn->errors->id = array('不正な形式のIDです。');

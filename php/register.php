@@ -49,8 +49,8 @@ class register{
 			}
 
 			// メンテナンスモードの評価
-			$maintenanceMode = new funcs\api\maintenanceMode( $clover );
-			$maintenanceMode->maintenance_page();
+			$maintenanceModeHelpers = new helpers\maintenanceMode( $clover );
+			$maintenanceModeHelpers->maintenance_page();
 		}
 
 		$px->conf()->funcs->before_content['px2-clover'] = __CLASS__.'::admin_console('.json_encode($options).')';
@@ -259,6 +259,11 @@ class register{
 							$this->clover->allowed_method('post');
 							$app = new funcs\api\scheduler($this->clover);
 							$app->cancel_queue();
+							break;
+						case 'maintenance_mode_status':
+							$this->clover->allowed_method('post');
+							$app = new funcs\api\maintenanceMode($this->clover);
+							$app->status();
 							break;
 						case 'start_maintenance_mode':
 							$this->clover->allowed_method('post');

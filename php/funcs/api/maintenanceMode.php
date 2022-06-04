@@ -12,6 +12,9 @@ class maintenanceMode{
 	/** Picklesオブジェクト */
 	private $px;
 
+	/** メンテナンスモードヘルパーオブジェクト */
+	private $maintenanceModeHelper;
+
 	/** メンテナンスモード設定ファイル */
 	private $realpath_maintenance_mode_config;
 
@@ -26,6 +29,9 @@ class maintenanceMode{
 		$this->clover = $clover;
 		$this->px = $clover->px();
 
+		// メンテナンスモードヘルパー
+		$this->maintenanceModeHelper = new \tomk79\pickles2\px2clover\helpers\maintenanceMode( $clover );
+
 		// メンテナンスモード設定
 		$this->realpath_maintenance_mode_config = $this->clover->realpath_private_data_dir('/maintenance_mode.json');
 	}
@@ -35,19 +41,18 @@ class maintenanceMode{
 	 */
 	public function start(){
 		$this->px->header('Content-type: text/json');
-		$rtn = array();
-		$rtn['result'] = true;
-		$rtn['message'] = 'OK';
-
-		$login_user = $this->clover->auth()->get_login_user_info();
-		$maintenance_mode_settings = array(
-			'start_at' => date('Y-m-d H:i:s'),
-			'exit_at' => date('Y-m-d H:i:s', time() + 3600),
-			'maintainer' => $login_user['id'],
+		$rtn = array(
+			'result' => true,
+			'message' => 'OK',
 		);
 
-		$json_str = json_encode( $maintenance_mode_settings, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE );
-		$this->px->fs()->save_file( $this->realpath_maintenance_mode_config, $json_str );
+		if(!$this->maintenanceModeHelper->set()){
+			echo json_encode(array(
+				'result' => false,
+				'message' => 'Failed to set maintenance mode.',
+			));
+			exit;
+		}
 
 		echo json_encode($rtn);
 		exit;
@@ -58,24 +63,33 @@ class maintenanceMode{
 	 */
 	public function exit(){
 		$this->px->header('Content-type: text/json');
+		$rtn = array(
+			'result' => true,
+			'message' => 'OK',
+		);
 
-		$rtn = array();
-		$rtn['result'] = true;
-		$rtn['message'] = 'OK';
+		$status = $this->maintenanceModeHelper->get_status();
+		if( !$status ){
+			echo json_encode($rtn);
+			exit;
+		}
 
 		$login_user = $this->clover->auth()->get_login_user_info();
+		if( $status->maintainer !== $login_user->id ){
+			echo json_encode(array(
+				'result' => false,
+				'message' => 'You are not the maintainer.',
+			));
+			exit;
+		}
 
-		if( is_file($this->realpath_maintenance_mode_config) ){
-			$maintenance_mode_settings = json_decode( file_get_contents( $this->realpath_maintenance_mode_config ) );
-			if( $maintenance_mode_settings->maintainer !== $login_user['id'] ){
-				echo json_encode(array(
-					'result' => false,
-					'message' => 'You are not the maintainer.',
-				));
-				exit;
-			}
-
-			$this->px->fs()->rm( $this->realpath_maintenance_mode_config );
+		$result = $this->maintenanceModeHelper->clear();
+		if( !$result ){
+			echo json_encode(array(
+				'result' => false,
+				'message' => 'Failed to clear maintenance mode settings.',
+			));
+			exit;
 		}
 
 		echo json_encode($rtn);
@@ -83,57 +97,27 @@ class maintenanceMode{
 	}
 
 	/**
-	 * メンテナンスモードが有効か調べる
+	 * メンテナンスモード設定の状態を調べる
 	 */
-	public function is_maintenance_mode(){
-		if( !is_file($this->realpath_maintenance_mode_config) ){
-			return false;
+	public function status(){
+		$this->px->header('Content-type: text/json');
+
+		$rtn = array();
+		$rtn['result'] = true;
+		$rtn['message'] = 'OK';
+		$rtn['start_at'] = null;
+		$rtn['exit_at'] = null;
+		$rtn['maintainer'] = null;
+
+		$status = $this->maintenanceModeHelper->get_status();
+		if( $status ){
+			$rtn['start_at'] = $status->start_at;
+			$rtn['exit_at'] = $status->exit_at;
+			$rtn['maintainer'] = $status->maintainer;
 		}
 
-		$maintenance_mode_settings = json_decode( file_get_contents( $this->realpath_maintenance_mode_config ) );
-
-		$login_user = $this->clover->auth()->get_login_user_info();
-		if( isset($login_user['id']) && $maintenance_mode_settings->maintainer == $login_user['id'] ){
-			return false;
-		}
-
-		$now = time();
-		$start_at = strtotime( $maintenance_mode_settings->start_at );
-		$exit_at = strtotime( $maintenance_mode_settings->exit_at );
-
-		if( $start_at < $now && $now < $exit_at ){
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * メンテナンスページを表示する
-	 */
-	public function maintenance_page(){
-		if( !$this->is_maintenance_mode() ){
-			return;
-		}
-
-		$this->px->set_status(503);
-
-		$is_html_page = true; // TODO: パスによって振り分ける
-
-		if( $is_html_page ){
-			echo $this->clover->view()->bind(
-				'/system/maintenance_mode.twig',
-				array(
-				)
-			);
-			exit;
-		}
-
-		$this->px->header('Content-type: application/json');
-		echo json_encode(array(
-			'result' => false,
-			'message' => $this->px->get_status_message(),
-		));
+		echo json_encode($rtn);
 		exit;
 	}
+
 }
