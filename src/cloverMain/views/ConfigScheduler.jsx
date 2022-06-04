@@ -35,24 +35,18 @@ export default function ConfigScheduler(props){
 		};
 	}, []);
 
-	const getSchedulerHint = () => {
-
-		useEffect(() => {
-			main.px2utils.px2cmd(
-				'/?PX=admin.api.scheduler_setting_hint',
-				{},
-				function( res ){
-					if( !res.result ){
-						console.error('Error:', res);
-					}
-					updateSchedulerHint(res);
+	useEffect(() => {
+		main.px2utils.px2cmd(
+			'/?PX=admin.api.scheduler_setting_hint',
+			{},
+			function( res ){
+				if( !res.result ){
+					console.error('Error:', res);
 				}
-			);
-		}, []);
-
-		return schedulerHint;
-	}
-	getSchedulerHint();
+				updateSchedulerHint(res);
+			}
+		);
+	}, []);
 
 	return (
 		<>

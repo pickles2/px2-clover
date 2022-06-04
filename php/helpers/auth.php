@@ -519,36 +519,36 @@ class auth{
 			'message' => null,
 			'errors' => (object) array(),
 		);
-		$user_info = (array) $user_info;
+		$user_info = (object) $user_info;
 
 		if( !$this->validate_admin_user_id($user_info->id) ){
 			// 不正な形式のID
 			$rtn->is_valid = false;
 			$rtn->errors->id = array('不正な形式のIDです。');
 		}
-		if( !isset($user_info['name']) || !strlen($user_info['name']) ){
+		if( !isset($user_info->name) || !strlen($user_info->name) ){
 			$rtn->is_valid = false;
 			$rtn->errors->name = array('必ず入力してください。');
 		}
-		if( !isset($user_info['pw']) || !strlen($user_info['pw']) ){
+		if( !isset($user_info->pw) || !strlen($user_info->pw) ){
 			$rtn->is_valid = false;
 			$rtn->errors->pw = array('必ず入力してください。');
 		}
-		if( !isset($user_info['lang']) || !strlen($user_info['lang']) ){
+		if( !isset($user_info->lang) || !strlen($user_info->lang) ){
 			$rtn->is_valid = false;
 			$rtn->errors->lang = array('必ず選択してください。');
 		}
-		if( isset($user_info['email']) && is_string($user_info['email']) && strlen($user_info['email']) ){
-			if( !preg_match('/^[^@\/\\\\]+\@[^@\/\\\\]+$/', $user_info['email']) ){
+		if( isset($user_info->email) && is_string($user_info->email) && strlen($user_info->email) ){
+			if( !preg_match('/^[^@\/\\\\]+\@[^@\/\\\\]+$/', $user_info->email) ){
 				$rtn->is_valid = false;
 				$rtn->errors->email = array('不正な形式のメールアドレスです。');
 			}
 		}
-		if( !isset($user_info['role']) || !strlen($user_info['role']) ){
+		if( !isset($user_info->role) || !strlen($user_info->role) ){
 			$rtn->is_valid = false;
 			$rtn->errors->role = array('必ず選択してください。');
 		}
-		switch( $user_info['role'] ){
+		switch( $user_info->role ){
 			case 'admin':
 				break;
 			default:
