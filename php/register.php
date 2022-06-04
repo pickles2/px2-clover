@@ -47,6 +47,10 @@ class register{
 			if( $auth_needs ){
 				$clover->auth()->auth();
 			}
+
+			// メンテナンスモードの評価
+			$maintenanceMode = new funcs\api\maintenanceMode( $clover );
+			$maintenanceMode->maintenance_page();
 		}
 
 		$px->conf()->funcs->before_content['px2-clover'] = __CLASS__.'::admin_console('.json_encode($options).')';

@@ -16,7 +16,10 @@ export default function ConfigMaintenance(props){
 			function( res ){
 				if( !res.result ){
 					console.error('Error:', res);
+					alert( res.message );
+					return;
 				}
+				alert( 'メンテナンスモードを開始しました。' );
 			}
 		);
 	}
@@ -31,7 +34,9 @@ export default function ConfigMaintenance(props){
 				if( !res.result ){
 					console.error('Error:', res);
 					alert( res.message );
+					return;
 				}
+				alert( 'メンテナンスモードを解除しました。' );
 			}
 		);
 	}
