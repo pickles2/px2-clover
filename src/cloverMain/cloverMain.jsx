@@ -9,6 +9,7 @@ import ConfigProfile from './views/ConfigProfile';
 import ConfigMembers from './views/ConfigMembers';
 import ConfigHistory from './views/ConfigHistory';
 import ConfigScheduler from './views/ConfigScheduler';
+import ConfigMaintenance from './views/ConfigMaintenance';
 import Sitemap from './views/Sitemap';
 import PageInfo from './views/PageInfo';
 import Publish from './views/Publish';
@@ -213,6 +214,10 @@ class Layout extends React.Component {
 			case 'admin.config.scheduler':
 				title = "タスクスケジュール設定";
 				content = <ConfigScheduler />;
+				break;
+			case 'admin.config.maintenance':
+				title = "メンテナンス";
+				content = <ConfigMaintenance />;
 				break;
 			case 'admin':
 			default:
