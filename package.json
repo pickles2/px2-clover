@@ -23,7 +23,7 @@
         "iterate79": "^1.1.1",
         "jquery": "^3.6.0",
         "langbank": "github:tomk79/node-langbank.git#develop",
-        "laravel-mix": "^6.0.43",
+        "laravel-mix": "^6.0.48",
         "lodash": "^4.17.21",
         "marked": "^4.0.12",
         "postcss": "^8.1.14",
