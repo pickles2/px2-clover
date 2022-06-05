@@ -8,7 +8,7 @@
 ### インストール
 
 ```
-composer require tomk79/px2-clover;
+composer require pickles2/px2-clover;
 ```
 
 ### セットアップ
@@ -74,8 +74,9 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
-### tomk79/px2-clover v0.1.2 (リリース日未定)
+### pickles2/px2-clover v0.2.0 (リリース日未定)
 
+- パッケージ名の移管: tomk79/px2-clover -> pickles2/px2-clover
 - パブリッシュが重くなる問題を修正した。
 - ログイン処理の改善。
 - メンバー管理機能を追加。
