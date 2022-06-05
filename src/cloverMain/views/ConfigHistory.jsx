@@ -46,30 +46,39 @@ export default function ConfigHistory(props){
 				: <>
 					<form onSubmit={updateConfig} method="post" autoComplete="off">
 						<div className="px2-p">
-						<table className="px2-table" style={{width:"100%"}}>
-							<tbody>
-								<tr>
-									<th>Gitリモート</th>
-									<td><input type="text" name="git_remote" defaultValue={main.config.history.git_remote} className="px2-input" /></td>
-								</tr>
-								<tr>
-									<th>Git ID</th>
-									<td><input type="text" name="git_param_1" defaultValue={main.config.history.git_id} className="px2-input" autoComplete="off" /></td>
-								</tr>
-								<tr>
-									<th>Git パスワード</th>
-									<td><input type="password" name="git_param_2" defaultValue="" className="px2-input" autoComplete="new-password" /></td>
-								</tr>
-								<tr>
-									<th>自動コミット</th>
-									<td><label><input type="checkbox" name="auto_commit" value="1" defaultChecked={main.config.history.auto_commit ? true : false} className="px2-input" /> 自動コミットを有効にする</label></td>
-								</tr>
-							</tbody>
-						</table>
+							<div className="px2-form-input-list">
+								<ul className="px2-form-input-list__ul">
+									<li className={"px2-form-input-list__li"}>
+										<div className="px2-form-input-list__label"><label htmlFor="input-git_remote">Gitリモート</label></div>
+										<div className="px2-form-input-list__input"><input type="text" id="input-git_remote" name="git_remote" defaultValue={main.config.history.git_remote} className="px2-input px2-input--block" /></div>
+									</li>
+									<li className={"px2-form-input-list__li"}>
+										<div className="px2-form-input-list__label"><label htmlFor="input-git_param_1">Git ID</label></div>
+										<div className="px2-form-input-list__input"><input type="text" id="input-git_param_1" name="git_param_1" defaultValue={main.config.history.git_id} className="px2-input px2-input--block" autoComplete="off" /></div>
+									</li>
+									<li className={"px2-form-input-list__li"}>
+										<div className="px2-form-input-list__label"><label htmlFor="input-git_param_2">Git パスワード</label></div>
+										<div className="px2-form-input-list__input">
+											<p className="px2-note">パスワードを変更する場合のみ入力してください。</p>
+											<input type="password" id="input-git_param_2" name="git_param_2" defaultValue="" className="px2-input px2-input--block" autoComplete="new-password" />
+										</div>
+									</li>
+									<li className={"px2-form-input-list__li"}>
+										<div className="px2-form-input-list__label"><label htmlFor="input-auto_commit">自動コミット</label></div>
+										<div className="px2-form-input-list__input"><label><input type="checkbox" id="input-auto_commit" name="auto_commit" value="1" defaultChecked={main.config.history.auto_commit ? true : false} className="px2-input" /> 自動コミットを有効にする</label></div>
+									</li>
+								</ul>
+							</div>
 						</div>
-						<p><button type="submit" className="px2-btn px2-btn--primary">保存する</button></p>
+						<div className="px2-form-submit-area">
+							<ul className="px2-form-submit-area__btns">
+								<li><button type="submit" className="px2-btn px2-btn--primary">{ main.lb.get('ui_label.save') }</button></li>
+							</ul>
+							<ul className="px2-form-submit-area__backward-btns">
+								<li><Link href="?PX=admin.config">{ main.lb.get('ui_label.cancel') }</Link></li>
+							</ul>
+						</div>
 					</form>
-					<p><Link href="?PX=admin.config">戻る</Link></p>
 			</>}
 		</>
 	);
