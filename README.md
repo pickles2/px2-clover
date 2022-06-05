@@ -60,9 +60,16 @@ $conf->allow_pxcommands = 1;
 管理画面のURLは、 プレビューに `PX=admin` を付与したもの(例: `https://yourdomain/?PX=admin`) になります。
 
 
-## 環境変数
+## 予約語
+
+### 環境変数
 
 - `APP_KEY`: 暗号・復号 に使用するキー
+
+### セッション
+
+- `ADMIN_USER_ID`
+- `ADMIN_USER_CSRF_TOKEN`
 
 
 ## 更新履歴 - Change log
