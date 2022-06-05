@@ -74,7 +74,7 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
-### pickles2/px2-clover v0.2.0 (リリース日未定)
+### pickles2/px2-clover v0.2.0 (2022年6月5日)
 
 - パッケージ名の移管: tomk79/px2-clover -> pickles2/px2-clover
 - パブリッシュが重くなる問題を修正した。
