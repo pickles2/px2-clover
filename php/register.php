@@ -275,6 +275,12 @@ class register{
 							$app = new funcs\api\maintenanceMode($this->clover);
 							$app->exit();
 							break;
+						case 'open_sitemap_file':
+							$filefullname = $this->px->req()->get_param('filefullname');
+							$sitemap_dir = $this->px->get_realpath_homedir().'sitemaps/';
+							$desktopHelper = new helpers\desktop($this->clover);
+							$desktopHelper->open( $sitemap_dir.$filefullname );
+							break;
 					}
 
 				case 'edit_contents':

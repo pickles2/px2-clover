@@ -58,6 +58,7 @@
 	<script type="text/javascript">
 
 		(function(){
+			var app_mode = "{{ plugin_options.app_mode | e("js") }}";
 			var page_path = "{{ page_path | e("js") }}";
 			var theme_id = '';
 			var layout_id = '';
@@ -95,28 +96,30 @@
 					'lang': 'ja', // language
 					'gpiBridge': function(input, callback){
 						console.log('====== GPI Request:', input);
-						console.log(JSON.stringify(input));
-						base64_encode( JSON.stringify(input) ).then((encodedInput) => {
-							$.ajax({
-								"url": '?PX=px2dthelper.px2ce.gpi',
-								"method": 'post',
-								'data': {
-									'data': encodedInput,
-									'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
-								},
-								"error": function(error){
-									console.error('------ GPI Response Error:', typeof(error), error);
-									callback(error);
-								},
-								"success": function(data){
-									console.log('------ GPI Response:', typeof(data), data);
-									callback(data);
-								},
-								"complete": function(){
-									window.cloverUtils.autoCommit();
-								},
+						// console.log(JSON.stringify(input);
+						base64_encode( JSON.stringify(input) )
+							.then((encodedInput) => {
+								$.ajax({
+									"url": '?PX=px2dthelper.px2ce.gpi',
+									"method": 'post',
+									'data': {
+										'appMode': app_mode,
+										'data': encodedInput,
+										'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
+									},
+									"error": function(error){
+										console.error('------ GPI Response Error:', typeof(error), error);
+										callback(error);
+									},
+									"success": function(data){
+										console.log('------ GPI Response:', typeof(data), data);
+										callback(data);
+									},
+									"complete": function(){
+										window.cloverUtils.autoCommit();
+									},
+								});
 							});
-						});
 						return;
 					},
 					'complete': function(){

@@ -91,16 +91,17 @@ return call_user_func( function(){
 	$conf->funcs->before_sitemap = [
 		// px2-clover
 		tomk79\pickles2\px2clover\register::clover(array(
+			"app_mode" => "web",
 			"protect_preview" => false, // プレビューに認証を要求するか？
 		)),
 
 		// PX=clearcache
 		'picklesFramework2\commands\clearcache::register' ,
 
-		 // PX=config
+		// PX=config
 		'picklesFramework2\commands\config::register' ,
 
-		 // PX=phpinfo
+		// PX=phpinfo
 		'picklesFramework2\commands\phpinfo::register' ,
 
 		// sitemapExcel

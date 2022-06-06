@@ -45,7 +45,8 @@ $conf->allow_pxcommands = 1;
 	$conf->funcs->before_sitemap = [
 		// px2-clover
 		tomk79\pickles2\px2clover\main::register( array(
-			"protect_preview" => true, // プレビューに認証を要求するか？
+			"app_mode" => "web", // アプリの実行モード; "web" (default) | "desktop"
+			"protect_preview" => true, // プレビューに認証を要求するか？; false (default) | true
 		) ),
 	];
 ```
@@ -73,6 +74,10 @@ $conf->allow_pxcommands = 1;
 
 
 ## 更新履歴 - Change log
+
+### pickles2/px2-clover v0.2.1 (リリース日未定)
+
+- `app_mode` オプションを追加。
 
 ### pickles2/px2-clover v0.2.0 (2022年6月5日)
 

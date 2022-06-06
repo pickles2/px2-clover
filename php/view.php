@@ -34,6 +34,7 @@ class view{
 		// 共通項目
 		$data['clover_config'] = $this->clover->conf();
 		$data['px2config'] = $this->px->conf();
+		$data['plugin_options'] = $this->clover->get_options();
 		$data['path_client_resources'] = $this->clover->path_files();
 		$data['csrf_token'] = $this->clover->auth()->get_csrf_token();
 

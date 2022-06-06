@@ -33,6 +33,10 @@
             "auto_commit": "{{ clover_config.history.auto_commit | e("js") }}",
         }
     };
+    window.plugin_options = {
+        "app_mode": "{{ plugin_options.app_mode | e("js") }}",
+        "protect_preview": {{ plugin_options.protect_preview ? "true" : "false" }},
+    };
     </script>
 
 	{% block foot %}
