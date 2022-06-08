@@ -81,6 +81,10 @@ export default React.memo(function Sitemap(props){
 		main.px2utils.px2cmd("?PX=admin.api.open_sitemap_file", {
 			'filefullname': origFileName,
 		}, (data)=>{
+			if( !data.result ){
+				console.error(data);
+				alert('Error: '+data.message);
+			}
 		});
 	}
 
