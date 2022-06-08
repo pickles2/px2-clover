@@ -28,16 +28,11 @@ class clover{
 	 * Constructor
 	 *
 	 * @param object $px $pxオブジェクト
+	 * @param object $options プラグインオプション
 	 */
 	public function __construct( $px, $options ){
 		$this->px = $px;
 		$this->options = (object) $options;
-		if( !isset($this->options->app_mode) ){
-			$this->options->app_mode = "web";
-		}
-		if( !isset($this->options->protect_preview) ){
-			$this->options->protect_preview = false;
-		}
 
 		$this->auth = new helpers\auth( $this );
 		$this->view = new view( $this );

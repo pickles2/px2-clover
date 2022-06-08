@@ -27,16 +27,36 @@ class register{
 			return __CLASS__.'::'.__FUNCTION__.'('.( is_array($px) ? json_encode($px) : '' ).')';
 		}
 
+		// $options の正規化
+		if( !is_object($options) ){
+			$options = (object) $options;
+		}
+		if( !isset($options->app_mode) ){
+			$options->app_mode = "web";
+		}
+		if( !isset($options->protect_preview) ){
+			$options->protect_preview = false;
+		}
+
 		if( !$px->req()->is_cmd() ){
 
 			// 初期化
 			$clover = new clover( $px, $options );
 			$clover->initializer()->initialize();
 
+			// ガード
+			if( $options->app_mode != 'desktop' && $px->req()->get_param('appMode') == 'desktop' ){
+				$px->header('Content-type: application/json');
+				echo json_encode(array(
+					'result' => false,
+					'message' => 'Disallowed parameters are given;',
+				));
+				exit;
+			}
 
 			// 認証
 			$auth_needs = false;
-			if( isset($options->protect_preview) && $options->protect_preview ){
+			if( $options->protect_preview ){
 				// プレビュー全体で認証を要求する
 				$auth_needs = true;
 			}
@@ -279,7 +299,13 @@ class register{
 							$filefullname = $this->px->req()->get_param('filefullname');
 							$sitemap_dir = $this->px->get_realpath_homedir().'sitemaps/';
 							$desktopHelper = new helpers\desktop($this->clover);
-							$desktopHelper->open( $sitemap_dir.$filefullname );
+							$result = $desktopHelper->open( $sitemap_dir.$filefullname );
+							$this->px->header('Content-type: application/json');
+							echo json_encode(array(
+								'result' => $result,
+								'message' => ($result ? 'OK' : 'Failed to open file.'),
+							));
+							exit;
 							break;
 					}
 
