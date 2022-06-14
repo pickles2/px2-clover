@@ -5,230 +5,84 @@ import $ from 'jquery';
 export default React.memo(function Modules(props){
 
 	const main = useContext(MainContext);
-	const [sitemapFileList, setSitemapFileList] = useState(false);
-
-	if( !sitemapFileList ){
-		loadSitemapFileList();
-	}
+	const path_client_resources = window.clover_config.paths.path_client_resources;
 
 	/**
-	 * サイトマップファイルの一覧を更新する
+	 * 画面を初期化するする
 	 */
-	function loadSitemapFileList( callback ){
+	function initialize( callback ){
 		callback = callback || function(){};
-		let tmpSitemapFileList = sitemapFileList;
-		$.ajax({
-			"url": "?PX=px2dthelper.sitemap.filelist",
-			"method": "post",
-			"data": {
-				'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
-			},
-			"error": function(error){
-				console.error('Error:', error);
-				alert('Loading Error');
-			},
-			"success": function(data){
-				if( !data.result ){
-					alert('Loading Error');
-					return;
+		$('.cont-px2-clover__px2me-resources').remove();
+		main.px2utils.px2cmd(
+			'/?PX=px2dthelper.px2me.client_resources',
+			{},
+			function( res ){
+				for(var index in res.css){
+					var $linkElement = $('<link />');
+					$linkElement.attr({
+						'rel': 'stylesheet',
+						'href': path_client_resources + '__px2me/' + res.css[index],
+						'class': 'cont-px2-clover__px2me-resources',
+					});
+					$('head').append( $linkElement );
 				}
-				tmpSitemapFileList = data;
-			},
-			"complete": function(){
-				setSitemapFileList(tmpSitemapFileList);
-				callback( tmpSitemapFileList );
-			},
-		});
-	}
+				for(var index in res.js){
+					var $scriptElement = $('<script />');
+					$scriptElement.attr({
+						'src': path_client_resources + '__px2me/' + res.js[index],
+						'class': 'cont-px2-clover__px2me-resources',
+					});
+					$('head').append( $scriptElement );
+				}
 
-	/**
-	 * サイトマップファイルをダウンロードする
-	 * @param {*} origFileName 
-	 */
-	function downloadSitemapFile( origFileName ){
-		var xhr = new XMLHttpRequest();
-		xhr.open(
-			'POST',
-			'?PX=px2dthelper.sitemap.download'
-		);
-		xhr.setRequestHeader( "Content-type", 'application/x-www-form-urlencoded');
-		xhr.responseType = 'blob';
-		xhr.onload = function(e) {
-			if (this.status !== 200) {
-				alert('Failed to download.');
+				var pickles2ModuleEditor = new Pickles2ModuleEditor();
+				pickles2ModuleEditor.init(
+					{
+						'elmCanvas': document.getElementById('cont-px2me-canvas'),
+						'lang': window.clover_config.lang,
+						'preview':{
+							'origin': window.location.origin,
+						},
+						'gpiBridge': function(input, callback){
+							main.px2utils.px2cmd(
+								'/?PX=px2dthelper.px2me.gpi',
+								{
+									"data": btoa(JSON.stringify(input)),
+								},
+								function( res ){
+									callback(res);
+								}
+							);
+							return;
+						},
+						'complete': function(){
+							alert('完了しました。');
+						},
+						'onMessage': function( message ){
+							// ユーザーへ知らせるメッセージを表示する
+							console.info('message: '+message);
+						}
+					},
+					function(){
+						// スタンバイ完了したら呼び出されるコールバックメソッドです。
+						console.info('standby!!');
+					}
+				);
+
 				return;
 			}
-			var url = window.URL.createObjectURL(new Blob([this.response]));
-			var link = document.createElement('a');
-			link.href = url;
-			link.setAttribute('download', origFileName);
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
-			return;
-		}
-		xhr.send(new URLSearchParams({
-			'filefullname': origFileName,
-			'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
-		}).toString());
-	}
-
-	/**
-	 * サイトマップファイルを開く
-	 * @param {*} origFileName 
-	 */
-	function openSitemapFile( origFileName ){
-		main.px2utils.px2cmd("?PX=admin.api.open_sitemap_file", {
-			'filefullname': origFileName,
-		}, (data)=>{
-			if( !data.result ){
-				console.error(data);
-				alert('Error: '+data.message);
-			}
-		});
-	}
-
-	/**
-	 * アップロードダイアログを開く
-	 */
-	function openUploadSitemapFileDialog(){
-		var template = require('./Sitemap_files/templates/upload.twig');
-		var $body = $('<div>')
-			.append( template( {
-				"csrf_token": $('meta[name="csrf-token"]').attr('content'),
-			} ) )
-		;
-		const modal = px2style.modal({
-			"title": "サイトマップファイルをアップロード",
-			"body": $body,
-			'buttons':[
-				$('<button type="button" class="px2-btn px2-btn--primary">')
-					.text('アップロードする')
-					.on('click', function(e){
-						e.preventDefault();
-						uploadSitemapFile( $body.find('form').get(0) );
-						px2style.closeModal();
-					})
-			],
-			'buttonsSecondary': [
-				$('<button type="button" class="px2-btn">')
-					.text('キャンセル')
-					.on('click', function(){
-						px2style.closeModal();
-					}),
-			],
-		});
-	}
-
-	/**
-	 * サイトマップファイルをアップロードする
-	 * @param {*} form 
-	 */
-	function uploadSitemapFile( form ){
-		const formdata = new FormData(form);
-
-		var xhr = new XMLHttpRequest();
-		xhr.open(
-			'POST',
-			'?PX=px2dthelper.sitemap.upload'
 		);
-		xhr.upload.addEventListener('loadend', (evt) => {
-			loadSitemapFileList( (loadedData) => {
-				main.setMainState({
-					"pageInfoLoaded": false,
-				});
-				alert('Upload: done.');
-
-				main.cloverUtils.autoCommit();
-				main.link('?PX=admin.sitemap');
-			} );
-		});
-		xhr.send(formdata);
 	}
-
-	/**
-	 * サイトマップファイルを削除する
-	 * @param {*} origFileName 
-	 */
-	function deleteSitemapFile( origFileName ){
-		if( !confirm( 'Delete file "' + origFileName + '.*" ?' ) ){
-			return;
-		}
-
-		$.ajax({
-			"url": "?PX=px2dthelper.sitemap.delete",
-			"method": "post",
-			"data": {
-				'filename': origFileName,
-				'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
-			},
-			"error": function(error){
-				console.error('Error:', error);
-				alert('Failed to Delete file.');
-			},
-			"success": function(data){
-				if( !data.result ){
-					alert('Failed to Delete file.');
-				}
-			},
-			"complete": function(){
-				main.cloverUtils.autoCommit();
-				loadSitemapFileList();
-			},
-		});
-	}
+	useEffect(() => {
+		initialize();
+		return () => {
+			$('.cont-px2-clover__px2me-resources').remove();
+		};
+	}, []);
 
 	return (
 		<>
-			{(!sitemapFileList)
-				?<>
-					<p>...</p>
-				</>
-			:<>{(sitemapFileList.list)
-				?<>
-				<div>
-					<ul>
-						{Object.keys(sitemapFileList.list).map( ( sitemapFileName, idx )=>{
-							return (
-								<li key={idx}>
-									{sitemapFileName}
-									<ul>
-									{sitemapFileList.list[sitemapFileName].map( ( sitemapFileNameExt, idx )=>{
-										if( window.plugin_options.app_mode == "desktop" ){
-											return (
-												<li key={sitemapFileNameExt}>
-													{sitemapFileNameExt} <a href="?PX=admin.api.open_sitemap_file" onClick={(e)=>{
-														e.preventDefault();
-														openSitemapFile(sitemapFileName+'.'+sitemapFileNameExt);
-													}}>open</a>
-												</li>
-											);
-										}else{
-											return (
-												<li key={sitemapFileNameExt}>
-													{sitemapFileNameExt} <a href="?PX=px2dthelper.sitemap.download" onClick={(e)=>{
-														e.preventDefault();
-														downloadSitemapFile(sitemapFileName+'.'+sitemapFileNameExt);
-													}}>download</a>
-												</li>
-											);
-										}
-									} )}
-									</ul>
-									<ul>
-										<li><a href="#" onClick={(e)=>{e.preventDefault();deleteSitemapFile(sitemapFileName);}}>delete</a></li>
-									</ul>
-								</li>
-							)
-						} )}
-					</ul>
-				</div>
-				</>
-				:<>
-				</>
-			}</>}
-			<hr />
-			<p><button type="button" className="px2-btn" onClick={openUploadSitemapFileDialog}>アップロード</button></p>
+			<div id="cont-px2me-canvas"></div>
 		</>
 	);
 });

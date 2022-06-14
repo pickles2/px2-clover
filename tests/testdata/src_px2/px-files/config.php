@@ -136,7 +136,6 @@ return call_user_func( function(){
 		'picklesFramework2\processors\autoindex\autoindex::exec' ,
 
 		// テーマ
-		// 'theme'=>'picklesFramework2\theme\theme::exec' ,
 		'theme'=>'tomk79\pickles2\multitheme\theme::exec('.json_encode(array(
 			'param_theme_switch'=>'THEME',
 			'cookie_theme_switch'=>'THEME',

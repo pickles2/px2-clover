@@ -86,6 +86,13 @@ class register{
 				$px->fs()->mkdir_r($realpath_dist_dir);
 				$px->req()->set_param('dist', $realpath_dist_dir);
 			}
+			if( $px->req()->get_param('PX') == 'px2dthelper.px2me.client_resources' ){
+				// px2me のリソース書き出し先のパスを書き換える
+				$client_resources_dist = $px->realpath_plugin_files('/');
+				$realpath_dist_dir = $px->fs()->normalize_path($px->fs()->get_realpath( $client_resources_dist.'../px2-clover/__px2me/' ));
+				$px->fs()->mkdir_r($realpath_dist_dir);
+				$px->req()->set_param('dist', $realpath_dist_dir);
+			}
 		}
 
 		$px->conf()->funcs->before_content['px2-clover'] = __CLASS__.'::admin_console('.json_encode($options).')';

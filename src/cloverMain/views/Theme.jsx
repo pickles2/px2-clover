@@ -27,12 +27,12 @@ export default React.memo(function Theme(props){
 					$('head').append( $linkElement );
 				}
 				for(var index in res.js){
-					var $linkElement = $('<script />');
-					$linkElement.attr({
+					var $scriptElement = $('<script />');
+					$scriptElement.attr({
 						'src': path_client_resources + '__px2te/' + res.js[index],
 						'class': 'cont-px2-clover__px2te-resources',
 					});
-					$('head').append( $linkElement );
+					$('head').append( $scriptElement );
 				}
 
 				var pickles2ThemeEditor = new Pickles2ThemeEditor();
