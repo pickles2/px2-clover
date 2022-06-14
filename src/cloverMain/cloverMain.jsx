@@ -12,6 +12,8 @@ import ConfigScheduler from './views/ConfigScheduler';
 import ConfigMaintenance from './views/ConfigMaintenance';
 import Sitemap from './views/Sitemap';
 import PageInfo from './views/PageInfo';
+import Theme from './views/Theme';
+import Modules from './views/Modules';
 import Publish from './views/Publish';
 import History from './views/History';
 import iterate79 from 'iterate79';
@@ -183,6 +185,10 @@ class Layout extends React.Component {
 				title = "ページ情報";
 				content = <PageInfo path={current_path} PX={this.state.PX} />;
 				break;
+			case 'admin.theme':
+				title = "テーマ";
+				content = <Theme />;
+				break;
 			case 'admin.publish':
 				title = "パブリッシュ";
 				content = <Publish />;
@@ -190,6 +196,10 @@ class Layout extends React.Component {
 			case 'admin.history':
 				title = "履歴";
 				content = <History />;
+				break;
+			case 'admin.modules':
+				title = "モジュール";
+				content = <Modules />;
 				break;
 			case 'admin.clearcache':
 				title = "キャッシュを消去";

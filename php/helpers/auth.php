@@ -631,9 +631,11 @@ class auth{
 				case 'config':
 				case 'page_info':
 				case 'sitemap':
+				case 'theme':
 				case 'edit_contents':
 				case 'publish':
 				case 'clearcache':
+				case 'modules':
 				case 'history':
 					if( $_SERVER['REQUEST_METHOD'] == 'GET' ){
 						// 既知の特定の画面へのGETのリクエストでは、CSRFトークンを要求しない

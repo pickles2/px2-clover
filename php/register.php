@@ -45,7 +45,13 @@ class register{
 			$clover->initializer()->initialize();
 
 			// ガード
-			if( $options->app_mode != 'desktop' && $px->req()->get_param('appMode') == 'desktop' ){
+			if(
+				$options->app_mode != 'desktop' &&
+				(
+					$px->req()->get_param('appMode') == 'desktop'
+					|| $px->req()->get_param('app_mode') == 'desktop'
+				)
+			){
 				$px->header('Content-type: application/json');
 				echo json_encode(array(
 					'result' => false,
@@ -71,6 +77,15 @@ class register{
 			// メンテナンスモードの評価
 			$maintenanceModeHelpers = new helpers\maintenanceMode( $clover );
 			$maintenanceModeHelpers->maintenance_page();
+
+			// パラメータの上書き
+			if( $px->req()->get_param('PX') == 'px2dthelper.px2te.client_resources' ){
+				// px2te のリソース書き出し先のパスを書き換える
+				$client_resources_dist = $px->realpath_plugin_files('/');
+				$realpath_dist_dir = $px->fs()->normalize_path($px->fs()->get_realpath( $client_resources_dist.'../px2-clover/__px2te/' ));
+				$px->fs()->mkdir_r($realpath_dist_dir);
+				$px->req()->set_param('dist', $realpath_dist_dir);
+			}
 		}
 
 		$px->conf()->funcs->before_content['px2-clover'] = __CLASS__.'::admin_console('.json_encode($options).')';

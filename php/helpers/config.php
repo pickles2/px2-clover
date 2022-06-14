@@ -38,6 +38,7 @@ class config{
 			return $json;
 		}
 		return array(
+			'lang' => $this->clover->auth()->get_login_user_info()->lang,
 			'history' => array(
 				'git_remote' => null,
 				'git_id' => null,

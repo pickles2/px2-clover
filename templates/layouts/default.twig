@@ -33,13 +33,17 @@
         "default_directory_index": "{{ px2config.directory_index[0] | e("js") }}",
     };
     window.clover_config = {
+        "lang": "{{ clover_config.lang | e("js") }}",
         "history": {
             "auto_commit": "{{ clover_config.history.auto_commit | e("js") }}",
-        }
+        },
+		"paths": {
+			"path_client_resources": "{{ path_client_resources | e("js") }}",
+		},
     };
     window.plugin_options = {
         "app_mode": "{{ plugin_options.app_mode | e("js") }}",
-        "protect_preview": "{{ plugin_options.protect_preview | e("js") }}",
+        "protect_preview": {{ plugin_options.protect_preview ? "true" : "false" }},
     };
     </script>
 
