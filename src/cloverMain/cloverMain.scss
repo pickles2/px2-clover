@@ -90,7 +90,7 @@
     &__main-center {
         width: calc(100% - 200px);
         background-color: var(--px2-background-color, #f9f9f9);
-        min-height: calc(100vh - 240px);
+        min-height: calc(100vh - 106px);
         box-shadow: inset 0 5px 20px #3333;
         @media all and (max-width: 680px){
             width: 100%;
@@ -108,13 +108,13 @@
     }
     &__footer {
         padding: 10px 20px;
-        border-top: 1px solid #000;
-        background-color: #555;
-        color: #f9f9f9;
+        border-top: 1px solid #333;
+        font-size: 13px;
+        color: #333;
         a {
-            color: #f9f9f9;
+            color: #333;
             &:hover {
-                color: #fff;
+                color: #000;
             }
         }
         ul {
