@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import {MainContext} from '../context/MainContext';
 import $ from 'jquery';
+import utils79 from 'utils79';
 
 export default React.memo(function Modules(props){
 
@@ -44,10 +45,11 @@ export default React.memo(function Modules(props){
 							'origin': window.location.origin,
 						},
 						'gpiBridge': function(input, callback){
+							var data = utils79.base64_encode(JSON.stringify(input));
 							main.px2utils.px2cmd(
 								'/?PX=px2dthelper.px2me.gpi',
 								{
-									"data": btoa(JSON.stringify(input)),
+									"data": data,
 								},
 								function( res ){
 									callback(res);

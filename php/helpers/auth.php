@@ -633,6 +633,7 @@ class auth{
 				case 'sitemap':
 				case 'theme':
 				case 'edit_contents':
+				case 'edit_theme_layout':
 				case 'publish':
 				case 'clearcache':
 				case 'modules':

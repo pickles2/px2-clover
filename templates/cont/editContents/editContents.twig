@@ -60,11 +60,11 @@
 		(function(){
 			var app_mode = "{{ plugin_options.app_mode | e("js") }}";
 			var page_path = "{{ page_path | e("js") }}";
-			var theme_id = '';
-			var layout_id = '';
-			var target_mode = 'page_content';
+			var theme_id = "{{ theme_id | e("js") }}";
+			var layout_id = "{{ layout_id | e("js") }}";
+			var target_mode = "{{ target_mode | e("js") }}";
 			// .envよりプレビューサーバーのURLを取得
-			var preview_url = '?';
+			var preview_url = window.location.origin;
 			var resizeTimer;
 			var backto = "{{ backto | e("js") }}";
 
@@ -104,6 +104,7 @@
 									"method": 'post',
 									'data': {
 										'appMode': app_mode,
+										'target_mode': target_mode,
 										'data': encodedInput,
 										'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
 									},
@@ -123,6 +124,10 @@
 						return;
 					},
 					'complete': function(){
+						if( target_mode == 'theme_layout' ){
+							window.close();
+							return;
+						}
 						if( backto == 'preview' ){
 							window.location.href = '?';
 							return;

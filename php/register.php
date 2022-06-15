@@ -338,6 +338,13 @@ class register{
 					$app->start();
 					break;
 
+				case 'edit_theme_layout':
+					// --------------------------------------
+					// テーマレイアウトを編集
+					$app = new funcs\editThemeLayout\editThemeLayout($this->clover);
+					$app->start();
+					break;
+
 				default:
 					// --------------------------------------
 					// フロントエンド汎用テンプレート

@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import {MainContext} from '../context/MainContext';
 import $ from 'jquery';
+import utils79 from 'utils79';
 
 export default React.memo(function Theme(props){
 
@@ -41,10 +42,11 @@ export default React.memo(function Theme(props){
 						'elmCanvas': document.getElementById('cont-px2te-canvas'),
 						'lang': window.clover_config.lang,
 						'gpiBridge': function(input, callback){
+							var data = utils79.base64_encode(JSON.stringify(input));
 							main.px2utils.px2cmd(
 								'/?PX=px2dthelper.px2te.gpi',
 								{
-									"data": btoa(JSON.stringify(input)),
+									"data": data,
 								},
 								function( res ){
 									callback(res);
@@ -53,13 +55,14 @@ export default React.memo(function Theme(props){
 							return;
 						},
 						'themeLayoutEditor': function(themeId, layoutId){
-							alert('themeLayoutEditor: '+themeId+'/'+layoutId);
+							// alert('themeLayoutEditor: '+themeId+'/'+layoutId);
+							window.open('?PX=admin.edit_theme_layout&theme_id='+encodeURIComponent(themeId)+'&layout_id='+encodeURIComponent(layoutId));
 						},
 						'openInFinder': function(path){
-							alert('openInFinder: '+path);
+							alert('開発中の機能です。 (openInFinder: '+path+')');
 						},
 						'openInTextEditor': function(path){
-							alert('openInTextEditor: '+path);
+							alert('開発中の機能です。 (openInTextEditor: '+path+')');
 						}
 					},
 					function(){

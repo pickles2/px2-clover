@@ -1,10 +1,10 @@
 <?php
-namespace tomk79\pickles2\px2clover\funcs\editContents;
+namespace tomk79\pickles2\px2clover\funcs\editThemeLayout;
 
 /**
- * px2-clover: コンテンツ編集機能
+ * px2-clover: テーマレイアウト編集機能
  */
-class editContents{
+class editThemeLayout{
 
 	/** Cloverオブジェクト */
 	private $clover;
@@ -42,8 +42,9 @@ class editContents{
 			array(
 				'path_client_resources' => $path_client_resources,
 				'px2ce_res' => $px2ce_res,
-				'target_mode' => 'page_content',
-				'page_path' => $this->px->req()->get_request_file_path(),
+				'target_mode' => 'theme_layout',
+				'theme_id' => $this->px->req()->get_param('theme_id'),
+				'layout_id' => $this->px->req()->get_param('layout_id'),
 				'backto' => $backto,
 			)
 		);

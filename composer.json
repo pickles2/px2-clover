@@ -30,6 +30,7 @@
     },
     "require-dev": {
         "pickles2/px2style": "~2.0",
+        "pickles2/px2-multitheme": "^2.0",
         "pickles2/px2-sitemapexcel": "~2.0",
         "tomk79/px2-serve": "~0",
         "phpunit/phpunit": "~9.5",
