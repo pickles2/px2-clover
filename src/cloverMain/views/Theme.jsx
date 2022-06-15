@@ -55,8 +55,8 @@ export default React.memo(function Theme(props){
 							return;
 						},
 						'themeLayoutEditor': function(themeId, layoutId){
-							// alert('themeLayoutEditor: '+themeId+'/'+layoutId);
-							window.open('?PX=admin.edit_theme_layout&theme_id='+encodeURIComponent(themeId)+'&layout_id='+encodeURIComponent(layoutId));
+							var href = main.px2utils.href('/'+themeId+'/'+layoutId+'.html');
+							window.open(href+'?PX=admin.edit_theme_layout&theme_id='+encodeURIComponent(themeId)+'&layout_id='+encodeURIComponent(layoutId));
 						},
 						'openInFinder': function(path){
 							alert('開発中の機能です。 (openInFinder: '+path+')');

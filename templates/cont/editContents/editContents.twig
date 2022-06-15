@@ -68,7 +68,7 @@
 			var resizeTimer;
 			var backto = "{{ backto | e("js") }}";
 
-			if( page_path ){
+			if( page_path.length ){
 				target_mode = 'page_content';
 			}else if( theme_id && layout_id ){
 				target_mode = 'theme_layout';
@@ -88,6 +88,7 @@
 			var pickles2ContentsEditor = new Pickles2ContentsEditor(); // px2ce client
 			pickles2ContentsEditor.init(
 				{
+					'target_mode': target_mode,
 					'page_path': page_path ,
 					'elmCanvas': document.getElementById('cont-px2ce-canvas'),
 					'preview':{

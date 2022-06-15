@@ -78,6 +78,8 @@ $conf->allow_pxcommands = 1;
 ### pickles2/px2-clover v0.2.1 (リリース日未定)
 
 - `app_mode` オプションを追加。
+- テーマ編集機能を追加。
+- モジュール編集機能を追加。
 
 ### pickles2/px2-clover v0.2.0 (2022年6月5日)
 
