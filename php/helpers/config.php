@@ -37,8 +37,11 @@ class config{
 			$json = json_decode($src_json, true);
 			return $json;
 		}
+
+		$login_user_info = $this->clover->auth()->get_login_user_info();
+
 		return array(
-			'lang' => $this->clover->auth()->get_login_user_info()->lang,
+			'lang' => ( isset($login_user_info->lang) ? $login_user_info->lang : 'ja' ),
 			'history' => array(
 				'git_remote' => null,
 				'git_id' => null,
