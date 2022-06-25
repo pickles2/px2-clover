@@ -40,6 +40,7 @@ class editContents{
 		echo $this->clover->view()->bind(
 			'/cont/editContents/editContents.twig',
 			array(
+				'title' => $this->px->site()->get_current_page_info()['title'],
 				'path_client_resources' => $path_client_resources,
 				'px2ce_res' => $px2ce_res,
 				'target_mode' => 'page_content',
