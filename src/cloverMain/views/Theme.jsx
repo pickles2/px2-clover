@@ -40,7 +40,7 @@ export default React.memo(function Theme(props){
 				pickles2ThemeEditor.init(
 					{
 						'elmCanvas': document.getElementById('cont-px2te-canvas'),
-						'lang': window.clover_config.lang,
+						'lang': (window.clover_config.lang ? window.clover_config.lang : 'ja'),
 						'gpiBridge': function(input, callback){
 							var data = utils79.base64_encode(JSON.stringify(input));
 							main.px2utils.px2cmd(

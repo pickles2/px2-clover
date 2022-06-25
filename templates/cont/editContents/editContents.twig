@@ -94,7 +94,7 @@
 					'preview':{
 						'origin': preview_url// プレビュー用サーバーの情報を設定します。
 					},
-					'lang': 'ja', // language
+					'lang': (window.clover_config.lang ? window.clover_config.lang : 'ja'), // language
 					'gpiBridge': function(input, callback){
 						console.log('====== GPI Request:', input);
 						// console.log(JSON.stringify(input);
