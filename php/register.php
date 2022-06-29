@@ -44,7 +44,23 @@ class register{
 			$clover = new clover( $px, $options );
 			$clover->initializer()->initialize();
 
-			// ガード
+			// ガード: ループバックIP以外は desktop モードを利用できないようにする。
+			if( !isset($_SERVER['REMOTE_ADDR']) ){
+				// ユーザーのIPアドレスを取得できない場合、desktopモードは無効にする。
+				$options->app_mode = 'web';
+			}else{
+				switch( $_SERVER['REMOTE_ADDR'] ){
+					case '127.0.0.1':
+					case '::1':
+						break;
+					default:
+						// ユーザーのIPアドレスがループバックIPでない場合、desktopモードは無効にする。
+						$options->app_mode = 'web';
+						break;
+				}
+			}
+
+			// ガード: デスクトップモードが無効だったら、他のパッケージのデスクトップモードも無効化する。
 			if(
 				$options->app_mode != 'desktop' &&
 				(
