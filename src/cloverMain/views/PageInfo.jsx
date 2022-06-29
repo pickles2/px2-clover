@@ -534,6 +534,8 @@ export default function PageInfo(props){
 								<tbody>
 									<tr><th>Originated CSV</th><td>{main.pageInfo.originated_csv.basename}</td></tr>
 									<tr><th>Originated CSV row</th><td>{main.pageInfo.originated_csv.row}</td></tr>
+									<tr><th>Process Type</th><td>{main.pageInfo.proc_type}</td></tr>
+									<tr><th>Editor Mode</th><td>{main.pageInfo.editor_mode}</td></tr>
 								</tbody>
 							</table>
 						</div>

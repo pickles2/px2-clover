@@ -72,6 +72,14 @@ class pageInfo{
 		$rtn['originated_csv'] = $this->px->site()->get_page_originated_csv( $rtn['current_page_info']['id'] );
 
 
+		// proc_type
+		$rtn['proc_type'] = $this->px->get_path_proc_type();
+
+
+		// editor_mode
+		$px2dthelper = new \tomk79\pickles2\px2dthelper\main( $this->px );
+		$rtn['editor_mode'] = $px2dthelper->check_editor_mode();
+
 		$this->px->header('Content-type: text/json');
 		echo json_encode($rtn);
 		exit;
