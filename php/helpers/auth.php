@@ -76,6 +76,8 @@ class auth{
 
 			if( $login_challenger_id == $admin_id && password_verify($this->px->req()->get_param('ADMIN_USER_PW'), $admin_pw) ){
 				$this->px->req()->set_session('ADMIN_USER_ID', $login_challenger_id);
+				$this->px->req()->set_session('ADMIN_USER_PW', $user_info->pw);
+
 				$redirect_to = '?';
 				if( is_string($this->px->req()->get_param('PX')) ){
 					$redirect_to = '?PX='.htmlspecialchars( $this->px->req()->get_param('PX') );
@@ -116,6 +118,7 @@ class auth{
 
 		$user_id = $this->px->req()->get_session('ADMIN_USER_ID');
 		$this->px->req()->delete_session('ADMIN_USER_ID');
+		$this->px->req()->delete_session('ADMIN_USER_PW');
 		$this->clover->logger()->log('User \''.$user_id.'\' logged out.');
 		header('Location:'.$this->px->href( $this->px->req()->get_request_file_path().'?PX='.htmlspecialchars(''.$pxcmd) ));
 		exit;
@@ -126,10 +129,22 @@ class auth{
 	 */
 	public function is_login(){
 		$ADMIN_USER_ID = $this->px->req()->get_session('ADMIN_USER_ID');
+		$ADMIN_USER_PW = $this->px->req()->get_session('ADMIN_USER_PW');
 		if( !is_string($ADMIN_USER_ID) || !strlen($ADMIN_USER_ID) ){
 			return false;
 		}
 		if( $this->is_csrf_token_required() && !$this->is_valid_csrf_token_given() ){
+			return false;
+		}
+
+		$admin_user_info = $this->get_admin_user_info( $ADMIN_USER_ID );
+		if( !is_object($admin_user_info) || !isset($admin_user_info->id) ){
+			return false;
+		}
+		if( $ADMIN_USER_ID !=$admin_user_info->id ){
+			return false;
+		}
+		if( $ADMIN_USER_PW != $admin_user_info->pw ){
 			return false;
 		}
 		return true;
@@ -139,6 +154,9 @@ class auth{
 	 * パスワードをハッシュ化する
 	 */
 	public function password_hash($password){
+		if( !is_string($password) ){
+			return false;
+		}
 		return password_hash($password, PASSWORD_BCRYPT);
 	}
 
@@ -232,6 +250,10 @@ class auth{
 				$new_login_user_id = $new_profile->id;
 			}
 			$this->px->req()->set_session('ADMIN_USER_ID', $new_login_user_id);
+			if( isset($new_profile->pw) && is_string($new_profile->pw) && strlen($new_profile->pw) ){
+				$new_user_info = $this->get_admin_user_info($new_login_user_id);
+				$this->px->req()->set_session('ADMIN_USER_PW', $new_user_info->pw);
+			}
 		}
 
 		return $rtn;

@@ -70,6 +70,7 @@ $conf->allow_pxcommands = 1;
 ### セッション
 
 - `ADMIN_USER_ID`
+- `ADMIN_USER_PW`
 - `ADMIN_USER_CSRF_TOKEN`
 
 
@@ -81,6 +82,7 @@ $conf->allow_pxcommands = 1;
 - テーマ編集機能を追加。
 - コンテンツ編集画面に `lang` 設定が反映されるようになった。
 - モジュール編集機能を追加。
+- その他の不具合修正、UI改善、パフォーマンス改善など。
 
 ### pickles2/px2-clover v0.2.0 (2022年6月5日)
 
