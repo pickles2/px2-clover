@@ -24,15 +24,15 @@ export default function ConfigHistory(props){
 			(result) => {
 				console.log(result);
 				if( !result.result ){
-					alert('Failed to update history config.');
+					alert('履歴管理設定の更新は失敗しました。');
 					return;
 				}
 				main.setMainState({
 					'config': result.config,
 					'configLoaded': false,
 				});
-				alert('history config updated.');
-				// main.link('?PX=admin.config');
+				alert('履歴管理設定 を更新しました。');
+				main.link('?PX=admin.config');
 			}
 		);
 	}

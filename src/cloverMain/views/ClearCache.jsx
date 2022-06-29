@@ -22,10 +22,17 @@ export default React.memo(function ClearCache(props){
 			function(data, error){
 				console.log('------ clearcache Response:', data, error);
 				if( error ){
-					alert('clearcache error.');
+					px2style.modal({
+						'title': 'キャッシュ消去 エラー',
+						'body': '<p>エラーが発生しました。</p>',
+					});
 				}else{
-					alert('clearcache done.');
+					px2style.modal({
+						'title': 'キャッシュ消去 完了',
+						'body': '<p>キャッシュの消去は完了しました。</p>',
+					});
 				}
+
 				px2style.closeLoading();
 			}
 		);

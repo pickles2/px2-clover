@@ -53,7 +53,10 @@ export default React.memo(function Publish(props){
 				},
 				function(data, error){
 					console.log('------ scheduler_add_queue Response:', data, error);
-					alert('publish queue を登録しました。');
+					px2style.modal({
+						'title': 'パブリッシュ',
+						'body': '<p>パブリッシュキュー を登録しました。</p>',
+					});
 					px2style.closeLoading();
 				}
 			);
@@ -74,9 +77,15 @@ export default React.memo(function Publish(props){
 				function(data, error){
 					console.log('------ publish Response:', data, error);
 					if( error ){
-						alert('publish error.');
+						px2style.modal({
+							'title': 'パブリッシュ エラー',
+							'body': '<p>エラーが発生しました。</p>',
+						});
 					}else{
-						alert('publish done.');
+						px2style.modal({
+							'title': 'パブリッシュ 完了',
+							'body': '<p>パブリッシュ が完了しました。</p>',
+						});
 					}
 					px2style.closeLoading();
 				}
@@ -94,7 +103,10 @@ export default React.memo(function Publish(props){
 		px2style.loading();
 		main.px2utils.px2cmd("?PX=admin.api.publish_stop", {}, function(data, error){
 			console.log('------ publish_stop Response:', data, error);
-			alert('publish stopped.');
+			px2style.modal({
+				'title': 'パブリッシュ 中断',
+				'body': '<p>パブリッシュは停止しました。</p>',
+			});
 			px2style.closeLoading();
 		});
 	}
