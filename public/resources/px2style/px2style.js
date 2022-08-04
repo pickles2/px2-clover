@@ -11237,6 +11237,9 @@ module.exports = function(Px2style){
 		this.options = options;
 		this.focusBackTo = document.activeElement;
 
+		var presetOverflow = $('body').css('overflow');
+		$('body').css({'overflow': 'hidden'});
+
 		var isClosable = true;
 		var $target = $(this.options.target);
 		$target.append($modal);
@@ -11259,9 +11262,6 @@ module.exports = function(Px2style){
 		}
 
 		if(!modalLayers.length){
-			$(window).on('resize.px2-modal', function(){
-				onWindowResize();
-			});
 			$(window).on('keydown.px2-modal', function(e){
 				if( e.keyCode == 27 ){ // ESC
 					px2style.closeModal(function(){});
@@ -11269,7 +11269,6 @@ module.exports = function(Px2style){
 			});
 		}
 
-		onWindowResize();
 		tabkeyControl(this.$modal);
 
 
@@ -11346,6 +11345,7 @@ module.exports = function(Px2style){
 			var self = this;
 			callback = callback||function(){};
 			self.$modal.find('.px2-modal__dialog').addClass('px2-modal__dialog--closed');
+			$('body').css({'overflow': presetOverflow});
 
 			setTimeout(function(){
 				try {
@@ -11355,7 +11355,6 @@ module.exports = function(Px2style){
 					self.$modal.remove();
 				} catch (e) {}
 				if(!modalLayers.length){
-					$(window).off('resize.px2-modal');
 					$(window).off('keydown.px2-modal');
 				}
 				callback(true);
@@ -11382,12 +11381,6 @@ module.exports = function(Px2style){
 			lastModal = undefined;
 		});
 		return;
-	}
-
-	/**
-	 * Window Resize Event
-	 */
-	function onWindowResize(){
 	}
 
 	/**
