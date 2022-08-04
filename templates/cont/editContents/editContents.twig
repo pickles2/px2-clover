@@ -96,8 +96,6 @@
 					},
 					'lang': (window.clover_config.lang ? window.clover_config.lang : 'ja'), // language
 					'gpiBridge': function(input, callback){
-						console.log('====== GPI Request:', input);
-						// console.log(JSON.stringify(input);
 						base64_encode( JSON.stringify(input) )
 							.then((encodedInput) => {
 								$.ajax({
@@ -110,11 +108,11 @@
 										'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
 									},
 									"error": function(error){
-										console.error('------ GPI Response Error:', typeof(error), error);
-										callback(error);
+										console.error('--- GPI Response Error:', input, typeof(error), error);
+										var rtn = JSON.parse(error.responseText);
+										callback(rtn);
 									},
 									"success": function(data){
-										console.log('------ GPI Response:', typeof(data), data);
 										callback(data);
 									},
 									"complete": function(){
@@ -137,7 +135,6 @@
 					},
 					'clipboard': {
 						'set': function( data, type, event, callback ){
-							// console.log(data, type, event, callback);
 							localStorage.setItem('app-burdock-virtualClipBoard', data);
 							if( callback ){
 								callback();
@@ -145,7 +142,6 @@
 						},
 						'get': function( type, event, callback ){
 							var rtn = localStorage.getItem('app-burdock-virtualClipBoard');
-							// console.log(rtn);
 							if( callback ){
 								callback(rtn);
 								return false;
@@ -155,7 +151,7 @@
 					},
 					'onClickContentsLink': function( uri, data ){
 						// TODO: 編集リンクを生成する
-						// alert('編集: ' + uri);
+						console.info('編集: ' + uri);
 					},
 					'onMessage': function( message ){
 						// ユーザーへ知らせるメッセージを表示する
