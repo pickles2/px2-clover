@@ -10,11 +10,21 @@
 	{# Ace Editor #}
 	<script src="{{ path_client_resources }}ace/ace.js"></script>
 
-	{# Bootstrap 5 #}
-	<script src="{{ path_client_resources }}bootstrap5/js/bootstrap.min.js"></script>
-
-	{# Summernote Editor #}
-	<script src="{{ path_client_resources }}summernote/summernote.js"></script>
+	{# CodeMirror #}
+	<link rel=stylesheet href="{{ path_client_resources }}codemirror/lib/codemirror.css" />
+	<link rel=stylesheet href="{{ path_client_resources }}codemirror/theme/ambiance.css" />
+	<link rel=stylesheet href="{{ path_client_resources }}codemirror/theme/mdn-like.css" />
+	<link rel=stylesheet href="{{ path_client_resources }}codemirror/theme/monokai.css" />
+	<link rel=stylesheet href="{{ path_client_resources }}codemirror/theme/eclipse.css" />
+	<link rel=stylesheet href="{{ path_client_resources }}codemirror/theme/elegant.css" />
+	<script src="{{ path_client_resources }}codemirror/lib/codemirror.js"></script>
+	<script src="{{ path_client_resources }}codemirror/mode/xml/xml.js"></script>
+	<script src="{{ path_client_resources }}codemirror/mode/javascript/javascript.js"></script>
+	<script src="{{ path_client_resources }}codemirror/mode/css/css.js"></script>
+	<script src="{{ path_client_resources }}codemirror/mode/sass/sass.js"></script>
+	<script src="{{ path_client_resources }}codemirror/mode/markdown/markdown.js"></script>
+	<script src="{{ path_client_resources }}codemirror/mode/php/php.js"></script>
+	<script src="{{ path_client_resources }}codemirror/mode/htmlmixed/htmlmixed.js"></script>
 
 	{# Keypress #}
 	<script src="{{ path_client_resources }}dmauro-Keypress/keypress-2.1.5.min.js"></script>
