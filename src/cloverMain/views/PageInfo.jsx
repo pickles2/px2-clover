@@ -191,6 +191,7 @@ export default function PageInfo(props){
 									if( !res.result ){
 										alert( 'Error: ' + res.message );
 										console.error('Error:', res);
+										modal.unlock();
 										return;
 									}
 									main.setMainState({
@@ -297,6 +298,7 @@ export default function PageInfo(props){
 									if( !res.result ){
 										alert( 'Error: ' + res.message );
 										console.error('Error:', res);
+										modal.unlock();
 										return;
 									}
 									main.setMainState({
@@ -392,14 +394,12 @@ export default function PageInfo(props){
 											if( !res.result ){
 												alert( 'Error: ' + res.message );
 												console.error('Error:', res);
+												modal.unlock();
 												return;
 											}
 											it2.next();
 										}
 									);
-								},
-								(it2) => {
-									it2.next();
 								},
 								(it2) => {
 									var params = {
@@ -413,6 +413,7 @@ export default function PageInfo(props){
 											if( !res.result ){
 												alert( 'Error: ' + res.message );
 												console.error('Error:', res);
+												modal.unlock();
 												return;
 											}
 											main.setMainState({
@@ -448,10 +449,10 @@ export default function PageInfo(props){
 				?<>
 					<div className="cont-menubar">
 						<ul>
-							<li><a href="?" onClick={editPage}>ページ情報を編集する</a></li>
-							<li><a href="?" onClick={createNewPage}>ページ情報を追加する</a></li>
-							<li><a href="?PX=admin.edit_contents">コンテンツを編集する</a></li>
-							<li><a href="?">プレビューに戻る</a></li>
+							<li><a href="?" className="px2-btn" onClick={editPage}>ページ情報を編集する</a></li>
+							<li><a href="?PX=admin.edit_contents" className="px2-btn">コンテンツを編集する</a></li>
+							<li><a href="?" className="px2-btn">プレビューに戻る</a></li>
+							{/* <li><a href="?" className="px2-btn" onClick={createNewPage}>ページ情報を追加する</a></li> */}
 						</ul>
 					</div>
 					{(main.pageInfo !== null && typeof(main.pageInfo.breadcrumb) === typeof([]) && (
@@ -476,7 +477,7 @@ export default function PageInfo(props){
 									</colgroup>
 									<tbody>
 										<tr><th>{sitemapDefinition['id'].label}</th><td>{main.pageInfo.current_page_info.id}</td></tr>
-										<tr><th>{sitemapDefinition['title'].label}</th><td><Link href={main.px2utils.href(main.pageInfo.current_page_info.path + "?PX=admin.page_info")}>{main.pageInfo.current_page_info.title}</Link></td></tr>
+										<tr><th>{sitemapDefinition['title'].label}</th><td><a href={main.px2utils.href(main.pageInfo.current_page_info.path)}>{main.pageInfo.current_page_info.title}</a></td></tr>
 										<tr><th>{sitemapDefinition['path'].label}</th><td>{main.pageInfo.current_page_info.path}</td></tr>
 										{Object.keys(main.pageInfo.current_page_info).map( ( key, idx )=>{
 											if( ['id','title','path'].find(val => val==key) ){return;}
