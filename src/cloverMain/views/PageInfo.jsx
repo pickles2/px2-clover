@@ -172,6 +172,10 @@ export default function PageInfo(props){
 							e.preventDefault();
 							modal.lock();
 
+							// 入力エラー表示をクリア
+							$body.find('.px2-form-input-list__li--error').removeClass('px2-form-input-list__li--error');
+							$body.find('.px2-error').remove();
+
 							var $inputs = modal.$modal.find('form input');
 							var new_page_info = {};
 							$inputs.each((idx, elm)=>{
@@ -189,7 +193,15 @@ export default function PageInfo(props){
 								params,
 								function( res ){
 									if( !res.result ){
-										alert( 'Error: ' + res.message );
+										for( const key in res.errors){
+											let $input = $body.find('[name='+key+']');
+											$input.closest('.px2-form-input-list__li').addClass('px2-form-input-list__li--error');
+											$input.before(
+												$('<p>')
+													.text(res.errors[key])
+													.addClass('px2-error')
+											);
+										}
 										console.error('Error:', res);
 										modal.unlock();
 										return;
@@ -279,6 +291,10 @@ export default function PageInfo(props){
 							e.preventDefault();
 							modal.lock();
 
+							// 入力エラー表示をクリア
+							$body.find('.px2-form-input-list__li--error').removeClass('px2-form-input-list__li--error');
+							$body.find('.px2-error').remove();
+
 							var $inputs = modal.$modal.find('form input');
 							var new_page_info = {};
 							$inputs.each((idx, elm)=>{
@@ -296,7 +312,15 @@ export default function PageInfo(props){
 								params,
 								function( res ){
 									if( !res.result ){
-										alert( 'Error: ' + res.message );
+										for( const key in res.errors){
+											let $input = $body.find('[name='+key+']');
+											$input.closest('.px2-form-input-list__li').addClass('px2-form-input-list__li--error');
+											$input.before(
+												$('<p>')
+													.text(res.errors[key])
+													.addClass('px2-error')
+											);
+										}
 										console.error('Error:', res);
 										modal.unlock();
 										return;

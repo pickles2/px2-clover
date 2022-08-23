@@ -450,13 +450,14 @@
       display: flex;
       -ms-flex-pack: end;
           justify-content: flex-end;
+      gap: 5px;
       margin: 0;
       padding: 0; }
       .px2-modal__footer-primary > ul > li,
       .px2-modal__footer-secondary > ul > li,
       .px2-modal__footer > ul > li {
         list-style-type: none;
-        margin: 0 0 0 5px;
+        margin: 0;
         padding: 0; }
 
 .px2-editor-type {
