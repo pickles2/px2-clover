@@ -1205,7 +1205,7 @@ select.px2-input {
     border-collapse: collapse;
     width: 100%;
     box-sizing: border-box;
-    border-top: 1px solid #aaaaaa;
+    border-top: 1px solid #eeeeee;
     margin: 0;
     padding: 0; }
     .px2-form-input-list ul.px2-form-input-list__ul li.px2-form-input-list__li {
@@ -1217,15 +1217,15 @@ select.px2-input {
         display: table-cell;
         vertical-align: top;
         font-weight: bold;
-        padding: 0.6em 0;
+        padding: 1em 1em 1em 1em;
         width: 180px;
-        border-bottom: 1px solid #aaaaaa; }
+        border-bottom: 1px solid #eeeeee; }
       .px2-form-input-list ul.px2-form-input-list__ul li.px2-form-input-list__li .px2-form-input-list__input {
         display: table-cell;
         vertical-align: top;
-        padding: 0.6em 0;
+        padding: 1em 1em 1em 1em;
         width: calc(100% - 180px);
-        border-bottom: 1px solid #aaaaaa; }
+        border-bottom: 1px solid #eeeeee; }
         .px2-form-input-list ul.px2-form-input-list__ul li.px2-form-input-list__li .px2-form-input-list__input > *:first-child {
           margin-top: 0; }
       .px2-form-input-list ul.px2-form-input-list__ul li.px2-form-input-list__li p, .px2-form-input-list ul.px2-form-input-list__ul li.px2-form-input-list__li .px2-p {
@@ -1236,8 +1236,10 @@ select.px2-input {
         color: #e11;
         font-weight: bold;
         margin: 0 0 0 0.7em; }
-      .px2-form-input-list ul.px2-form-input-list__ul li.px2-form-input-list__li--error .px2-form-input-list__label {
-        color: #721c24; }
+      .px2-form-input-list ul.px2-form-input-list__ul li.px2-form-input-list__li--error .px2-form-input-list__label,
+      .px2-form-input-list ul.px2-form-input-list__ul li.px2-form-input-list__li--error .px2-form-input-list__input {
+        color: #e11;
+        background-color: #fee7e7; }
   @media all and (max-width: 544px) {
     .px2-form-input-list ul.px2-form-input-list__ul {
       display: block; }
