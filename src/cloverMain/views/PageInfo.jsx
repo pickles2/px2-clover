@@ -42,22 +42,37 @@ export default function PageInfo(props){
 	}, []);
 
 	/**
-	 * 兄弟ページを新規追加する
+	 * 兄ページを新規追加する
 	 */
-	function createNewBros(e){
+	function createNewBrosBefore(e){
+		var basePageInfo = main.pageInfo.bros[0];
+		var baseLogicalPath = main.pageInfo.current_page_info.logical_path;
+		var basePagePath = main.px2utils.trimContRoot(main.px2utils.href( basePageInfo.path ));
+		return createNewPage(e, {
+			'logical_path': baseLogicalPath,
+			'path': basePagePath,
+			'insert': 'before',
+		});
+	}
+
+	/**
+	 * 弟ページを新規追加する
+	 */
+	function createNewBrosAfter(e){
 		var basePageInfo = main.pageInfo.bros[main.pageInfo.bros.length - 1];
 		var baseLogicalPath = main.pageInfo.current_page_info.logical_path;
 		var basePagePath = main.px2utils.trimContRoot(main.px2utils.href( basePageInfo.path ));
 		return createNewPage(e, {
 			'logical_path': baseLogicalPath,
 			'path': basePagePath,
+			'insert': 'after',
 		});
 	}
 
 	/**
 	 * 子ページを新規追加する
 	 */
-	function createNewChild(e){
+	function createNewChildAfter(e){
 		var basePageInfo = main.pageInfo.current_page_info;
 		var baseLogicalPath = basePageInfo.logical_path + '>' + basePageInfo.path;
 		if( main.pageInfo.children && main.pageInfo.children.length ){
@@ -185,7 +200,7 @@ export default function PageInfo(props){
 
 							var params = {
 								'filefullname': originatedCsv.basename,
-								'row': (originatedCsv.row + 1),
+								'row': (originatedCsv.row + (basePageInfo.insert == 'before' ? 0 : 1)),
 								'page_info': new_page_info,
 							};
 							main.px2utils.px2cmd(
@@ -523,6 +538,9 @@ export default function PageInfo(props){
 									</>))}
 									{(main.pageInfo !== null && typeof(main.pageInfo.bros) === typeof([]) && (<>
 										<ul>
+										{(!!main.pageInfo.current_page_info.id.length && (
+											<li><a href="?" onClick={createNewBrosBefore}>(+) ページを追加する</a></li>
+										))}
 										{main.pageInfo.bros.map( ( bros_page_info )=>{
 											return (
 												<li key={bros_page_info.id} className={(bros_page_info.id == main.pageInfo.current_page_info.id ? "cont-pagenavi__current" : "")}><Link href={main.px2utils.href(bros_page_info.path + "?PX=admin.page_info")}>{bros_page_info.title}</Link>
@@ -533,7 +551,7 @@ export default function PageInfo(props){
 																<li key={child_page_info.id}><Link href={main.px2utils.href(child_page_info.path + "?PX=admin.page_info")}>{child_page_info.title}</Link></li>
 															)
 														} )}
-															<li><a href="?" onClick={createNewChild}>(+) ページを追加する</a></li>
+															<li><a href="?" onClick={createNewChildAfter}>(+) ページを追加する</a></li>
 														</ul>
 													</>)
 													)}
@@ -541,7 +559,7 @@ export default function PageInfo(props){
 											)
 										} )}
 										{(!!main.pageInfo.current_page_info.id.length && (
-											<li><a href="?" onClick={createNewBros}>(+) ページを追加する</a></li>
+											<li><a href="?" onClick={createNewBrosAfter}>(+) ページを追加する</a></li>
 										))}
 										</ul>
 									</>))}
