@@ -359,6 +359,88 @@ export default function PageInfo(props){
 	}
 
 	/**
+	 * ページを並べ替える
+	 */
+	function sortPage(e){
+		e.preventDefault();
+		var modal;
+		var originatedCsv = main.pageInfo.originated_csv;
+		iterate79.fnc({}, [
+			(it1) => {
+				it1.next();
+			},
+			(it1) => {
+				var template = require('./PageInfo_files/templates/sortPage.twig');
+				var $body = $('<div>')
+					.append( template( {
+						"bros": main.pageInfo.bros,
+					} ) )
+				;
+				modal = px2style.modal({
+					'title': "ページを並べ替える",
+					'body': $body,
+					'width': '680px',
+					'buttons':[
+						$('<button type="submit" class="px2-btn px2-btn--primary">')
+							.text('保存する')
+					],
+					'buttonsSecondary': [
+						$('<button type="button" class="px2-btn">')
+							.text('キャンセル')
+							.on('click', function(){
+								px2style.closeModal();
+							}),
+					],
+					'form': {
+						'action': 'javascript:;',
+						'method': 'post',
+						'submit': function(e){
+							e.preventDefault();
+							modal.lock();
+
+							// 入力エラー表示をクリア
+							$body.find('.px2-form-input-list__li--error').removeClass('px2-form-input-list__li--error');
+							$body.find('.px2-error').remove();
+
+							var $select = modal.$modal.find('form select');
+							var selectedPagePath = $select.val();
+							main.px2utils.px2cmd("?PX=api.get.page_originated_csv", {
+								"path": selectedPagePath,
+							}, function(originatedCsvInfo){
+								main.px2utils.px2cmd(
+									'/?PX=px2dthelper.page.move_page_info_raw',
+									{
+										"from_filefullname": originatedCsv.basename,
+										"from_row": originatedCsv.row,
+										"to_filefullname": originatedCsvInfo.basename,
+										"to_row": originatedCsvInfo.row,
+									},
+									function( res ){
+										if( !res.result ){
+											console.error('Error:', res);
+											modal.unlock();
+											return;
+										}
+										main.setMainState({
+											"pageInfoLoaded": false,
+										});
+										modal.unlock();
+										px2style.closeModal();
+
+										main.cloverUtils.autoCommit();
+										main.link('?PX=admin.page_info');
+									}
+								);
+							});
+						}
+					},
+				});
+				it1.next();
+			},
+		]);
+	}
+
+	/**
 	 * ページを削除する
 	 */
 	function deletePage(e){
@@ -489,6 +571,7 @@ export default function PageInfo(props){
 					<div className="cont-menubar">
 						<ul>
 							<li><a href="?" className="px2-btn" onClick={editPage}>ページ情報を編集する</a></li>
+							<li><a href="?" className="px2-btn" onClick={sortPage}>並べ替え</a></li>
 							<li><a href="?PX=admin.edit_contents" className="px2-btn">コンテンツを編集する</a></li>
 							<li><a href="?" className="px2-btn">プレビューに戻る</a></li>
 							{/* <li><a href="?" className="px2-btn" onClick={createNewPage}>ページ情報を追加する</a></li> */}

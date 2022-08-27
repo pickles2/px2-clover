@@ -1,0 +1,7 @@
+<p>
+	<select class="px2-input">
+{% for key, value in bros %}
+		<option value="{{ value.path }}">{{ value.title }}</option>
+{% endfor %}
+	</select>
+</p>
