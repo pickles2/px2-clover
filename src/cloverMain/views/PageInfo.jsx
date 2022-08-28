@@ -347,7 +347,7 @@ export default function PageInfo(props){
 									px2style.closeModal();
 
 									main.cloverUtils.autoCommit();
-									main.link('?PX=admin.page_info');
+									main.link(main.px2utils.href(new_page_info.path) + '?PX=admin.page_info');
 								}
 							);
 						}
