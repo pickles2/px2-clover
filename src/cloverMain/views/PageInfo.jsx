@@ -279,8 +279,8 @@ export default function PageInfo(props){
 						"page_info": page_info,
 						"sitemapDefinition": sitemapDefinition,
 						"lockedField": {
-							"path": "lock",
-							"logical_path": "lock",
+							// "path": "lock",
+							// "logical_path": "lock",
 						},
 					} ) )
 				;
