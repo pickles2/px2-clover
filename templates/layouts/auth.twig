@@ -6,6 +6,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta name="csrf-token" content="{{ csrf_token }}" />
 
+	<style>
+	@layer base;
+	@layer px2style;
+	</style>
+
 	{# jQuery #}
 	<script>{{ include('/layouts/auth_files/jquery-3.6.0.min.js') }}</script>
 
@@ -14,6 +19,7 @@
 	<script>{{ include('/layouts/auth_files/px2style/px2style.js') }}</script>
 
 	<style>
+	@layer base {
 	html, body {
 		margin: 0;
 		margin: 0;
@@ -32,6 +38,7 @@
 		box-sizing: border-box;
 	}
 	.theme-frame__inner {
+	}
 	}
 	</style>
 
