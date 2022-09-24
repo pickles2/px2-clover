@@ -11,7 +11,7 @@
     ],
     "scripts":{
 		"start": [
-			"@php ./tests/testdata/src_px2/.px_execute.php \"/?PX=serve\""
+			"@php ./tests/testdata/src_px2/.px_execute.php \"/?PX=serve&S=localhost:8080\""
 		],
         "test": [
             "php ./vendor/phpunit/phpunit/phpunit"
