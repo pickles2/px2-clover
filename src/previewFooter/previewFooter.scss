@@ -1,21 +1,22 @@
 // preview footer
-@import "../../vendor/pickles2/px2style/dist/px2style";
-
 .px2-clover-footer-menubar {
-    &,
-    input,
-    textarea,
-    select,
-    option,
-    button {
-    	font-family: "Hiragino Sans", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","Meiryo","メイリオ", "YuGothic", "Yu Gothic", "游ゴシック体", "游ゴシック", sans-serif, system-ui;
-    }
+	@import "../../vendor/pickles2/px2style/dist/px2style";
+	@import "../../vendor/pickles2/px2style/dist/themes/default";
 
-    & {
-        position:fixed; right: 10px; bottom: 10px;
-        padding: 10px 20px;
-        background-color: rgba(120, 120, 120, 0.8);
-        border-radius: 20px;
-    }
+	&,
+	input,
+	textarea,
+	select,
+	option,
+	button {
+		font-family: "Hiragino Sans", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","Meiryo","メイリオ", "YuGothic", "Yu Gothic", "游ゴシック体", "游ゴシック", sans-serif, system-ui;
+	}
+
+	& {
+		position:fixed; right: 10px; bottom: 10px;
+		padding: 10px 20px;
+		background-color: rgba(120, 120, 120, 0.8);
+		border-radius: 20px;
+	}
 
 }
