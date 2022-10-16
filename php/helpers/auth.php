@@ -318,7 +318,7 @@ class auth{
 		}
 
 
-		if( $target_user_id != $user_info->id && $this->px->fs()->is_file($this->realpath_admin_users.urlencode($user_info->id).'.json') ){
+		if( $target_user_id != $user_info->id && $this->admin_user_data_exists($user_info->id) ){
 			// 既に存在します。
 			return (object) array(
 				'result' => false,
@@ -330,10 +330,7 @@ class auth{
 		}
 
 		// 新しいIDのためにファイル名を変更
-		$res_rename = $this->px->fs()->rename(
-			$this->realpath_admin_users.urlencode($target_user_id).'.json',
-			$this->realpath_admin_users.urlencode($user_info->id).'.json'
-		);
+		$res_rename = $this->rename_admin_user_data($target_user_id, $user_info->id);
 		if( !$res_rename ){
 			return (object) array(
 				'result' => false,
@@ -342,9 +339,7 @@ class auth{
 			);
 		}
 
-		$realpath_json = $this->realpath_admin_users.urlencode($user_info->id).'.json';
-		$json_str = json_encode( $user_info, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE );
-		if( !$this->px->fs()->save_file($realpath_json, $json_str) ){
+		if( !$this->write_admin_user_data($user_info->id, $user_info) ){
 			return (object) array(
 				'result' => false,
 				'message' => 'ユーザー情報の保存に失敗しました。',
@@ -397,9 +392,8 @@ class auth{
 
 		$user_info = null;
 		if( is_dir($this->realpath_admin_users) && $this->px->fs()->ls($this->realpath_admin_users) ){
-			$filename = $user_id.'.json';
-			if( $this->px->fs()->is_file( $this->realpath_admin_users.$filename ) ){
-				$user_info = json_decode( file_get_contents($this->realpath_admin_users.$filename) );
+			if( $this->admin_user_data_exists( $user_id ) ){
+				$user_info = $this->read_admin_user_data( $user_id );
 				if( $user_info->id != $user_id ){
 					// ID値が不一致だったら
 					return null;
@@ -438,8 +432,7 @@ class auth{
 				'errors' => (object) array(),
 			);
 		}
-		$realpath_json = $this->realpath_admin_users.'/'.urlencode($user_info->id).'.json';
-		if( is_file( $realpath_json ) ){
+		if( $this->admin_user_data_exists( $user_info->id ) ){
 			return (object) array(
 				'result' => false,
 				'message' => 'すでに存在します。',
@@ -457,8 +450,7 @@ class auth{
 		}
 
 		$user_info->pw = $this->clover->auth()->password_hash($user_info->pw);
-		$json_str = json_encode( $user_info, JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE );
-		if( !$this->px->fs()->save_file($realpath_json, $json_str) ){
+		if( !$this->write_admin_user_data($user_info->id, $user_info) ){
 			return (object) array(
 				'result' => false,
 				'message' => 'ユーザー情報の保存に失敗しました。',
@@ -504,8 +496,7 @@ class auth{
 			);
 		}
 
-		$realpath_json = $this->realpath_admin_users.urlencode($user_info->id).'.json';
-		if( !$this->px->fs()->rm($realpath_json) ){
+		if( !$this->remove_admin_user_data($user_info->id) ){
 			return (object) array(
 				'result' => false,
 				'message' => 'ユーザー情報の削除に失敗しました。',
@@ -584,6 +575,107 @@ class auth{
 			$rtn->message = 'Validation Error';
 		}
 		return $rtn;
+	}
+
+
+	// --------------------------------------
+	// 管理ユーザーデータファイルの読み書き
+
+	/**
+	 * 管理ユーザーデータファイルの読み込み
+	 */
+	private function read_admin_user_data( $user_id ){
+		$realpath_json = $this->realpath_admin_users.urlencode($user_id).'.json';
+		$realpath_json_php = $realpath_json.'.php';
+		if( is_file($realpath_json_php) ){
+			$data = jsonDotPhp::read($realpath_json_php);
+			return $data;
+		}
+		if( is_file($realpath_json) ){
+			$data = json_decode(file_get_contents($realpath_json));
+			return $data;
+		}
+		return false;
+	}
+
+	/**
+	 * 管理ユーザーデータファイルの書き込み
+	 */
+	private function write_admin_user_data( $user_id, $data ){
+		$realpath_json = $this->realpath_admin_users.urlencode($user_id).'.json';
+		$realpath_json_php = $realpath_json.'.php';
+		if( is_file($realpath_json) ){
+			unlink($realpath_json); // 素のJSONがあったら削除する
+		}
+		$result = jsonDotPhp::write($realpath_json_php, $data);
+		return $result;
+	}
+
+	/**
+	 * 管理ユーザーデータファイルを削除
+	 */
+	private function rename_admin_user_data( $user_id, $new_user_id ){
+		$realpath_json = $this->realpath_admin_users.urlencode($user_id).'.json';
+		$realpath_json_php = $realpath_json.'.php';
+
+		$realpath_new_json = $this->realpath_admin_users.urlencode($new_user_id).'.json';
+		$realpath_new_json_php = $realpath_new_json.'.php';
+
+		$result = true;
+
+		if( is_file( $realpath_json ) ){
+			$res_rename = $this->px->fs()->rename(
+				$realpath_json,
+				$realpath_new_json
+			);
+			if( !$res_rename ){
+				$result = false;
+			}
+		}
+
+		if( is_file( $realpath_json_php ) ){
+			$res_rename = $this->px->fs()->rename(
+				$realpath_json_php,
+				$realpath_new_json_php
+			);
+			if( !$res_rename ){
+				$result = false;
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * 管理ユーザーデータファイルが存在するか確認する
+	 */
+	private function admin_user_data_exists( $user_id ){
+		$realpath_json = $this->realpath_admin_users.urlencode($user_id).'.json';
+		$realpath_json_php = $realpath_json.'.php';
+		if( is_file( $realpath_json ) || is_file($realpath_json_php) ){
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 管理ユーザーデータファイルを削除
+	 */
+	private function remove_admin_user_data( $user_id ){
+		$realpath_json = $this->realpath_admin_users.urlencode($user_id).'.json';
+		$realpath_json_php = $realpath_json.'.php';
+		$result = true;
+		if( is_file($realpath_json) ){
+			if(!unlink($realpath_json)){
+				$result = false;
+			}
+		}
+		if( is_file($realpath_json_php) ){
+			if(!unlink($realpath_json_php)){
+				$result = false;
+			}
+		}
+		return $result;
 	}
 
 
