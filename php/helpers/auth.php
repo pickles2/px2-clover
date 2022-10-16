@@ -370,8 +370,8 @@ class auth{
 		$filelist = $this->px->fs()->ls($this->realpath_admin_users);
 		$rtn = array();
 		foreach( $filelist as $basename ){
-			$src_json = $this->px->fs()->read_file($this->realpath_admin_users.'/'.$basename);
-			$json = json_decode($src_json, true);
+			$user_id = preg_replace( '/\.json(?:\.php)?$/si', '', $basename );
+			$json = (array) $this->read_admin_user_data( $user_id );
 			unset($json['pw']); // パスワードハッシュはクライアントに送出しない
 			array_push($rtn, $json);
 		}

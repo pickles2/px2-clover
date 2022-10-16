@@ -23,7 +23,7 @@ class jsonDotPhp{
 			return false;
 		}
 		$jsonDotPhp = file_get_contents($realpath);
-		$jsonDotPhp = ltrim($jsonDotPhp, self::$src_header);
+		$jsonDotPhp = preg_replace('/^.*?\/\*\[json\]\s*/is', '', $jsonDotPhp);
 		$jsonDotPhp = rtrim($jsonDotPhp, self::$src_footer);
 		return json_decode($jsonDotPhp);
 	}
