@@ -394,7 +394,7 @@ class auth{
 		if( is_dir($this->realpath_admin_users) && $this->px->fs()->ls($this->realpath_admin_users) ){
 			if( $this->admin_user_data_exists( $user_id ) ){
 				$user_info = $this->read_admin_user_data( $user_id );
-				if( $user_info->id != $user_id ){
+				if( !isset($user_info->id) || $user_info->id != $user_id ){
 					// ID値が不一致だったら
 					return null;
 				}
@@ -588,7 +588,7 @@ class auth{
 		$realpath_json = $this->realpath_admin_users.urlencode($user_id).'.json';
 		$realpath_json_php = $realpath_json.'.php';
 		if( is_file($realpath_json_php) ){
-			$data = jsonDotPhp::read($realpath_json_php);
+			$data = dataDotPhp::read_json($realpath_json_php);
 			return $data;
 		}
 		if( is_file($realpath_json) ){
@@ -607,7 +607,7 @@ class auth{
 		if( is_file($realpath_json) ){
 			unlink($realpath_json); // 素のJSONがあったら削除する
 		}
-		$result = jsonDotPhp::write($realpath_json_php, $data);
+		$result = dataDotPhp::write_json($realpath_json_php, $data);
 		return $result;
 	}
 
