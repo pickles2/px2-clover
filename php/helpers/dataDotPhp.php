@@ -30,4 +30,23 @@ class dataDotPhp{
 		$result = file_put_contents( $realpath, $jsonDotPhp );
 		return $result;
 	}
+
+	/**
+	 * data.PHP にデータを保存する
+	 */
+	static public function write( $realpath, $text ){
+		$result = file_put_contents( $realpath, self::$src_header.$text );
+		return $result;
+	}
+
+	/**
+	 * data.PHP にデータを追記する
+	 */
+	static public function write_a( $realpath, $text ){
+		if( !is_file($realpath) ){
+			error_log( self::$src_header, 3, $realpath );
+		}
+		error_log( $text, 3, $realpath );
+		return true;
+	}
 }

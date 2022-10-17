@@ -62,7 +62,8 @@ class logger{
 			$trace[0]['line'], // 呼び出した行番号
 			$remote_addr, // IPアドレス
 		);
-		error_log( $this->px->fs()->mk_csv( array($log) ), 3, $this->realpath_logs.'log-'.date('Y-m-d').'.csv' );
+
+		dataDotPhp::write_a( $this->realpath_logs.'log-'.date('Y-m-d').'.csv.php', $this->px->fs()->mk_csv( array($log) ) );
 		return;
 	}
 
@@ -96,7 +97,7 @@ class logger{
 			$trace[0]['line'], // 呼び出した行番号
 			$remote_addr, // IPアドレス
 		);
-		error_log( $this->px->fs()->mk_csv( array($log) ), 3, $this->realpath_logs.'errorlog-'.date('Y-m-d').'.csv' );
+		dataDotPhp::write_a( $this->realpath_logs.'errorlog-'.date('Y-m-d').'.csv.php', $this->px->fs()->mk_csv( array($log) ) );
 
 		$log = array(
 			date('Y-m-d H:i:s'), // 時刻
@@ -107,7 +108,7 @@ class logger{
 			$trace[0]['line'], // 呼び出した行番号
 			$remote_addr, // IPアドレス
 		);
-		error_log( $this->px->fs()->mk_csv( array($log) ), 3, $this->realpath_logs.'log-'.date('Y-m-d').'.csv' );
+		dataDotPhp::write_a( $this->realpath_logs.'log-'.date('Y-m-d').'.csv.php', $this->px->fs()->mk_csv( array($log) ) );
 		return;
 	}
 
