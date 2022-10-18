@@ -1,6 +1,7 @@
 <?php
 namespace tomk79\pickles2\px2clover\funcs\api;
 use tomk79\pickles2\px2clover\helpers\scheduler as schedulerHelper;
+use tomk79\pickles2\px2clover\helpers\dataDotPhp;
 
 /**
  * px2-clover: 状態チェックAPI
@@ -35,12 +36,15 @@ class healthChecker{
 		$schedulerHelper = new schedulerHelper($this->clover);
 		$realpath_admin_scheduler = $schedulerHelper->realpath_admin_scheduler();
 		$realpath_status_json = $realpath_admin_scheduler.'/status.json';
+		$realpath_status_json_php = $realpath_admin_scheduler.'/status.json.php';
 
 		$scheduler_status_json = (object) array();
 		if( is_file($realpath_status_json) ){
-			$str_json = file_get_contents($realpath_status_json);
-			$scheduler_status_json = json_decode( $str_json );
+			$scheduler_status_json = json_decode( file_get_contents($realpath_status_json) );
+		}elseif( is_file($realpath_status_json_php) ){
+			$scheduler_status_json = dataDotPhp::read_json($realpath_status_json_php);
 		}
+
 		if( !is_object($scheduler_status_json) ){
 			$scheduler_status_json = (object) array();
 		}

@@ -1,6 +1,7 @@
 <?php
 namespace tomk79\pickles2\px2clover\funcs\api;
 use tomk79\pickles2\px2clover\helpers\scheduler as schedulerHelper;
+use tomk79\pickles2\px2clover\helpers\dataDotPhp;
 
 /**
  * px2-clover: タスクスケジューラAPI
@@ -127,13 +128,13 @@ class scheduler{
 		$this->px->header('Content-type: text/json');
 
 		$realpath_status_json = $this->realpath_admin_scheduler.'status.json';
+		$realpath_status_json_php = $realpath_status_json.'.php';
 
 		$json = array(
 			'last_run_at' => date('Y-m-d H:i:s'),
 		);
-		$str_json = json_encode($json);
-		if( !$this->px->fs()->save_file( $realpath_status_json, $str_json ) ){
-			$this->schedulerHelper->log('--- Error: Failed to write status.json');
+		if( !dataDotPhp::write_json($realpath_status_json_php, $json) ){
+			$this->schedulerHelper->log('--- Error: Failed to write status.json.php');
 			echo json_encode(array(
 				'result' => false,
 				'message' => 'Failed to write status.json',

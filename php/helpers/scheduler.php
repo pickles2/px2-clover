@@ -82,17 +82,16 @@ class scheduler{
 		// create new queue
 		// NOTE: タイムゾーン設定があとから変更されても設定時刻が変わらないように、ファイル名中の時刻情報は GMT で命名する。
 		$filename = gmdate('Ymd_His', $time).'_'.urlencode($name).'.json';
+		$filename_php = $filename.'.php';
 		$data = array(
 			'service' => $service,
 			'time' => $time,
 			'name' => $name,
 			'options' => $options,
 		);
-		$this->px->fs()->save_file(
-			$realpath_queue.$filename,
-			json_encode($data, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE)
-		);
-		return true;
+
+		$result = dataDotPhp::write_json($realpath_queue.$filename_php, $data);
+		return $result;
 	}
 
 	/**
@@ -125,12 +124,12 @@ class scheduler{
 		$realpath_queue = $this->realpath_admin_scheduler().'queue/';
 		$ls = $this->px->fs()->ls($realpath_queue);
 		foreach($ls as $basename){
-			if( preg_match('/^([0-9]{8})\_([0-9]{6})\_(.*)\.json$/s', $basename, $matched) ){
+			if( preg_match('/^([0-9]{8})\_([0-9]{6})\_(.*)\.json(?:\.php)?$/s', $basename, $matched) ){
 				if( $matched[3] == $name ){
-					$json_content = file_get_contents($realpath_queue.$basename);
+					$json = dataDotPhp::read_json($realpath_queue.$basename);
 					return array(
 						"basename" => $basename,
-						"queue" => json_decode($json_content),
+						"queue" => $json,
 					);
 				}
 			}
@@ -146,7 +145,7 @@ class scheduler{
 		$realpath_queue = $this->realpath_admin_scheduler().'queue/';
 		$ls = $this->px->fs()->ls($realpath_queue);
 		foreach($ls as $basename){
-			if( preg_match('/^([0-9]{4})([0-9]{2})([0-9]{2})\_([0-9]{2})([0-9]{2})([0-9]{2})\_(.*)\.json$/s', $basename, $matched) ){
+			if( preg_match('/^([0-9]{4})([0-9]{2})([0-9]{2})\_([0-9]{2})([0-9]{2})([0-9]{2})\_(.*)\.json(?:\.php)?$/s', $basename, $matched) ){
 
 				// NOTE: タイムゾーン設定があとから変更されても設定時刻が変わらないように、ファイル名中の時刻情報は GMT で命名されている。
 				$tmp_datetime = new \DateTime($matched[1].'-'.$matched[2].'-'.$matched[3].' '.$matched[4].':'.$matched[5].':'.$matched[6], new \DateTimeZone('UTC'));
@@ -154,7 +153,7 @@ class scheduler{
 				unset($tmp_datetime);
 
 				if( $time < time() ){
-					$json_content = file_get_contents($realpath_queue.$basename);
+					$json = dataDotPhp::read_json($realpath_queue.$basename);
 					$result_checkout = $this->px->fs()->rename(
 						$realpath_queue.$basename,
 						$realpath_progress.$basename
@@ -164,7 +163,7 @@ class scheduler{
 					}
 					return array(
 						"basename" => $basename,
-						"queue" => json_decode($json_content),
+						"queue" => $json,
 					);
 				}
 			}
@@ -181,8 +180,7 @@ class scheduler{
 		if( !is_file($realpath_progress.$basename) ){
 			return false;
 		}
-		$json_content = file_get_contents($realpath_progress.$basename);
-		$json = json_decode($json_content);
+		$json = dataDotPhp::read_json($realpath_progress.$basename);
 
 		$rtn = array(
 			"result" => true,
@@ -239,13 +237,14 @@ class scheduler{
 	 */
 	public function log( $row ){
 		$realpath_admin_scheduler = $this->realpath_admin_scheduler();
-		$realpath_log = $realpath_admin_scheduler.'logs/scheduler-'.date('Y-m-d').'.txt';
+		$realpath_log = $realpath_admin_scheduler.'logs/scheduler-'.date('Y-m-d').'.log.php';
 		$log_row = array(
 			date('Y-m-d H:i:s'),
 			getmypid(),
 			trim($row),
 		);
-		return file_put_contents( $realpath_log, implode('	', $log_row)."\n", FILE_APPEND|LOCK_EX );
+		$result = dataDotPhp::write_a($realpath_log, implode('	', $log_row)."\n");
+		return $result;
 	}
 
 }
