@@ -1,0 +1,60 @@
+{
+    "bowl": {
+        "main": {
+            "modId": "_sys/root",
+            "fields": {
+                "main": [
+                    {
+                        "modId": "themeEditorModules:layouts/header",
+                        "fields": {
+                            "sitetitle_linkto": "",
+                            "sitetitle_htmlElement": "h1",
+                            "shouldernavi": [],
+                            "globalnavi": [],
+                            "sitetitle_image": {
+                                "resKey": "",
+                                "resType": "none",
+                                "webUrl": "",
+                                "path": ""
+                            }
+                        },
+                        "anchor": "",
+                        "dec": ""
+                    },
+                    {
+                        "modId": "themeEditorModules:layouts/fullcolumn",
+                        "fields": {
+                            "main": [
+                                {
+                                    "modId": "themeEditorModules:vars/bowl",
+                                    "fields": {
+                                        "bowlName": ""
+                                    }
+                                    },
+                                    "anchor": "",
+                                    "dec": ""
+                                }
+                            ],
+                            "inner-width": "theme-layouts--fluid"
+                        },
+                        "anchor": "",
+                        "dec": ""
+                    },
+                    {
+                        "modId": "themeEditorModules:layouts/footer",
+                        "fields": {
+                            "content": [
+                                {
+                                    "modId": "themeEditorModules:vars/copyright",
+                                    "fields": [],
+                                    "anchor": "",
+                                    "dec": ""
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
