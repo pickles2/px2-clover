@@ -31,6 +31,18 @@ export default React.memo(function Root(props){
 								<li><Link href="/?PX=admin.config">設定</Link></li>
 							</ul>
 						</nav>
+						<div className="theme-layout__hamburger-menu">
+							<button type="button" onClick={(e)=>{
+								px2style.modal({
+									"type": "drawer-left",
+									"body": $('.theme-layout__left-navbar').clone(),
+									"buttons": [],
+									"onbgclick": function(){
+										px2style.closeModal();
+									},
+								});
+							}}><span></span></button>
+						</div>
 					</div>
 				</header>
 
