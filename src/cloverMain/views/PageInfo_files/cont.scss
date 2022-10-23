@@ -44,6 +44,13 @@
 	gap: 20px;
 	&__main {
 		width: calc(100% - 220px);
+
+		.px2-table {
+			th, td {
+				word-wrap: break-word;
+				word-break: break-all;
+			}
+		}
 	}
 	&__right-navibar {
 		width: 200px;
