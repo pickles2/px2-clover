@@ -33,13 +33,20 @@ export default React.memo(function Root(props){
 						</nav>
 						<div className="theme-layout__hamburger-menu">
 							<button type="button" onClick={(e)=>{
+								var $body = $('.theme-layout__left-navbar').clone();
 								px2style.modal({
 									"type": "drawer-left",
-									"body": $('.theme-layout__left-navbar').clone(),
+									"body": $body,
 									"buttons": [],
 									"onbgclick": function(){
 										px2style.closeModal();
 									},
+								});
+								$body.find('a').on('click', function(e){
+									e.preventDefault();
+									main.link(e.target.href);
+									px2style.closeModal();
+									return false;
 								});
 							}}><span></span></button>
 						</div>

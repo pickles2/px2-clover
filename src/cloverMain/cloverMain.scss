@@ -13,6 +13,8 @@
 		width: 210px;
 		height: 100%;
 		box-shadow: 0 10px 10px -5px rgba(0,0,0,.1);
+		overflow: auto;
+
 		a {
 			color: #000;
 			&:hover {
@@ -26,6 +28,7 @@
 			position: sticky;
 			width: 100%;
 			height: auto;
+			overflow: visible;
 		}
 	}
 	&__title {
@@ -33,13 +36,15 @@
 		font-size: 28px;
 		font-weight: bold;
 		word-wrap: break-word;
-		word-break: break-all;
+		// word-break: break-all;
 
 		&-pj-name {
 			display: block;
 			a {
 				display: block;
 				text-decoration: none;
+				max-height: 40vh;
+				overflow: hidden;
 				&:hover {
 					opacity: 0.8;
 				}
@@ -163,6 +168,9 @@
 	&__main-center {
 		width: 100%;
 		background-color: var(--px2-background-color, #f9f7f5);
+	}
+	.contents {
+		min-height: calc(100vh - 260px);
 	}
 	&__main-center-h1 {
 		h1 {
