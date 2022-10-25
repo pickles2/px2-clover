@@ -592,26 +592,24 @@ export default function PageInfo(props){
 					<div className="cont-layout">
 						{(typeof(main.pageInfo.current_page_info) === typeof({}) && (<>
 							<div className="cont-layout__main">
-								<table className="px2-table" style={{width:'100%',}}>
-									<colgroup>
-										<col style={{width: "30%"}} />
-										<col style={{width: "70%"}} />
-									</colgroup>
-									<tbody>
-										<tr><th>{sitemapDefinition['id'].label}</th><td>{main.pageInfo.current_page_info.id}</td></tr>
-										<tr><th>{sitemapDefinition['title'].label}</th><td><a href={main.px2utils.href(main.pageInfo.current_page_info.path)}>{main.pageInfo.current_page_info.title}</a></td></tr>
-										<tr><th>{sitemapDefinition['path'].label}</th><td>{main.pageInfo.current_page_info.path}</td></tr>
-										{Object.keys(main.pageInfo.current_page_info).map( ( key, idx )=>{
-											if( ['id','title','path'].find(val => val==key) ){return;}
-											return (
-												<tr key={idx}>
-													<th>{(sitemapDefinition[key] ? sitemapDefinition[key].label : key)}</th>
-													<td>{main.pageInfo.current_page_info[key]}</td>
-												</tr>
-											)
-										} )}
-									</tbody>
-								</table>
+								<div className="cont-page-list-table">
+									<table>
+										<tbody>
+											<tr><th>{sitemapDefinition['id'].label}</th><td>{main.pageInfo.current_page_info.id}</td></tr>
+											<tr><th>{sitemapDefinition['title'].label}</th><td><a href={main.px2utils.href(main.pageInfo.current_page_info.path)}>{main.pageInfo.current_page_info.title}</a></td></tr>
+											<tr><th>{sitemapDefinition['path'].label}</th><td>{main.pageInfo.current_page_info.path}</td></tr>
+											{Object.keys(main.pageInfo.current_page_info).map( ( key, idx )=>{
+												if( ['id','title','path'].find(val => val==key) ){return;}
+												return (
+													<tr key={idx}>
+														<th>{(sitemapDefinition[key] ? sitemapDefinition[key].label : key)}</th>
+														<td>{main.pageInfo.current_page_info[key]}</td>
+													</tr>
+												)
+											} )}
+										</tbody>
+									</table>
+								</div>
 							</div>
 
 							<nav className="cont-layout__right-navibar">
