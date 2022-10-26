@@ -69,7 +69,10 @@ class pageInfo{
 		}
 
 		// originated_csv
-		$rtn['originated_csv'] = $this->px->site()->get_page_originated_csv( $rtn['current_page_info']['id'] );
+		$rtn['originated_csv'] = null;
+		if( isset($rtn['current_page_info']['id']) ){
+			$rtn['originated_csv'] = $this->px->site()->get_page_originated_csv( $rtn['current_page_info']['id'] );
+		}
 
 
 		// proc_type
