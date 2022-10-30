@@ -306,10 +306,6 @@ export default function PageInfo(props){
 							e.preventDefault();
 							modal.lock();
 
-							// 入力エラー表示をクリア
-							$body.find('.px2-form-input-list__li--error').removeClass('px2-form-input-list__li--error');
-							$body.find('.px2-error').remove();
-
 							var $inputs = modal.$modal.find('form input');
 							var new_page_info = {};
 							$inputs.each((idx, elm)=>{
@@ -317,29 +313,71 @@ export default function PageInfo(props){
 								new_page_info[$elm.attr('name')] = $elm.val();
 							});
 
-							var params = {
-								'filefullname': originatedCsv.basename,
-								'row': originatedCsv.row,
-								'page_info': new_page_info,
-							};
-							main.px2utils.px2cmd(
-								'/?PX=px2dthelper.page.update_page_info_raw',
-								params,
-								function( res ){
-									if( !res.result ){
-										for( const key in res.errors){
-											let $input = $body.find('[name='+key+']');
-											$input.closest('.px2-form-input-list__li').addClass('px2-form-input-list__li--error');
-											$input.before(
-												$('<p>')
-													.text(res.errors[key])
-													.addClass('px2-error')
-											);
+							iterate79.fnc({}, [
+								(it2) => {
+									// 入力エラー表示をクリア
+									$body.find('.px2-form-input-list__li--error').removeClass('px2-form-input-list__li--error');
+									$body.find('.px2-error').remove();
+
+									it2.next();
+								},
+								(it2) => {
+									var params = {
+										'filefullname': originatedCsv.basename,
+										'row': originatedCsv.row,
+										'page_info': new_page_info,
+									};
+									main.px2utils.px2cmd(
+										'/?PX=px2dthelper.page.update_page_info_raw',
+										params,
+										function( res ){
+											if( !res.result ){
+												for( const key in res.errors){
+													let $input = $body.find('[name='+key+']');
+													$input.closest('.px2-form-input-list__li').addClass('px2-form-input-list__li--error');
+													$input.before(
+														$('<p>')
+															.text(res.errors[key])
+															.addClass('px2-error')
+													);
+												}
+												console.error('Error:', res);
+												modal.unlock();
+												return;
+											}
+											it2.next();
 										}
-										console.error('Error:', res);
-										modal.unlock();
+									);
+								},
+								(it2) => {
+									var contentBefore = page_info.path;
+									if( page_info.content ){ contentBefore = page_info.content; }
+									var contentAfter = new_page_info.path;
+									if( new_page_info.content ){ contentAfter = new_page_info.content; }
+
+									if( contentBefore === contentAfter ){
+										// コンテンツパスの変更はないので、スキップ
+										it2.next();
 										return;
 									}
+
+									var params = {
+										'from': contentBefore,
+										'to': contentAfter,
+									};
+									main.px2utils.px2cmd(
+										'/?PX=px2dthelper.content.move',
+										params,
+										function( res ){
+											if( !res.result ){
+												console.error('Error:', res);
+											}
+											it2.next();
+										}
+									);
+									return;
+								},
+								() => {
 									main.setMainState({
 										"pageInfoLoaded": false,
 									});
@@ -348,8 +386,9 @@ export default function PageInfo(props){
 
 									main.cloverUtils.autoCommit();
 									main.link(main.px2utils.href(new_page_info.path) + '?PX=admin.page_info');
-								}
-							);
+								},
+							]);
+
 						}
 					},
 				});
