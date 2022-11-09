@@ -65,6 +65,18 @@ export default React.memo(function Publish(props){
 			// スケジューラが利用できない場合
 			// 直接実行する
 			px2style.loading();
+
+			updateHealthCheckStatus({
+				...healthCheckStatus,
+				"publish": {
+					"is_running": true,
+				}
+			})
+
+			var progressTotalMessage = "";
+			var $publishStdout = $('.cont-publish-stdout pre');
+			$publishStdout.text(progressTotalMessage);
+
 			main.px2utils.px2cmd(
 				"?PX=publish.run",
 				{},
@@ -72,6 +84,9 @@ export default React.memo(function Publish(props){
 					"timeout": 30 * 60 * 1000, // 30分待つ
 					"progress": function(progress){
 						console.log('-- progress:', progress);
+						progressTotalMessage += progress;
+						$publishStdout.text(progressTotalMessage);
+						$publishStdout.scrollTop( $publishStdout.get(0).scrollHeight );
 					}
 				},
 				function(data, error){
@@ -87,6 +102,13 @@ export default React.memo(function Publish(props){
 							'body': '<p>パブリッシュ が完了しました。</p>',
 						});
 					}
+
+					updateHealthCheckStatus({
+						...healthCheckStatus,
+						"publish": {
+							"is_running": false,
+						}
+					})
 					px2style.closeLoading();
 				}
 			);
@@ -124,8 +146,16 @@ export default React.memo(function Publish(props){
 						</>
 						:<>
 							<p>パブリッシュ中です...</p>
-							<p><button type="button" onClick={publishStop} className="px2-btn">パブリッシュを中断</button></p>
+							{(healthCheckStatus.scheduler.is_available)
+								?<>
+									<p><button type="button" onClick={publishStop} className="px2-btn">パブリッシュを中断</button></p>
+								</>
+								:<>
+								</>}
 						</>}
+					<div className="cont-publish-stdout">
+						<pre></pre>
+					</div>
 				</>}
 		</>
 	);

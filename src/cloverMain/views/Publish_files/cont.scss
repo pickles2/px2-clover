@@ -1,0 +1,12 @@
+.cont-publish-stdout {
+    width: 100%;
+    pre {
+        overflow: auto;
+        max-height: 400px;
+        width: 100%;
+        border: 1px solid #e6e6e6;
+        background-color: #fefefe;
+        border-radius: 5px;
+        padding: 20px;
+    }
+}
