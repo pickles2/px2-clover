@@ -602,6 +602,63 @@ export default function PageInfo(props){
 	 */
 	function changeEditorType(e){
 		e.preventDefault();
+
+		var $this = $(this);
+		var $body = $('<div>')
+			.append( `
+				<ul>
+					<li><label><input type="radio" name="proc_type" value="html.gui" /> ブロックエディタ</label></li>
+					<li><label><input type="radio" name="proc_type" value="html" /> HTML</label></li>
+					<li><label><input type="radio" name="proc_type" value="md" /> Markdown</label></li>
+				</ul>
+			` )
+		;
+		$body.find('input[name=proc_type]').val( [main.pageInfo.editor_mode] );
+		px2style.modal({
+			'title': '編集方法を変更する',
+			'body': $body,
+			'buttons':[
+				$('<button class="px2-btn px2-btn--primary" type="button">')
+					.text('OK')
+					.on('click', function(){
+						var editorModeTo = $body.find('input[name=proc_type]:checked').val();
+
+						px2style.loading();
+
+						main.px2utils.px2cmd(
+							`?PX=px2dthelper.change_content_editor_mode&editor_mode=${editorModeTo}`,
+							{},
+							function( result ){
+								console.log(result);
+
+								if( !result[0] ){
+									alert('編集モードの変更に失敗しました。'+result[1]);
+									px2style.closeLoading();
+									return;
+								}
+
+								main.setMainState({
+									"pageInfoLoaded": false,
+								});
+
+								px2style.closeModal();
+								px2style.closeLoading();
+
+								main.cloverUtils.autoCommit();
+								main.link('?PX=admin.page_info');
+								return;
+							}
+						);
+					})
+			],
+			'buttonsSecondary': [
+				$('<button class="px2-btn" type="button">')
+					.text('キャンセル')
+					.on('click', function(){
+						px2style.closeModal();
+					}),
+			]
+		});
 	}
 
 	/**
