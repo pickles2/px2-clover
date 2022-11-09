@@ -137,4 +137,16 @@ export default function Px2Utils(){
 		return path;
 	}
 
+	/**
+	 * Base64 変換
+	 */
+	this.base64_encode_async = function(orig) { return new Promise(function(rlv){
+		var r = new FileReader();
+		r.onload = function(){
+			var offset = r.result.indexOf(",");
+			rlv(r.result.slice(offset+1));
+		};
+		r.readAsDataURL(new Blob([orig]));
+	}); }
+
 }

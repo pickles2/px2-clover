@@ -597,6 +597,60 @@ export default function PageInfo(props){
 		]);
 	}
 
+	/**
+	 * 編集方法を変更する
+	 */
+	function changeEditorType(e){
+		e.preventDefault();
+	}
+
+	/**
+	 * 単体パブリッシュ
+	 */
+	function singlePagePublish(e){
+		e.preventDefault();
+	}
+
+	/**
+	 * ブロックエディタのコンテンツを再構成する
+	 */
+	function rebuildBroccoliContent(e){
+		e.preventDefault();
+		if( main.pageInfo.editor_mode != 'html.gui' ){
+			alert('Error: Editor mode is not "html.gui".');
+			return;
+		}
+
+		var options = {
+			'api': 'broccoliBridge',
+			'forBroccoli': {
+				'api': 'updateContents',
+				'options': {
+					'lang': 'ja',
+				},
+			},
+			'page_path': main.pageInfo.current_page_info.path,
+		};
+
+		main.px2utils.base64_encode_async(JSON.stringify(options)).then(function(optionsBase64){
+			main.px2utils.px2cmd(
+				'?PX=px2dthelper.px2ce.gpi',
+				{
+					"appMode": "web",
+					"data": optionsBase64,
+				},
+				function( res ){
+					if( res !== true && !res.result ){
+						console.error('Error:', res);
+						alert("Error: " + res.message);
+						return;
+					}
+					alert("done.");
+				}
+			);
+		});
+	}
+
 
 	return (
 		<>
@@ -612,6 +666,9 @@ export default function PageInfo(props){
 							<li><a href="?" className="px2-btn" onClick={editPage}>ページ情報を編集する</a></li>
 							<li><a href="?" className="px2-btn" onClick={sortPage}>並べ替え</a></li>
 							<li><a href="?PX=admin.edit_contents" className="px2-btn">コンテンツを編集する</a></li>
+							<li><a href="?" className="px2-btn" onClick={changeEditorType}>編集方法を変更する</a></li>
+							<li><a href="?" className="px2-btn" onClick={singlePagePublish}>単体パブリッシュ</a></li>
+							<li><a href="?" className="px2-btn" onClick={rebuildBroccoliContent}>ブロックエディタのコンテンツを再構成する</a></li>
 							<li><a href="?" className="px2-btn">プレビューに戻る</a></li>
 							{/* <li><a href="?" className="px2-btn" onClick={createNewPage}>ページ情報を追加する</a></li> */}
 						</ul>

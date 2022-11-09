@@ -76,6 +76,10 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
+### pickles2/px2-clover v0.2.3 (リリース日未定)
+
+- ページ情報画面に ブロックエディタのコンテンツを再構成する 機能を追加。
+
 ### pickles2/px2-clover v0.2.2 (2022年11月3日)
 
 - ページ情報編集機能の改善。
