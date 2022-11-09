@@ -609,6 +609,24 @@ export default function PageInfo(props){
 	 */
 	function singlePagePublish(e){
 		e.preventDefault();
+
+		px2style.loading();
+
+		main.px2utils.px2cmd(
+			'?PX=px2dthelper.publish_single_page',
+			{},
+			function( res ){
+				px2style.closeLoading();
+
+				console.info('=== publish result:', res);
+				if( typeof(res) !== typeof('') && !res.result ){
+					console.error('Error:', res);
+					alert("Error");
+					return;
+				}
+				alert("done.");
+			}
+		);
 	}
 
 	/**
@@ -620,6 +638,8 @@ export default function PageInfo(props){
 			alert('Error: Editor mode is not "html.gui".');
 			return;
 		}
+
+		px2style.loading();
 
 		var options = {
 			'api': 'broccoliBridge',
@@ -640,6 +660,8 @@ export default function PageInfo(props){
 					"data": optionsBase64,
 				},
 				function( res ){
+					px2style.closeLoading();
+
 					if( res !== true && !res.result ){
 						console.error('Error:', res);
 						alert("Error: " + res.message);
