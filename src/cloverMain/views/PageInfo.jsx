@@ -412,6 +412,7 @@ export default function PageInfo(props){
 				var template = require('./PageInfo_files/templates/sortPage.twig');
 				var $body = $('<div>')
 					.append( template( {
+						"current_page_info": main.pageInfo.current_page_info,
 						"bros": main.pageInfo.bros,
 					} ) )
 				;
@@ -443,6 +444,13 @@ export default function PageInfo(props){
 
 							var $select = modal.$modal.find('form select');
 							var selectedPagePath = $select.val();
+
+							if(selectedPagePath == main.pageInfo.current_page_info.path){
+								alert('移動先が変更されていません。');
+								modal.unlock();
+								return;
+							}
+
 							main.px2utils.px2cmd("?PX=api.get.page_originated_csv", {
 								"path": selectedPagePath,
 							}, function(originatedCsvInfo){
@@ -460,12 +468,12 @@ export default function PageInfo(props){
 											modal.unlock();
 											return;
 										}
-										main.setMainState({
-											"pageInfoLoaded": false,
-										});
 										modal.unlock();
 										px2style.closeModal();
 
+										main.setMainState({
+											"pageInfoLoaded": false,
+										});
 										main.cloverUtils.autoCommit();
 										main.link('?PX=admin.page_info');
 									}
@@ -743,13 +751,8 @@ export default function PageInfo(props){
 					<div className="cont-menubar">
 						<ul>
 							<li><a href="?" className="px2-btn" onClick={editPage}>ページ情報を編集する</a></li>
-							<li><a href="?" className="px2-btn" onClick={sortPage}>並べ替え</a></li>
 							<li><a href="?PX=admin.edit_contents" className="px2-btn">コンテンツを編集する</a></li>
-							<li><a href="?" className="px2-btn" onClick={changeEditorType}>編集方法を変更する</a></li>
-							<li><a href="?" className="px2-btn" onClick={singlePagePublish}>単体パブリッシュ</a></li>
-							<li><a href="?" className="px2-btn" onClick={rebuildBroccoliContent}>ブロックエディタのコンテンツを再構成する</a></li>
 							<li><a href="?" className="px2-btn">プレビューに戻る</a></li>
-							{/* <li><a href="?" className="px2-btn" onClick={createNewPage}>ページ情報を追加する</a></li> */}
 						</ul>
 					</div>
 					{(main.pageInfo !== null && typeof(main.pageInfo.breadcrumb) === typeof([]) && (
@@ -773,17 +776,26 @@ export default function PageInfo(props){
 											<tr><th>{sitemapDefinition['id'].label}</th><td>{main.pageInfo.current_page_info.id}</td></tr>
 											<tr><th>{sitemapDefinition['title'].label}</th><td><a href={main.px2utils.href(main.pageInfo.current_page_info.path)}>{main.pageInfo.current_page_info.title}</a></td></tr>
 											<tr><th>{sitemapDefinition['path'].label}</th><td>{main.pageInfo.current_page_info.path}</td></tr>
-											{Object.keys(main.pageInfo.current_page_info).map( ( key, idx )=>{
-												if( ['id','title','path'].find(val => val==key) ){return;}
-												return (
-													<tr key={idx}>
-														<th>{(sitemapDefinition[key] ? sitemapDefinition[key].label : key)}</th>
-														<td>{main.pageInfo.current_page_info[key]}</td>
-													</tr>
-												)
-											} )}
+											<tr><th>{sitemapDefinition['content'].label}</th><td>{main.pageInfo.current_page_info.content}</td></tr>
 										</tbody>
 									</table>
+								</div>
+								<p className="px2-text-align-right"><button type="button" className="px2-btn" onClick={()=>{
+									px2style.modal({
+										"title": "ページの詳細情報",
+										"width": '680px',
+										"body": $('#cont-page-info-detail').html(),
+									});
+								}}>ページ詳細情報</button></p>
+
+								<div className="px2-linklist">
+									<ul>
+										<li><a href="?" onClick={sortPage}>並べ替え</a></li>
+										<li><a href="?" onClick={changeEditorType}>編集方法を変更する</a></li>
+										<li><a href="?" onClick={singlePagePublish}>単体パブリッシュ</a></li>
+										<li><a href="?" onClick={rebuildBroccoliContent}>ブロックエディタのコンテンツを再構成する</a></li>
+										{/* <li><a href="?" onClick={createNewPage}>ページ情報を追加する</a></li> */}
+									</ul>
 								</div>
 							</div>
 
@@ -823,7 +835,30 @@ export default function PageInfo(props){
 							</nav>
 						</>))}
 					</div>
+					<div id="cont-page-info-detail" style={{display: "none"}}>
 					{(typeof(main.pageInfo.current_page_info) === typeof({}) && (<>
+						<div className="px2-p">
+							<table className="px2-table" style={{width:'100%',}}>
+								<colgroup>
+									<col style={{width: "30%"}} />
+									<col style={{width: "70%"}} />
+								</colgroup>
+								<tbody>
+									<tr><th>{sitemapDefinition['id'].label}</th><td>{main.pageInfo.current_page_info.id}</td></tr>
+									<tr><th>{sitemapDefinition['title'].label}</th><td><a href={main.px2utils.href(main.pageInfo.current_page_info.path)}>{main.pageInfo.current_page_info.title}</a></td></tr>
+									<tr><th>{sitemapDefinition['path'].label}</th><td>{main.pageInfo.current_page_info.path}</td></tr>
+									{Object.keys(main.pageInfo.current_page_info).map( ( key, idx )=>{
+										if( ['id','title','path'].find(val => val==key) ){return;}
+										return (
+											<tr key={idx}>
+												<th>{(sitemapDefinition[key] ? sitemapDefinition[key].label : key)}</th>
+												<td>{main.pageInfo.current_page_info[key]}</td>
+											</tr>
+										)
+									} )}
+								</tbody>
+							</table>
+						</div>
 						<div className="px2-p">
 							<table className="px2-table" style={{width:'100%',}}>
 								<colgroup>
@@ -838,6 +873,8 @@ export default function PageInfo(props){
 							</table>
 						</div>
 					</>))}
+					</div>
+
 					{(typeof(main.pageInfo.current_page_info) === typeof({}) && !!main.pageInfo.current_page_info.id.length && (<>
 						<p className="px2-text-align-center"><button type="button" onClick={deletePage} className="px2-btn px2-btn--danger">このページを削除する</button></p>
 					</>))}
