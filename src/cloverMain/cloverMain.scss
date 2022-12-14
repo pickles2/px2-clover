@@ -207,6 +207,9 @@
 	}
 }
 
+[data-px="admin.sitemap"] {
+	@import "./views/Sitemap_files/cont.scss";
+}
 [data-px="admin.page_info"] {
 	@import "./views/PageInfo_files/cont.scss";
 }

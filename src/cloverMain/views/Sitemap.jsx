@@ -180,44 +180,50 @@ export default React.memo(function Sitemap(props){
 
 	return (
 		<>
+			<div className="cont-head-menu">
+				<p><button type="button" className="px2-btn" onClick={openUploadSitemapFileDialog}>アップロード</button></p>
+			</div>
+
 			{(!sitemapFileList)
 				?<>
 					<p>...</p>
 				</>
 			:<>{(sitemapFileList.list)
 				?<>
-				<div>
+				<div className="cont-sitemap-file-list">
 					<ul>
 						{Object.keys(sitemapFileList.list).map( ( sitemapFileName, idx )=>{
 							return (
 								<li key={idx}>
-									{sitemapFileName}
-									<ul>
-									{sitemapFileList.list[sitemapFileName].map( ( sitemapFileNameExt, idx )=>{
-										if( window.plugin_options.app_mode == "desktop" ){
-											return (
-												<li key={sitemapFileNameExt}>
-													{sitemapFileNameExt} <a href="?PX=admin.api.open_sitemap_file" onClick={(e)=>{
-														e.preventDefault();
-														openSitemapFile(sitemapFileName+'.'+sitemapFileNameExt);
-													}}>open</a>
-												</li>
-											);
-										}else{
-											return (
-												<li key={sitemapFileNameExt}>
-													{sitemapFileNameExt} <a href="?PX=px2dthelper.sitemap.download" onClick={(e)=>{
-														e.preventDefault();
-														downloadSitemapFile(sitemapFileName+'.'+sitemapFileNameExt);
-													}}>download</a>
-												</li>
-											);
-										}
-									} )}
-									</ul>
-									<ul>
-										<li><a href="#" onClick={(e)=>{e.preventDefault();deleteSitemapFile(sitemapFileName);}}>delete</a></li>
-									</ul>
+									<div className="cont-sitemap-file-list__sitemap-file-name">{sitemapFileName}</div>
+									<div className="cont-sitemap-file-list__edit-menu">
+										<ul>
+										{sitemapFileList.list[sitemapFileName].map( ( sitemapFileNameExt, idx )=>{
+											if( window.plugin_options.app_mode == "desktop" ){
+												return (
+													<li key={sitemapFileNameExt}>
+														{sitemapFileNameExt}: <a href="?PX=admin.api.open_sitemap_file" className="px2-btn px2-btn--secondary" onClick={(e)=>{
+															e.preventDefault();
+															openSitemapFile(sitemapFileName+'.'+sitemapFileNameExt);
+														}}>open</a>
+													</li>
+												);
+											}else{
+												return (
+													<li key={sitemapFileNameExt}>
+														{sitemapFileNameExt}: <a href="?PX=px2dthelper.sitemap.download" className="px2-btn px2-btn--secondary" onClick={(e)=>{
+															e.preventDefault();
+															downloadSitemapFile(sitemapFileName+'.'+sitemapFileNameExt);
+														}}>download</a>
+													</li>
+												);
+											}
+										} )}
+										</ul>
+										<ul>
+											<li><a href="#" className="px2-btn px2-btn--danger" onClick={(e)=>{e.preventDefault();deleteSitemapFile(sitemapFileName);}}>delete</a></li>
+										</ul>
+									</div>
 								</li>
 							)
 						} )}
@@ -227,8 +233,6 @@ export default React.memo(function Sitemap(props){
 				:<>
 				</>
 			}</>}
-			<hr />
-			<p><button type="button" className="px2-btn" onClick={openUploadSitemapFileDialog}>アップロード</button></p>
 		</>
 	);
 });
