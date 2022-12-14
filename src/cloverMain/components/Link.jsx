@@ -6,7 +6,7 @@ export default function Link(props){
 	const main = useContext(MainContext);
 
 	const className = (() => {
-		if( props.className ){
+		if( typeof(props.className) == typeof('') ){
 			return props.className;
 		}
 

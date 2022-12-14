@@ -8,13 +8,15 @@ export default function Config(props){
 
 	return (
 		<>
-			<ul>
-				<li><Link href="?PX=admin.config.profile">プロフィール設定</Link></li>
-				<li><Link href="?PX=admin.config.members">メンバー一覧</Link></li>
-				<li><Link href="?PX=admin.config.history">履歴管理設定</Link></li>
-				<li><Link href="?PX=admin.config.scheduler">タスクスケジュール設定</Link></li>
-				<li><Link href="?PX=admin.config.maintenance">メンテナンス</Link></li>
-			</ul>
+			<div className="px2-linklist">
+				<ul>
+					<li><Link className="" href="?PX=admin.config.profile">プロフィール設定</Link></li>
+					<li><Link className="" href="?PX=admin.config.members">メンバー一覧</Link></li>
+					<li><Link className="" href="?PX=admin.config.history">履歴管理設定</Link></li>
+					<li><Link className="" href="?PX=admin.config.scheduler">タスクスケジュール設定</Link></li>
+					<li><Link className="" href="?PX=admin.config.maintenance">メンテナンス</Link></li>
+				</ul>
+			</div>
 		</>
 	);
 }
