@@ -738,7 +738,6 @@ export default function PageInfo(props){
 		});
 	}
 
-
 	return (
 		<>
 			{(main.pageInfo === null)

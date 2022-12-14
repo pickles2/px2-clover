@@ -109,6 +109,21 @@ class Layout extends React.Component {
 					});
 				},
 				(it1) => {
+					tmpNewState.currentRoute = getCurrentRoute(this.state.PX);
+					tmpNewState.title = tmpNewState.currentRoute.title;
+
+					if( this.state.PX == "admin.page_info" && tmpNewState.pageInfo ){
+						// PageInfo 画面にて、routeのタイトルをページのタイトルで置き換える
+						let currentTitle = tmpNewState.title;
+						if( currentTitle != tmpNewState.pageInfo.current_page_info.title ){
+							currentTitle = tmpNewState.pageInfo.current_page_info.title;
+							tmpNewState.title = currentTitle;
+						}
+					}
+					it1.next();
+					return;
+				},
+				(it1) => {
 					px2style.closeLoading();
 					this.state.setMainState( tmpNewState );
 					callback();
@@ -123,13 +138,14 @@ class Layout extends React.Component {
 
 		const link = (url) => {
 			url = (url=>{
-				var a = document.createElement('a');
+				const a = document.createElement('a');
 				a.href = url;
 				return a.href;
 			})(url);
 			const newState = parseUrl(url);
 			history.pushState({}, '', url);
 			newState.pageInfoLoaded = false;
+			newState.currentRoute = getCurrentRoute(newState.PX);
 			this.setState(newState);
 			updateGlobalData(()=>{
 				window.scrollTo(0,0);
@@ -137,9 +153,86 @@ class Layout extends React.Component {
 		};
 
 		const parsedUrl = parseUrl(location);
+		const route = {
+			'admin': {
+				"title": "ダッシュボード",
+				"content": <Dashboard />,
+			},
+			'admin.sitemap': {
+				"title": "サイトマップ",
+				"content": <Sitemap />,
+			},
+			'admin.page_info': {
+				"title": "ページ情報",
+				"content": <PageInfo path={window.px2utils.trimContRoot(window.px2utils.href(parsedUrl.path))} PX={parsedUrl.PX} />,
+			},
+			'admin.theme': {
+				"title": "テーマ",
+				"content": <Theme />,
+			},
+			'admin.publish': {
+				"title": "パブリッシュ",
+				"content": <Publish />,
+			},
+			'admin.history': {
+				"title": "履歴",
+				"content": <History />,
+			},
+			'admin.modules': {
+				"title": "モジュール",
+				"content": <Modules />,
+			},
+			'admin.clearcache': {
+				"title": "キャッシュを消去",
+				"content": <ClearCache />,
+			},
+			'admin.config': {
+				"title": "設定",
+				"content": <Config />,
+			},
+			'admin.config.profile': {
+				"title": "プロフィール設定",
+				"parent": "admin.config",
+				"content": <ConfigProfile />,
+			},
+			'admin.config.members': {
+				"title": "メンバー一覧",
+				"parent": "admin.config",
+				"content": <ConfigMembers />,
+			},
+			'admin.config.history': {
+				"title": "履歴管理設定",
+				"parent": "admin.config",
+				"content": <ConfigHistory />,
+			},
+			'admin.config.scheduler': {
+				"title": "タスクスケジュール設定",
+				"parent": "admin.config",
+				"content": <ConfigScheduler />,
+			},
+			'admin.config.maintenance': {
+				"title": "メンテナンス",
+				"parent": "admin.config",
+				"content": <ConfigMaintenance />,
+			},
+		};
+
+		function getCurrentRoute(parsedUrlPX){
+			let currentRoute = {};
+			if(route[parsedUrlPX] ){
+				currentRoute = route[parsedUrlPX];
+			}else{
+				currentRoute = route["dashboard"];
+			}
+			return currentRoute;
+		}
+		const currentRoute = getCurrentRoute(parsedUrl.PX);
 
 		// Initialize State
 		this.state = {
+			"route": route,
+			"currentRoute": currentRoute,
+			"title": currentRoute.title,
 			"path": parsedUrl.path,
 			"PX": parsedUrl.PX,
 			"profileLoaded": false,
@@ -156,8 +249,6 @@ class Layout extends React.Component {
 			"setMainState": setMainState,
 		};
 
-		// console.log(this.state);
-
 		updateGlobalData();
 
 		window.addEventListener('popstate', (event) => {
@@ -172,74 +263,14 @@ class Layout extends React.Component {
 	 * Renderer
 	 */
 	render() {
-		let title = window.px2config.name;
-		let content = {};
+		let currentRoute = this.state.currentRoute;
 		let current_path = this.state.px2utils.trimContRoot(this.state.px2utils.href(this.state.path));
 
-		switch( this.state.PX ){
-			case 'admin.sitemap':
-				title = "サイトマップ";
-				content = <Sitemap />;
-				break;
-			case 'admin.page_info':
-				title = "ページ情報";
-				content = <PageInfo path={current_path} PX={this.state.PX} />;
-				break;
-			case 'admin.theme':
-				title = "テーマ";
-				content = <Theme />;
-				break;
-			case 'admin.publish':
-				title = "パブリッシュ";
-				content = <Publish />;
-				break;
-			case 'admin.history':
-				title = "履歴";
-				content = <History />;
-				break;
-			case 'admin.modules':
-				title = "モジュール";
-				content = <Modules />;
-				break;
-			case 'admin.clearcache':
-				title = "キャッシュを消去";
-				content = <ClearCache />;
-				break;
-			case 'admin.config':
-				title = "設定";
-				content = <Config />;
-				break;
-			case 'admin.config.profile':
-				title = "プロフィール設定";
-				content = <ConfigProfile />;
-				break;
-			case 'admin.config.members':
-				title = "メンバー一覧";
-				content = <ConfigMembers />;
-				break;
-			case 'admin.config.history':
-				title = "履歴管理設定";
-				content = <ConfigHistory />;
-				break;
-			case 'admin.config.scheduler':
-				title = "タスクスケジュール設定";
-				content = <ConfigScheduler />;
-				break;
-			case 'admin.config.maintenance':
-				title = "メンテナンス";
-				content = <ConfigMaintenance />;
-				break;
-			case 'admin':
-			default:
-				title = "ダッシュボード";
-				content = <Dashboard />;
-				break;
-		}
 		return (
 			<MainContext.Provider value={this.state}>
 				{<Root
-					title={title}
-					contents={content}
+					title={currentRoute.title}
+					contents={currentRoute.content}
 					path={current_path}
 					PX={this.state.PX}
 					/>}

@@ -7,7 +7,7 @@ export default React.memo(function Root(props){
 
 	const main = useContext(MainContext);
 
-	document.title = props.title + ' : ' + window.px2config.name;
+	document.title = (main.title ? main.title : props.title) + ' : ' + window.px2config.name;
 
 	return (
 		<>
@@ -56,7 +56,7 @@ export default React.memo(function Root(props){
 				<div className="theme-layout__main">
 					<div className="theme-layout__main-center">
 						<div className="theme-layout__main-center-h1">
-							<h1>{props.title}</h1>
+							<h1>{main.title}</h1>
 						</div>
 						<div className="theme-layout__main-center-main">
 							<main className="contents" data-px={props.PX}>
