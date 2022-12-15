@@ -811,7 +811,7 @@ export default function PageInfo(props){
 										{main.pageInfo.bros.map( ( bros_page_info )=>{
 											return (
 												<li key={bros_page_info.id} className={(bros_page_info.id == main.pageInfo.current_page_info.id ? "cont-pagenavi__current" : "")}><Link href={main.px2utils.href(bros_page_info.path + "?PX=admin.page_info")}>{bros_page_info.title}</Link>
-													{(main.px2utils.href(bros_page_info.path) == main.px2utils.href(props.path) && (<>
+													{(main.px2utils.href(bros_page_info.path) == main.px2utils.href(main.path) && (<>
 														<ul>
 														{main.pageInfo.children.map( ( child_page_info )=>{
 															return (

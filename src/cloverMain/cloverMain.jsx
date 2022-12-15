@@ -125,7 +125,7 @@ class Layout extends React.Component {
 				},
 				(it1) => {
 					px2style.closeLoading();
-					this.state.setMainState( tmpNewState );
+					this.setState( tmpNewState );
 					callback();
 					it1.next();
 				},
@@ -145,7 +145,6 @@ class Layout extends React.Component {
 			const newState = parseUrl(url);
 			history.pushState({}, '', url);
 			newState.pageInfoLoaded = false;
-			newState.currentRoute = getCurrentRoute(newState.PX);
 			this.setState(newState);
 			updateGlobalData(()=>{
 				window.scrollTo(0,0);
@@ -164,7 +163,7 @@ class Layout extends React.Component {
 			},
 			'admin.page_info': {
 				"title": "ページ情報",
-				"content": <PageInfo path={window.px2utils.trimContRoot(window.px2utils.href(parsedUrl.path))} PX={parsedUrl.PX} />,
+				"content": <PageInfo />,
 			},
 			'admin.theme': {
 				"title": "テーマ",
