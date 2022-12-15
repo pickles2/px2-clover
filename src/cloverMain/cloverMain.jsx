@@ -177,14 +177,6 @@ class Layout extends React.Component {
 				"title": "履歴",
 				"content": <History />,
 			},
-			'admin.modules': {
-				"title": "モジュール",
-				"content": <Modules />,
-			},
-			'admin.clearcache': {
-				"title": "キャッシュを消去",
-				"content": <ClearCache />,
-			},
 			'admin.config': {
 				"title": "設定",
 				"content": <Config />,
@@ -208,6 +200,16 @@ class Layout extends React.Component {
 				"title": "タスクスケジュール設定",
 				"parent": "admin.config",
 				"content": <ConfigScheduler />,
+			},
+			'admin.modules': {
+				"title": "モジュール",
+				"parent": "admin.config",
+				"content": <Modules />,
+			},
+			'admin.clearcache': {
+				"title": "キャッシュを消去",
+				"parent": "admin.config",
+				"content": <ClearCache />,
 			},
 			'admin.config.maintenance': {
 				"title": "メンテナンス",

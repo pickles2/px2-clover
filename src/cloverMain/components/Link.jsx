@@ -29,17 +29,18 @@ export default function Link(props){
 			};
 			return newState;
 		}
-
-		let parsedUrl = parseUrl(props.href);
-		let splitedMainPX = main.PX.split('.');
-		let splitedPropsPX = parsedUrl.PX.split('.');
-		let isMissmatch = false;
-		for( let idx in splitedPropsPX ){
-			if( splitedMainPX[idx] != splitedPropsPX[idx] ){
-				isMissmatch = true;
+		function hasParent(current, target){
+			if( current == target ){
+				return true;
 			}
+			if( main.route[current].parent && hasParent(main.route[current].parent, target) ){
+				return true;
+			}
+			return false;
 		}
-		if( !isMissmatch ){
+
+		let parsedPropsHref = parseUrl(props.href);
+		if( hasParent(main.PX, parsedPropsHref.PX) ){
 			return 'current';
 		}
 		return null;

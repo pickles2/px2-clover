@@ -24,10 +24,8 @@ export default React.memo(function Root(props){
 								<li><Link href="/?PX=admin.sitemap">サイトマップ</Link></li>
 								<li><Link href="/?PX=admin.page_info">ページ情報</Link></li>
 								<li><Link href="/?PX=admin.theme">テーマ</Link></li>
-								<li><Link href="/?PX=admin.modules">モジュール</Link></li>
 								<li><Link href="/?PX=admin.publish">パブリッシュ</Link></li>
 								<li><Link href="/?PX=admin.history">履歴</Link></li>
-								<li><Link href="/?PX=admin.clearcache">キャッシュを消去</Link></li>
 								<li><Link href="/?PX=admin.config">設定</Link></li>
 							</ul>
 						</nav>
