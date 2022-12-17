@@ -16,6 +16,7 @@ import Theme from './views/Theme';
 import Modules from './views/Modules';
 import Publish from './views/Publish';
 import History from './views/History';
+import Finder from './views/Finder';
 import iterate79 from 'iterate79';
 import LangBank from 'langbank';
 
@@ -205,6 +206,11 @@ class Layout extends React.Component {
 				"title": "モジュール",
 				"parent": "admin.config",
 				"content": <Modules />,
+			},
+			'admin.finder': {
+				"title": "ファイルを操作",
+				"parent": "admin.config",
+				"content": <Finder />,
 			},
 			'admin.clearcache': {
 				"title": "キャッシュを消去",
