@@ -15,9 +15,9 @@ export default function Config(props){
 					<li><Link href="?PX=admin.config.history">履歴管理設定</Link></li>
 					<li><Link href="?PX=admin.config.scheduler">タスクスケジュール設定</Link></li>
 					<li><Link href="?PX=admin.config.maintenance">メンテナンス</Link></li>
-					<li><Link href="/?PX=admin.modules">モジュール</Link></li>
-					<li><Link href="/?PX=admin.finder">ファイルを操作</Link></li>
-					<li><Link href="/?PX=admin.clearcache">キャッシュを消去</Link></li>
+					<li><Link href="?PX=admin.modules">モジュール</Link></li>
+					<li><Link href="?PX=admin.config.files_and_folders">ファイルを操作</Link></li>
+					<li><Link href="?PX=admin.clearcache">キャッシュを消去</Link></li>
 				</ul>
 			</div>
 		</>

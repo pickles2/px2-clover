@@ -202,15 +202,15 @@ class Layout extends React.Component {
 				"parent": "admin.config",
 				"content": <ConfigScheduler />,
 			},
+			'admin.config.files_and_folders': {
+				"title": "ファイルを操作",
+				"parent": "admin.config",
+				"content": <Finder />,
+			},
 			'admin.modules': {
 				"title": "モジュール",
 				"parent": "admin.config",
 				"content": <Modules />,
-			},
-			'admin.finder': {
-				"title": "ファイルを操作",
-				"parent": "admin.config",
-				"content": <Finder />,
 			},
 			'admin.clearcache': {
 				"title": "キャッシュを消去",
