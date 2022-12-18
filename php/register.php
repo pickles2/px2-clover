@@ -345,7 +345,13 @@ class register{
 							));
 							exit;
 							break;
+						case 'remote_finder':
+							$this->clover->allowed_method('post');
+							$app = new funcs\api\remoteFinder($this->clover);
+							$app->execute();
+							break;
 					}
+					break;
 
 				case 'edit_contents':
 					// --------------------------------------
@@ -373,28 +379,33 @@ class register{
 					exit;
 					break;
 			}
-		} else {
-			// --------------------------------------
-			// CLIへの応答
-			switch( isset($this->command[1]) ? $this->command[1] : '' ){
-				case 'api':
-					// --------------------------------------
-					// API
-					switch( isset($this->command[2]) ? $this->command[2] : '' ){
-						case 'scheduler_run':
-							$this->clover->allowed_method(['command']);
-							$app = new funcs\api\scheduler($this->clover);
-							$app->run();
-							break;
-					}
-					break;
-			}
 
 			echo '{"title":"Pickles 2 Clover",'."\n";
 			echo '"result":false,'."\n";
-			echo '"message":"Pickles 2 Clover is not support CLI."'."\n";
+			echo '"message":"Unknown API."'."\n";
 			echo '}'."\n";
 			exit;
 		}
+		// --------------------------------------
+		// CLIへの応答
+		switch( isset($this->command[1]) ? $this->command[1] : '' ){
+			case 'api':
+				// --------------------------------------
+				// API
+				switch( isset($this->command[2]) ? $this->command[2] : '' ){
+					case 'scheduler_run':
+						$this->clover->allowed_method(['command']);
+						$app = new funcs\api\scheduler($this->clover);
+						$app->run();
+						break;
+				}
+				break;
+		}
+
+		echo '{"title":"Pickles 2 Clover",'."\n";
+		echo '"result":false,'."\n";
+		echo '"message":"Pickles 2 Clover is not support CLI."'."\n";
+		echo '}'."\n";
+		exit;
 	}
 }
