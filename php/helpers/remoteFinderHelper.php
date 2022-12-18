@@ -28,6 +28,12 @@ class remoteFinderHelper {
 	 * ディレクトリ設定を取得する
 	 */
 	public function get_directory_settings( $directory_type ){
+		$page_path = null;
+		if( !is_string($directory_type) ){
+			$page_path = $directory_type['page_path'];
+			$directory_type = $directory_type['type'];
+		}
+
 		$rtn = (object) array(
 			"realpath_root_dir" => null,
 			"paths_invisible" => array(),
@@ -60,6 +66,19 @@ class remoteFinderHelper {
 					return false;
 				}
 				$rtn->realpath_root_dir = $realpath_theme_collection_dir;
+				$rtn->paths_invisible = array(
+				);
+				$rtn->paths_readonly = array(
+				);
+				break;
+
+			case "contents_resources":
+				$px2dthelper = new \tomk79\pickles2\px2dthelper\main( $this->px );
+				$realpath_files = $px2dthelper->realpath_files( $page_path );
+				if( !$realpath_files || !is_dir($realpath_files) ){
+					return false;
+				}
+				$rtn->realpath_root_dir = $realpath_files;
 				$rtn->paths_invisible = array(
 				);
 				$rtn->paths_readonly = array(

@@ -26,6 +26,14 @@
 	{# Keypress #}
 	<script src="{{ path_client_resources }}dmauro-Keypress/keypress-2.1.5.min.js"></script>
 
+	{# remote-finder #}
+	<link rel="stylesheet" href="{{ path_client_resources }}remote-finder/remote-finder.css" />
+	<script src="{{ path_client_resources }}remote-finder/remote-finder.js"></script>
+
+	{# common-file-editor #}
+	<link rel="stylesheet" href="{{ path_client_resources }}common-file-editor/common-file-editor.css" />
+	<script src="{{ path_client_resources }}common-file-editor/common-file-editor.js"></script>
+
 	{% for path_px2ce_css in px2ce_res.css %}
 	<link rel="stylesheet" href="{{ path_client_resources }}edit-contents/{{ path_px2ce_css }}" />
 	{% endfor %}
@@ -156,9 +164,29 @@
 							return rtn;
 						}
 					},
+					'onOpenFilesDirectory': function(){
+						const $body = document.createElement('div');
+						const modalObj = px2style.modal({
+							"title": "Resource files",
+							"body": $body,
+							"width": "100%",
+							"height": "100%",
+						});
+						window.cloverUtils.openInFinder(
+							{
+								'type': 'contents_resources',
+								'page_path': page_path,
+							},
+							$body,
+							'/',
+							function(res){
+								callback(res);
+							}
+						);
+					},
 					'onClickContentsLink': function( uri, data ){
 						// TODO: 編集リンクを生成する
-						console.info('編集: ' + uri);
+						console.info('Edit: ' + uri);
 					},
 					'onMessage': function( message ){
 						// ユーザーへ知らせるメッセージを表示する

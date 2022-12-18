@@ -209,7 +209,7 @@ export default function CloverUtils(){
 					window.px2utils.px2cmd(
 						'/?PX=admin.api.common_file_editor',
 						{
-							'mode': 'root',
+							'mode': rootDirectory,
 							'method': 'write',
 							'filename': filename,
 							'base64': base64,
