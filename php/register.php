@@ -348,7 +348,12 @@ class register{
 						case 'remote_finder':
 							$this->clover->allowed_method('post');
 							$app = new funcs\api\remoteFinder($this->clover);
-							$app->execute();
+							$app->gpi();
+							break;
+						case 'common_file_editor':
+							$this->clover->allowed_method('post');
+							$app = new funcs\api\commonFileEditor($this->clover);
+							$app->gpi();
 							break;
 					}
 					break;

@@ -25,9 +25,9 @@ class remoteFinder{
 	}
 
 	/**
-	 * remote-finder を実行する
+	 * remote-finder の GPI を実行する
 	 */
-    public function execute(){
+    public function gpi(){
 		$this->px->header('Content-type: text/json');
 		$rtn = array(
 			'result' => true,
