@@ -170,6 +170,11 @@
 		background-color: var(--px2-background-color, #f9f7f5);
 	}
 	.contents {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		flex-grow: 100;
 		min-height: calc(100vh - 260px);
 	}
 	&__main-center-h1 {

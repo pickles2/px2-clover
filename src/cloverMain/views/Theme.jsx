@@ -72,6 +72,8 @@ export default React.memo(function Theme(props){
 								$body,
 								path,
 								function(res){
+									$($body).css({"flex-grow":"100"});
+									modalObj.$modal.find('.px2-modal__body-inner').css({"overflow":"auto"});
 									callback(res);
 								}
 							);

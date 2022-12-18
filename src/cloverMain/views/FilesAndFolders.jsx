@@ -7,12 +7,15 @@ export default function FilesAndFolders(props){
 	const main = useContext(MainContext);
 
 	useEffect(() => {
-		const $finderContainer = document.getElementById('cont-remote-finder-content');
+		const $body = document.getElementById('cont-remote-finder-content');
 
 		main.cloverUtils.openInFinder(
 			'root',
-			$finderContainer,
-			'/'
+			$body,
+			'/',
+			function(){
+				$($body).css({"flex-grow":"100"});
+			}
 		);
 	}, []);
 
