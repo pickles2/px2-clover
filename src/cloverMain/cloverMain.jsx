@@ -158,10 +158,6 @@ class Layout extends React.Component {
 				"title": "ダッシュボード",
 				"content": <Dashboard />,
 			},
-			'admin.sitemap': {
-				"title": "サイトマップ",
-				"content": <Sitemap />,
-			},
 			'admin.page_info': {
 				"title": "ページ情報",
 				"content": <PageInfo />,
@@ -206,6 +202,11 @@ class Layout extends React.Component {
 				"title": "ファイルを操作",
 				"parent": "admin.config",
 				"content": <FilesAndFolders />,
+			},
+			'admin.sitemap': {
+				"title": "サイトマップ",
+				"parent": "admin.config",
+				"content": <Sitemap />,
 			},
 			'admin.modules': {
 				"title": "モジュール",

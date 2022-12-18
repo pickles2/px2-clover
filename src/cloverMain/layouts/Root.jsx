@@ -21,7 +21,6 @@ export default React.memo(function Root(props){
 						</div>
 						<nav className="theme-layout__left-navbar">
 							<ul>
-								<li><Link href="/?PX=admin.sitemap">サイトマップ</Link></li>
 								<li><Link href="/?PX=admin.page_info">ページ情報</Link></li>
 								<li><Link href="/?PX=admin.theme">テーマ</Link></li>
 								<li><Link href="/?PX=admin.publish">パブリッシュ</Link></li>
