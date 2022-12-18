@@ -129,6 +129,113 @@ export default function CloverUtils(){
 		}, 2000);
 	}
 
+	/**
+	 * remote-finder で開く
+	 */
+	this.openInFinder = function( rootDirectory, $finderContainer, path, callback ){
+		rootDirectory = rootDirectory || 'root';
+		path = path || '/';
+		callback = callback || function(){};
+		var remoteFinder = new RemoteFinder(
+			$finderContainer,
+			{
+				"gpiBridge": function(input, callback){ // required
+					window.px2utils.px2cmd(
+						'/?PX=admin.api.remote_finder',
+						{
+							'mode': rootDirectory,
+							'input': input,
+						},
+						function( res ){
+							if( !res.result ){
+								console.error('Error:', res);
+							}
+							callback(res.output);
+						}
+					);
+				},
+				"open": function(fileinfo, callback){
+					window.cloverUtils.openInCommonFileEditor(
+						rootDirectory,
+						fileinfo.path,
+						function(res){
+							callback(res);
+						}
+					);
+				},
+			}
+		);
+		// console.log(remoteFinder);
+		remoteFinder.init(path, {}, function(){
+			callback(true);
+		});
+	}
+
+	/**
+	 * ファイルエディタで開く
+	 */
+	this.openInCommonFileEditor = function( rootDirectory, filePath, callback ){
+		rootDirectory = rootDirectory || 'root';
+		callback = callback || function(){};
+		const $body = document.createElement('div');
+		const modalObj = px2style.modal({
+			"body": $body,
+			"buttons": [],
+			"width": "100%",
+			"height": "100%",
+		});
+		modalObj.closable(false);
+
+		var commonFileEditor = new CommonFileEditor(
+			$body,
+			{
+				"read": function(filename, callback){ // required
+					window.px2utils.px2cmd(
+						'/?PX=admin.api.common_file_editor',
+						{
+							'mode': rootDirectory,
+							'method': 'read',
+							'filename': filename,
+						},
+						function( res ){
+							if( !res.result ){
+								console.error('Error:', res);
+							}
+							callback(res);
+						}
+					);
+				},
+				"write": function(filename, base64, callback){ // required
+					window.px2utils.px2cmd(
+						'/?PX=admin.api.common_file_editor',
+						{
+							'mode': 'root',
+							'method': 'write',
+							'filename': filename,
+							'base64': base64,
+						},
+						function( res ){
+							if( !res.result ){
+								console.error('Error:', res);
+							}
+							callback(res);
+						}
+					);
+				},
+				"onemptytab": function(){
+					modalObj.closable(true);
+					px2style.closeModal();
+				}
+			}
+		);
+
+		commonFileEditor.init(function(){
+			commonFileEditor.preview( filePath );
+			callback(true);
+		});
+		return;
+	}
+
 
 	// --------------------------------------
 	// CSRFトークンの更新

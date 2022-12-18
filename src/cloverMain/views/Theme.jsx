@@ -59,11 +59,28 @@ export default React.memo(function Theme(props){
 							window.open(href+'?PX=admin.edit_theme_layout&theme_id='+encodeURIComponent(themeId)+'&layout_id='+encodeURIComponent(layoutId));
 						},
 						'openInFinder': function(path){
-							alert('開発中の機能です。 (openInFinder: '+path+')');
+							const $body = document.createElement('div');
+							const modalObj = px2style.modal({
+								"title": "Theme Collection",
+								"body": $body,
+								"width": "100%",
+								"height": "100%",
+							});
+							main.cloverUtils.openInFinder(
+								'theme_collection',
+								$body,
+								path,
+								function(res){
+									callback(res);
+								}
+							);
 						},
 						'openInTextEditor': function(path){
-							alert('開発中の機能です。 (openInTextEditor: '+path+')');
-						}
+							// このコールバックは、ディレクトリのパスを受け取るが、
+							// ディレクトリを編集できるエディタは現在ないので、利用できない。
+							// TODO: 対応するエディタを用意しない場合に、リンクをトルツメできるようにする。
+							alert('This function is NOT available.');
+						},
 					},
 					function(){
 						// スタンバイ完了したら呼び出されるコールバックメソッドです。

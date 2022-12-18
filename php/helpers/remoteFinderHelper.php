@@ -49,6 +49,23 @@ class remoteFinderHelper {
 					'/node_modules/*',
 				);
 				break;
+
+			case "theme_collection":
+				$realpath_homedir = $this->px->get_realpath_homedir();
+				if( !$realpath_homedir || !is_dir($realpath_homedir) ){
+					return false;
+				}
+				$realpath_theme_collection_dir = $realpath_homedir.'themes/';
+				if( !$realpath_theme_collection_dir || !is_dir($realpath_theme_collection_dir) ){
+					return false;
+				}
+				$rtn->realpath_root_dir = $realpath_theme_collection_dir;
+				$rtn->paths_invisible = array(
+				);
+				$rtn->paths_readonly = array(
+				);
+				break;
+
 			default:
 				$rtn = false;
 				break;

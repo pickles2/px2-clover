@@ -16,7 +16,7 @@ import Theme from './views/Theme';
 import Modules from './views/Modules';
 import Publish from './views/Publish';
 import History from './views/History';
-import Finder from './views/Finder';
+import FilesAndFolders from './views/FilesAndFolders';
 import iterate79 from 'iterate79';
 import LangBank from 'langbank';
 
@@ -205,7 +205,7 @@ class Layout extends React.Component {
 			'admin.config.files_and_folders': {
 				"title": "ファイルを操作",
 				"parent": "admin.config",
-				"content": <Finder />,
+				"content": <FilesAndFolders />,
 			},
 			'admin.modules': {
 				"title": "モジュール",
