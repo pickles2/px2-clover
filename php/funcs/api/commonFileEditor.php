@@ -1,5 +1,6 @@
 <?php
 namespace tomk79\pickles2\px2clover\funcs\api;
+use tomk79\pickles2\px2clover\helpers\remoteFinderHelper;
 
 /**
  * px2-clover: common-file-editor
@@ -12,6 +13,9 @@ class commonFileEditor{
 	/** Picklesオブジェクト */
 	private $px;
 
+	/** remote-finder Helper */
+	private $remoteFinderHelper;
+
 
 	/**
 	 * Constructor
@@ -22,6 +26,7 @@ class commonFileEditor{
 	public function __construct( $clover ){
 		$this->clover = $clover;
 		$this->px = $clover->px();
+		$this->remoteFinderHelper = new remoteFinderHelper($clover);
 	}
 
 	/**
@@ -35,19 +40,18 @@ class commonFileEditor{
             'output' => null,
 		);
 
-		$realpath_git_root_dir = $this->clover->realpath_git_root();
-		if( !$realpath_git_root_dir || !is_dir($realpath_git_root_dir) ){
+		$dir_settings = $this->remoteFinderHelper->get_directory_settings( $this->px->req()->get_param('mode') );
+		if( !$dir_settings ){
 			$rtn = array(
 				'result' => false,
-				'message' => 'Git root is not found.',
-				'output' => null,
+				'message' => 'Unknown directory setting.',
 			);
 			echo json_encode($rtn);
 			exit;
 		}
 
 		$fs = $this->px->fs();
-		$realpath_basedir = $realpath_git_root_dir;
+		$realpath_basedir = $dir_settings->realpath_root_dir;
 		if( !strlen($this->px->req()->get_param('filename')) ){
 			return json_encode(false);
 		}

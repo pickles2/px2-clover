@@ -1,0 +1,59 @@
+<?php
+namespace tomk79\pickles2\px2clover\helpers;
+
+/**
+ * px2-clover: remote-finder Helper
+ */
+class remoteFinderHelper {
+
+	/** Cloverオブジェクト */
+	private $clover;
+
+	/** Picklesオブジェクト */
+	private $px;
+
+
+	/**
+	 * Constructor
+	 *
+	 * @param object $clover $cloverオブジェクト
+	 * @param object $px $pxオブジェクト
+	 */
+	public function __construct( $clover ){
+		$this->clover = $clover;
+		$this->px = $clover->px();
+	}
+
+	/**
+	 * ディレクトリ設定を取得する
+	 */
+	public function get_directory_settings( $directory_type ){
+		$rtn = (object) array(
+			"realpath_root_dir" => null,
+			"paths_invisible" => array(),
+			"paths_readonly" => array(),
+		);
+
+		switch( $directory_type ){
+			case "root":
+				$realpath_git_root_dir = $this->clover->realpath_git_root();
+				if( !$realpath_git_root_dir || !is_dir($realpath_git_root_dir) ){
+					return false;
+				}
+				$rtn->realpath_root_dir = $realpath_git_root_dir;
+				$rtn->paths_invisible = array(
+				);
+				$rtn->paths_readonly = array(
+					'/.git/*',
+					'/vendor/*',
+					'/node_modules/*',
+				);
+				break;
+			default:
+				$rtn = false;
+				break;
+		}
+
+		return $rtn;
+	}
+}

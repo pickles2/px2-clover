@@ -1,5 +1,6 @@
 <?php
 namespace tomk79\pickles2\px2clover\funcs\api;
+use tomk79\pickles2\px2clover\helpers\remoteFinderHelper;
 
 /**
  * px2-clover: remote-finder
@@ -12,6 +13,9 @@ class remoteFinder{
 	/** Picklesオブジェクト */
 	private $px;
 
+	/** remote-finder Helper */
+	private $remoteFinderHelper;
+
 
 	/**
 	 * Constructor
@@ -22,6 +26,7 @@ class remoteFinder{
 	public function __construct( $clover ){
 		$this->clover = $clover;
 		$this->px = $clover->px();
+		$this->remoteFinderHelper = new remoteFinderHelper($clover);
 	}
 
 	/**
@@ -35,11 +40,11 @@ class remoteFinder{
 			'output' => null,
 		);
 
-		$realpath_git_root_dir = $this->clover->realpath_git_root();
-		if( !$realpath_git_root_dir || !is_dir($realpath_git_root_dir) ){
+		$dir_settings = $this->remoteFinderHelper->get_directory_settings( $this->px->req()->get_param('mode') );
+		if( !$dir_settings ){
 			$rtn = array(
 				'result' => false,
-				'message' => 'Git root is not found.',
+				'message' => 'Unknown directory setting.',
 				'output' => null,
 			);
 			echo json_encode($rtn);
@@ -47,13 +52,10 @@ class remoteFinder{
 		}
 
 		$remoteFinder = new \tomk79\remoteFinder\main(array(
-			'default' => $realpath_git_root_dir,
+			'default' => $dir_settings->realpath_root_dir,
 		), array(
-			'paths_invisible' => array(
-			),
-			'paths_readonly' => array(
-				'/vendor/*',
-			),
+			'paths_invisible' => $dir_settings->paths_invisible,
+			'paths_readonly' => $dir_settings->paths_readonly,
 		));
 
 		$input = json_decode(json_encode($this->px->req()->get_param('input')));
