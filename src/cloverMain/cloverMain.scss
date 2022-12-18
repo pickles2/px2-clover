@@ -216,3 +216,6 @@
 [data-px="admin.publish"] {
 	@import "./views/Publish_files/cont.scss";
 }
+.common-file-editor__tab-bar {
+    display: none;
+}

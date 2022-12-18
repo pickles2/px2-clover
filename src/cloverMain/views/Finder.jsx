@@ -7,7 +7,6 @@ export default function Finder(props){
 	const main = useContext(MainContext);
 
 	useEffect(() => {
-		console.log('useEffect done.');
 		const $finderContainer = document.getElementById('cont-remote-finder-content');
 		$finderContainer.innerHTML += 'a';
 
@@ -32,9 +31,13 @@ export default function Finder(props){
 				"open": function(fileinfo, callback){
 
 					const $body = document.createElement('div');
-					px2style.modal({
+					const modalObj = px2style.modal({
 						"body": $body,
+						"buttons": [],
+						"width": "100%",
+						"height": "100%",
 					});
+					modalObj.closable(false);
 
 					var commonFileEditor = new CommonFileEditor(
 						$body,
@@ -56,25 +59,24 @@ export default function Finder(props){
 								);
 							},
 							"write": function(filename, base64, callback){ // required
-								$.ajax({
-									type : 'post',
-									url : "/files-and-folders/{{ $project->project_code }}/{{ $branch_name }}/common-file-editor/gpi",
-									headers: {
-										'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-									},
-									contentType: 'application/json',
-									dataType: 'json',
-									data: JSON.stringify({
+								main.px2utils.px2cmd(
+									'/?PX=admin.api.common_file_editor',
+									{
+										'mode': 'root',
 										'method': 'write',
 										'filename': filename,
-										'base64': base64
-									}),
-									success: function(data){
-										callback(data);
+										'base64': base64,
+									},
+									function( res ){
+										if( !res.result ){
+											console.error('Error:', res);
+										}
+										callback(res);
 									}
-								});
+								);
 							},
 							"onemptytab": function(){
+								modalObj.closable(true);
 								px2style.closeModal();
 							}
 						}
