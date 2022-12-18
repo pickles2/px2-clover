@@ -57,6 +57,7 @@ export default React.memo(function Theme(props){
 						'themeLayoutEditor': function(themeId, layoutId){
 							var href = main.px2utils.href('/'+themeId+'/'+layoutId+'.html');
 							window.open(href+'?PX=admin.edit_theme_layout&theme_id='+encodeURIComponent(themeId)+'&layout_id='+encodeURIComponent(layoutId));
+							return;
 						},
 						'openInFinder': function(path){
 							const $body = document.createElement('div');
@@ -74,12 +75,7 @@ export default React.memo(function Theme(props){
 									callback(res);
 								}
 							);
-						},
-						'openInTextEditor': function(path){
-							// このコールバックは、ディレクトリのパスを受け取るが、
-							// ディレクトリを編集できるエディタは現在ないので、利用できない。
-							// TODO: 対応するエディタを用意しない場合に、リンクをトルツメできるようにする。
-							alert('This function is NOT available.');
+							return;
 						},
 					},
 					function(){
