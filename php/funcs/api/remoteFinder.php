@@ -27,28 +27,39 @@ class remoteFinder{
 	/**
 	 * remote-finder の GPI を実行する
 	 */
-    public function gpi(){
+	public function gpi(){
 		$this->px->header('Content-type: text/json');
 		$rtn = array(
 			'result' => true,
 			'message' => 'OK',
-            'output' => null,
+			'output' => null,
 		);
 
-        $remoteFinder = new \tomk79\remoteFinder\main(array(
-            'default' => './',
-        ), array(
-            'paths_invisible' => array(
-            ),
-            'paths_readonly' => array(
-                '/vendor/*',
-            ),
-        ));
+		$realpath_git_root_dir = $this->clover->realpath_git_root();
+		if( !$realpath_git_root_dir || !is_dir($realpath_git_root_dir) ){
+			$rtn = array(
+				'result' => false,
+				'message' => 'Git root is not found.',
+				'output' => null,
+			);
+			echo json_encode($rtn);
+			exit;
+		}
 
-        $input = json_decode(json_encode($this->px->req()->get_param('input')));
-        $rtn['output'] = $remoteFinder->gpi( $input );
+		$remoteFinder = new \tomk79\remoteFinder\main(array(
+			'default' => $realpath_git_root_dir,
+		), array(
+			'paths_invisible' => array(
+			),
+			'paths_readonly' => array(
+				'/vendor/*',
+			),
+		));
+
+		$input = json_decode(json_encode($this->px->req()->get_param('input')));
+		$rtn['output'] = $remoteFinder->gpi( $input );
 
 		echo json_encode($rtn);
 		exit;
-    }
+	}
 }

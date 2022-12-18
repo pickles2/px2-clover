@@ -35,8 +35,19 @@ class commonFileEditor{
             'output' => null,
 		);
 
+		$realpath_git_root_dir = $this->clover->realpath_git_root();
+		if( !$realpath_git_root_dir || !is_dir($realpath_git_root_dir) ){
+			$rtn = array(
+				'result' => false,
+				'message' => 'Git root is not found.',
+				'output' => null,
+			);
+			echo json_encode($rtn);
+			exit;
+		}
+
 		$fs = $this->px->fs();
-		$realpath_basedir = './';
+		$realpath_basedir = $realpath_git_root_dir;
 		if( !strlen($this->px->req()->get_param('filename')) ){
 			return json_encode(false);
 		}

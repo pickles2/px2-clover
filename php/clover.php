@@ -113,6 +113,27 @@ class clover{
 		return $rtn;
 	}
 
+	/**
+	 * Gitのルートディレクトリを取得する
+	 */
+	public function realpath_git_root(){
+		$current_dir = $this->px->fs()->get_realpath('./');
+		while( 1 ){
+			if( file_exists( $current_dir.'/.git' ) ){
+				return $current_dir;
+			}
+			if( file_exists( $current_dir.'/composer.json' ) ){
+				break;
+			}
+			if( $current_dir == $this->px->fs()->get_realpath($current_dir.'../') ){
+				// これ以上階層を上がれない場合
+				break;
+			}
+			$current_dir = $this->px->fs()->get_realpath($current_dir.'../');
+		}
+		return false;
+	}
+
 
 	/**
 	 * 許可されたメソッドのみ通過できる
