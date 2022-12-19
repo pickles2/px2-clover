@@ -183,6 +183,7 @@ export default function CloverUtils(){
 			"buttons": [],
 			"width": "100%",
 			"height": "100%",
+			"contentFill": true,
 		});
 		modalObj.closable(false);
 

@@ -66,14 +66,13 @@ export default React.memo(function Theme(props){
 								"body": $body,
 								"width": "100%",
 								"height": "100%",
+								"contentFill": true,
 							});
 							main.cloverUtils.openInFinder(
 								'theme_collection',
 								$body,
 								path,
 								function(res){
-									$($body).css({"flex-grow":"100"});
-									modalObj.$modal.find('.px2-modal__body-inner').css({"overflow":"auto"});
 									callback(res);
 								}
 							);
