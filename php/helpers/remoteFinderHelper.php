@@ -46,8 +46,12 @@ class remoteFinderHelper {
 				if( !$realpath_git_root_dir || !is_dir($realpath_git_root_dir) ){
 					return false;
 				}
+				$realpath_homedir = $this->px->get_realpath_homedir();
+				$path_homedir = $this->px->fs()->normalize_path( $this->px->fs()->get_relatedpath($realpath_homedir, $realpath_git_root_dir) );
+
 				$rtn->realpath_root_dir = $realpath_git_root_dir;
 				$rtn->paths_invisible = array(
+					preg_replace('/^\./', '', $path_homedir).'_sys/ram/data/px2-clover/',
 				);
 				$rtn->paths_readonly = array(
 					'/.git/*',
