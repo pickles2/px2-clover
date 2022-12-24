@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import React, { useContext, useState, useEffect } from "react";
 import {MainContext} from '../context/MainContext';
 import Link from '../components/Link';

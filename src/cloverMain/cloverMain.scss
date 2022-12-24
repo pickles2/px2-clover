@@ -224,3 +224,6 @@
 .common-file-editor__tab-bar {
     display: none;
 }
+[data-px="admin.config.find_unassigned_contents"] {
+	@import "./views/FindUnassignedContents_files/cont.scss";
+}

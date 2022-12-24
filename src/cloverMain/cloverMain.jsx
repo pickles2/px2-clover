@@ -17,6 +17,7 @@ import Modules from './views/Modules';
 import Publish from './views/Publish';
 import History from './views/History';
 import FilesAndFolders from './views/FilesAndFolders';
+import FindUnassignedContents from './views/FindUnassignedContents';
 import iterate79 from 'iterate79';
 import LangBank from 'langbank';
 
@@ -202,6 +203,11 @@ class Layout extends React.Component {
 				"title": "ファイルを操作",
 				"parent": "admin.config",
 				"content": <FilesAndFolders />,
+			},
+			'admin.config.find_unassigned_contents': {
+				"title": "未アサインコンテンツ検索",
+				"parent": "admin.config",
+				"content": <FindUnassignedContents />,
 			},
 			'admin.sitemap': {
 				"title": "サイトマップ",
