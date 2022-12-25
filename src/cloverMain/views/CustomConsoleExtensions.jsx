@@ -161,7 +161,7 @@ export default function CustomConsoleExtensions(props){
 			function(it1){
 				// --------------------------------------
 				// Custom Console Extension の初期化を実行する
-				eval(currentCce.client_initialize_function+'(px2dthelperCceAgent);');
+				eval(currentCce.client_initialize_function+'(cceAgent);');
 				it1.next();
 			},
 			function(){

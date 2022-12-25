@@ -11,7 +11,7 @@ export default React.memo(function Root(props){
 
 	return (
 		<>
-			<div className="theme-layout">
+			<div className="theme-layout" data-px={props.PX}>
 				<header className="theme-layout__header">
 					<div className="theme-layout__header__inner">
 						<div className="theme-layout__title">
@@ -56,7 +56,7 @@ export default React.memo(function Root(props){
 							<h1>{main.title}</h1>
 						</div>
 						<div className="theme-layout__main-center-main">
-							<main className="contents" data-px={props.PX}>
+							<main className="contents">
 								{props.contents}
 							</main>
 						</div>
