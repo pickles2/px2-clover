@@ -193,5 +193,32 @@ return call_user_func( function(){
 	];
 	$conf->plugins->px2dt->path_module_templates_dir = "./px-files/modules/";
 
+
+	/**
+	 * メインメニューの一覧
+	 */
+	@$conf->plugins->px2dt->main_menu = array(
+		'*home',
+		'*publish',
+		'sample',
+		'*sitemaps',
+		'*themes',
+		'*contents',
+		'*composer',
+		'*modules',
+		'*git',
+		'*clearcache',
+		'*files-and-folders',
+	);
+
+	/**
+	 * CMS画面に追加するカスタム管理画面を登録する
+	 */
+	$conf->plugins->px2dt->custom_console_extensions = array(
+		'sample' => 'tomk79\cmsTools\sample\main',
+		'sample2' => 'tomk79\cmsTools\sample\main',
+		'sample3' => 'tomk79\cmsTools\sample\main',
+	);
+
 	return $conf;
 } );

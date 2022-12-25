@@ -18,6 +18,7 @@ import Publish from './views/Publish';
 import History from './views/History';
 import FilesAndFolders from './views/FilesAndFolders';
 import FindUnassignedContents from './views/FindUnassignedContents';
+import CustomConsoleExtensions from './views/CustomConsoleExtensions';
 import iterate79 from 'iterate79';
 import LangBank from 'langbank';
 
@@ -228,6 +229,11 @@ class Layout extends React.Component {
 				"title": "メンテナンス",
 				"parent": "admin.config",
 				"content": <ConfigMaintenance />,
+			},
+			'admin.cce': {
+				"title": "拡張機能",
+				"parent": "admin.config",
+				"content": <CustomConsoleExtensions />,
 			},
 		};
 

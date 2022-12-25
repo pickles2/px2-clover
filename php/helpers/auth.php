@@ -752,6 +752,7 @@ class auth{
 				case 'clearcache':
 				case 'modules':
 				case 'history':
+				case 'cce':
 					if( $_SERVER['REQUEST_METHOD'] == 'GET' ){
 						// 既知の特定の画面へのGETのリクエストでは、CSRFトークンを要求しない
 						return false;
