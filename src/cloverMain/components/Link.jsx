@@ -30,10 +30,11 @@ export default function Link(props){
 			return newState;
 		}
 		function hasParent(current, target){
+			const currentRoute = main.getCurrentRoute(current);
 			if( current == target ){
 				return true;
 			}
-			if( main.route[current].parent && hasParent(main.route[current].parent, target) ){
+			if( currentRoute.parent && hasParent(currentRoute.parent, target) ){
 				return true;
 			}
 			return false;

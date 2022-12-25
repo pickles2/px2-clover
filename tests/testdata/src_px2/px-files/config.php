@@ -214,6 +214,7 @@ return call_user_func( function(){
 	/**
 	 * CMS画面に追加するカスタム管理画面を登録する
 	 */
+	require_once(__DIR__.'/cms-tools/sample/php/main.php');
 	$conf->plugins->px2dt->custom_console_extensions = array(
 		'sample' => 'tomk79\cmsTools\sample\main',
 		'sample2' => 'tomk79\cmsTools\sample\main',

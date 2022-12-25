@@ -238,7 +238,19 @@ class Layout extends React.Component {
 		};
 
 		function getCurrentRoute(parsedUrlPX){
+			let aryParsedUrlPX = parsedUrlPX.split(/\./);
 			let currentRoute = {};
+			while( true ){
+				if( aryParsedUrlPX.length < 1 ){
+					break;
+				}
+				parsedUrlPX = aryParsedUrlPX.join('.');
+				if( route[parsedUrlPX] ){
+					break;
+				}
+				aryParsedUrlPX.pop();
+			}
+
 			if(route[parsedUrlPX] ){
 				currentRoute = route[parsedUrlPX];
 			}else{
@@ -266,6 +278,7 @@ class Layout extends React.Component {
 			"link": link,
 			"cloverUtils": window.cloverUtils,
 			"px2utils": window.px2utils,
+			"getCurrentRoute": getCurrentRoute,
 			"setMainState": setMainState,
 		};
 
