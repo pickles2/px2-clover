@@ -40,10 +40,12 @@ class register{
 
 		if( !$px->req()->is_cmd() ){
 
+			// --------------------------------------
 			// 初期化
 			$clover = new clover( $px, $options );
 			$clover->initializer()->initialize();
 
+			// --------------------------------------
 			// ガード: ループバックIP以外は desktop モードを利用できないようにする。
 			if( !isset($_SERVER['REMOTE_ADDR']) ){
 				// ユーザーのIPアドレスを取得できない場合、desktopモードは無効にする。
@@ -60,6 +62,7 @@ class register{
 				}
 			}
 
+			// --------------------------------------
 			// ガード: デスクトップモードが無効だったら、他のパッケージのデスクトップモードも無効化する。
 			if(
 				$options->app_mode != 'desktop' &&
@@ -76,6 +79,7 @@ class register{
 				exit;
 			}
 
+			// --------------------------------------
 			// 認証
 			$auth_needs = false;
 			if( $options->protect_preview ){
@@ -90,10 +94,12 @@ class register{
 				$clover->auth()->auth();
 			}
 
+			// --------------------------------------
 			// メンテナンスモードの評価
 			$maintenanceModeHelpers = new helpers\maintenanceMode( $clover );
 			$maintenanceModeHelpers->maintenance_page();
 
+			// --------------------------------------
 			// パラメータの上書き
 			if( $px->req()->get_param('PX') == 'px2dthelper.px2te.client_resources' ){
 				// px2te のリソース書き出し先のパスを書き換える
@@ -106,6 +112,13 @@ class register{
 				// px2me のリソース書き出し先のパスを書き換える
 				$client_resources_dist = $px->realpath_plugin_files('/');
 				$realpath_dist_dir = $px->fs()->normalize_path($px->fs()->get_realpath( $client_resources_dist.'../px2-clover/__px2me/' ));
+				$px->fs()->mkdir_r($realpath_dist_dir);
+				$px->req()->set_param('dist', $realpath_dist_dir);
+			}
+			if( preg_match('/^px2dthelper\.custom_console_extensions\.([a-zA-Z0-9\_\-]+)\.client_resources$/', ''.$px->req()->get_param('PX'), $matched) ){
+				// Custom Console Extension のリソース書き出し先のパスを書き換える
+				$client_resources_dist = $px->realpath_plugin_files('/');
+				$realpath_dist_dir = $px->fs()->normalize_path($px->fs()->get_realpath( $client_resources_dist.'../px2-clover/__cce/'.$matched[1].'/' ));
 				$px->fs()->mkdir_r($realpath_dist_dir);
 				$px->req()->set_param('dist', $realpath_dist_dir);
 			}
