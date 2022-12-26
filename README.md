@@ -84,6 +84,7 @@ $conf->allow_pxcommands = 1;
 - ファイルを直接操作する機能を追加。
 - コンテンツ編集画面、テーマ編集画面から、フォルダを開けるようになった。
 - 拡張機能(Custom Console Extensions)を読み込めるようになった。
+- 公開リソースディレクトリ名を `__console_resources` に変更した。
 - その他、UI改善など。
 
 ### pickles2/px2-clover v0.2.2 (2022年11月3日)

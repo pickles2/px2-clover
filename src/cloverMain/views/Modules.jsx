@@ -22,7 +22,7 @@ export default React.memo(function Modules(props){
 					var $linkElement = $('<link />');
 					$linkElement.attr({
 						'rel': 'stylesheet',
-						'href': path_client_resources + '__px2me/' + res.css[index],
+						'href': res.path_base + res.css[index],
 						'class': 'cont-px2-clover__px2me-resources',
 					});
 					$('head').append( $linkElement );
@@ -30,7 +30,7 @@ export default React.memo(function Modules(props){
 				for(var index in res.js){
 					var $scriptElement = $('<script />');
 					$scriptElement.attr({
-						'src': path_client_resources + '__px2me/' + res.js[index],
+						'src': res.path_base + res.js[index],
 						'class': 'cont-px2-clover__px2me-resources',
 					});
 					$('head').append( $scriptElement );

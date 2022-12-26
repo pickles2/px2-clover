@@ -98,34 +98,10 @@ class register{
 			// メンテナンスモードの評価
 			$maintenanceModeHelpers = new helpers\maintenanceMode( $clover );
 			$maintenanceModeHelpers->maintenance_page();
-
-			// --------------------------------------
-			// パラメータの上書き
-			if( $px->req()->get_param('PX') == 'px2dthelper.px2ce.client_resources' ){
-				// px2ce のリソース書き出し先のパスを書き換える
-				$client_resources_dist = $px->realpath_plugin_files('/');
-				$realpath_dist_dir = $px->fs()->normalize_path($px->fs()->get_realpath( $client_resources_dist.'../px2-clover/__px2ce/' ));
-				$px->fs()->mkdir_r($realpath_dist_dir);
-				$px->req()->set_param('dist', $realpath_dist_dir);
-			}
-			if( $px->req()->get_param('PX') == 'px2dthelper.px2te.client_resources' ){
-				// px2te のリソース書き出し先のパスを書き換える
-				$client_resources_dist = $px->realpath_plugin_files('/');
-				$realpath_dist_dir = $px->fs()->normalize_path($px->fs()->get_realpath( $client_resources_dist.'../px2-clover/__px2te/' ));
-				$px->fs()->mkdir_r($realpath_dist_dir);
-				$px->req()->set_param('dist', $realpath_dist_dir);
-			}
-			if( $px->req()->get_param('PX') == 'px2dthelper.px2me.client_resources' ){
-				// px2me のリソース書き出し先のパスを書き換える
-				$client_resources_dist = $px->realpath_plugin_files('/');
-				$realpath_dist_dir = $px->fs()->normalize_path($px->fs()->get_realpath( $client_resources_dist.'../px2-clover/__px2me/' ));
-				$px->fs()->mkdir_r($realpath_dist_dir);
-				$px->req()->set_param('dist', $realpath_dist_dir);
-			}
 		}
 
-		$px->conf()->funcs->before_content['px2-clover'] = __CLASS__.'::admin_console('.json_encode($options).')';
-		$px->conf()->funcs->before_output['px2-clover'] = __CLASS__.'::before_output('.json_encode($options).')';
+		$px->conf()->funcs->before_content['__console_resources'] = __CLASS__.'::admin_console('.json_encode($options).')';
+		$px->conf()->funcs->before_output['__console_resources'] = __CLASS__.'::before_output('.json_encode($options).')';
 
 		return;
 	}
