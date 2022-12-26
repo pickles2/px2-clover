@@ -115,25 +115,29 @@ class register{
 				$px->fs()->mkdir_r($realpath_dist_dir);
 				$px->req()->set_param('dist', $realpath_dist_dir);
 			}
-			if( preg_match('/^px2dthelper\.custom_console_extensions\.([a-zA-Z0-9\_\-]+)\.client_resources$/', ''.$px->req()->get_param('PX'), $matched) ){
-				// Custom Console Extension のリソース書き出し先のパスを書き換える
-				$client_resources_dist = $px->realpath_plugin_files('/');
-				$realpath_dist_dir = $px->fs()->normalize_path($px->fs()->get_realpath( $client_resources_dist.'../px2-clover/__cce/'.$matched[1].'/' ));
-				$px->fs()->mkdir_r($realpath_dist_dir);
-				$px->req()->set_param('dist', $realpath_dist_dir);
-			}
-			if( preg_match('/^px2dthelper\.custom_console_extensions\.([a-zA-Z0-9\_\-]+)\.gpi$/', ''.$px->req()->get_param('PX'), $matched) ){
-				// Custom Console Extension のGPI呼び出しに伴い、async, broadcast コマンドの保存先を書き換える
-				$px->req()->set_param('appMode', 'web');
-				$watcher_basedir = $px->get_realpath_homedir().'_sys/ram/data/px2-clover/cce/';
-				$realpath_async_dir = $px->fs()->normalize_path($px->fs()->get_realpath( $watcher_basedir.'async/'.$matched[1].'/' ));
-				$realpath_broadcast_dir = $px->fs()->normalize_path($px->fs()->get_realpath( $watcher_basedir.'broadcast/'.$matched[1].'/' ));
-				$px->fs()->mkdir_r($realpath_async_dir);
-				$px->req()->set_param('asyncMethod', 'file');
-				$px->req()->set_param('asyncDir', $realpath_async_dir);
-				$px->fs()->mkdir_r($realpath_broadcast_dir);
-				$px->req()->set_param('broadcastMethod', 'file');
-				$px->req()->set_param('broadcastDir', $realpath_broadcast_dir);
+			if( preg_match('/^px2dthelper\.custom_console_extensions\.([a-zA-Z0-9\_\-]+)\.([a-zA-Z0-9\_\-]+)$/', ''.$px->req()->get_param('PX'), $matched) ){
+				switch($matched[2]){
+					case "client_resources":
+						// Custom Console Extension のリソース書き出し先のパスを書き換える
+						$client_resources_dist = $px->realpath_plugin_files('/');
+						$realpath_dist_dir = $px->fs()->normalize_path($px->fs()->get_realpath( $client_resources_dist.'../px2-clover/__cce/'.$matched[1].'/' ));
+						$px->fs()->mkdir_r($realpath_dist_dir);
+						$px->req()->set_param('dist', $realpath_dist_dir);
+						break;
+					case "gpi":
+						// Custom Console Extension のGPI呼び出しに伴い、async, broadcast コマンドの保存先を書き換える
+						$px->req()->set_param('appMode', 'web');
+						$watcher_basedir = $px->get_realpath_homedir().'_sys/ram/data/px2-clover/cce/';
+						$realpath_async_dir = $px->fs()->normalize_path($px->fs()->get_realpath( $watcher_basedir.'async/'.$matched[1].'/' ));
+						$realpath_broadcast_dir = $px->fs()->normalize_path($px->fs()->get_realpath( $watcher_basedir.'broadcast/'.$matched[1].'/' ));
+						$px->fs()->mkdir_r($realpath_async_dir);
+						$px->req()->set_param('asyncMethod', 'file');
+						$px->req()->set_param('asyncDir', $realpath_async_dir);
+						$px->fs()->mkdir_r($realpath_broadcast_dir);
+						$px->req()->set_param('broadcastMethod', 'file');
+						$px->req()->set_param('broadcastDir', $realpath_broadcast_dir);
+						break;
+				}
 			}
 		}
 
