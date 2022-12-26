@@ -120,6 +120,7 @@ return call_user_func( function(){
 		'picklesFramework2\commands\publish::register('.json_encode(array(
 			'paths_ignore' => array(
 				"/caches/p/px2-clover/*",
+				"/caches/p/px2-px2dthelper/*",
 			),
 		)).')' ,
 

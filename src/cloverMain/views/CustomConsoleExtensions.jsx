@@ -77,7 +77,7 @@ export default function CustomConsoleExtensions(props){
 								});
 								$('.cont-custom-console-extensions__resources').append(link);
 								link.rel = 'stylesheet';
-								link.href = path_client_resources+'__cce/'+currentCceId+'/'+row;
+								link.href = res.path_base+row;
 							},
 							function(){
 								iterate79.ary(
@@ -88,7 +88,7 @@ export default function CustomConsoleExtensions(props){
 											it3.next();
 										});
 										$('.cont-custom-console-extensions__resources').append(script);
-										script.src = path_client_resources+'__cce/'+currentCceId+'/'+row;
+										script.src = res.path_base+row;
 									},
 									function(){
 										it1.next();

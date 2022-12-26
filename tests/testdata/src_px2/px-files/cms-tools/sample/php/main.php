@@ -47,18 +47,19 @@ class main{
 	public function gpi($request){
 		switch($request->command){
 			case 'test-gpi-call':
-				$this->cceAgent->async(array(
+				$result = $this->cceAgent->async(array(
 					'type'=>'gpi',
 					'request' => array(
 						'command' => 'test-async',
 					),
 				));
-				return 'Test GPI Call Successful.';
+				return ($result ? 'Test GPI Call Successful.' : '[ERROR] Test GPI Call Failed.');
+				break;
 			case 'test-async':
-				$this->cceAgent->broadcast(array(
+				$result = $this->cceAgent->broadcast(array(
 					'message'=>'Hello Broadcast Message !',
 				));
-				return 'Test Async Call Successful.';
+				return ($result ? 'Test Async Call Successful.' : '[ERROR] Test Async Call Failed.');
 				break;
 		}
 		return false;
