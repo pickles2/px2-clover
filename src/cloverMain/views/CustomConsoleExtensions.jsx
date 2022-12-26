@@ -108,50 +108,14 @@ export default function CustomConsoleExtensions(props){
 					'gpiBridge': function(input, callback){
 						// GPI(General Purpose Interface) Bridge
 
-						console.info('TODO: CCE: gpiBridge called;');
-
-						// var getParam = '';
-						// getParam += 'PX=px2dthelper.custom_console_extensions.'+customConsoleExtensionId+'.gpi'
-						// 	+'&request='+encodeURIComponent( JSON.stringify(input) )
-						// 	+'&appMode=desktop'
-						// 	+'&asyncMethod=file'
-						// 	+'&asyncDir='+watchDir+'async/'+pj.projectInfo.id+'/'
-						// 	+'&broadcastMethod=file'
-						// 	+'&broadcastDir='+watchDir+'broadcast/'+pj.projectInfo.id+'/';
-						// // console.log(getParam);
-
-						// var testTimestamp = (new Date()).getTime();
-						// var tmpFileName = '__tmp_'+main.utils79.md5( Date.now() )+'.json';
-						// // console.log('=-=-=-=-=-=-=-=', realpathDataDir+tmpFileName, getParam);
-						// main.fs.writeFileSync( realpathDataDir+tmpFileName, getParam );
-
-						// pj.execPx2(
-						// 	'/?' + getParam,
-						// 	{
-						// 		'method': 'post',
-						// 		'bodyFile': tmpFileName,
-						// 		'complete': function(rtn){
-						// 			// console.log('--- returned(millisec)', (new Date()).getTime() - testTimestamp);
-						// 			new Promise(function(rlv){rlv();})
-						// 				.then(function(){ return new Promise(function(rlv, rjt){
-						// 					try{
-						// 						rtn = JSON.parse(rtn);
-						// 					}catch(e){
-						// 						console.error('Failed to parse JSON String -> ' + rtn);
-						// 					}
-						// 					rlv();
-						// 				}); })
-						// 				.then(function(){ return new Promise(function(rlv, rjt){
-						// 					main.fs.unlinkSync( realpathDataDir+tmpFileName );
-						// 					rlv();
-						// 				}); })
-						// 				.then(function(){ return new Promise(function(rlv, rjt){
-						// 					callback( rtn );
-						// 				}); })
-						// 			;
-						// 		}
-						// 	}
-						// );
+						main.px2utils.px2cmd(
+							'/?PX=px2dthelper.custom_console_extensions.'+currentCceId+'.gpi'
+								+'&request='+encodeURIComponent( JSON.stringify(input) ),
+							{},
+							function( rtn ){
+								callback( rtn );
+							}
+						);
 						return;
 					},
 				});
