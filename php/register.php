@@ -101,6 +101,13 @@ class register{
 
 			// --------------------------------------
 			// パラメータの上書き
+			if( $px->req()->get_param('PX') == 'px2dthelper.px2ce.client_resources' ){
+				// px2ce のリソース書き出し先のパスを書き換える
+				$client_resources_dist = $px->realpath_plugin_files('/');
+				$realpath_dist_dir = $px->fs()->normalize_path($px->fs()->get_realpath( $client_resources_dist.'../px2-clover/__px2ce/' ));
+				$px->fs()->mkdir_r($realpath_dist_dir);
+				$px->req()->set_param('dist', $realpath_dist_dir);
+			}
 			if( $px->req()->get_param('PX') == 'px2dthelper.px2te.client_resources' ){
 				// px2te のリソース書き出し先のパスを書き換える
 				$client_resources_dist = $px->realpath_plugin_files('/');
