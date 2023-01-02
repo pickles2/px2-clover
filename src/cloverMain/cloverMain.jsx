@@ -101,6 +101,24 @@ class Layout extends React.Component {
 					});
 				},
 				(it1) => {
+					if( this.state.pxConfigLoaded ){
+						it1.next();
+						return;
+					}
+					window.px2utils.px2cmd(
+						'/?PX=api.get.config',
+						{},
+						function( res ){
+							if( !res ){
+								console.error('Error: PX Config:', res);
+							}
+							tmpNewState.pxConfig = res;
+							tmpNewState.pxConfigLoaded = true;
+							it1.next();
+						}
+					);
+				},
+				(it1) => {
 					if( this.state.pageInfoLoaded ){
 						it1.next();
 						return;
@@ -275,6 +293,8 @@ class Layout extends React.Component {
 			"pageInfo": null,
 			"configLoaded": false,
 			"config": null,
+			"pxConfigLoaded": false,
+			"pxConfig": null,
 			"link": link,
 			"cloverUtils": window.cloverUtils,
 			"px2utils": window.px2utils,
