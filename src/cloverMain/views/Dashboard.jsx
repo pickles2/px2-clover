@@ -30,7 +30,7 @@ export default function Dashboard(props){
 						</tr>
 						<tr>
 							<th>Copyright</th>
-							<td>{main.pxConfig.copyright || '---'}</td>
+							<td>{main.pxConfig.copyright ? <>&copy;{main.pxConfig.copyright}, All rights reserved.</> : '---'}</td>
 						</tr>
 						</tbody>
 					</table>

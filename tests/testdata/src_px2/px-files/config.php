@@ -10,6 +10,7 @@ return call_user_func( function(){
 	// project
 	$conf->name = 'px2-clover'; // サイト名
 	$conf->domain = null; // ドメイン
+	$conf->copyright = 'Pickles Project'; // Copyright
 	$conf->path_controot = '/'; // コンテンツルートディレクトリ
 
 	// paths
