@@ -3,19 +3,31 @@
 		<li class="px2-form-input-list__li">
 			<div class="px2-form-input-list__label"><label for="form-element--name">Site name</label></div>
 			<div class="px2-form-input-list__input">
-				<input type="text" id="form-element--name" name="name" value="{{ name }}" class="px2-input px2-input--block" />
+				{% if ( parsedConfig.values.name is defined ) %}
+				<input type="text" id="form-element--name" name="name" value="{{ parsedConfig.values.name }}" class="px2-input px2-input--block" />
+				{% else %}
+				{{ pxConfig.name }}
+				{% endif %}
 			</div>
 		</li>
 		<li class="px2-form-input-list__li">
 			<div class="px2-form-input-list__label"><label for="form-element--domain">Domain</label></div>
 			<div class="px2-form-input-list__input">
-				<input type="text" id="form-element--domain" name="domain" value="{{ domain }}" class="px2-input px2-input--block" />
+				{% if ( parsedConfig.values.domain is defined ) %}
+				<input type="text" id="form-element--domain" name="domain" value="{{ parsedConfig.values.domain }}" class="px2-input px2-input--block" />
+				{% else %}
+				{{ pxConfig.domain }}
+				{% endif %}
 			</div>
 		</li>
 		<li class="px2-form-input-list__li">
 			<div class="px2-form-input-list__label"><label for="form-element--copyright">Copyright</label></div>
 			<div class="px2-form-input-list__input">
-				<input type="text" id="form-element--copyright" name="copyright" value="{{ copyright }}" class="px2-input px2-input--block" />
+				{% if ( parsedConfig.values.copyright is defined ) %}
+				<input type="text" id="form-element--copyright" name="copyright" value="{{ parsedConfig.values.copyright }}" class="px2-input px2-input--block" />
+				{% else %}
+				{{ pxConfig.copyright }}
+				{% endif %}
 			</div>
 		</li>
 	</ul>

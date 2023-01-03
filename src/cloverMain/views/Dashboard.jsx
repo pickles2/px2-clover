@@ -14,16 +14,23 @@ export default function Dashboard(props){
 	 * サイト設定情報を編集する
 	 */
 	function editSiteProfile(){
+		let parsedConfig = null;
+
 		iterate79.fnc({}, [
 			function(it1){
-				// TODO: 編集可能な項目を確認する
-				it1.next();
+				window.px2utils.px2cmd(
+					'/?PX=px2dthelper.config.parse',
+					{},
+					function( res ){
+						parsedConfig = res;
+						it1.next();
+					}
+				);
 			},
 			function(it1){
 				const $body = $(templates.editSiteProfile({
-					"name": main.pxConfig.name,
-					"domain": main.pxConfig.domain,
-					"copyright": main.pxConfig.copyright,
+					"parsedConfig": parsedConfig,
+					"pxConfig": main.pxConfig,
 				}));
 				const modalObj = px2style.modal({
 					"title": "Edit Site Profile",
