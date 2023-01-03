@@ -8,8 +8,8 @@ return call_user_func( function(){
 	$conf->mr = new \tomk79\microtimeRecorder( __DIR__.'/__record.txt' );
 
 	// project
-	$conf->name = 'px2-clover'; // サイト名
-	$conf->domain = null; // ドメイン
+	$conf->name = 'px2-clover 11'; // サイト名
+	$conf->domain = 'clover.pickles2.com'; // ドメイン
 	$conf->copyright = 'Pickles Project'; // Copyright
 	$conf->path_controot = '/'; // コンテンツルートディレクトリ
 

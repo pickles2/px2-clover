@@ -25,15 +25,41 @@ export default function Dashboard(props){
 					"domain": main.pxConfig.domain,
 					"copyright": main.pxConfig.copyright,
 				}));
-				px2style.modal({
+				const modalObj = px2style.modal({
 					"title": "Edit Site Profile",
 					"body": $body,
 					"form": {
 						"action": "javascript:void(0);",
 						"method": "get",
 						"submit": function(){
-							// TODO: フォームの編集内容を保存する
-							alert('Form has submitted.');
+							modalObj.lock();
+							const params = {
+								"values": {
+									"name": $body.find('[name=name]').val(),
+									"domain": $body.find('[name=domain]').val(),
+									"copyright": $body.find('[name=copyright]').val(),
+								},
+							};
+
+							window.px2utils.px2cmd(
+								'/?PX=px2dthelper.config.update',
+								{
+									"json": JSON.stringify(params),
+								},
+								function( res ){
+									if( !res || !res.result ){
+										alert( res.message );
+										modalObj.unlock();
+										return;
+									}
+
+									// NOTE: 変更が反映されるまでにタイムラグが発生するので、2秒のタメを作った。
+									// NOTE: [要調査] なぜタイムラグが生まれるのかは不明。
+									setTimeout(function(){
+										window.location.reload();
+									}, 2000);
+								}
+							);
 						},
 					},
 					'buttons':[
@@ -47,7 +73,7 @@ export default function Dashboard(props){
 								px2style.closeModal();
 							}),
 					],
-				});
+				}, function(){});
 
 				it1.next();
 			},
