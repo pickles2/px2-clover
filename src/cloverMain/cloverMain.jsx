@@ -179,7 +179,7 @@ class Layout extends React.Component {
 				"content": <Dashboard />,
 			},
 			'admin.page_info': {
-				"title": "ページ情報",
+				"title": "ページ",
 				"content": <PageInfo />,
 			},
 			'admin.theme': {
