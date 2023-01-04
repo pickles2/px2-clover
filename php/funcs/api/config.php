@@ -39,7 +39,7 @@ class config{
 		$rtn['config'] = $this->cloverConfig->get();
 
 		// 秘匿情報を削除
-		unset( $rtn['config']['history']['git_pw'] );
+		unset( $rtn->config->history->git_pw );
 
 		$this->px->header('Content-type: text/json');
 		echo json_encode($rtn);

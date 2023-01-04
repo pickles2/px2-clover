@@ -14,6 +14,7 @@ class config{
 
 	/** Config JSON のパス */
 	private $realpath_config_json;
+	private $realpath_config_json_php;
 
 	/**
 	 * Constructor
@@ -25,6 +26,7 @@ class config{
 		$this->px = $this->clover->px();
 
 		$this->realpath_config_json = $this->clover->realpath_private_data_dir('/config.json');
+		$this->realpath_config_json_php = $this->realpath_config_json.'.php';
 	}
 
 
@@ -32,9 +34,13 @@ class config{
 	 * 取得する
 	 */
 	public function get(){
+		if( is_file( $this->realpath_config_json_php ) ){
+			$json = dataDotPhp::read_json( $this->realpath_config_json_php );
+			return $json;
+		}
 		if( is_file( $this->realpath_config_json ) ){
 			$src_json = $this->px->fs()->read_file( $this->realpath_config_json );
-			$json = json_decode($src_json, true);
+			$json = json_decode($src_json);
 			return $json;
 		}
 
@@ -59,15 +65,20 @@ class config{
 		$config = $this->get();
 		$crypt = new crypt( $this->clover );
 
-		if( isset($new_config['history']['git_remote']) ){ $config['history']['git_remote'] = $new_config['history']['git_remote']; }
-		if( isset($new_config['history']['git_id']) ){ $config['history']['git_id'] = $new_config['history']['git_id']; }
-		if( isset($new_config['history']['git_pw']) ){ $config['history']['git_pw'] = $crypt->encrypt($new_config['history']['git_pw']); }
-		if( isset($new_config['history']['auto_commit']) ){ $config['history']['auto_commit'] = $new_config['history']['auto_commit']; }
+		if( isset($new_config->history->git_remote) ){ $config->history->git_remote = $new_config->history->git_remote; }
+		if( isset($new_config->history->git_id) ){ $config->history->git_id = $new_config->history->git_id; }
+		if( isset($new_config->history->git_pw) ){ $config->history->git_pw = $crypt->encrypt($new_config->history->git_pw); }
+		if( isset($new_config->history->auto_commit) ){ $config->history->auto_commit = $new_config->history->auto_commit; }
 
 
-		$src_json = json_encode( $config, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE );
-		$result = $this->px->fs()->save_file( $this->realpath_config_json, $src_json );
-
+		$result = dataDotPhp::write_json($this->realpath_config_json_php, $config);
+		if( !$result ){
+			return false;
+		}
+		if( is_file($this->realpath_config_json) ){
+			unlink($this->realpath_config_json); // 素のJSONがあったら削除する
+		}
+		return $result;
 	}
 
 }

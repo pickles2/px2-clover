@@ -226,8 +226,8 @@ class git{
 			return false;
 		}
 
-		if( isset($this->cloverConfig['history']['git_remote']) && strlen(''.$this->cloverConfig['history']['git_remote']) ){
-			$git_remote = $this->cloverConfig['history']['git_remote'];
+		if( isset($this->cloverConfig->history->git_remote) && strlen(''.$this->cloverConfig->history->git_remote) ){
+			$git_remote = $this->cloverConfig->history->git_remote;
 			$this->exec_git_command(array('remote', 'add', 'origin', $git_remote));
 			$this->exec_git_command(array('remote', 'set-url', 'origin', $git_remote));
 		}else{
@@ -240,10 +240,10 @@ class git{
 	 * 有効なGit設定がされているか？
 	 */
 	private function has_valid_git_config(){
-		if( !isset($this->cloverConfig['history']['git_remote']) || !strlen(''.$this->cloverConfig['history']['git_remote']) ){
+		if( !isset($this->cloverConfig->history->git_remote) || !strlen(''.$this->cloverConfig->history->git_remote) ){
 			return false;
 		}
-		$git_remote = $this->cloverConfig['history']['git_remote'];
+		$git_remote = $this->cloverConfig->history->git_remote;
 		if( !preg_match( '/^(?:https?)\:\/\/(?:.+)\.git$/si', $git_remote ) ){
 			return false;
 		}
@@ -273,14 +273,14 @@ class git{
 	private function url_bind_confidentials($url = null, $user_name = null, $password = null){
 		$crypt = new crypt( $this->clover );
 		$this->cloverConfig = $this->clover->conf();
-		if( isset($this->cloverConfig['history']['git_remote']) && !strlen(''.$url) ){
-			$url = $this->cloverConfig['history']['git_remote'];
+		if( isset($this->cloverConfig->history->git_remote) && !strlen(''.$url) ){
+			$url = $this->cloverConfig->history->git_remote;
 		}
-		if( isset($this->cloverConfig['history']['git_id']) && !strlen(''.$user_name) ){
-			$user_name = $this->cloverConfig['history']['git_id'];
+		if( isset($this->cloverConfig->history->git_id) && !strlen(''.$user_name) ){
+			$user_name = $this->cloverConfig->history->git_id;
 		}
-		if( isset($this->cloverConfig['history']['git_pw']) && strlen($crypt->decrypt($this->cloverConfig['history']['git_pw'])) && !strlen(''.$password) ){
-			$password = $crypt->decrypt($this->cloverConfig['history']['git_pw']);
+		if( isset($this->cloverConfig->history->git_pw) && strlen($crypt->decrypt($this->cloverConfig->history->git_pw)) && !strlen(''.$password) ){
+			$password = $crypt->decrypt($this->cloverConfig->history->git_pw);
 		}
 		if( !strlen($url) ){
 			return null;

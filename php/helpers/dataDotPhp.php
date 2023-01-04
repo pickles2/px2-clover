@@ -25,7 +25,7 @@ class dataDotPhp{
 	 * JSON.PHP を保存する
 	 */
 	static public function write_json( $realpath, $content ){
-		$jsonString = json_encode($content, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);
+		$jsonString = json_encode($content, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
 		$jsonDotPhp = self::$src_header.$jsonString;
 		$result = file_put_contents( $realpath, $jsonDotPhp );
 		return $result;

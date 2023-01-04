@@ -604,10 +604,13 @@ class auth{
 	private function write_admin_user_data( $user_id, $data ){
 		$realpath_json = $this->realpath_admin_users.urlencode($user_id).'.json';
 		$realpath_json_php = $realpath_json.'.php';
+		$result = dataDotPhp::write_json($realpath_json_php, $data);
+		if( !$result ){
+			return false;
+		}
 		if( is_file($realpath_json) ){
 			unlink($realpath_json); // 素のJSONがあったら削除する
 		}
-		$result = dataDotPhp::write_json($realpath_json_php, $data);
 		return $result;
 	}
 
