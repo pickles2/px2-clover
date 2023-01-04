@@ -191,7 +191,7 @@ class Layout extends React.Component {
 				"content": <Publish />,
 			},
 			'admin.history': {
-				"title": "履歴",
+				"title": "編集履歴",
 				"content": <History />,
 			},
 			'admin.config': {
