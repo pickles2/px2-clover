@@ -126,20 +126,6 @@ class register{
 					$px->fs()->copy_r(__DIR__.'/../public/resources/', $client_resources_dist);
 				}
 			}
-
-			// プラグインリソース内のHTMLファイルは、素のままで返す
-			// NOTE: Px2CEの `edit-contents/px2ce/editor/broccoli/canvas.html` が、
-			// processor で加工されてしまう問題を回避するために追加した処理。
-			$request_path = $px->req()->get_request_file_path();
-			$plugin_files = $px->path_plugin_files('/');
-			if( preg_match('/^'.preg_quote($plugin_files, '/').'.*\.html$/', $request_path) ){
-				$path_resource = preg_replace( '/^'.preg_quote($plugin_files, '/').'/', '', $request_path);
-				$realpath_resource = $px->realpath_plugin_files($path_resource);
-				$html = file_get_contents($realpath_resource);
-				header("Contents-type: text/html;");
-				echo $html;
-				exit();
-			}
 		}
 
 		$px->pxcmd()->register('admin', function($px) use ($options){
