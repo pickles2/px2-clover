@@ -9,7 +9,29 @@
 			</div>
 		{% else %}
 			<div class="px2-form-input-list__input">
+				{% if ( sitemapDefinition[key].type == "integer" ) %}
+				<input type="number" id="form-element--{{ key }}" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" />
+				{% elseif ( sitemapDefinition[key].type == "date" ) %}
+				<input type="date" id="form-element--{{ key }}" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" />
+				{% elseif ( sitemapDefinition[key].type == "datetime" ) %}
+				<input type="datetime" id="form-element--{{ key }}" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" />
+				{% elseif ( sitemapDefinition[key].type == "boolean" ) %}
+				<label><input type="radio" name="{{ key }}" value="1" {{ value is same as("1") ? 'checked="checked"' : '' }} class="px2-input px2-input--block" /> ON</label>
+				<label><input type="radio" name="{{ key }}" value="0" {{ value is same as("0") ? 'checked="checked"' : '' }} class="px2-input px2-input--block" /> OFF</label>
+				<label><input type="radio" name="{{ key }}" value="" {{ value is same as("") ? 'checked="checked"' : '' }} class="px2-input px2-input--block" /> ブランク</label>
+				{% elseif ( sitemapDefinition[key].type == "path" ) %}
 				<input type="text" id="form-element--{{ key }}" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" />
+				{% elseif ( sitemapDefinition[key].type == "logical_path" ) %}
+				<input type="text" id="form-element--{{ key }}" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" />
+				{% elseif ( sitemapDefinition[key].type == "page_id" ) %}
+				<input type="text" id="form-element--{{ key }}" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" />
+				{% elseif ( sitemapDefinition[key].type == "layout_id" ) %}
+				<input type="text" id="form-element--{{ key }}" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" />
+				{% elseif ( sitemapDefinition[key].type == "text" ) %}
+				<input type="text" id="form-element--{{ key }}" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" />
+				{% else %}
+				<input type="text" id="form-element--{{ key }}" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" />
+				{% endif %}
 			</div>
 		{% endif %}
 	</li>

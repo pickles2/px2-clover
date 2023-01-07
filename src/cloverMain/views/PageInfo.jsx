@@ -42,6 +42,29 @@ export default function PageInfo(props){
 		};
 	}, []);
 
+	function fixSitemapDefinition( page_info ){
+		var fixedSitemapDefinition = JSON.parse(JSON.stringify(sitemapDefinition));
+		Object.keys(page_info).forEach((key) => {
+			if(fixedSitemapDefinition[key]){
+				return;
+			}
+			fixedSitemapDefinition[key] = {
+				"label": key,
+				"type": "text",
+			};
+			if( key.match(/(?:\-|\_)fla?g$/) ){
+				fixedSitemapDefinition[key].type = "boolean";
+			}else if( key.match(/^is(?:\-|\_)/) ){
+				fixedSitemapDefinition[key].type = "boolean";
+			}else if( key.match(/(?:\-|\_)date$/) ){
+				fixedSitemapDefinition[key].type = "date";
+			}else if( key.match(/(?:\-|\_)datetime$/) ){
+				fixedSitemapDefinition[key].type = "datetime";
+			}
+		});
+		return fixedSitemapDefinition;
+	}
+
 	/**
 	 * 兄ページを新規追加する
 	 */
@@ -96,6 +119,7 @@ export default function PageInfo(props){
 		var pageInfoRaw = {};
 		var modal;
 		var originatedCsv = main.pageInfo.originated_csv;
+		var fixedSitemapDefinition;
 		iterate79.fnc({}, [
 			(it1) => {
 				if( !basePageInfo ){
@@ -155,12 +179,13 @@ export default function PageInfo(props){
 				for( var idx = 0; pageInfoRaw.page_info.length > idx; idx ++ ){
 					page_info[pageInfoRaw.sitemap_definition[idx]] = pageInfoRaw.page_info[idx];
 				}
+				fixedSitemapDefinition = fixSitemapDefinition(page_info);
 
 				var template = require('./PageInfo_files/templates/editPage.twig');
 				var $body = $('<div>')
 					.append( template( {
 						"page_info": page_info,
-						"sitemapDefinition": sitemapDefinition,
+						"sitemapDefinition": fixedSitemapDefinition,
 						"lockedField": {
 							"logical_path": "lock",
 						},
@@ -192,11 +217,15 @@ export default function PageInfo(props){
 							$body.find('.px2-form-input-list__li--error').removeClass('px2-form-input-list__li--error');
 							$body.find('.px2-error').remove();
 
-							var $inputs = modal.$modal.find('form input');
 							var new_page_info = {};
-							$inputs.each((idx, elm)=>{
-								var $elm = $(elm);
-								new_page_info[$elm.attr('name')] = $elm.val();
+							Object.keys(fixedSitemapDefinition).forEach((key)=>{
+								if( fixedSitemapDefinition[key].type == 'boolean' ){
+									var $input = modal.$modal.find(`form input[name="${key}"]:checked`);
+									new_page_info[key] = $input.val();
+								}else{
+									var $input = modal.$modal.find(`form input[name="${key}]"`);
+									new_page_info[key] = $input.val();
+								}
 							});
 
 							var params = {
@@ -248,6 +277,7 @@ export default function PageInfo(props){
 		var pageInfoRaw = {};
 		var modal;
 		var originatedCsv = main.pageInfo.originated_csv;
+		var fixedSitemapDefinition;
 		iterate79.fnc({}, [
 			(it1) => {
 				var params = {
@@ -273,12 +303,13 @@ export default function PageInfo(props){
 				for( var idx = 0; pageInfoRaw.page_info.length > idx; idx ++ ){
 					page_info[pageInfoRaw.sitemap_definition[idx]] = pageInfoRaw.page_info[idx];
 				}
+				fixedSitemapDefinition = fixSitemapDefinition(page_info);
 
 				var template = require('./PageInfo_files/templates/editPage.twig');
 				var $body = $('<div>')
 					.append( template( {
 						"page_info": page_info,
-						"sitemapDefinition": sitemapDefinition,
+						"sitemapDefinition": fixedSitemapDefinition,
 						"lockedField": {
 							// "path": "lock",
 							// "logical_path": "lock",
@@ -307,11 +338,15 @@ export default function PageInfo(props){
 							e.preventDefault();
 							modal.lock();
 
-							var $inputs = modal.$modal.find('form input');
 							var new_page_info = {};
-							$inputs.each((idx, elm)=>{
-								var $elm = $(elm);
-								new_page_info[$elm.attr('name')] = $elm.val();
+							Object.keys(fixedSitemapDefinition).forEach((key)=>{
+								if( fixedSitemapDefinition[key].type == 'boolean' ){
+									var $input = modal.$modal.find(`form input[name="${key}"]:checked`);
+									new_page_info[key] = $input.val();
+								}else{
+									var $input = modal.$modal.find(`form input[name="${key}"]`);
+									new_page_info[key] = $input.val();
+								}
 							});
 
 							iterate79.fnc({}, [
