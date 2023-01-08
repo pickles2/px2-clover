@@ -872,6 +872,9 @@ export default function PageInfo(props){
 					</div>
 					<div id="cont-page-info-detail" style={{display: "none"}}>
 					{(typeof(main.pageInfo.current_page_info) === typeof({}) && (<>
+						{(()=>{
+							const fixedSitemapDefinition = fixSitemapDefinition(main.pageInfo.current_page_info);
+							return <>
 						<div className="px2-p">
 							<table className="px2-table" style={{width:'100%',}}>
 								<colgroup>
@@ -879,21 +882,26 @@ export default function PageInfo(props){
 									<col style={{width: "70%"}} />
 								</colgroup>
 								<tbody>
-									<tr><th>{sitemapDefinition['id'].label}</th><td>{main.pageInfo.current_page_info.id}</td></tr>
-									<tr><th>{sitemapDefinition['title'].label}</th><td><a href={main.px2utils.href(main.pageInfo.current_page_info.path)}>{main.pageInfo.current_page_info.title}</a></td></tr>
-									<tr><th>{sitemapDefinition['path'].label}</th><td>{main.pageInfo.current_page_info.path}</td></tr>
+									<tr><th>{fixedSitemapDefinition['id'].label}</th><td>{main.pageInfo.current_page_info.id}</td></tr>
+									<tr><th>{fixedSitemapDefinition['title'].label}</th><td><a href={main.px2utils.href(main.pageInfo.current_page_info.path)}>{main.pageInfo.current_page_info.title}</a></td></tr>
+									<tr><th>{fixedSitemapDefinition['path'].label}</th><td>{main.pageInfo.current_page_info.path}</td></tr>
 									{Object.keys(main.pageInfo.current_page_info).map( ( key, idx )=>{
 										if( ['id','title','path'].find(val => val==key) ){return;}
 										return (
 											<tr key={idx}>
-												<th>{(sitemapDefinition[key] ? sitemapDefinition[key].label : key)}</th>
-												<td>{main.pageInfo.current_page_info[key]}</td>
+												<th>{(fixedSitemapDefinition[key] ? fixedSitemapDefinition[key].label : key)}</th>
+												{fixedSitemapDefinition[key].type == 'boolean'
+												? <td>{main.pageInfo.current_page_info[key] ? "ON" : "OFF"}</td>
+												: <td>{main.pageInfo.current_page_info[key]}</td>
+												}
 											</tr>
 										)
 									} )}
 								</tbody>
 							</table>
 						</div>
+							</>
+						})()}
 						<div className="px2-p">
 							<table className="px2-table" style={{width:'100%',}}>
 								<colgroup>
