@@ -223,7 +223,7 @@ export default function PageInfo(props){
 									var $input = modal.$modal.find(`form input[name="${key}"]:checked`);
 									new_page_info[key] = $input.val();
 								}else{
-									var $input = modal.$modal.find(`form input[name="${key}]"`);
+									var $input = modal.$modal.find(`form input[name="${key}"]`);
 									new_page_info[key] = $input.val();
 								}
 							});
