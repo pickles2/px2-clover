@@ -61,6 +61,9 @@ class config{
 	 * 設定を更新する
 	 */
 	public function update( $new_config ){
+		if( is_array($new_config) ){
+			$new_config = json_decode( json_encode($new_config) );
+		}
 
 		$config = $this->get();
 		$crypt = new crypt( $this->clover );
@@ -69,7 +72,6 @@ class config{
 		if( isset($new_config->history->git_id) ){ $config->history->git_id = $new_config->history->git_id; }
 		if( isset($new_config->history->git_pw) ){ $config->history->git_pw = $crypt->encrypt($new_config->history->git_pw); }
 		if( isset($new_config->history->auto_commit) ){ $config->history->auto_commit = $new_config->history->auto_commit; }
-
 
 		$result = dataDotPhp::write_json($this->realpath_config_json_php, $config);
 		if( !$result ){
