@@ -28,7 +28,7 @@ export default function Px2Utils(){
 
 		let lastResponseLength = false;
 		let ajaxOptions = {
-			"url": path,
+			"url": window.px2config.path_controot + (path.replace(/^\/*/, '')),
 			"method": "post",
 			"data": params,
 			"cache": false,
