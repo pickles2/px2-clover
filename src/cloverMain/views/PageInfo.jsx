@@ -826,9 +826,11 @@ export default function PageInfo(props){
 								<div className="px2-linklist">
 									<ul>
 										<li><a href="?" onClick={sortPage}>並べ替え</a></li>
+										{main.pageInfo.editor_mode !== '.not_exists' && <>
 										<li><a href="?" onClick={changeEditorType}>編集方法を変更する</a></li>
 										<li><a href="?" onClick={singlePagePublish}>単体パブリッシュ</a></li>
 										{main.pageInfo.editor_mode == 'html.gui' && <li><a href="?" onClick={rebuildBroccoliContent}>ブロックエディタのコンテンツを再構成する</a></li>}
+										</>}
 										{/* <li><a href="?" onClick={createNewPage}>ページ情報を追加する</a></li> */}
 									</ul>
 								</div>
