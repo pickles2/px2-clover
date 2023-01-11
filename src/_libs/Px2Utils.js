@@ -28,7 +28,12 @@ export default function Px2Utils(){
 
 		let lastResponseLength = false;
 		let ajaxOptions = {
-			"url": window.px2config.path_controot + (path.replace(/^\/*/, '')),
+			"url": (function(){
+				if( !path.match(/^\//) ){
+					return path;
+				}
+				return window.px2config.path_controot + (path.replace(/^\/*/, ''));
+			})(),
 			"method": "post",
 			"data": params,
 			"cache": false,

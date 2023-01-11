@@ -2,6 +2,9 @@
 /**
  * module: std-document:basics/image
  */
+try{
+	(function(){
+
 window.Px2BroccoliModuleStdDocument_ImageScope = function(imgElm){
     let scope = document.querySelector('.px2-image-scope');
     if( scope ){
@@ -26,5 +29,11 @@ window.Px2BroccoliModuleStdDocument_ImageScope = function(imgElm){
             delete(document.body.style.overflow);
         }, 300);
     })
+}
+
+	})();
+
+}catch(err){
+	console.error('Module Error:', "std-document:basics/image", err);
 }
 })();
