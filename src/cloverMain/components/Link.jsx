@@ -5,6 +5,10 @@ export default function Link(props){
 
 	const main = useContext(MainContext);
 
+	const href = (function(){
+		return window.px2config.path_controot + (props.href.replace(/^\/*/, ''));
+	})();
+
 	const className = (() => {
 		if( typeof(props.className) == typeof('') ){
 			return props.className;
@@ -40,7 +44,7 @@ export default function Link(props){
 			return false;
 		}
 
-		let parsedPropsHref = parseUrl(props.href);
+		let parsedPropsHref = parseUrl(href);
 		if( hasParent(main.PX, parsedPropsHref.PX) ){
 			return 'current';
 		}
@@ -54,6 +58,6 @@ export default function Link(props){
 	}
 
 	return (
-		<a href={props.href} onClick={goto} className={className}>{props.children}</a>
+		<a href={href} onClick={goto} className={className}>{props.children}</a>
 	);
 }
