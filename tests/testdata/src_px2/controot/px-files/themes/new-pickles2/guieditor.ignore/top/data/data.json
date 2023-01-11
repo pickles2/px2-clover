@@ -1,0 +1,29 @@
+{
+    "bowl": {
+        "main": {
+            "modId": "_sys/root",
+            "fields": {
+                "main": [
+                    {
+                        "modId": "themeEditorModules:vars/globalnavi",
+                        "fields": []
+                    },
+                    {
+                        "modId": "themeEditorModules:layouts/fullcolumn",
+                        "fields": {
+                            "inner-width": "",
+                            "main": [
+                                {
+                                    "modId": "themeEditorModules:vars/bowl",
+                                    "fields": {
+                                        "bowlName": ""
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

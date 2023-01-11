@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title><?= htmlspecialchars($px->site()->get_current_page_info('title_full')); ?></title>
+		<meta name="description" content="<?= htmlspecialchars($px->site()->get_current_page_info('description')); ?>" />
+		<meta name="keywords" content="<?= htmlspecialchars($px->site()->get_current_page_info('keywords')); ?>" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+<?php include(__DIR__.'/inc/headsection.inc'); ?>
+<?= $px->bowl()->get_clean('head'); ?>
+
+	</head>
+	<body id="pagetop">
+<?php
+	$global_menu = $px->site()->get_global_menu();
+	echo( '<ul>' );
+	foreach( $global_menu as $page_id ){
+		echo( '<li>'.$px->mk_link( $page_id ).'</li>' );
+	}
+	echo( '</ul>' );
+?>
+<div class="theme-layouts ">
+	<div class="theme-layouts__body">
+
+<div class="contents" <?= htmlspecialchars($theme->get_attr_bowl_name_by())?>="">
+<?= $px->bowl()->pull('') ?>
+</div>
+	</div>
+</div>
+
+
+		<script src="<?= htmlspecialchars( $theme->files('/modules.js') ); ?>"></script>
+<?= $px->bowl()->get_clean('foot'); ?>
+
+	</body>
+</html>
