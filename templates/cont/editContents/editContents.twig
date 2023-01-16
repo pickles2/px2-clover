@@ -123,9 +123,15 @@
 										'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
 									},
 									"error": function(error){
+										var result = null;
 										console.error('--- GPI Response Error:', input, typeof(error), error);
-										var rtn = JSON.parse(error.responseText);
-										callback(rtn);
+										try{
+											result = JSON.parse(error.responseText);
+										}catch(exception){
+											console.error( exception );
+										}
+
+										callback(result);
 									},
 									"success": function(data){
 										callback(data);

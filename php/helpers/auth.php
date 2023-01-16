@@ -16,7 +16,7 @@ class auth{
 	private $realpath_admin_users;
 
 	/** CSRFトークンの有効期限 */
-	private $csrf_token_expire = 3600;
+	private $csrf_token_expire = 60 * 60;
 
 	/** 初期デフォルトアカウント */
 	private $default_admin_user_id = 'admin';
@@ -44,16 +44,15 @@ class auth{
 	 */
 	public function auth(){
 
+		if( $this->is_csrf_token_required() && !$this->is_valid_csrf_token_given() ){
+			$this->login_page('csrf_token_expired');
+			exit;
+		}
+
 		if( $this->px->req()->get_param('ADMIN_USER_FLG') ){
 			$login_challenger_id = $this->px->req()->get_param('ADMIN_USER_ID');
 			if( $_SERVER['REQUEST_METHOD'] !== 'POST' ){
 				$this->login_page();
-				exit;
-			}
-
-			if( $this->is_csrf_token_required() && !$this->is_valid_csrf_token_given() ){
-				$this->clover->logger()->error_log('Failed to logged in user \''.$login_challenger_id.'\'. Invalid CSRF Token.');
-				$this->login_page('csrf_token_expired');
 				exit;
 			}
 
@@ -94,6 +93,7 @@ class auth{
 				exit;
 			}
 		}
+
 		if( !$this->is_login() ){
 			$this->login_page();
 			exit;
@@ -184,7 +184,7 @@ class auth{
 					'url_backto' => '?',
 					'ADMIN_USER_ID' => $this->px->req()->get_param('ADMIN_USER_ID'),
 					'csrf_token' => $this->get_csrf_token(),
-					'error_message' => $error_message ? $this->clover->lang()->get('login_error.'.$error_message) : null,
+					'error_message' => $error_message ? $this->clover->lang()->get('login_error.'.$error_message) : $this->px->get_status_message(),
 				)
 			);
 			exit;
@@ -193,7 +193,7 @@ class auth{
 		$this->px->header('Content-type: application/json');
 		echo json_encode(array(
 			'result' => false,
-			'message' => $this->px->get_status_message(),
+			'message' => $error_message ? $this->clover->lang()->get('login_error.'.$error_message) : $this->px->get_status_message(),
 		));
 		exit;
 
