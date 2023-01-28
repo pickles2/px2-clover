@@ -185,10 +185,10 @@ class register{
 	 * CMS管理画面をルーティングする
 	 */
 	private function route(){
-		$this->command = $this->px->get_px_command();
+		$command = $this->px->get_px_command();
 
 		if( !$this->px->req()->is_cmd() ){
-			switch( isset($this->command[1]) ? $this->command[1] : '' ){
+			switch( isset($command[1]) ? $command[1] : '' ){
 				case 'logout':
 					// --------------------------------------
 					// ログアウト
@@ -201,11 +201,11 @@ class register{
 		if( !$this->px->req()->is_cmd() ){
 			// --------------------------------------
 			// ブラウザへの応答
-			switch( isset($this->command[1]) ? $this->command[1] : '' ){
+			switch( isset($command[1]) ? $command[1] : '' ){
 				case 'api':
 					// --------------------------------------
 					// API
-					switch( isset($this->command[2]) ? $this->command[2] : '' ){
+					switch( isset($command[2]) ? $command[2] : '' ){
 						case 'health_check':
 							$app = new funcs\api\healthChecker($this->clover);
 							$app->status();
@@ -382,11 +382,11 @@ class register{
 		}
 		// --------------------------------------
 		// CLIへの応答
-		switch( isset($this->command[1]) ? $this->command[1] : '' ){
+		switch( isset($command[1]) ? $command[1] : '' ){
 			case 'api':
 				// --------------------------------------
 				// API
-				switch( isset($this->command[2]) ? $this->command[2] : '' ){
+				switch( isset($command[2]) ? $command[2] : '' ){
 					case 'scheduler_run':
 						$this->clover->allowed_method(['command']);
 						$app = new funcs\api\scheduler($this->clover);
