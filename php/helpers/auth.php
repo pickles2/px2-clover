@@ -729,19 +729,19 @@ class auth{
 	 * CSRFトークンの検証を行わない条件を調査
 	 */
 	private function is_csrf_token_required(){
-		$this->command = $this->px->get_px_command();
-		if( !is_array($this->command) || !count($this->command) || (count($this->command) == 1 && !strlen($this->command[0])) ){
+		$command = $this->px->get_px_command();
+		if( !is_array($command) || !count($command) || (count($command) == 1 && !strlen($command[0])) ){
 			// --------------------------------------
 			// プレビューリクエスト
 			if( $_SERVER['REQUEST_METHOD'] == 'GET' ){
 				// PXコマンドなしのGETのリクエストでは、CSRFトークンを要求しない
 				return false;
 			}
-		}elseif( $this->command[0] == 'admin' ){
+		}elseif( $command[0] == 'admin' ){
 			// --------------------------------------
 			// px2-clover 管理画面
 			// その他のPXコマンドではCSRFトークンが必要
-			$subCmd = (isset( $this->command[1] ) ? $this->command[1] : '');
+			$subCmd = (isset( $command[1] ) ? $command[1] : '');
 			switch($subCmd){
 				case '':
 				case 'logout':
