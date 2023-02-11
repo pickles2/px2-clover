@@ -76,7 +76,7 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
-### pickles2/px2-clover v0.2.4 (リリース日未定)
+### pickles2/px2-clover v0.2.4 (2023年2月11日)
 
 - ダッシュボードに、サイト基本情報を表示するようになった。
 - 設定ファイル `config.json` のファイル名を `.*.php` で保存するように変更した。
