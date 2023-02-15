@@ -15,6 +15,7 @@
 			<li class="px2-form-input-list__li px2-form-input-list__li--required{{ errors.id ? ' px2-form-input-list__li--error' : '' }}">
 				<div class="px2-form-input-list__label"><label for="input-id">ID</label></div>
 				<div class="px2-form-input-list__input">
+					<p class="px2-note">半角英数字、ハイフン、アンダースコア が使えます。</p>
 					<input type="text" id="input-id" name="id" value="{{ values.id }}" class="px2-input px2-input--block" />
 					{% if errors.id %}
 						{% for errorText in errors.id %}

@@ -78,6 +78,7 @@ $conf->allow_pxcommands = 1;
 
 ### pickles2/px2-clover v0.2.5 (リリース日未定)
 
+- 管理ユーザー情報を削除できない不具合を修正。
 - 初期セットアップ画面のUI改善。
 
 ### pickles2/px2-clover v0.2.4 (2023年2月11日)

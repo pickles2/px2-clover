@@ -488,7 +488,7 @@ class auth{
 		}
 
 		$user_info = $this->get_admin_user_info( $target_user_id );
-		if( !is_array($user_info) ){
+		if( !is_object($user_info) ){
 			return (object) array(
 				'result' => false,
 				'message' => 'ユーザー情報の取得に失敗しました。',
