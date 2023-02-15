@@ -1,0 +1,127 @@
+{
+    "bowl": {
+        "main": {
+            "modId": "_sys/root",
+            "fields": {
+                "main": [
+                    {
+                        "modId": "px2style:utils/viewport-fit",
+                        "fields": {
+                            "text-color": {
+                                "src": "#FFFFFF"
+                            },
+                            "background-color": {
+                                "src": "#9C27B0E6"
+                            },
+                            "background-image": {
+                                "resKey": "b3c0da3dbf7ae67617d73231be9b00ec",
+                                "path": "./index_files/resources/b3c0da3dbf7ae67617d73231be9b00ec.unknown",
+                                "resType": "none",
+                                "webUrl": ""
+                            },
+                            "min-height": {
+                                "src": ""
+                            },
+                            "margin-padding": {
+                                "marginTop": "",
+                                "marginRight": "",
+                                "marginBottom": "",
+                                "marginLeft": "",
+                                "paddingTop": "120px",
+                                "paddingRight": "",
+                                "paddingBottom": "100px",
+                                "paddingLeft": ""
+                            },
+                            "fluid-contents": {
+                                "src": ""
+                            },
+                            "main": [
+                                {
+                                    "modId": "px2style:utils/p",
+                                    "fields": {
+                                        "text-align": {
+                                            "src": " px2-text-align-center"
+                                        },
+                                        "font-size": {
+                                            "src": " px2-font-size-ll"
+                                        },
+                                        "text-color": {
+                                            "src": ""
+                                        },
+                                        "background-color": {
+                                            "src": ""
+                                        },
+                                        "background-image": {
+                                            "resKey": "5bfaff203dc0cbaa3e582081637af8fc",
+                                            "path": "./index_files/resources/5bfaff203dc0cbaa3e582081637af8fc.unknown",
+                                            "resType": "none",
+                                            "webUrl": ""
+                                        },
+                                        "min-height": {
+                                            "src": ""
+                                        },
+                                        "margin-padding": {
+                                            "marginTop": "",
+                                            "marginRight": "",
+                                            "marginBottom": "",
+                                            "marginLeft": "",
+                                            "paddingTop": "",
+                                            "paddingRight": "",
+                                            "paddingBottom": "",
+                                            "paddingLeft": ""
+                                        },
+                                        "main": [
+                                            {
+                                                "modId": "px2style:sections/hx",
+                                                "fields": {
+                                                    "hx": {
+                                                        "src": "2"
+                                                    },
+                                                    "main": {
+                                                        "src": "ようこそ！"
+                                                    },
+                                                    "sub": {
+                                                        "src": ""
+                                                    }
+                                                },
+                                                "anchor": "",
+                                                "dec": ""
+                                            }
+                                        ],
+                                        "paragraph": {
+                                            "src": "px2-p"
+                                        }
+                                    },
+                                    "anchor": "",
+                                    "dec": ""
+                                }
+                            ]
+                        },
+                        "anchor": "",
+                        "dec": ""
+                    },
+                    {
+                        "modId": "px2style:basics/text",
+                        "fields": {
+                            "main": {
+                                "src": "Clover CMS で編集できます。\n",
+                                "editor": "markdown"
+                            },
+                            "text-align": {
+                                "src": ""
+                            },
+                            "font-size": {
+                                "src": ""
+                            },
+                            "paragraph": {
+                                "src": "px2-p"
+                            }
+                        },
+                        "anchor": "",
+                        "dec": ""
+                    }
+                ]
+            }
+        }
+    }
+}

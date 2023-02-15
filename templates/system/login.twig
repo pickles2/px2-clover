@@ -9,8 +9,12 @@
 	{% if error_message %}
 		<p class="px2-error">{{ error_message }}</p>
 	{% endif %}
-	<div>ID: <input type="text" name="ADMIN_USER_ID" value="{{ ADMIN_USER_ID }}" class="px2-input" /></div>
-	<div>PW: <input type="password" name="ADMIN_USER_PW" value="" class="px2-input" /></div>
+	<div>ID:
+		<div><input type="text" name="ADMIN_USER_ID" value="{{ ADMIN_USER_ID }}" class="px2-input px2-input--block" /></div>
+	</div>
+	<div>Password:
+		<div><input type="password" name="ADMIN_USER_PW" value="" class="px2-input px2-input--block" /></div>
+	</div>
 	<div><button type="submit" class="px2-btn px2-btn--primary">ログイン</button></div>
 	<input type="hidden" name="ADMIN_USER_FLG" value="1" />
 	<input type="hidden" name="ADMIN_USER_CSRF_TOKEN" value="{{ csrf_token }}" />

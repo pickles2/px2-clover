@@ -52,6 +52,11 @@ class initializer{
 	 * 管理ユーザーデータを初期化する画面
 	 */
 	private function initialize_admin_user_page(){
+		$result = (object) array(
+			"result" => null,
+			"message" => null,
+			"errors" => (object) array(),
+		);
 		if( $this->px->req()->get_method() == 'post' ){
 			$user_info = array(
 				'name' => $this->px->req()->get_param('ADMIN_USER_NAME'),
@@ -67,7 +72,6 @@ class initializer{
 				exit;
 			}
 		}
-
 		echo $this->clover->view()->bind(
 			'/system/initialize_admin_user.twig',
 			array(
@@ -75,6 +79,8 @@ class initializer{
 				'ADMIN_USER_ID' => $this->px->req()->get_param('ADMIN_USER_ID'),
 				'ADMIN_USER_LANG' => $this->px->req()->get_param('ADMIN_USER_LANG'),
 				'admin_user_email' => $this->px->req()->get_param('admin_user_email'),
+				'message' => $result->message,
+				'errors' => $result->errors,
 				'url_backto' => '?',
 			)
 		);

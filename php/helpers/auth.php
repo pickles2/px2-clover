@@ -435,7 +435,7 @@ class auth{
 		if( $this->admin_user_data_exists( $user_info->id ) ){
 			return (object) array(
 				'result' => false,
-				'message' => 'すでに存在します。',
+				'message' => 'そのユーザーIDはすでに存在します。',
 				'errors' => (object) array(),
 			);
 		}

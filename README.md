@@ -76,6 +76,10 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
+### pickles2/px2-clover v0.2.5 (リリース日未定)
+
+- 初期セットアップ画面のUI改善。
+
 ### pickles2/px2-clover v0.2.4 (2023年2月11日)
 
 - ダッシュボードに、サイト基本情報を表示するようになった。

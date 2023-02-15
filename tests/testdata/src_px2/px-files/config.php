@@ -157,7 +157,7 @@ return call_user_func( function(){
 			'cookie_theme_switch'=>'THEME',
 			'path_theme_collection'=>'./px-files/themes/',
 			'attr_bowl_name_by'=>'data-contents-area',
-			'default_theme_id' => 'new_clover',
+			'default_theme_id' => 'clover',
 		)).')' ,
 
 		// Apache互換のSSIの記述を解決する
