@@ -29,10 +29,12 @@ class lang{
 		$this->px = $clover->px();
 		$this->loginUserInfo = $this->clover->auth()->get_login_user_info();
 		$this->lb = new \tomk79\LangBank(__DIR__.'/../../public/resources/data/language.csv');
-		if( isset($this->loginUserInfo->lang) ){
+		if( strlen($this->px->req()->get_param('ADMIN_USER_LANG') ?? '') ){
+			$this->lb->setLang( $this->px->req()->get_param('ADMIN_USER_LANG') );
+		}elseif( strlen($this->loginUserInfo->lang ?? '') ){
 			$this->lb->setLang( $this->loginUserInfo->lang );
-		}elseif( $this->px->req()->get_cookie('LANG') ){
-			$this->lb->setLang( $this->px->req()->get_cookie('LANG') );
+		}else{
+			$this->lb->setLang( $this->px->lang() );
 		}
 	}
 

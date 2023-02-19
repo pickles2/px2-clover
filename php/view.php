@@ -51,6 +51,7 @@ class view{
 		$data['plugin_options'] = $this->clover->get_options();
 		$data['path_client_resources'] = $this->clover->path_files();
 		$data['csrf_token'] = $this->clover->auth()->get_csrf_token();
+		$data['lang'] = $this->clover->lang();
 
 		$rtn = $twig->render( $path_template, $data );
 		return $rtn;

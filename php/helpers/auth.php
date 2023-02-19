@@ -539,46 +539,46 @@ class auth{
 		if( !strlen($user_info->id ?? '') ){
 			// IDが未指定
 			$rtn->is_valid = false;
-			$rtn->errors->id = array('ユーザーIDを入力してください。');
+			$rtn->errors->id = array($this->clover->lang()->get('error_message.required_user_id'));
 		}elseif( !$this->validate_admin_user_id($user_info->id) ){
 			// 不正な形式のID
 			$rtn->is_valid = false;
-			$rtn->errors->id = array('不正な形式のユーザーIDです。');
+			$rtn->errors->id = array($this->clover->lang()->get('error_message.invalid_user_id'));
 		}
 		if( !isset($user_info->name) || !strlen($user_info->name) ){
 			$rtn->is_valid = false;
-			$rtn->errors->name = array('必ず入力してください。');
+			$rtn->errors->name = array($this->clover->lang()->get('error_message.required'));
 		}
 		if( !isset($user_info->pw) || !strlen($user_info->pw) ){
 			$rtn->is_valid = false;
-			$rtn->errors->pw = array('必ず入力してください。');
+			$rtn->errors->pw = array($this->clover->lang()->get('error_message.required'));
 		}
 		if( !isset($user_info->lang) || !strlen($user_info->lang) ){
 			$rtn->is_valid = false;
-			$rtn->errors->lang = array('必ず選択してください。');
+			$rtn->errors->lang = array($this->clover->lang()->get('error_message.required_select'));
 		}
 		if( isset($user_info->email) && is_string($user_info->email) && strlen($user_info->email) ){
 			if( !preg_match('/^[^@\/\\\\]+\@[^@\/\\\\]+$/', $user_info->email) ){
 				$rtn->is_valid = false;
-				$rtn->errors->email = array('不正な形式のメールアドレスです。');
+				$rtn->errors->email = array($this->clover->lang()->get('error_message.invalid_email'));
 			}
 		}
 		if( !isset($user_info->role) || !strlen($user_info->role) ){
 			$rtn->is_valid = false;
-			$rtn->errors->role = array('必ず選択してください。');
+			$rtn->errors->role = array($this->clover->lang()->get('error_message.required_select'));
 		}
 		switch( $user_info->role ){
 			case 'admin':
 				break;
 			default:
 				$rtn->is_valid = false;
-				$rtn->errors->role = array('ロールの値が不正です。');
+				$rtn->errors->role = array($this->clover->lang()->get('error_message.invalid_role'));
 				break;
 		}
 		if( $rtn->is_valid ){
 			$rtn->message = 'OK';
 		}else{
-			$rtn->message = '入力内容に不備があります。';
+			$rtn->message = $this->clover->lang()->get('error_message.invalid');
 		}
 		return $rtn;
 	}

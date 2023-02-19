@@ -44,6 +44,9 @@ return call_user_func( function(){
 	$conf->allow_pxcommands = 1; // PX Commands のウェブインターフェイスからの実行を許可
 	$conf->default_timezone = 'Asia/Tokyo';
 
+	$conf->default_lang = 'ja';
+	$conf->accept_langs = array('ja', 'en');
+
 	// commands
 	$conf->commands = new stdClass;
 	$conf->commands->php = 'php';

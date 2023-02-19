@@ -77,7 +77,7 @@ class initializer{
 			array(
 				'ADMIN_USER_NAME' => $this->px->req()->get_param('ADMIN_USER_NAME'),
 				'ADMIN_USER_ID' => $this->px->req()->get_param('ADMIN_USER_ID'),
-				'ADMIN_USER_LANG' => $this->px->req()->get_param('ADMIN_USER_LANG'),
+				'ADMIN_USER_LANG' => $this->px->req()->get_param('ADMIN_USER_LANG') ?? $this->px->lang(),
 				'admin_user_email' => $this->px->req()->get_param('admin_user_email'),
 				'message' => $result->message,
 				'errors' => $result->errors,
