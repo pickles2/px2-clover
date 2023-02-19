@@ -11,18 +11,18 @@
 <form action="" method="post">
 	<div class="auth-form">
 		<div class="auth-form__unit">
-			<div class="auth-form__label">{{ lang.get('ui_label.user_id') }}:</div>
+			<div class="auth-form__label">{{ lb.get('ui_label.user_id') }}:</div>
 			<div class="auth-form__input"><input type="text" name="ADMIN_USER_ID" value="{{ ADMIN_USER_ID }}" class="px2-input px2-input--block" /></div>
 		</div>
 		<div class="auth-form__unit">
-			<div class="auth-form__label">{{ lang.get('ui_label.user_pw') }}:</div>
+			<div class="auth-form__label">{{ lb.get('ui_label.user_pw') }}:</div>
 			<div class="auth-form__input"><input type="password" name="ADMIN_USER_PW" value="" class="px2-input px2-input--block" /></div>
 		</div>
 		<div class="auth-form__buttons">
-			<button type="submit" class="px2-btn px2-btn--primary">{{ lang.get('ui_label.login') }}</button>
+			<button type="submit" class="px2-btn px2-btn--primary">{{ lb.get('ui_label.login') }}</button>
 		</div>
 		<div class="auth-form__backto">
-			<p><a href="{{ url_backto }}">{{ lang.get('ui_label.back') }}</a></p>
+			<p><a href="{{ url_backto }}">{{ lb.get('ui_label.back') }}</a></p>
 		</div>
 		<input type="hidden" name="ADMIN_USER_FLG" value="1" />
 		<input type="hidden" name="ADMIN_USER_CSRF_TOKEN" value="{{ csrf_token }}" />

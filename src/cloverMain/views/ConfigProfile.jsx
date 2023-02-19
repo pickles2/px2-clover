@@ -63,7 +63,7 @@ export default function ConfigProfile(props){
 							<div className="px2-form-input-list">
 								<ul className="px2-form-input-list__ul">
 									<li className={"px2-form-input-list__li px2-form-input-list__li--required"+(hasValidationError('name') ? ' px2-form-input-list__li--error' : '')}>
-										<div className="px2-form-input-list__label"><label htmlFor="input-name">名前</label></div>
+										<div className="px2-form-input-list__label"><label htmlFor="input-name">{main.lb.get('ui_label.user_name')}</label></div>
 										<div className="px2-form-input-list__input">
 											<input type="text" id="input-name" name="name" defaultValue={main.profile.name} className={"px2-input px2-input--block"+(hasValidationError('name') ? ' px2-input--error' : '')} />
 											{(hasValidationError('name'))
@@ -77,7 +77,7 @@ export default function ConfigProfile(props){
 										</div>
 									</li>
 									<li className={"px2-form-input-list__li px2-form-input-list__li--required"+(hasValidationError('id') ? ' px2-form-input-list__li--error' : '')}>
-										<div className="px2-form-input-list__label"><label htmlFor="input-id">ID</label></div>
+										<div className="px2-form-input-list__label"><label htmlFor="input-id">{main.lb.get('ui_label.user_id')}</label></div>
 										<div className="px2-form-input-list__input">
 											<input type="text" id="input-id" name="id" defaultValue={main.profile.id} className={"px2-input px2-input--block"+(hasValidationError('id') ? ' px2-input--error' : '')} />
 											{(hasValidationError('id'))
@@ -91,9 +91,9 @@ export default function ConfigProfile(props){
 										</div>
 									</li>
 									<li className={"px2-form-input-list__li"+(hasValidationError('pw') ? ' px2-form-input-list__li--error' : '')}>
-										<div className="px2-form-input-list__label"><label htmlFor="input-pw">パスワード</label></div>
+										<div className="px2-form-input-list__label"><label htmlFor="input-pw">{main.lb.get('ui_label.user_pw')}</label></div>
 										<div className="px2-form-input-list__input">
-											<p className="px2-note">パスワードを変更する場合のみ入力してください。</p>
+											<p className="px2-note">{main.lb.get('ui_message.enter_only_when_changing_the_password')}</p>
 											<input type="password" id="input-pw" name="pw" defaultValue="" className={"px2-input px2-input--block"+(hasValidationError('pw') ? ' px2-input--error' : '')} />
 											{(hasValidationError('pw'))
 												? <>
@@ -106,7 +106,7 @@ export default function ConfigProfile(props){
 										</div>
 									</li>
 									<li className={"px2-form-input-list__li"+(hasValidationError('lang') ? ' px2-form-input-list__li--error' : '')}>
-										<div className="px2-form-input-list__label"><label htmlFor="input-lang">言語</label></div>
+										<div className="px2-form-input-list__label"><label htmlFor="input-lang">Language</label></div>
 										<div className="px2-form-input-list__input">
 											<select id="input-lang" name="lang" className={"px2-input"+(hasValidationError('lang') ? ' px2-input--error' : '')} defaultValue={main.profile.lang}>
 												<option value="en">English</option>
@@ -123,7 +123,7 @@ export default function ConfigProfile(props){
 										</div>
 									</li>
 									<li className={"px2-form-input-list__li"+(hasValidationError('email') ? ' px2-form-input-list__li--error' : '')}>
-										<div className="px2-form-input-list__label"><label htmlFor="input-email">メールアドレス</label></div>
+										<div className="px2-form-input-list__label"><label htmlFor="input-email">{main.lb.get('ui_label.user_email')}</label></div>
 										<div className="px2-form-input-list__input">
 											<input type="text" id="input-email" name="email" defaultValue={main.profile.email} className={"px2-input px2-input--block"+(hasValidationError('email') ? ' px2-input--error' : '')} />
 											{(hasValidationError('email'))
@@ -137,7 +137,7 @@ export default function ConfigProfile(props){
 										</div>
 									</li>
 									<li className={"px2-form-input-list__li"+(hasValidationError('role') ? ' px2-form-input-list__li--error' : '')}>
-										<div className="px2-form-input-list__label"><label htmlFor="input-role">ロール</label></div>
+										<div className="px2-form-input-list__label"><label htmlFor="input-role">{main.lb.get('ui_label.user_role')}</label></div>
 										<div className="px2-form-input-list__input">
 											<select id="input-role" name="role" className={"px2-input"+(hasValidationError('role') ? ' px2-input--error' : '')} defaultValue={main.profile.role}>
 												<option value="admin">Admin</option>

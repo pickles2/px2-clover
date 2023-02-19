@@ -5,34 +5,34 @@
 {% endblock %}
 {% block content %}
 
-<p>{{ lang.get('ui_message.first_register_an_administrator_account') }}</p>
+<p>{{ lb.get('ui_message.first_register_an_administrator_account') }}</p>
 
 {% if message %}<p class="px2-error">{{message}}</p>{% endif %}
 
 <form action="" method="post">
 	<div class="auth-form">
 		<div class="auth-form__unit {% if errors.name %} auth-form__unit--error{% endif %}">
-			<div class="auth-form__label">{{ lang.get('ui_label.user_name') }}:</div>
+			<div class="auth-form__label">{{ lb.get('ui_label.user_name') }}:</div>
 			{% if errors.name %}{% for error_message in errors.name %}<div class="px2-error">{{error_message}}</div>{% endfor %}{% endif %}
 			<div class="auth-form__input"><input type="text" name="ADMIN_USER_NAME" value="{{ ADMIN_USER_NAME }}" class="px2-input px2-input--block" /></div>
 		</div>
 		<div class="auth-form__unit {% if errors.id %} auth-form__unit--error{% endif %}">
-			<div class="auth-form__label">{{ lang.get('ui_label.user_id') }}:</div>
+			<div class="auth-form__label">{{ lb.get('ui_label.user_id') }}:</div>
 			{% if errors.id %}{% for error_message in errors.id %}<div class="px2-error">{{error_message}}</div>{% endfor %}{% endif %}
 			<div class="px2-note-list">
 				<ul>
-					<li>{{ lang.get('ui_message.user_id_enable_char') }}</li>
+					<li>{{ lb.get('ui_message.user_id_enable_char') }}</li>
 				</ul>
 			</div>
 			<div class="auth-form__input"><input type="text" name="ADMIN_USER_ID" value="{{ ADMIN_USER_ID }}" class="px2-input px2-input--block" /></div>
 		</div>
 		<div class="auth-form__unit {% if errors.pw %} auth-form__unit--error{% endif %}">
-			<div class="auth-form__label">{{ lang.get('ui_label.user_pw') }}:</div>
+			<div class="auth-form__label">{{ lb.get('ui_label.user_pw') }}:</div>
 			{% if errors.pw %}{% for error_message in errors.pw %}<div class="px2-error">{{error_message}}</div>{% endfor %}{% endif %}
 			<div class="auth-form__input"><input type="password" name="ADMIN_USER_PW" value="" class="px2-input px2-input--block" /></div>
 		</div>
 		<div class="auth-form__unit {% if errors.email %} auth-form__unit--error{% endif %}">
-			<div class="auth-form__label">{{ lang.get('ui_label.user_email') }}:</div>
+			<div class="auth-form__label">{{ lb.get('ui_label.user_email') }}:</div>
 			{% if errors.email %}{% for error_message in errors.email %}<div class="px2-error">{{error_message}}</div>{% endfor %}{% endif %}
 			<div class="auth-form__input"><input type="email" name="admin_user_email" value="{{ admin_user_email }}" class="px2-input px2-input--block" /></div>
 		</div>
@@ -47,7 +47,7 @@
 			</div>
 		</div>
 		<div class="auth-form__buttons">
-			<button type="submit" class="px2-btn px2-btn--primary">{{ lang.get('ui_label.create') }}</button>
+			<button type="submit" class="px2-btn px2-btn--primary">{{ lb.get('ui_label.create') }}</button>
 		</div>
 		<input type="hidden" name="ADMIN_USER_CSRF_TOKEN" value="{{ csrf_token }}" />
 	</div>
