@@ -133,6 +133,12 @@ class Layout extends React.Component {
 					tmpNewState.currentRoute = getCurrentRoute(this.state.PX);
 					tmpNewState.title = tmpNewState.currentRoute.title;
 
+					if( this.state.lb && tmpNewState.currentRoute.langKey ){
+						tmpNewState.title = this.state.lb.get(tmpNewState.currentRoute.langKey);
+					}else if( tmpNewState.lb && tmpNewState.currentRoute.langKey ){
+						tmpNewState.title = tmpNewState.lb.get(tmpNewState.currentRoute.langKey);
+					}
+
 					if( this.state.PX == "admin.page_info" && tmpNewState.pageInfo ){
 						// PageInfo 画面にて、routeのタイトルをページのタイトルで置き換える
 						let currentTitle = tmpNewState.title;
@@ -176,80 +182,97 @@ class Layout extends React.Component {
 		const route = {
 			'admin': {
 				"title": "ダッシュボード",
+				"langKey": "page_title.dashboard",
 				"content": <Dashboard />,
 			},
 			'admin.page_info': {
 				"title": "ページ",
+				"langKey": "page_title.page_info",
 				"content": <PageInfo />,
 			},
 			'admin.theme': {
 				"title": "テーマ",
+				"langKey": "page_title.theme",
 				"content": <Theme />,
 			},
 			'admin.publish': {
 				"title": "パブリッシュ",
+				"langKey": "page_title.publish",
 				"content": <Publish />,
 			},
 			'admin.history': {
 				"title": "編集履歴",
+				"langKey": "page_title.history",
 				"content": <History />,
 			},
 			'admin.config': {
 				"title": "設定",
+				"langKey": "page_title.config",
 				"content": <Config />,
 			},
 			'admin.config.profile': {
 				"title": "プロフィール設定",
+				"langKey": "page_title.config_profile",
 				"parent": "admin.config",
 				"content": <ConfigProfile />,
 			},
 			'admin.config.members': {
 				"title": "メンバー一覧",
+				"langKey": "page_title.config_members",
 				"parent": "admin.config",
 				"content": <ConfigMembers />,
 			},
 			'admin.config.history': {
 				"title": "履歴管理設定",
+				"langKey": "page_title.config_history",
 				"parent": "admin.config",
 				"content": <ConfigHistory />,
 			},
 			'admin.config.scheduler': {
 				"title": "タスクスケジュール設定",
+				"langKey": "page_title.config_scheduler",
 				"parent": "admin.config",
 				"content": <ConfigScheduler />,
 			},
 			'admin.config.files_and_folders': {
 				"title": "ファイルを操作",
+				"langKey": "page_title.config_files_and_folders",
 				"parent": "admin.config",
 				"content": <FilesAndFolders />,
 			},
 			'admin.config.find_unassigned_contents': {
 				"title": "未アサインコンテンツ検索",
+				"langKey": "page_title.config_find_unassigned_contents",
 				"parent": "admin.config",
 				"content": <FindUnassignedContents />,
 			},
 			'admin.sitemap': {
 				"title": "サイトマップ",
+				"langKey": "page_title.sitemap",
 				"parent": "admin.config",
 				"content": <Sitemap />,
 			},
 			'admin.modules': {
 				"title": "モジュール",
+				"langKey": "page_title.modules",
 				"parent": "admin.config",
 				"content": <Modules />,
 			},
 			'admin.clearcache': {
 				"title": "キャッシュを消去",
+				"langKey": "page_title.clearcache",
 				"parent": "admin.config",
 				"content": <ClearCache />,
 			},
 			'admin.config.maintenance': {
 				"title": "メンテナンス",
+				"langKey": "page_title.config_maintenance",
 				"parent": "admin.config",
 				"content": <ConfigMaintenance />,
 			},
 			'admin.cce': {
 				"title": "拡張機能",
+				"langKey": "page_title.cce",
 				"parent": "admin.config",
 				"content": <CustomConsoleExtensions />,
 			},

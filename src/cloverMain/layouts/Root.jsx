@@ -11,6 +11,7 @@ export default React.memo(function Root(props){
 
 	return (
 		<>
+			{(main.lb && <>
 			<div className="theme-layout" data-px={props.PX}>
 				<header className="theme-layout__header">
 					<div className="theme-layout__header__inner">
@@ -21,15 +22,15 @@ export default React.memo(function Root(props){
 						</div>
 						<nav className="theme-layout__left-navbar">
 							<ul>
-								<li><Link href={main.px2utils.href("/?PX=admin.page_info")}><span>ページ</span></Link></li>
-								<li><Link href={main.px2utils.href("/?PX=admin.theme")}><span>テーマ</span></Link></li>
-								<li><Link href={main.px2utils.href("/?PX=admin.publish")}><span>パブリッシュ</span></Link></li>
-								<li><Link href={main.px2utils.href("/?PX=admin.history")}><span>編集履歴</span></Link></li>
-								<li><Link href={main.px2utils.href("/?PX=admin.config")}><span>設定</span></Link></li>
+								<li><Link href={main.px2utils.href("/?PX=admin.page_info")}><span>{main.lb.get('page_title.page_info')}</span></Link></li>
+								<li><Link href={main.px2utils.href("/?PX=admin.theme")}><span>{main.lb.get('page_title.theme')}</span></Link></li>
+								<li><Link href={main.px2utils.href("/?PX=admin.publish")}><span>{main.lb.get('page_title.publish')}</span></Link></li>
+								<li><Link href={main.px2utils.href("/?PX=admin.history")}><span>{main.lb.get('page_title.history')}</span></Link></li>
+								<li><Link href={main.px2utils.href("/?PX=admin.config")}><span>{main.lb.get('page_title.config')}</span></Link></li>
 							</ul>
-							<ul class="theme-layout__left-navbar__foot-menu">
-								<li><a href="?"><span>プレビューへ戻る</span></a></li>
-								<li><a href="?PX=admin.logout"><span>ログアウト</span></a></li>
+							<ul className="theme-layout__left-navbar__foot-menu">
+								<li><a href="?"><span>{main.lb.get('page_title.back_to_preview')}</span></a></li>
+								<li><a href="?PX=admin.logout"><span>{main.lb.get('page_title.logout')}</span></a></li>
 							</ul>
 						</nav>
 						<div className="theme-layout__hamburger-menu">
@@ -73,12 +74,13 @@ export default React.memo(function Root(props){
 							</>
 							: <></>}
 						<ul>
-							<li><a href="?">プレビューへ戻る</a></li>
-							<li><a href="?PX=admin.logout">ログアウト</a></li>
+							<li><a href="?">{main.lb.get('page_title.back_to_preview')}</a></li>
+							<li><a href="?PX=admin.logout">{main.lb.get('page_title.logout')}</a></li>
 						</ul>
 					</footer>
 				</div>
 			</div>
+			</>)}
 		</>
 	);
 });

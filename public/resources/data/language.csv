@@ -1,8 +1,23 @@
 ,en,ja,zh,zh-TW
-login_error.csrf_token_expired,"Token Expired.","認証トークンが無効か、期限が切れています。"
-login_error.user_id_is_required,"User ID is required.","ユーザーIDを入力してください。"
-login_error.invalid_user_id,"Invalid User ID.","ユーザーIDの形式が不正です。"
-login_error.failed,"Failed to login.","認証情報が正しくありません。"
+page_title.dashboard,"Dashboard","ダッシュボード",,
+page_title.page_info,"Page","ページ",,
+page_title.theme,"Theme","テーマ",,
+page_title.publish,"Publish","パブリッシュ",,
+page_title.history,"History","編集履歴",,
+page_title.config,"Config","設定",,
+page_title.config_profile,"Profile config","プロフィール設定",,
+page_title.config_members,"Member list","メンバー一覧",,
+page_title.config_history,"History config","履歴管理設定",,
+page_title.config_scheduler,"Task schedule settings","タスクスケジュール設定",,
+page_title.config_files_and_folders,"Files and folders","ファイルを操作",,
+page_title.config_find_unassigned_contents,"Find unassigned contents","未アサインコンテンツ検索",,
+page_title.sitemap,"Sitemap","サイトマップ",,
+page_title.modules,"Module","モジュール",,
+page_title.clearcache,"Clear cache","キャッシュを消去",,
+page_title.config_maintenance,"Maintenance","メンテナンス",,
+page_title.cce,"Custom Console Extension","拡張機能",,
+page_title.back_to_preview,"Back to Preview","プレビューへ戻る",,
+page_title.logout,"Logout","ログアウト",,
 ui_label.ok,OK,OK,OK,OK
 ui_label.save,Save,保存する,保存,保存
 ui_label.cancel,Cancel,キャンセル,取消,取消
@@ -36,6 +51,10 @@ ui_message.confirm_error,"There is any input errors. Please confirm.","入力エ
 ui_message.enter_only_when_changing_the_password,"Enter only when changing the password.","パスワードを変更する場合のみ入力してください。",,
 ui_message.save_completed,"Saving is complete.","保存を完了しました。",,
 ui_message.logged_out,"Logged out.","ログアウトしました。",,
+login_error.csrf_token_expired,"Token Expired.","認証トークンが無効か、期限が切れています。"
+login_error.user_id_is_required,"User ID is required.","ユーザーIDを入力してください。"
+login_error.invalid_user_id,"Invalid User ID.","ユーザーIDの形式が不正です。"
+login_error.failed,"Failed to login.","認証情報が正しくありません。"
 error_message.invalid,"There is a problem with the input content.","入力内容に不備があります。",,
 error_message.invalid_user_id,"Malformed User ID.","不正な形式のユーザーIDです。",,
 error_message.invalid_email,"Malformed E-mail address.","不正な形式のメールアドレスです。",,
