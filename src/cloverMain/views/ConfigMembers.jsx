@@ -257,19 +257,35 @@ export default function ConfigMembers(props){
 			<p><button type="button" className={"px2-btn"} onClick={createNewMember}>新規メンバーを登録する</button></p>
 			{(memberList.list && memberList.list.length)
 				?<>
-					<ul>
-						{memberList.list.map((memberInfo, index) => {
-							return <li key={index}>
-								{ memberInfo.id == main.profile.id ? <>
-									{ memberInfo.name } (You)
-								</> : <>
-									{ memberInfo.name }
-										<button type="button" className="px2-btn" onClick={(e)=>{editMember(e, memberInfo)}}>編集</button>
-										<button type="button" className="px2-btn px2-btn--danger" onClick={(e)=>{deleteMember(e, memberInfo)}}>削除</button>
-								</> }
-							</li>;
-						})}
-					</ul>
+					<div class="px2-responsive">
+						<table class="px2-table">
+							<thead>
+								<tr>
+									<th>{main.lb.get('ui_label.user_name')}</th>
+									<th>{main.lb.get('ui_label.user_email')}</th>
+									<th>{main.lb.get('ui_label.user_role')}</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+							{memberList.list.map((memberInfo, index) => {
+								return <tr key={index}>
+									<td>{ memberInfo.name }</td>
+									<td>{ memberInfo.email }</td>
+									<td>{ memberInfo.role }</td>
+									{ memberInfo.id == main.profile.id ? <>
+										<td>(You)</td>
+									</> : <>
+										<td>
+											<button type="button" className="px2-btn" onClick={(e)=>{editMember(e, memberInfo)}}>編集</button>
+											<button type="button" className="px2-btn px2-btn--danger" onClick={(e)=>{deleteMember(e, memberInfo)}}>削除</button>
+										</td>
+									</> }
+								</tr>;
+							})}
+							</tbody>
+						</table>
+					</div>
 				</>
 				:<>
 					<p>
