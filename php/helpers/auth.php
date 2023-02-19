@@ -56,6 +56,13 @@ class auth{
 				exit;
 			}
 
+			if( !strlen($login_challenger_id ?? '') ){
+				// User ID が未指定
+				$this->clover->logger()->error_log('Failed to logged. User ID is not set.');
+				$this->login_page('user_id_is_required');
+				exit;
+			}
+
 			if( !$this->validate_admin_user_id($login_challenger_id) ){
 				// 不正な形式のID
 				$this->clover->logger()->error_log('Failed to logged in user \''.$login_challenger_id.'\'. Invalid user ID format.');
@@ -184,7 +191,7 @@ class auth{
 					'url_backto' => '?',
 					'ADMIN_USER_ID' => $this->px->req()->get_param('ADMIN_USER_ID'),
 					'csrf_token' => $this->get_csrf_token(),
-					'error_message' => $error_message ? $this->clover->lang()->get('login_error.'.$error_message) : $this->px->get_status_message(),
+					'error_message' => ($error_message ? $this->clover->lang()->get('login_error.'.$error_message) : ''),
 				)
 			);
 			exit;
@@ -193,7 +200,7 @@ class auth{
 		$this->px->header('Content-type: application/json');
 		echo json_encode(array(
 			'result' => false,
-			'message' => $error_message ? $this->clover->lang()->get('login_error.'.$error_message) : $this->px->get_status_message(),
+			'message' => ($error_message ? $this->clover->lang()->get('login_error.'.$error_message) : ''),
 		));
 		exit;
 
@@ -425,20 +432,7 @@ class auth{
 			'errors' => (object) array(),
 		);
 		$user_info = (object) $user_info;
-		if( !isset($user_info->id) || !$this->validate_admin_user_id($user_info->id) ){
-			return (object) array(
-				'result' => false,
-				'message' => 'ユーザーIDが不正です。',
-				'errors' => (object) array(),
-			);
-		}
-		if( $this->admin_user_data_exists( $user_info->id ) ){
-			return (object) array(
-				'result' => false,
-				'message' => 'そのユーザーIDはすでに存在します。',
-				'errors' => (object) array(),
-			);
-		}
+
 		$user_info_validated = $this->validate_admin_user_info($user_info);
 		if( !$user_info_validated->is_valid ){
 			// 不正な形式のユーザー情報
@@ -446,6 +440,14 @@ class auth{
 				'result' => false,
 				'message' => $user_info_validated->message,
 				'errors' => $user_info_validated->errors,
+			);
+		}
+
+		if( $this->admin_user_data_exists( $user_info->id ) ){
+			return (object) array(
+				'result' => false,
+				'message' => 'そのユーザーIDはすでに存在します。',
+				'errors' => (object) array(),
 			);
 		}
 
@@ -534,10 +536,14 @@ class auth{
 		);
 		$user_info = (object) $user_info;
 
-		if( !$this->validate_admin_user_id($user_info->id) ){
+		if( !strlen($user_info->id ?? '') ){
+			// IDが未指定
+			$rtn->is_valid = false;
+			$rtn->errors->id = array('ユーザーIDを入力してください。');
+		}elseif( !$this->validate_admin_user_id($user_info->id) ){
 			// 不正な形式のID
 			$rtn->is_valid = false;
-			$rtn->errors->id = array('不正な形式のIDです。');
+			$rtn->errors->id = array('不正な形式のユーザーIDです。');
 		}
 		if( !isset($user_info->name) || !strlen($user_info->name) ){
 			$rtn->is_valid = false;
@@ -572,7 +578,7 @@ class auth{
 		if( $rtn->is_valid ){
 			$rtn->message = 'OK';
 		}else{
-			$rtn->message = 'Validation Error';
+			$rtn->message = '入力内容に不備があります。';
 		}
 		return $rtn;
 	}

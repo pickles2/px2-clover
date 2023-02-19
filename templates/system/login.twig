@@ -4,22 +4,32 @@
 {% block head %}
 {% endblock %}
 {% block content %}
+
 <p>ログインしてください。</p>
+
+{% if error_message %}
+	<p class="px2-error">{{ error_message }}</p>
+{% endif %}
 <form action="" method="post">
-	{% if error_message %}
-		<p class="px2-error">{{ error_message }}</p>
-	{% endif %}
-	<div>ID:
-		<div><input type="text" name="ADMIN_USER_ID" value="{{ ADMIN_USER_ID }}" class="px2-input px2-input--block" /></div>
+	<div class="auth-form">
+		<div class="auth-form__unit">
+			<div class="auth-form__label">ユーザーID:</div>
+			<div class="auth-form__input"><input type="text" name="ADMIN_USER_ID" value="{{ ADMIN_USER_ID }}" class="px2-input px2-input--block" /></div>
+		</div>
+		<div class="auth-form__unit">
+			<div class="auth-form__label">パスワード:</div>
+			<div class="auth-form__input"><input type="password" name="ADMIN_USER_PW" value="" class="px2-input px2-input--block" /></div>
+		</div>
+		<div class="auth-form__buttons">
+			<button type="submit" class="px2-btn px2-btn--primary">ログイン</button>
+		</div>
+		<div class="auth-form__backto">
+			<p><a href="{{ url_backto }}">戻る</a></p>
+		</div>
+		<input type="hidden" name="ADMIN_USER_FLG" value="1" />
+		<input type="hidden" name="ADMIN_USER_CSRF_TOKEN" value="{{ csrf_token }}" />
 	</div>
-	<div>Password:
-		<div><input type="password" name="ADMIN_USER_PW" value="" class="px2-input px2-input--block" /></div>
-	</div>
-	<div><button type="submit" class="px2-btn px2-btn--primary">ログイン</button></div>
-	<input type="hidden" name="ADMIN_USER_FLG" value="1" />
-	<input type="hidden" name="ADMIN_USER_CSRF_TOKEN" value="{{ csrf_token }}" />
 </form>
-<p><a href="{{ url_backto }}">戻る</a></p>
 {% endblock %}
 {% block foot %}
 {% endblock %}

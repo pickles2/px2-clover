@@ -5,7 +5,12 @@
 {% endblock %}
 {% block content %}
 <p>ログアウトしました。</p>
-<p><a href="{{ url_backto }}">戻る</a></p>
+
+<div class="auth-form">
+    <div class="auth-form__backto">
+        <p><a href="{{ url_backto }}">戻る</a></p>
+    </div>
+</div>
 {% endblock %}
 {% block foot %}
 {% endblock %}

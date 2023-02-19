@@ -1,5 +1,6 @@
 ,en,ja,zh,zh-TW
 login_error.csrf_token_expired,"Token Expired.","認証トークンが無効か、期限が切れています。"
+login_error.user_id_is_required,"User ID is required.","ユーザーIDを入力してください。"
 login_error.invalid_user_id,"Invalid User ID.","ユーザーIDの形式が不正です。"
 login_error.failed,"Failed to login.","認証情報が正しくありません。"
 ui_label.ok,OK,OK,OK,OK

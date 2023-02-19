@@ -80,6 +80,7 @@ mix
 	.copyDirectory('vendor/pickles2/px2style/dist', 'templates/layouts/auth_files/px2style')
 	.copyDirectory('vendor/tomk79/remote-finder/dist', 'public/resources/remote-finder')
 	.copyDirectory('public/resources/jquery-3.6.0.min.js', 'templates/layouts/auth_files/jquery-3.6.0.min.js')
+	.copyDirectory('public/resources/cloverCommon/', 'templates/layouts/auth_files/cloverCommon/')
 	.copyDirectory('node_modules/@tomk79/common-file-editor/dist', 'public/resources/common-file-editor')
 	.copyDirectory('node_modules/gitui79/dist', 'public/resources/gitui79')
 ;
