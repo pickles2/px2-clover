@@ -31,8 +31,22 @@ class view{
 			// 'cache' => $this->clover->realpath_private_cache('twig_cache/'),
 		]);
 
+		$cloverCommon = '';
+		ob_start(); ?>
+<script><?= ( file_get_contents(__DIR__.'/../public/resources/jquery-3.6.0.min.js') ); ?></script>
+<style><?= ( file_get_contents(__DIR__.'/../public/resources/px2style/px2style.css') ); ?></style>
+<style><?= ( file_get_contents(__DIR__.'/../public/resources/px2style/themes/default.css') ); ?></style>
+<script><?= ( file_get_contents(__DIR__.'/../public/resources/px2style/px2style.js') ); ?></script>
+<style><?= ( file_get_contents(__DIR__.'/../public/resources/cloverCommon/cloverCommon.css') ); ?></style>
+<script><?= ( file_get_contents(__DIR__.'/../public/resources/cloverCommon/cloverCommon.js') ); ?></script>
+<?php
+		$cloverCommon .= ob_get_clean();
+		$cloverCommon = preg_replace('/\/\*\#\ sourceMappingURL\=.*?\*\//', '', $cloverCommon);
+		$cloverCommon = preg_replace('/\/\/\#\ sourceMappingURL\=.*?\.map/', '', $cloverCommon);
+
 		// 共通項目
 		$data['clover_config'] = $this->clover->conf();
+		$data['common_resources'] = $cloverCommon;
 		$data['px2config'] = $this->px->conf();
 		$data['plugin_options'] = $this->clover->get_options();
 		$data['path_client_resources'] = $this->clover->path_files();

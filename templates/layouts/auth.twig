@@ -11,16 +11,8 @@
 	@layer px2style;
 	</style>
 
-	{# jQuery #}
-	<script>{{ include('/layouts/auth_files/jquery-3.6.0.min.js') }}</script>
-
-	{# px2style #}
-	<style>{{ include('/layouts/auth_files/px2style/px2style.css') }}</style>
-	<style>{{ include('/layouts/auth_files/px2style/themes/default.css') }}</style>
-	<script>{{ include('/layouts/auth_files/px2style/px2style.js') }}</script>
-
-	{# cloverCommon #}
-	<style>{{ include('/layouts/auth_files/cloverCommon/cloverCommon.css') }}</style>
+	{# Common Resources #}
+	{{ common_resources | raw }}
 
 	<style>
 	html, body {
