@@ -21,11 +21,15 @@ export default React.memo(function Root(props){
 						</div>
 						<nav className="theme-layout__left-navbar">
 							<ul>
-								<li><Link href={main.px2utils.href("/?PX=admin.page_info")}>ページ</Link></li>
-								<li><Link href={main.px2utils.href("/?PX=admin.theme")}>テーマ</Link></li>
-								<li><Link href={main.px2utils.href("/?PX=admin.publish")}>パブリッシュ</Link></li>
-								<li><Link href={main.px2utils.href("/?PX=admin.history")}>編集履歴</Link></li>
-								<li><Link href={main.px2utils.href("/?PX=admin.config")}>設定</Link></li>
+								<li><Link href={main.px2utils.href("/?PX=admin.page_info")}><span>ページ</span></Link></li>
+								<li><Link href={main.px2utils.href("/?PX=admin.theme")}><span>テーマ</span></Link></li>
+								<li><Link href={main.px2utils.href("/?PX=admin.publish")}><span>パブリッシュ</span></Link></li>
+								<li><Link href={main.px2utils.href("/?PX=admin.history")}><span>編集履歴</span></Link></li>
+								<li><Link href={main.px2utils.href("/?PX=admin.config")}><span>設定</span></Link></li>
+							</ul>
+							<ul class="theme-layout__left-navbar__foot-menu">
+								<li><a href="?"><span>プレビューへ戻る</span></a></li>
+								<li><a href="?PX=admin.logout"><span>ログアウト</span></a></li>
 							</ul>
 						</nav>
 						<div className="theme-layout__hamburger-menu">
