@@ -45,10 +45,28 @@ export default React.memo(function Root(props){
 									},
 								});
 								$body.find('a').on('click', function(e){
-									e.preventDefault();
-									main.link(e.target.href);
-									px2style.closeModal();
-									return false;
+									var $a = $(this);
+									var href = $a.attr('href');
+									var pathname = null;
+									var searchString = null;
+									var getParams = {};
+									if( typeof(href) == typeof('string') && href.match(/\?/) ){
+										[pathname, searchString] = href.split('?');
+									}
+									if(searchString){
+										let keyVals = searchString.split('&');
+										for( let idx in keyVals ){
+											let [key, val] = keyVals[idx].split('=');
+											getParams[key] = val;
+										}
+									}
+									if( searchString && getParams['PX'] !== 'admin.logout' ){
+										e.preventDefault();
+										main.link(e.target.href);
+										px2style.closeModal();
+										return false;
+									}
+									return true;
 								});
 							}}><span></span></button>
 						</div>

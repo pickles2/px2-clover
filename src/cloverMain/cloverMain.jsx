@@ -37,10 +37,12 @@ class Layout extends React.Component {
 			let getParams = {};
 			let [pathname, searchString] = parsedUrl.search.split('?');
 			pathname = parsedUrl.pathname;
-			let keyVals = searchString.split('&');
-			for( let idx in keyVals ){
-				let [key, val] = keyVals[idx].split('=');
-				getParams[key] = val;
+			if( searchString ){
+				let keyVals = searchString.split('&');
+				for( let idx in keyVals ){
+					let [key, val] = keyVals[idx].split('=');
+					getParams[key] = val;
+				}
 			}
 			pathname = pathname.replace(window.px2config.path_controot, '/');
 			let newState = {
@@ -279,6 +281,14 @@ class Layout extends React.Component {
 		};
 
 		function getCurrentRoute(parsedUrlPX){
+			if( !parsedUrlPX ){
+				return {
+					"title": "---",
+					"langKey": null,
+					"parent": null,
+					"content": null,
+				};
+			}
 			let aryParsedUrlPX = parsedUrlPX.split(/\./);
 			let currentRoute = {};
 			while( true ){
