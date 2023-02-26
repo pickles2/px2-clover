@@ -82,11 +82,12 @@ class register{
 			// --------------------------------------
 			// 認証
 			$auth_needs = false;
-			if( $options->protect_preview ){
+			if( $px->req()->get_param('PX') === 'admin.logout' ){
+				// ログアウト画面には認証を求めない
+			}elseif( $options->protect_preview ){
 				// プレビュー全体で認証を要求する
 				$auth_needs = true;
-			}
-			if( is_string($px->req()->get_param('PX')) && strlen($px->req()->get_param('PX')) && $px->req()->get_param('PX') !== 'admin.logout' ){
+			}elseif( is_string($px->req()->get_param('PX')) && strlen($px->req()->get_param('PX')) ){
 				// PXコマンド全体で認証を要求する
 				$auth_needs = true;
 			}
