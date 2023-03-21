@@ -122,7 +122,9 @@ export default function CustomConsoleExtensions(props){
 						window.open(target+'?PX=admin.edit_content&backto=close');
 					},
 					'onEditThemeLayout': function(target){
-						window.open(target+'?PX=admin.edit_theme_layout&theme_id='+encodeURIComponent(themeId)+'&layout_id='+encodeURIComponent(layoutId));
+						// TODO: テーマレイアウト編集画面を開く実装を追加する↓
+						// window.open(target+'?PX=admin.edit_theme_layout&theme_id='+encodeURIComponent(themeId)+'&layout_id='+encodeURIComponent(layoutId));
+						console.info('開発中の機能です。');
 					},
 				});
 
