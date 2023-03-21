@@ -755,7 +755,7 @@ class auth{
 				case 'page_info':
 				case 'sitemap':
 				case 'theme':
-				case 'edit_contents':
+				case 'edit_content':
 				case 'edit_theme_layout':
 				case 'publish':
 				case 'clearcache':

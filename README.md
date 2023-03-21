@@ -76,6 +76,10 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
+### pickles2/px2-clover v0.2.6 (リリース日未定)
+
+- クライアントサイド `cceAgent` の `editContent()`、 `editThemeLayout()` に対応。
+
 ### pickles2/px2-clover v0.2.5 (2023年3月11日)
 
 - 管理ユーザー情報を削除できない不具合を修正。

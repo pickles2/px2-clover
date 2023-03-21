@@ -29,7 +29,7 @@ class editThemeLayout{
 	 */
 	public function start(){
 		$path_client_resources = $this->clover->path_files('/');
-		$client_resources_dist = $this->clover->realpath_files('/edit-contents/');
+		$client_resources_dist = $this->clover->realpath_files('/edit-content/');
 		$this->px->fs()->mkdir_r($client_resources_dist); // ディレクトリが予め存在していないとファイル生成は失敗する。
 
 		$px2ce_res = $this->px->internal_sub_request('/?PX=px2dthelper.px2ce.client_resources&dist='.urlencode($client_resources_dist));
@@ -38,7 +38,7 @@ class editThemeLayout{
 		$backto = $this->px->req()->get_param('backto');
 
 		echo $this->clover->view()->bind(
-			'/cont/editContents/editContents.twig',
+			'/cont/editContent/editContent.twig',
 			array(
 				'path_client_resources' => $path_client_resources,
 				'px2ce_res' => $px2ce_res,

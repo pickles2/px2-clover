@@ -11,6 +11,22 @@ window.tomk79CmsToolsSample = function(cceAgent){
 		)
 		.append($('<p>')
 			.append($('<button class="px2-btn">')
+				.text('コンテンツを編集するテスト')
+				.on('click', function(){
+					cceAgent.editContent('/index.html');
+				})
+			)
+		)
+		.append($('<p>')
+			.append($('<button class="px2-btn">')
+				.text('テーマレイアウトを編集するテスト')
+				.on('click', function(){
+					cceAgent.editThemeLayout('/index.html');
+				})
+			)
+		)
+		.append($('<p>')
+			.append($('<button class="px2-btn">')
 				.text('GPIを呼び出すテスト')
 				.on('click', function(){
 					alert('呼び出します。');
@@ -18,6 +34,7 @@ window.tomk79CmsToolsSample = function(cceAgent){
 						'command': 'test-gpi-call'
 					}, function(res){
 						console.log('---- res:', res);
+						alert(res);
 					});
 				})
 			)

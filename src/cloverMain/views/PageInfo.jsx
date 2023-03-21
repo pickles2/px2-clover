@@ -786,7 +786,7 @@ export default function PageInfo(props){
 					<div className="cont-menubar">
 						<ul>
 							<li><a href="?" className="px2-btn" onClick={editPage}>ページ情報を編集する</a></li>
-							<li><a href="?PX=admin.edit_contents" className="px2-btn">コンテンツを編集する</a></li>
+							<li><a href="?PX=admin.edit_content" className="px2-btn">コンテンツを編集する</a></li>
 							<li><a href="?" className="px2-btn">プレビューに戻る</a></li>
 						</ul>
 					</div>

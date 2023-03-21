@@ -118,6 +118,12 @@ export default function CustomConsoleExtensions(props){
 						);
 						return;
 					},
+					'onEditContent': function(target){
+						window.open(target+'?PX=admin.edit_content&backto=close');
+					},
+					'onEditThemeLayout': function(target){
+						window.open(target+'?PX=admin.edit_theme_layout&theme_id='+encodeURIComponent(themeId)+'&layout_id='+encodeURIComponent(layoutId));
+					},
 				});
 
 				it1.next();

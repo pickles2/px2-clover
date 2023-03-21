@@ -348,10 +348,10 @@ class register{
 					}
 					break;
 
-				case 'edit_contents':
+				case 'edit_content':
 					// --------------------------------------
 					// コンテンツを編集
-					$app = new funcs\editContents\editContents($this->clover);
+					$app = new funcs\editContent\editContent($this->clover);
 					$app->start();
 					break;
 

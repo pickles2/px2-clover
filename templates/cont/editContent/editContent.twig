@@ -35,10 +35,10 @@
 	<script src="{{ path_client_resources }}common-file-editor/common-file-editor.js"></script>
 
 	{% for path_px2ce_css in px2ce_res.css %}
-	<link rel="stylesheet" href="{{ path_client_resources }}edit-contents/{{ path_px2ce_css }}" />
+	<link rel="stylesheet" href="{{ path_client_resources }}edit-content/{{ path_px2ce_css }}" />
 	{% endfor %}
 	{% for path_px2ce_js in px2ce_res.js %}
-	<script src="{{ path_client_resources }}edit-contents/{{ path_px2ce_js }}"></script>
+	<script src="{{ path_client_resources }}edit-content/{{ path_px2ce_js }}"></script>
 	{% endfor %}
 
 	<style>
@@ -144,7 +144,7 @@
 						return;
 					},
 					'complete': function(){
-						if( target_mode == 'theme_layout' ){
+						if( target_mode == 'theme_layout' || backto == 'close' ){
 							window.close();
 							return;
 						}
