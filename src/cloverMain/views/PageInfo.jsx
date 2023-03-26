@@ -785,7 +785,9 @@ export default function PageInfo(props){
 				?<>
 					<div className="cont-menubar">
 						<ul>
+							{main.pageInfo.originated_csv && <>
 							<li><a href="?" className="px2-btn" onClick={editPage}>ページ情報を編集する</a></li>
+							</>}
 							<li><a href="?PX=admin.edit_content" className="px2-btn">コンテンツを編集する</a></li>
 							<li><a href="?" className="px2-btn">プレビューに戻る</a></li>
 						</ul>
@@ -825,7 +827,9 @@ export default function PageInfo(props){
 
 								<div className="px2-linklist">
 									<ul>
+										{main.pageInfo.originated_csv && <>
 										<li><a href="?" onClick={sortPage}>並べ替え</a></li>
+										</>}
 										{main.pageInfo.editor_mode !== '.not_exists' && <>
 										<li><a href="?" onClick={changeEditorType}>編集方法を変更する</a></li>
 										<li><a href="?" onClick={singlePagePublish}>単体パブリッシュ</a></li>

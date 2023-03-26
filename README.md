@@ -79,6 +79,7 @@ $conf->allow_pxcommands = 1;
 ### pickles2/px2-clover v0.2.6 (リリース日未定)
 
 - クライアントサイド `cceAgent` の `editContent()`、 `editThemeLayout()`、 `openInBrowser()` に対応。
+- その他、不具合の修正、UI改善など。
 
 ### pickles2/px2-clover v0.2.5 (2023年3月11日)
 
