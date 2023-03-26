@@ -126,6 +126,9 @@ export default function CustomConsoleExtensions(props){
 						// window.open(target+'?PX=admin.edit_theme_layout&theme_id='+encodeURIComponent(themeId)+'&layout_id='+encodeURIComponent(layoutId));
 						console.info('開発中の機能です。');
 					},
+					'onOpenInBrowser': function(path){
+						window.open(path);
+					},
 				});
 
 				it1.next();
