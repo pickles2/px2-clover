@@ -181,16 +181,29 @@ export default function PageInfo(props){
 				}
 				fixedSitemapDefinition = fixSitemapDefinition(page_info);
 
-				var template = require('./PageInfo_files/templates/editPage.twig');
-				var $body = $('<div>')
-					.append( template( {
-						"page_info": page_info,
-						"sitemapDefinition": fixedSitemapDefinition,
-						"lockedField": {
-							"logical_path": "lock",
-						},
-					} ) )
+				// var template = require('./PageInfo_files/templates/editPage.twig');
+				// var $body = $('<div>')
+				// 	.append( template( {
+				// 		"page_info": page_info,
+				// 		"sitemapDefinition": fixedSitemapDefinition,
+				// 		"lockedField": {
+				// 			"logical_path": "lock",
+				// 		},
+				// 	} ) )
+				// ;
 				;
+				var $body = $('<div>')
+					.append( main.cloverUtils.bindTwig(
+						require('-!text-loader!./PageInfo_files/templates/editPage.twig'),
+						{
+							"page_info": page_info,
+							"sitemapDefinition": fixedSitemapDefinition,
+							"lockedField": {
+								"logical_path": "lock",
+							},
+						}
+					) );
+
 				modal = px2style.modal({
 					'title': "ページ情報を追加する",
 					'body': $body,
@@ -305,17 +318,30 @@ export default function PageInfo(props){
 				}
 				fixedSitemapDefinition = fixSitemapDefinition(page_info);
 
-				var template = require('./PageInfo_files/templates/editPage.twig');
+				// var template = require('./PageInfo_files/templates/editPage.twig');
+				// var $body = $('<div>')
+				// 	.append( template( {
+				// 		"page_info": page_info,
+				// 		"sitemapDefinition": fixedSitemapDefinition,
+				// 		"lockedField": {
+				// 			// "path": "lock",
+				// 			// "logical_path": "lock",
+				// 		},
+				// 	} ) )
+				// ;
 				var $body = $('<div>')
-					.append( template( {
-						"page_info": page_info,
-						"sitemapDefinition": fixedSitemapDefinition,
-						"lockedField": {
-							// "path": "lock",
-							// "logical_path": "lock",
-						},
-					} ) )
-				;
+					.append( main.cloverUtils.bindTwig(
+						require('-!text-loader!./PageInfo_files/templates/editPage.twig'),
+						{
+							"page_info": page_info,
+							"sitemapDefinition": fixedSitemapDefinition,
+							"lockedField": {
+								// "path": "lock",
+								// "logical_path": "lock",
+							},
+						}
+					) );
+
 				modal = px2style.modal({
 					'title': "ページ情報を編集する",
 					'body': $body,
@@ -445,13 +471,22 @@ export default function PageInfo(props){
 				it1.next();
 			},
 			(it1) => {
-				var template = require('./PageInfo_files/templates/sortPage.twig');
+				// var template = require('./PageInfo_files/templates/sortPage.twig');
+				// var $body = $('<div>')
+				// 	.append( template( {
+				// 		"current_page_info": main.pageInfo.current_page_info,
+				// 		"bros": main.pageInfo.bros,
+				// 	} ) )
+				// ;
 				var $body = $('<div>')
-					.append( template( {
-						"current_page_info": main.pageInfo.current_page_info,
-						"bros": main.pageInfo.bros,
-					} ) )
-				;
+					.append( main.cloverUtils.bindTwig(
+						require('-!text-loader!./PageInfo_files/templates/sortPage.twig'),
+						{
+							"current_page_info": main.pageInfo.current_page_info,
+							"bros": main.pageInfo.bros,
+						}
+					) );
+
 				modal = px2style.modal({
 					'title': "ページを並べ替える",
 					'body': $body,

@@ -2,7 +2,7 @@
 	<ul class="px2-form-input-list__ul">
 {% for key, value in page_info %}
 	<li class="px2-form-input-list__li">
-		<div class="px2-form-input-list__label"><label for="form-element--{{ key }}">{{ sitemapDefinition[key].label or key }}</label></div>
+		<div class="px2-form-input-list__label"><label for="form-element--{{ key }}">{{ sitemapDefinition[key].label ?? key }}</label></div>
 		{% if (lockedField[key] == 'lock') %}
 			<div class="px2-form-input-list__input">
 				{{ value }}<input type="hidden" name="{{ key }}" value="{{ value }}" />

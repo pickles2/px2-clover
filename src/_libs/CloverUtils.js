@@ -1,6 +1,8 @@
 export default function CloverUtils(){
 	const $ = require('jquery');
 	const _ = require('lodash');
+	const Twig = require('twig'),
+		twig = Twig.twig;
 
 	/**
 	 * ログインユーザーのプロフィール情報を取得する
@@ -235,6 +237,16 @@ export default function CloverUtils(){
 			callback(true);
 		});
 		return;
+	}
+
+	/**
+	 * Twig テンプレートを処理する
+	 */
+	this.bindTwig = function( templateSrc, bindData ){
+		var template = Twig.twig({
+			data: templateSrc,
+		});
+		return template.render(bindData);
 	}
 
 

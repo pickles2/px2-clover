@@ -34,19 +34,35 @@ export default function ConfigMembers(props){
 		var modal;
 		iterate79.fnc({}, [
 			(it1) => {
-				var template = require('./ConfigMembers_files/templates/edit.twig');
+				// var template = require('./ConfigMembers_files/templates/edit.twig');
+				// var $body = template( {
+				// 	"values": {
+				// 		'name': '',
+				// 		'id': '',
+				// 		'pw': '',
+				// 		'email': '',
+				// 		'lang': '',
+				// 		'role': '',
+				// 	},
+				// } );
+				var $body = $('<div>')
+					.append( main.cloverUtils.bindTwig(
+						require('-!text-loader!./ConfigMembers_files/templates/edit.twig'),
+						{
+							"values": {
+								'name': '',
+								'id': '',
+								'pw': '',
+								'email': '',
+								'lang': '',
+								'role': '',
+							},
+						}
+					) );
+
 				modal = px2style.modal({
 					'title': "メンバーを追加する",
-					'body': template( {
-						"values": {
-							'name': '',
-							'id': '',
-							'pw': '',
-							'email': '',
-							'lang': '',
-							'role': '',
-						},
-					} ),
+					'body': $body,
 					'width': '680px',
 					'buttons':[
 						$('<button type="submit" class="px2-btn px2-btn--primary">')
@@ -114,12 +130,21 @@ export default function ConfigMembers(props){
 		var targetId = memberInfo.id;
 		iterate79.fnc({}, [
 			(it1) => {
-				var template = require('./ConfigMembers_files/templates/edit.twig');
+				// var template = require('./ConfigMembers_files/templates/edit.twig');
+				// var $body = template( {
+				// 	"values": memberInfo,
+				// } );
+				var $body = $('<div>')
+					.append( main.cloverUtils.bindTwig(
+						require('-!text-loader!./ConfigMembers_files/templates/edit.twig'),
+						{
+							"values": memberInfo,
+						}
+					) );
+
 				modal = px2style.modal({
 					'title': "メンバーを追加する",
-					'body': template( {
-						"values": memberInfo,
-					} ),
+					'body': $body,
 					'width': '680px',
 					'buttons':[
 						$('<button type="submit" class="px2-btn px2-btn--primary">')
