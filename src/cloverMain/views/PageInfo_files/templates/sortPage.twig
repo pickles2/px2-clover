@@ -1,8 +1,8 @@
 <p>並べ替える移動先を選択してください。</p>
 <p>選択したページの1つ前に移動されます。</p>
 <p>
-	<select class="px2-input">
-{% for key, value in bros %}
+	<select class="px2-input px2-input--block">
+{% for key,value in bros %}
 		<option value="{{ value.path }}"{% if current_page_info.path == value.path %} selected="selected"{% endif %}>{{ value.title }}</option>
 {% endfor %}
 	</select>

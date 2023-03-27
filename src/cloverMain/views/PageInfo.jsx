@@ -827,7 +827,7 @@ export default function PageInfo(props){
 
 								<div className="px2-linklist">
 									<ul>
-										{main.pageInfo.originated_csv && <>
+										{main.pageInfo.originated_csv && !!main.pageInfo.current_page_info.id.length && <>
 										<li><a href="?" onClick={sortPage}>並べ替え</a></li>
 										</>}
 										{main.pageInfo.editor_mode !== '.not_exists' && <>
