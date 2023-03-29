@@ -753,6 +753,7 @@ class auth{
 				case 'logout':
 				case 'config':
 				case 'page_info':
+				case 'blog':
 				case 'sitemap':
 				case 'theme':
 				case 'edit_content':

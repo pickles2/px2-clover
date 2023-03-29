@@ -33,9 +33,10 @@
         "tomk79/remote-finder": "~0.2"
     },
     "require-dev": {
-        "pickles2/px2style": "~3.0",
+		"pickles2/px2-blog-kit": "~0.1.0",
         "pickles2/px2-multitheme": "^2.0",
         "pickles2/px2-sitemapexcel": "~2.0",
+        "pickles2/px2style": "~3.0",
         "tomk79/px2-serve": "~0",
         "phpunit/phpunit": "~9.5",
         "tomk79/microtime-recorder": "~0.1.2"

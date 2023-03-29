@@ -11,6 +11,7 @@ import ConfigHistory from './views/ConfigHistory';
 import ConfigScheduler from './views/ConfigScheduler';
 import ConfigMaintenance from './views/ConfigMaintenance';
 import Sitemap from './views/Sitemap';
+import Blog from './views/Blog';
 import PageInfo from './views/PageInfo';
 import Theme from './views/Theme';
 import Modules from './views/Modules';
@@ -191,6 +192,11 @@ class Layout extends React.Component {
 				"title": "ページ",
 				"langKey": "page_title.page_info",
 				"content": <PageInfo />,
+			},
+			'admin.blog': {
+				"title": "ブログ",
+				"langKey": "page_title.blog",
+				"content": <Blog />,
 			},
 			'admin.theme': {
 				"title": "テーマ",

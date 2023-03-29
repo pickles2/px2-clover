@@ -12,6 +12,7 @@ page_title.config_scheduler,"Task schedule settings","タスクスケジュー�
 page_title.config_files_and_folders,"Files and folders","ファイルを操作",,
 page_title.config_find_unassigned_contents,"Find unassigned contents","未アサインコンテンツ検索",,
 page_title.sitemap,"Sitemap","サイトマップ",,
+page_title.blog,"Blog","ブログ",,
 page_title.modules,"Module","モジュール",,
 page_title.clearcache,"Clear cache","キャッシュを消去",,
 page_title.config_maintenance,"Maintenance","メンテナンス",,

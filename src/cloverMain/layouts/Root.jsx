@@ -23,6 +23,7 @@ export default React.memo(function Root(props){
 						<nav className="theme-layout__left-navbar">
 							<ul>
 								<li><Link href={main.px2utils.href("/?PX=admin.page_info")}><span>{main.lb.get('page_title.page_info')}</span></Link></li>
+								<li><Link href={main.px2utils.href("/?PX=admin.blog")}><span>{main.lb.get('page_title.blog')}</span></Link></li>
 								<li><Link href={main.px2utils.href("/?PX=admin.theme")}><span>{main.lb.get('page_title.theme')}</span></Link></li>
 								<li><Link href={main.px2utils.href("/?PX=admin.publish")}><span>{main.lb.get('page_title.publish')}</span></Link></li>
 								<li><Link href={main.px2utils.href("/?PX=admin.history")}><span>{main.lb.get('page_title.history')}</span></Link></li>
