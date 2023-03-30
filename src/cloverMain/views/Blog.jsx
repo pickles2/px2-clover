@@ -26,7 +26,7 @@ export default React.memo(function Sitemap(props){
 	}
 
 	// 新規ブログ作成
-	function createNewBlog(){
+	function createNewBlog(e){
 		e.preventDefault();
 		var $body = $('<div>')
 			.append( main.cloverUtils.bindTwig(
