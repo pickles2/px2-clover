@@ -379,6 +379,17 @@ class register{
 									));
 									exit;
 									break;
+								case 'delete_blog':
+									$writer = new \pickles2\px2BlogKit\writer($this->px, $blog, $blog->get_options());
+									$blog_id = $this->px->req()->get_param('blog_id');
+									$result = $writer->delete_blog( $blog_id );
+									echo json_encode(array(
+										"result" => $result->result ?? null,
+										"message" => $result->message ?? null,
+										"errors" => $result->errors ?? null,
+									));
+									exit;
+									break;
 							}
 					}
 					break;

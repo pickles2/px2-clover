@@ -70,6 +70,49 @@ export default React.memo(function Sitemap(props){
 		var form = px2style.form($body);
 	}
 
+	// ブログを削除
+	function deleteBlog(e){
+		e.preventDefault();
+		const blog_id = $(e.target).attr('data-delete-blog');
+		var $body = $('<div>')
+			.append( main.cloverUtils.bindTwig(
+				require('-!text-loader!./Blog_files/templates/deleteBlog.twig'),
+				{
+					"blog_id": blog_id,
+				}
+			) );
+		px2style.modal({
+			"title": "ブログを削除する",
+			"body": $body,
+			"buttons": [
+				$('<button type="submit" class="px2-btn px2-btn--danger">').text('削除する'),
+			],
+			"form": {
+				"submit": function(e){
+					main.px2utils.px2cmd(
+						`?PX=admin.api.blogkit.delete_blog`,
+						{
+							blog_id: blog_id,
+						},
+						function( result ){
+							if( !result.result ){
+								alert('ERROR: '+result.message);
+								return;
+							}
+							px2style.closeModal();
+							update_localState({
+								...localState,
+								"page": null,
+								"blogId": null,
+								"articleList": [],
+							});
+						}
+					);
+				},
+			},
+		});
+	}
+
 	// 記事一覧へ
 	function gotoArticleList(e){
 		e.preventDefault();
@@ -88,18 +131,64 @@ export default React.memo(function Sitemap(props){
 				?<>
 					<p>...</p>
 				</>
+
 			:(localState.page === "ArticleList")
 				?<>
+					<p><button type="button" className="px2-btn" onClick={()=>{
+						update_localState({
+							...localState,
+							"page": null,
+							"blogId": null,
+							"articleList": [],
+						});
+					}}>戻る</button></p>
+
+					<ul className="px2-horizontal-list px2-horizontal-list--right">
+						<li><button type="button" className="px2-btn px2-btn--primary" data-btn-create-new-article={localState.blogId}>新規記事を追加</button></li>
+					</ul>
+
 					<div className="px2-p">
-						<p>記事一覧画面です。</p>
+						<table className="px2-table" style={{width:"100%"}}>
+							<colgroup>
+								<col style={{width:"30%"}} />
+								<col style={{width:"70%"}} />
+							</colgroup>
+							<tr>
+								<th>ブログID</th>
+								<td>{ localState.blogId }</td>
+							</tr>
+						</table>
 					</div>
+
+					<div className="px2-linklist">
+						{(localState.articleList && localState.articleList[localState.blogId])
+						? <ul>
+						{localState.articleList[localState.blogId].map( ( articleInfo, idx )=>{
+							return (
+								<li key={idx}>
+									<a href="#" data-btn-article="{ articleInfo.path }">
+										<div className="px2cce-blog-kit-article-list-item">
+											<div className="px2cce-blog-kit-article-list-item__title">{ articleInfo.title }</div>
+											<div className="px2cce-blog-kit-article-list-item__update_date">{ articleInfo.update_date }</div>
+										</div>
+									</a>
+								</li>
+							)
+						} )}
+						</ul>
+						:<></>}
+					</div>
+
+					<p className="px2-text-align-center"><button type="button" className="px2-btn px2-btn--danger" data-delete-blog={localState.blogId} onClick={deleteBlog}>ブログ { localState.blogId } を削除する</button></p>
 				</>
+
 			:(localState.page === "Article")
 				?<>
 					<div className="px2-p">
 						<p>記事詳細画面です。</p>
 					</div>
 				</>
+
 			:<>
 				<ul className="px2-horizontal-list px2-horizontal-list--right">
 					<li><button type="button" className="px2-btn px2-btn--primary" data-btn-create-new-blog onClick={createNewBlog}>新規ブログを追加</button></li>
