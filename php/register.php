@@ -189,7 +189,7 @@ class register{
 		$command = $this->px->get_px_command();
 
 		if( !$this->px->req()->is_cmd() ){
-			switch( isset($command[1]) ? $command[1] : '' ){
+			switch( $command[1] ?? '' ){
 				case 'logout':
 					// --------------------------------------
 					// ログアウト
@@ -202,11 +202,11 @@ class register{
 		if( !$this->px->req()->is_cmd() ){
 			// --------------------------------------
 			// ブラウザへの応答
-			switch( isset($command[1]) ? $command[1] : '' ){
+			switch( $command[1] ?? '' ){
 				case 'api':
 					// --------------------------------------
 					// API
-					switch( isset($command[2]) ? $command[2] : '' ){
+					switch( $command[2] ?? '' ){
 						case 'health_check':
 							$app = new funcs\api\healthChecker($this->clover);
 							$app->status();
@@ -345,6 +345,41 @@ class register{
 							$app = new funcs\api\commonFileEditor($this->clover);
 							$app->gpi();
 							break;
+						case 'blogkit':
+							// --------------------------------------
+							// API: BlogKit Bypass
+
+							$this->px->header('Content-type: application/json');
+							$blog = $this->px->blog;
+							if( !is_object( $blog ) ){
+								echo json_encode(array(
+									'result' => false,
+									'message' => 'BlogKit is NOT loaded.',
+								));
+								exit;
+							}
+
+							switch( $command[3] ?? '' ){
+								case 'get_blog_list':
+									$blog_list = $blog->get_blog_list();
+									echo json_encode(array(
+										"result" => true,
+										"blog_list" => $blog_list,
+									));
+									exit;
+									break;
+								case 'create_new_blog':
+									$writer = new \pickles2\px2BlogKit\writer($this->px, $blog, $blog->get_options());
+									$blog_id = $this->px->req()->get_param('blog_id');
+									$result = $writer->create_new_blog( $blog_id );
+									echo json_encode(array(
+										"result" => $result->result ?? null,
+										"message" => $result->message ?? null,
+										"errors" => $result->errors ?? null,
+									));
+									exit;
+									break;
+							}
 					}
 					break;
 
@@ -383,11 +418,11 @@ class register{
 		}
 		// --------------------------------------
 		// CLIへの応答
-		switch( isset($command[1]) ? $command[1] : '' ){
+		switch( $command[1] ?? '' ){
 			case 'api':
 				// --------------------------------------
 				// API
-				switch( isset($command[2]) ? $command[2] : '' ){
+				switch( $command[2] ?? '' ){
 					case 'scheduler_run':
 						$this->clover->allowed_method(['command']);
 						$app = new funcs\api\scheduler($this->clover);
