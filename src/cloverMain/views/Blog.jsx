@@ -6,6 +6,7 @@ export default React.memo(function Sitemap(props){
 
 	const main = useContext(MainContext);
 	const [localState, update_localState] = useState({
+		"enableBlogKit": true,
 		"page": "",
 		"blogId": null,
 		"blogList": null,
@@ -17,8 +18,17 @@ export default React.memo(function Sitemap(props){
 			`?PX=admin.api.blogkit.get_blog_list`,
 			{},
 			function( result ){
+				if( !result.result ){
+					update_localState({
+						...localState,
+						"enableBlogKit": false,
+						"blogList": [],
+					});
+					return;
+				}
 				update_localState({
 					...localState,
+					"enableBlogKit": true,
 					"blogList": result.blog_list,
 				});
 			}
@@ -127,13 +137,26 @@ export default React.memo(function Sitemap(props){
 
 	return (
 		<>
-			{(!localState.blogList)
+			{(!localState.enableBlogKit)
 				?<>
-					<p>...</p>
+				{/* --------------------------------------
+					BlogKitプラグインが未設定の画面 */}
+					<p>Blog Kit プラグインが利用できません。</p>
+				</>
+
+			:(localState.page === "Article")
+				?<>
+				{/* --------------------------------------
+					記事詳細画面 */}
+					<div className="px2-p">
+						<p>記事詳細画面です。</p>
+					</div>
 				</>
 
 			:(localState.page === "ArticleList")
 				?<>
+				{/* --------------------------------------
+					記事一覧画面 */}
 					<p><button type="button" className="px2-btn" onClick={()=>{
 						update_localState({
 							...localState,
@@ -182,28 +205,36 @@ export default React.memo(function Sitemap(props){
 					<p className="px2-text-align-center"><button type="button" className="px2-btn px2-btn--danger" data-delete-blog={localState.blogId} onClick={deleteBlog}>ブログ { localState.blogId } を削除する</button></p>
 				</>
 
-			:(localState.page === "Article")
+			:(localState.enableBlogKit && localState.blogList !== null)
 				?<>
-					<div className="px2-p">
-						<p>記事詳細画面です。</p>
-					</div>
-				</>
-
-			:<>
-				<ul className="px2-horizontal-list px2-horizontal-list--right">
-					<li><button type="button" className="px2-btn px2-btn--primary" data-btn-create-new-blog onClick={createNewBlog}>新規ブログを追加</button></li>
-				</ul>
-
-				<div className="px2-linklist">
-					<ul>
-						{localState.blogList.map( ( blogInfo, idx )=>{
-							return (
-								<li key={idx}>
-									<a href="#" data-btn-article-list={blogInfo.blog_id} onClick={gotoArticleList}>{blogInfo.blog_id}</a>
-								</li>
-							)
-						} )}
+				{/* --------------------------------------
+					ブログ一覧画面 */}
+					<ul className="px2-horizontal-list px2-horizontal-list--right">
+						<li><button type="button" className="px2-btn px2-btn--primary" data-btn-create-new-blog onClick={createNewBlog}>新規ブログを追加</button></li>
 					</ul>
+
+					{(localState.enableBlogKit && localState.blogList)
+						?<>
+							<div className="px2-linklist">
+								<ul>
+									{localState.blogList.map( ( blogInfo, idx )=>{
+										return (
+											<li key={idx}>
+												<a href="#" data-btn-article-list={blogInfo.blog_id} onClick={gotoArticleList}>{blogInfo.blog_id}</a>
+											</li>
+										)
+									} )}
+								</ul>
+							</div>
+						</>
+					: <>
+					</>}
+				</>
+			:<>
+			{/* --------------------------------------
+				読込中画面 */}
+				<div className="px2-p">
+					<p>...</p>
 				</div>
 			</>}
 		</>
