@@ -390,6 +390,36 @@ class register{
 									));
 									exit;
 									break;
+								case 'get_blogmap_definition':
+									$writer = new \pickles2\px2BlogKit\writer($this->px, $blog, $blog->get_options());
+									$blog_id = $this->px->req()->get_param('blog_id');
+									$blogmap_definition = $writer->get_blogmap_definition($blog_id);
+									echo json_encode(array(
+										"result" => true,
+										"blogmap_definition" => $blogmap_definition,
+									));
+									exit;
+									break;
+								case 'get_sitemap_definition':
+									$sitemap_definition = $this->px->site()->get_sitemap_definition();
+									echo json_encode(array(
+										"result" => true,
+										"sitemap_definition" => $sitemap_definition,
+									));
+									exit;
+									break;
+								case 'create_new_article':
+									$writer = new \pickles2\px2BlogKit\writer($this->px, $blog, $blog->get_options());
+									$blog_id = $this->px->req()->get_param('blog_id');
+									$fields = json_decode($this->px->req()->get_param('fields'));
+									$result = $writer->create_new_article($blog_id, $fields ?? null);
+									echo json_encode(array(
+										"result" => $result->result ?? null,
+										"message" => $result->message ?? null,
+										"errors" => $result->errors ?? null,
+									));
+									exit;
+									break;
 							}
 					}
 					break;

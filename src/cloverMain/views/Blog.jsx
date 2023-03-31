@@ -1,6 +1,9 @@
 import React, { useContext, useState } from "react";
 import {MainContext} from '../context/MainContext';
 import $ from 'jquery';
+import it79 from 'iterate79';
+import Utils from './Blog_files/js/Utils.js';
+const utils = new Utils();
 
 export default React.memo(function Sitemap(props){
 
@@ -35,6 +38,7 @@ export default React.memo(function Sitemap(props){
 		);
 	}
 
+	// --------------------------------------
 	// 新規ブログ作成
 	function createNewBlog(e){
 		e.preventDefault();
@@ -80,6 +84,7 @@ export default React.memo(function Sitemap(props){
 		var form = px2style.form($body);
 	}
 
+	// --------------------------------------
 	// ブログを削除
 	function deleteBlog(e){
 		e.preventDefault();
@@ -123,6 +128,93 @@ export default React.memo(function Sitemap(props){
 		});
 	}
 
+	// --------------------------------------
+	// 新規記事作成
+	function createNewArticle(e){
+		const blog_id = $(e.target).attr(`data-btn-create-new-article`);
+		let sitemapDefinition;
+		let blogmapDefinition;
+		it79.fnc({}, [
+			function(it){
+				main.px2utils.px2cmd(
+					`?PX=admin.api.blogkit.get_sitemap_definition`,
+					{},
+					function( res ){
+						sitemapDefinition = res.sitemap_definition;
+						it.next();
+					}
+				);
+			},
+			function(it){
+				main.px2utils.px2cmd(
+					`?PX=admin.api.blogkit.get_blogmap_definition`,
+					{
+						'blog_id': blog_id,
+					},
+					function( res ){
+						blogmapDefinition = res.blogmap_definition;
+						it.next();
+					}
+				);
+			},
+			function(it){
+				blogmapDefinition = utils.fixSitemapDefinition(blogmapDefinition, sitemapDefinition);
+				const $body = $('<div>')
+					.append( main.cloverUtils.bindTwig(
+						require('-!text-loader!./Blog_files/templates/createNewArticle.twig'),
+						{
+							blog_id: blog_id,
+							blogmapDefinition: blogmapDefinition,
+						}
+					) );
+				px2style.modal({
+					"title": "記事を作成する",
+					"body": $body,
+					"buttons": [
+						$('<button type="submit" class="px2-btn px2-btn--primary">').text('作成する'),
+					],
+					"form": {
+						"submit": function(e){
+							const $form = $(this);
+							let fields = {};
+							for( let idx in blogmapDefinition ){
+								const blogmapDefinitionRow = blogmapDefinition[idx];
+								fields[blogmapDefinitionRow.key] = $form.find(`[name=${blogmapDefinitionRow.key}]`).val();
+							}
+
+							main.px2utils.px2cmd(
+								`?PX=admin.api.blogkit.create_new_article`,
+								{
+									blog_id: blog_id,
+									fields: JSON.stringify(fields),
+								},
+								function( result ){
+									if( !result.result ){
+										alert('ERROR: '+result.message);
+										form.reportValidationError({
+											errors: result.errors,
+										});
+										return;
+									}
+
+									px2style.closeModal();
+									update_localState({
+										...localState,
+										"page": 'ArticleList',
+									});
+								}
+							);
+
+						},
+					},
+				});
+				var form = px2style.form($body);
+				it.next();
+			},
+		]);
+	}
+
+	// --------------------------------------
 	// 記事一覧へ
 	function gotoArticleList(e){
 		e.preventDefault();
@@ -167,7 +259,7 @@ export default React.memo(function Sitemap(props){
 					}}>戻る</button></p>
 
 					<ul className="px2-horizontal-list px2-horizontal-list--right">
-						<li><button type="button" className="px2-btn px2-btn--primary" data-btn-create-new-article={localState.blogId}>新規記事を追加</button></li>
+						<li><button type="button" className="px2-btn px2-btn--primary" data-btn-create-new-article={localState.blogId} onClick={createNewArticle}>新規記事を追加</button></li>
 					</ul>
 
 					<div className="px2-p">
@@ -176,10 +268,12 @@ export default React.memo(function Sitemap(props){
 								<col style={{width:"30%"}} />
 								<col style={{width:"70%"}} />
 							</colgroup>
-							<tr>
-								<th>ブログID</th>
-								<td>{ localState.blogId }</td>
-							</tr>
+							<tbody>
+								<tr>
+									<th>ブログID</th>
+									<td>{ localState.blogId }</td>
+								</tr>
+							</tbody>
 						</table>
 					</div>
 
@@ -220,7 +314,7 @@ export default React.memo(function Sitemap(props){
 									{localState.blogList.map( ( blogInfo, idx )=>{
 										return (
 											<li key={idx}>
-												<a href="#" data-btn-article-list={blogInfo.blog_id} onClick={gotoArticleList}>{blogInfo.blog_id}</a>
+												<a href="#" data-btn-article-list={blogInfo.blog_id} onClick={(gotoArticleList)}>{blogInfo.blog_id}</a>
 											</li>
 										)
 									} )}
