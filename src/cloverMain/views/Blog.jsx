@@ -198,10 +198,7 @@ export default React.memo(function Sitemap(props){
 									}
 
 									px2style.closeModal();
-									update_localState({
-										...localState,
-										"page": 'ArticleList',
-									});
+									gotoArticleList( blog_id );
 								}
 							);
 
@@ -216,15 +213,26 @@ export default React.memo(function Sitemap(props){
 
 	// --------------------------------------
 	// 記事一覧へ
-	function gotoArticleList(e){
-		e.preventDefault();
-		const blog_id = $(e.target).attr('data-btn-article-list');
-		update_localState({
-			...localState,
-			"page": "ArticleList",
-			"blogId": blog_id,
-			"articleList": [],
-		});
+	function gotoArticleList(blog_id){
+		main.px2utils.px2cmd(
+			`?PX=admin.api.blogkit.get_article_list`,
+			{
+				blog_id: blog_id,
+			},
+			function( result ){
+				let newState = {
+					"blogId": blog_id,
+					"page": "ArticleList",
+					"articleList": {},
+				};
+				newState.articleList[blog_id] = result.article_list;
+				update_localState({
+					...localState,
+					...newState,
+				});
+			}
+		);
+
 	}
 
 	return (
@@ -314,7 +322,11 @@ export default React.memo(function Sitemap(props){
 									{localState.blogList.map( ( blogInfo, idx )=>{
 										return (
 											<li key={idx}>
-												<a href="#" data-btn-article-list={blogInfo.blog_id} onClick={(gotoArticleList)}>{blogInfo.blog_id}</a>
+												<a href="#" data-btn-article-list={blogInfo.blog_id} onClick={(e)=>{
+													e.preventDefault();
+													const blog_id = $(e.target).attr('data-btn-article-list');
+													gotoArticleList( blog_id );
+												}}>{blogInfo.blog_id}</a>
 											</li>
 										)
 									} )}

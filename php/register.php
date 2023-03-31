@@ -368,6 +368,45 @@ class register{
 									));
 									exit;
 									break;
+								case 'get_article_list':
+									$blog_id = $this->px->req()->get_param('blog_id');
+									$article_list = $blog->get_article_list($blog_id);
+									echo json_encode(array(
+										"result" => true,
+										"blog_id" => $blog_id,
+										"article_list" => $article_list,
+									));
+									exit;
+									break;
+								case 'get_article_info':
+									$path = $this->px->req()->get_param('path');
+									$article_info = $blog->get_article_info($path);
+									echo json_encode(array(
+										"result" => true,
+										"blog_id" => $article_info->blog_id ?? null,
+										"article_info" => $article_info->article_info ?? null,
+										"originated_csv" => $article_info->originated_csv ?? null,
+									));
+									exit;
+									break;
+								case 'get_blogmap_definition':
+									$writer = new \pickles2\px2BlogKit\writer($this->px, $blog, $blog->get_options());
+									$blog_id = $this->px->req()->get_param('blog_id');
+									$blogmap_definition = $writer->get_blogmap_definition($blog_id);
+									echo json_encode(array(
+										"result" => true,
+										"blogmap_definition" => $blogmap_definition,
+									));
+									exit;
+									break;
+								case 'get_sitemap_definition':
+									$sitemap_definition = $this->px->site()->get_sitemap_definition();
+									echo json_encode(array(
+										"result" => true,
+										"sitemap_definition" => $sitemap_definition,
+									));
+									exit;
+									break;
 								case 'create_new_blog':
 									$writer = new \pickles2\px2BlogKit\writer($this->px, $blog, $blog->get_options());
 									$blog_id = $this->px->req()->get_param('blog_id');
@@ -390,24 +429,6 @@ class register{
 									));
 									exit;
 									break;
-								case 'get_blogmap_definition':
-									$writer = new \pickles2\px2BlogKit\writer($this->px, $blog, $blog->get_options());
-									$blog_id = $this->px->req()->get_param('blog_id');
-									$blogmap_definition = $writer->get_blogmap_definition($blog_id);
-									echo json_encode(array(
-										"result" => true,
-										"blogmap_definition" => $blogmap_definition,
-									));
-									exit;
-									break;
-								case 'get_sitemap_definition':
-									$sitemap_definition = $this->px->site()->get_sitemap_definition();
-									echo json_encode(array(
-										"result" => true,
-										"sitemap_definition" => $sitemap_definition,
-									));
-									exit;
-									break;
 								case 'create_new_article':
 									$writer = new \pickles2\px2BlogKit\writer($this->px, $blog, $blog->get_options());
 									$blog_id = $this->px->req()->get_param('blog_id');
@@ -417,6 +438,33 @@ class register{
 										"result" => $result->result ?? null,
 										"message" => $result->message ?? null,
 										"errors" => $result->errors ?? null,
+									));
+									exit;
+									break;
+								case 'update_article':
+									$writer = new \pickles2\px2BlogKit\writer($this->px, $blog, $blog->get_options());
+									$blog_id = $this->px->req()->get_param('blog_id');
+									$path = $this->px->req()->get_param('path');
+									$fields = json_decode($this->px->req()->get_param('fields'));
+									$result = $writer->update_article($blog_id, $path, $fields ?? null);
+									echo json_encode(array(
+										"result" => $result->result ?? null,
+										"message" => $result->message ?? null,
+										"errors" => $result->errors ?? null,
+									));
+									exit;
+									break;
+								case 'delete_article':
+									$writer = new \pickles2\px2BlogKit\writer($this->px, $blog, $blog->get_options());
+									$blog_id = $this->px->req()->get_param('blog_id');
+									$path = $this->px->req()->get_param('path');
+									$result = $writer->delete_article($blog_id, $path);
+									echo json_encode(array(
+										"result" => $result->result ?? null,
+										"message" => $result->message ?? null,
+										"errors" => $result->errors ?? null,
+										"blog_id" => $request->blog_id ?? null,
+										"path" => $request->path ?? null,
 									));
 									exit;
 									break;
