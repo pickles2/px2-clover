@@ -14,6 +14,7 @@ export default React.memo(function Sitemap(props){
 		"blogId": null,
 		"blogList": null,
 		"articleList": [],
+		"articleInfo": null,
 	});
 
 	if( !localState.blogList ){
@@ -65,7 +66,6 @@ export default React.memo(function Sitemap(props){
 						},
 						function( result ){
 							if( !result.result ){
-								alert('ERROR: '+result.message);
 								form.reportValidationError({
 									errors: result.errors,
 								});
@@ -190,7 +190,6 @@ export default React.memo(function Sitemap(props){
 								},
 								function( result ){
 									if( !result.result ){
-										alert('ERROR: '+result.message);
 										form.reportValidationError({
 											errors: result.errors,
 										});
@@ -224,6 +223,7 @@ export default React.memo(function Sitemap(props){
 					"blogId": blog_id,
 					"page": "ArticleList",
 					"articleList": {},
+					"articleInfo": null,
 				};
 				newState.articleList[blog_id] = result.article_list;
 				update_localState({
@@ -232,7 +232,29 @@ export default React.memo(function Sitemap(props){
 				});
 			}
 		);
+		return;
+	}
 
+	// --------------------------------------
+	// 記事詳細画面へ
+	function gotoArticle(path){
+		main.px2utils.px2cmd(
+			`?PX=admin.api.blogkit.get_article_info`,
+			{
+				path: path,
+			},
+			function( result ){
+				let newState = {
+					"page": "Article",
+					"articleInfo": result.article_info,
+				};
+				update_localState({
+					...localState,
+					...newState,
+				});
+			}
+		);
+		return;
 	}
 
 	return (
@@ -263,12 +285,9 @@ export default React.memo(function Sitemap(props){
 							"page": null,
 							"blogId": null,
 							"articleList": [],
+							"articleInfo": null,
 						});
 					}}>戻る</button></p>
-
-					<ul className="px2-horizontal-list px2-horizontal-list--right">
-						<li><button type="button" className="px2-btn px2-btn--primary" data-btn-create-new-article={localState.blogId} onClick={createNewArticle}>新規記事を追加</button></li>
-					</ul>
 
 					<div className="px2-p">
 						<table className="px2-table" style={{width:"100%"}}>
@@ -285,24 +304,32 @@ export default React.memo(function Sitemap(props){
 						</table>
 					</div>
 
-					<div className="px2-linklist">
-						{(localState.articleList && localState.articleList[localState.blogId])
-						? <ul>
-						{localState.articleList[localState.blogId].map( ( articleInfo, idx )=>{
-							return (
-								<li key={idx}>
-									<a href="#" data-btn-article="{ articleInfo.path }">
-										<div className="px2cce-blog-kit-article-list-item">
-											<div className="px2cce-blog-kit-article-list-item__title">{ articleInfo.title }</div>
-											<div className="px2cce-blog-kit-article-list-item__update_date">{ articleInfo.update_date }</div>
-										</div>
-									</a>
-								</li>
-							)
-						} )}
-						</ul>
-						:<></>}
-					</div>
+					<ul className="px2-horizontal-list px2-horizontal-list--right">
+						<li><button type="button" className="px2-btn px2-btn--primary" data-btn-create-new-article={localState.blogId} onClick={createNewArticle}>新規記事を追加</button></li>
+					</ul>
+
+					{(localState.articleList && localState.articleList[localState.blogId] && localState.articleList[localState.blogId].length)
+						? <div className="px2-linklist">
+							<ul>
+							{localState.articleList[localState.blogId].map( ( articleInfo, idx )=>{
+								return (
+									<li key={idx}>
+										<a href="#" data-btn-article={articleInfo.path} onClick={(e)=>{
+											e.preventDefault();
+											const path = $(e.target).attr('data-btn-article');
+											gotoArticle(path);
+										}}>
+											<div className="cont-blog-kit-article-list-item">
+												<div className="cont-blog-kit-article-list-item__title">{ articleInfo.title }</div>
+												<div className="cont-blog-kit-article-list-item__update_date">{ articleInfo.update_date }</div>
+											</div>
+										</a>
+									</li>
+								)
+							} )}
+							</ul>
+						</div>
+					:<></>}
 
 					<p className="px2-text-align-center"><button type="button" className="px2-btn px2-btn--danger" data-delete-blog={localState.blogId} onClick={deleteBlog}>ブログ { localState.blogId } を削除する</button></p>
 				</>
@@ -315,7 +342,7 @@ export default React.memo(function Sitemap(props){
 						<li><button type="button" className="px2-btn px2-btn--primary" data-btn-create-new-blog onClick={createNewBlog}>新規ブログを追加</button></li>
 					</ul>
 
-					{(localState.enableBlogKit && localState.blogList)
+					{(localState.enableBlogKit && localState.blogList.length)
 						?<>
 							<div className="px2-linklist">
 								<ul>
