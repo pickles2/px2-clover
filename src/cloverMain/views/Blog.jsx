@@ -270,9 +270,55 @@ export default React.memo(function Sitemap(props){
 				?<>
 				{/* --------------------------------------
 					記事詳細画面 */}
+
+					<p><button type="button" data-back className="px2-btn" data-btn-article-list={localState.blogId} onClick={(e)=>{
+							e.preventDefault();
+							const blog_id = $(e.target).attr('data-btn-article-list');
+							gotoArticleList( blog_id );
+						}}>戻る</button></p>
+
 					<div className="px2-p">
-						<p>記事詳細画面です。</p>
+						<table className="px2-table" style={{width: "100%",}}>
+							<colgroup>
+								<col style={{width: "30%",}} />
+								<col style={{width: "70%",}} />
+							</colgroup>
+							<tbody>
+								<tr>
+									<th>ブログID</th>
+									<td>{ localState.blogId }</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
+
+					<ul className="px2-horizontal-list px2-horizontal-list--left">
+						<li><button type="button" className="px2-btn" data-btn-edit-article={localState.articleInfo.path}>ページ情報を編集する</button></li>
+						<li><button type="button" className="px2-btn" data-btn-edit-content={localState.articleInfo.path}>コンテンツを編集する</button></li>
+						<li><button type="button" className="px2-btn" data-btn-preview={localState.articleInfo.path}>プレビューに戻る</button></li>
+					</ul>
+
+					<div className="px2-p">
+						<table className="px2-table" style={{width: "100%",}}>
+							<colgroup>
+								<col style={{width: "30%",}} />
+								<col style={{width: "70%",}} />
+							</colgroup>
+							<tbody>
+								{Object.keys(localState.articleInfo).map( ( key, idx )=>{
+									const value = localState.articleInfo[key];
+									return (
+										<tr key={key}>
+											<th>{key}</th>
+											<td>{value}</td>
+										</tr>
+									)
+								} )}
+							</tbody>
+						</table>
+					</div>
+					<p className="px2-text-align-center"><button type="button" className="px2-btn px2-btn--danger" data-delete-article={localState.articleInfo.path}>記事を削除する</button></p>
+
 				</>
 
 			:(localState.page === "ArticleList")
@@ -314,9 +360,9 @@ export default React.memo(function Sitemap(props){
 							{localState.articleList[localState.blogId].map( ( articleInfo, idx )=>{
 								return (
 									<li key={idx}>
-										<a href="#" data-btn-article={articleInfo.path} onClick={(e)=>{
+										<a href="#" onClick={(e)=>{
 											e.preventDefault();
-											const path = $(e.target).attr('data-btn-article');
+											const path = articleInfo.path;
 											gotoArticle(path);
 										}}>
 											<div className="cont-blog-kit-article-list-item">
@@ -349,9 +395,9 @@ export default React.memo(function Sitemap(props){
 									{localState.blogList.map( ( blogInfo, idx )=>{
 										return (
 											<li key={idx}>
-												<a href="#" data-btn-article-list={blogInfo.blog_id} onClick={(e)=>{
+												<a href="#" onClick={(e)=>{
 													e.preventDefault();
-													const blog_id = $(e.target).attr('data-btn-article-list');
+													const blog_id = blogInfo.blog_id;
 													gotoArticleList( blog_id );
 												}}>{blogInfo.blog_id}</a>
 											</li>
