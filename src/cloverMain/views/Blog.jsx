@@ -211,6 +211,142 @@ export default React.memo(function Sitemap(props){
 	}
 
 	// --------------------------------------
+	// 記事編集
+	function editArticle(path){
+		const blog_id = localState.blogId;
+		let sitemapDefinition;
+		let blogmapDefinition;
+		let article_info;
+		it79.fnc({}, [
+			function(it){
+				main.px2utils.px2cmd(
+					`?PX=admin.api.blogkit.get_sitemap_definition`,
+					{},
+					function( res ){
+						sitemapDefinition = res.sitemap_definition;
+						it.next();
+					}
+				);
+			},
+			function(it){
+				main.px2utils.px2cmd(
+					`?PX=admin.api.blogkit.get_blogmap_definition`,
+					{
+						blog_id: blog_id,
+					},
+					function( res ){
+						blogmapDefinition = res.blogmap_definition;
+						it.next();
+					}
+				);
+			},
+			function(it){
+				main.px2utils.px2cmd(
+					`?PX=admin.api.blogkit.get_article_info`,
+					{
+						path: path,
+					},
+					function( res ){
+						article_info = res.article_info;
+						it.next();
+					}
+				);
+			},
+			function(it){
+				blogmapDefinition = utils.fixSitemapDefinition(blogmapDefinition, sitemapDefinition);
+				const $body = $(main.cloverUtils.bindTwig(
+					require('-!text-loader!./Blog_files/templates/editArticle.twig'),
+					{
+						blog_id: blog_id,
+						blogmapDefinition: blogmapDefinition,
+						article_info: article_info,
+					}
+				));
+				px2style.modal({
+					"title": "記事を編集する",
+					"body": $body,
+					"buttons": [
+						$('<button type="submit" class="px2-btn px2-btn--primary">').text('保存する'),
+					],
+					"buttonsSecondary": [
+						$('<button type="button" class="px2-btn px2-btn--secondary">').text('キャンセル')
+							.on('click', function(){ px2style.closeModal(); }),
+					],
+					"form": {
+						"submit": function(e){
+							const $form = $(this);
+							let fields = {};
+							for( let idx in blogmapDefinition ){
+								const blogmapDefinitionRow = blogmapDefinition[idx];
+								fields[blogmapDefinitionRow.key] = $form.find(`[name=${blogmapDefinitionRow.key}]`).val();
+							}
+							main.px2utils.px2cmd(
+								`?PX=admin.api.blogkit.update_article`,
+								{
+									blog_id: blog_id,
+									path: path,
+									fields: JSON.stringify(fields),
+								},
+								function( result ){
+									if( !result.result ){
+										form.reportValidationError({
+											errors: result.errors,
+										});
+										return;
+									}
+									px2style.closeModal();
+									gotoArticle(fields.path);
+								}
+							);
+						},
+					},
+				});
+				var form = px2style.form($body);
+				it.next();
+			},
+		]);
+	}
+
+	// --------------------------------------
+	// 記事削除
+	function deleteArticle(path){
+		const blog_id = localState.blogId;
+		const $body = $(main.cloverUtils.bindTwig(
+			require('-!text-loader!./Blog_files/templates/deleteArticle.twig'),
+			{
+				blog_id: blog_id,
+				path: path,
+			}
+		));
+		px2style.modal({
+			"title": "記事を削除する",
+			"body": $body,
+			"buttons": [
+				$('<button type="submit" class="px2-btn px2-btn--danger">').text('削除する'),
+			],
+			"form": {
+				"submit": function(e){
+					main.px2utils.px2cmd(
+						`?PX=admin.api.blogkit.delete_article`,
+						{
+							blog_id: blog_id,
+							path: path,
+						},
+						function( result ){
+							if( !result.result ){
+								alert('ERROR: '+result.message);
+								return;
+							}
+							px2style.closeModal();
+							gotoArticleList(blog_id);
+						}
+					);
+				},
+			},
+		});
+	}
+
+	// --------------------------------------
 	// 記事一覧へ
 	function gotoArticleList(blog_id){
 		main.px2utils.px2cmd(
@@ -293,9 +429,16 @@ export default React.memo(function Sitemap(props){
 					</div>
 
 					<ul className="px2-horizontal-list px2-horizontal-list--left">
-						<li><button type="button" className="px2-btn" data-btn-edit-article={localState.articleInfo.path}>ページ情報を編集する</button></li>
-						<li><button type="button" className="px2-btn" data-btn-edit-content={localState.articleInfo.path}>コンテンツを編集する</button></li>
-						<li><button type="button" className="px2-btn" data-btn-preview={localState.articleInfo.path}>プレビューに戻る</button></li>
+						<li><button type="button" className="px2-btn" onClick={(e)=>{
+							e.preventDefault();
+							editArticle( localState.articleInfo.path );
+							}}>ページ情報を編集する</button></li>
+						<li><button type="button" className="px2-btn" onClick={(e)=>{
+							window.open(main.px2utils.href(localState.articleInfo.path + '?PX=admin.edit_content'));
+							}}>コンテンツを編集する</button></li>
+						<li><button type="button" className="px2-btn" onClick={(e)=>{
+							window.open(main.px2utils.href(localState.articleInfo.path));
+							}}>プレビューに戻る</button></li>
 					</ul>
 
 					<div className="px2-p">
@@ -317,7 +460,10 @@ export default React.memo(function Sitemap(props){
 							</tbody>
 						</table>
 					</div>
-					<p className="px2-text-align-center"><button type="button" className="px2-btn px2-btn--danger" data-delete-article={localState.articleInfo.path}>記事を削除する</button></p>
+					<p className="px2-text-align-center"><button type="button" className="px2-btn px2-btn--danger" data-delete-article={localState.articleInfo.path} onClick={(e)=>{
+						e.preventDefault();
+						deleteArticle(localState.articleInfo.path);
+						}}>記事を削除する</button></p>
 
 				</>
 
