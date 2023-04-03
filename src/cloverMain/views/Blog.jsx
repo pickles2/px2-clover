@@ -1,19 +1,34 @@
 import React, { useContext, useState } from "react";
 import {MainContext} from '../context/MainContext';
+import Link from '../components/Link';
 import $ from 'jquery';
 import it79 from 'iterate79';
 import Utils from './Blog_files/js/Utils.js';
 const utils = new Utils();
 
-export default React.memo(function Sitemap(props){
+export default React.memo(function Blog(props){
 
 	const main = useContext(MainContext);
+	const PXAry = main.PX.split('.');
+	const currentBlogId = (()=>{
+		if( PXAry.length >= 3 ){
+			return PXAry[2];
+		}
+		return null;
+	})();
+	const currentAction = (()=>{
+		if( !currentBlogId ){
+			return null;
+		}else if( PXAry.length >= 4 && PXAry[3] == 'article_info' ){
+			return 'article_info';
+		}
+		return 'article_list';
+	})();
+
 	const [localState, update_localState] = useState({
 		"enableBlogKit": true,
-		"page": "",
-		"blogId": null,
 		"blogList": null,
-		"articleList": [],
+		"articleList": null,
 		"articleInfo": null,
 	});
 
@@ -38,6 +53,45 @@ export default React.memo(function Sitemap(props){
 			}
 		);
 	}
+
+	if( currentAction == 'article_list' && !localState.articleList ){
+		main.px2utils.px2cmd(
+			`?PX=admin.api.blogkit.get_article_list`,
+			{
+				blog_id: currentBlogId,
+			},
+			function( result ){
+				let newState = {
+					"articleList": {},
+					"articleInfo": null,
+				};
+				newState.articleList[currentBlogId] = result.article_list;
+				update_localState({
+					...localState,
+					...newState,
+				});
+			}
+		);
+	}
+
+	if( currentAction == 'article_info' && !localState.articleInfo ){
+		main.px2utils.px2cmd(
+			`?PX=admin.api.blogkit.get_article_info`,
+			{
+				path: main.path,
+			},
+			function( result ){
+				let newState = {
+					"articleInfo": result.article_info,
+				};
+				update_localState({
+					...localState,
+					...newState,
+				});
+			}
+		);
+	}
+
 
 	// --------------------------------------
 	// 新規ブログ作成
@@ -208,7 +262,7 @@ export default React.memo(function Sitemap(props){
 	// --------------------------------------
 	// 記事編集
 	function editArticle(path){
-		const blog_id = localState.blogId;
+		const blog_id = currentBlogId;
 		let sitemapDefinition;
 		let blogmapDefinition;
 		let article_info;
@@ -290,7 +344,7 @@ export default React.memo(function Sitemap(props){
 										return;
 									}
 									px2style.closeModal();
-									gotoArticle(fields.path);
+									gotoArticleInfo(fields.path);
 								}
 							);
 						},
@@ -305,7 +359,7 @@ export default React.memo(function Sitemap(props){
 	// --------------------------------------
 	// 記事削除
 	function deleteArticle(path){
-		const blog_id = localState.blogId;
+		const blog_id = currentBlogId;
 		const $body = $(main.cloverUtils.bindTwig(
 			require('-!text-loader!./Blog_files/templates/deleteArticle.twig'),
 			{
@@ -343,21 +397,21 @@ export default React.memo(function Sitemap(props){
 
 	// --------------------------------------
 	// 記事詳細画面へ
-	function gotoArticle(path){
+	function gotoArticleInfo(path){
 		main.px2utils.px2cmd(
-			`?PX=admin.api.blogkit.get_article_info`,
+			`/?PX=admin.api.blogkit.get_article_info`,
 			{
 				path: path,
 			},
 			function( result ){
 				let newState = {
-					"page": "Article",
 					"articleInfo": result.article_info,
 				};
 				update_localState({
 					...localState,
 					...newState,
 				});
+				main.link(main.px2utils.href( result.article_info.path )+'?PX=admin.blog.'+currentBlogId+'.article_info');
 			}
 		);
 		return;
@@ -373,8 +427,6 @@ export default React.memo(function Sitemap(props){
 			},
 			function( result ){
 				let newState = {
-					"blogId": blog_id,
-					"page": "ArticleList",
 					"articleList": {},
 					"articleInfo": null,
 				};
@@ -383,6 +435,7 @@ export default React.memo(function Sitemap(props){
 					...localState,
 					...newState,
 				});
+				main.link(main.px2utils.href('/')+'?PX=admin.blog.'+blog_id);
 			}
 		);
 		return;
@@ -398,26 +451,24 @@ export default React.memo(function Sitemap(props){
 				if( !result.result ){
 					update_localState({
 						...localState,
-						"page": null,
-						"blogId": null,
 						"blogList": null,
 						"articleList": [],
 						"articleInfo": null,
 						"enableBlogKit": false,
 						"blogList": [],
 					});
+					main.link(main.px2utils.href('/')+'?PX=admin.blog');
 					return;
 				}
 				update_localState({
 					...localState,
-					"page": null,
-					"blogId": null,
 					"blogList": null,
 					"articleList": [],
 					"articleInfo": null,
 					"enableBlogKit": true,
 					"blogList": result.blog_list,
 				});
+				main.link(main.px2utils.href('/')+'?PX=admin.blog');
 			}
 		);
 		return;
@@ -432,12 +483,12 @@ export default React.memo(function Sitemap(props){
 					<p>Blog Kit プラグインが利用できません。</p>
 				</>
 
-			:(localState.page === "Article")
+			:(currentAction === "article_info" && localState.articleInfo && localState.articleInfo.path)
 				?<>
 				{/* --------------------------------------
 					記事詳細画面 */}
 
-					<p><button type="button" data-back className="px2-btn" data-btn-article-list={localState.blogId} onClick={(e)=>{
+					<p><button type="button" data-back className="px2-btn" data-btn-article-list={currentBlogId} onClick={(e)=>{
 							e.preventDefault();
 							const blog_id = $(e.target).attr('data-btn-article-list');
 							gotoArticleList( blog_id );
@@ -452,7 +503,7 @@ export default React.memo(function Sitemap(props){
 							<tbody>
 								<tr>
 									<th>ブログID</th>
-									<td>{ localState.blogId }</td>
+									<td>{ currentBlogId }</td>
 								</tr>
 							</tbody>
 						</table>
@@ -497,7 +548,7 @@ export default React.memo(function Sitemap(props){
 
 				</>
 
-			:(localState.page === "ArticleList")
+			:(currentAction === "article_list")
 				?<>
 				{/* --------------------------------------
 					記事一覧画面 */}
@@ -514,26 +565,26 @@ export default React.memo(function Sitemap(props){
 							<tbody>
 								<tr>
 									<th>ブログID</th>
-									<td>{ localState.blogId }</td>
+									<td>{ currentBlogId }</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 
 					<ul className="px2-horizontal-list px2-horizontal-list--right">
-						<li><button type="button" className="px2-btn px2-btn--primary" data-btn-create-new-article={localState.blogId} onClick={createNewArticle}>新規記事を追加</button></li>
+						<li><button type="button" className="px2-btn px2-btn--primary" data-btn-create-new-article={currentBlogId} onClick={createNewArticle}>新規記事を追加</button></li>
 					</ul>
 
-					{(localState.articleList && localState.articleList[localState.blogId] && localState.articleList[localState.blogId].length)
+					{(localState.articleList && localState.articleList[currentBlogId] && localState.articleList[currentBlogId].length)
 						? <div className="px2-linklist">
 							<ul>
-							{localState.articleList[localState.blogId].map( ( articleInfo, idx )=>{
+							{localState.articleList[currentBlogId].map( ( articleInfo, idx )=>{
 								return (
 									<li key={idx}>
 										<a href="#" onClick={(e)=>{
 											e.preventDefault();
 											const path = articleInfo.path;
-											gotoArticle(path);
+											gotoArticleInfo(path);
 										}}>
 											<div className="cont-blog-kit-article-list-item">
 												<div className="cont-blog-kit-article-list-item__title">{ articleInfo.title }</div>
@@ -547,7 +598,7 @@ export default React.memo(function Sitemap(props){
 						</div>
 					:<></>}
 
-					<p className="px2-text-align-center"><button type="button" className="px2-btn px2-btn--danger" data-delete-blog={localState.blogId} onClick={deleteBlog}>ブログ { localState.blogId } を削除する</button></p>
+					<p className="px2-text-align-center"><button type="button" className="px2-btn px2-btn--danger" data-delete-blog={currentBlogId} onClick={deleteBlog}>ブログ { currentBlogId } を削除する</button></p>
 				</>
 
 			:(localState.enableBlogKit && localState.blogList !== null)
