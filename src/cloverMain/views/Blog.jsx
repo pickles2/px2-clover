@@ -115,12 +115,7 @@ export default React.memo(function Sitemap(props){
 								return;
 							}
 							px2style.closeModal();
-							update_localState({
-								...localState,
-								"page": null,
-								"blogId": null,
-								"articleList": [],
-							});
+							gotoBlogList();
 						}
 					);
 				},
@@ -347,6 +342,28 @@ export default React.memo(function Sitemap(props){
 	}
 
 	// --------------------------------------
+	// 記事詳細画面へ
+	function gotoArticle(path){
+		main.px2utils.px2cmd(
+			`?PX=admin.api.blogkit.get_article_info`,
+			{
+				path: path,
+			},
+			function( result ){
+				let newState = {
+					"page": "Article",
+					"articleInfo": result.article_info,
+				};
+				update_localState({
+					...localState,
+					...newState,
+				});
+			}
+		);
+		return;
+	}
+
+	// --------------------------------------
 	// 記事一覧へ
 	function gotoArticleList(blog_id){
 		main.px2utils.px2cmd(
@@ -373,20 +390,33 @@ export default React.memo(function Sitemap(props){
 
 	// --------------------------------------
 	// 記事詳細画面へ
-	function gotoArticle(path){
+	function gotoBlogList(){
 		main.px2utils.px2cmd(
-			`?PX=admin.api.blogkit.get_article_info`,
-			{
-				path: path,
-			},
+			`?PX=admin.api.blogkit.get_blog_list`,
+			{},
 			function( result ){
-				let newState = {
-					"page": "Article",
-					"articleInfo": result.article_info,
-				};
+				if( !result.result ){
+					update_localState({
+						...localState,
+						"page": null,
+						"blogId": null,
+						"blogList": null,
+						"articleList": [],
+						"articleInfo": null,
+						"enableBlogKit": false,
+						"blogList": [],
+					});
+					return;
+				}
 				update_localState({
 					...localState,
-					...newState,
+					"page": null,
+					"blogId": null,
+					"blogList": null,
+					"articleList": [],
+					"articleInfo": null,
+					"enableBlogKit": true,
+					"blogList": result.blog_list,
 				});
 			}
 		);
@@ -471,14 +501,8 @@ export default React.memo(function Sitemap(props){
 				?<>
 				{/* --------------------------------------
 					記事一覧画面 */}
-					<p><button type="button" className="px2-btn" onClick={()=>{
-						update_localState({
-							...localState,
-							"page": null,
-							"blogId": null,
-							"articleList": [],
-							"articleInfo": null,
-						});
+					<p><button type="button" className="px2-btn" onClick={(e)=>{
+						gotoBlogList();
 					}}>戻る</button></p>
 
 					<div className="px2-p">
