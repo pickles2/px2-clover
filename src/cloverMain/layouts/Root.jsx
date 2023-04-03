@@ -7,12 +7,14 @@ export default React.memo(function Root(props){
 
 	const main = useContext(MainContext);
 
+	const currentRoute = main.getCurrentRoute(props.PX);
+
 	document.title = (main.title ? main.title : props.title) + ' : ' + window.px2config.name;
 
 	return (
 		<>
 			{(main.lb && <>
-			<div className="theme-layout" data-px={props.PX}>
+			<div className="theme-layout" data-px={currentRoute.current}>
 				<header className="theme-layout__header">
 					<div className="theme-layout__header__inner">
 						<div className="theme-layout__title">

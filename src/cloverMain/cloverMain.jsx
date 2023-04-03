@@ -290,6 +290,7 @@ class Layout extends React.Component {
 			if( !parsedUrlPX ){
 				return {
 					"title": "---",
+					"current": null,
 					"langKey": null,
 					"parent": null,
 					"content": null,
@@ -309,9 +310,15 @@ class Layout extends React.Component {
 			}
 
 			if(route[parsedUrlPX] ){
-				currentRoute = route[parsedUrlPX];
+				currentRoute = {
+					...route[parsedUrlPX],
+					"current": parsedUrlPX,
+				};
 			}else{
-				currentRoute = route["dashboard"];
+				currentRoute = {
+					...route["dashboard"],
+					"current": "dashboard",
+				};
 			}
 			return currentRoute;
 		}

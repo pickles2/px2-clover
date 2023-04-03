@@ -34,6 +34,9 @@ export default function Link(props){
 			if( current == target ){
 				return true;
 			}
+			if( currentRoute.current == target ){
+				return true;
+			}
 			if( currentRoute.parent && hasParent(currentRoute.parent, target) ){
 				return true;
 			}
