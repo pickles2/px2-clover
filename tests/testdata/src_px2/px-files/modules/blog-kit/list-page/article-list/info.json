@@ -1,0 +1,130 @@
+{
+    "name": "記事リスト - Article list",
+    "interface": {
+        "fields": {
+            "blog_id": {
+                "fieldType": "input",
+                "type": "text",
+                "label": "ブログID",
+                "rows": 1
+            },
+            "dpp": {
+                "fieldType": "input",
+                "type": "select",
+                "label": "ページあたりの記事件数",
+                "options": [
+                    {
+                        "value": "5",
+                        "label": "5"
+                    },
+                    {
+                        "value": "10",
+                        "label": "10"
+                    },
+                    {
+                        "value": "15",
+                        "label": "15"
+                    },
+                    {
+                        "value": "20",
+                        "label": "20"
+                    },
+                    {
+                        "value": "30",
+                        "label": "30"
+                    },
+                    {
+                        "value": "40",
+                        "label": "40"
+                    },
+                    {
+                        "value": "50",
+                        "label": "50"
+                    },
+                    {
+                        "value": "100",
+                        "label": "100"
+                    }
+                ],
+                "default": "10"
+            },
+            "index_size": {
+                "fieldType": "input",
+                "type": "select",
+                "label": "ページネーションのサイズ",
+                "options": [
+                    {
+                        "value": "0",
+                        "label": "0"
+                    },
+                    {
+                        "value": "3",
+                        "label": "3"
+                    },
+                    {
+                        "value": "5",
+                        "label": "5"
+                    },
+                    {
+                        "value": "10",
+                        "label": "10"
+                    },
+                    {
+                        "value": "15",
+                        "label": "15"
+                    },
+                    {
+                        "value": "20",
+                        "label": "20"
+                    },
+                    {
+                        "value": "30",
+                        "label": "30"
+                    },
+                    {
+                        "value": "40",
+                        "label": "40"
+                    },
+                    {
+                        "value": "50",
+                        "label": "50"
+                    },
+                    {
+                        "value": "100",
+                        "label": "100"
+                    }
+                ],
+                "default": "5"
+            },
+            "orderby": {
+                "fieldType": "input",
+                "type": "text",
+                "label": "並び順のキー",
+                "rows": 1,
+                "default": "update_date"
+            },
+            "scending": {
+                "fieldType": "input",
+                "type": "select",
+                "label": "昇順/降順",
+                "options": [
+                    {
+                        "value": "asc",
+                        "label": "昇順"
+                    },
+                    {
+                        "value": "desc",
+                        "label": "降順"
+                    }
+                ],
+                "default": "desc"
+            },
+             "list_page_id": {
+                "fieldType": "input",
+                "type": "text",
+                "label": "リストページID",
+                "rows": 1
+            }
+       }
+    }
+}

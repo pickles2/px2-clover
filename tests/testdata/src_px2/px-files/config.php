@@ -135,10 +135,10 @@ return call_user_func( function(){
 		// BlogKit
 		\pickles2\px2BlogKit\register::blog( array(
 			"blogs" => array(
-				"articles" => array(
+				"blogtest" => array(
 					"orderby" => "update_date",
 					"scending" => "desc",
-					"logical_path" => "/blog/{*}",
+					"logical_path" => "/blogtest/{*}",
 				),
 			),
 		) ),

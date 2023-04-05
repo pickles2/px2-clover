@@ -1,0 +1,36 @@
+{
+    "bowl": {
+        "main": {
+            "modId": "_sys/root",
+            "fields": {
+                "main": [
+                    {
+                        "modId": "blog-kit:list-page/article-list",
+                        "fields": {
+                            "blog_id": {
+                                "src": "blogtest"
+                            },
+                            "dpp": {
+                                "src": "5"
+                            },
+                            "index_size": {
+                                "src": "5"
+                            },
+                            "orderby": {
+                                "src": "update_date"
+                            },
+                            "scending": {
+                                "src": "desc"
+                            },
+                            "list_page_id": {
+                                "src": ""
+                            }
+                        },
+                        "anchor": "",
+                        "dec": ""
+                    }
+                ]
+            }
+        }
+    }
+}
