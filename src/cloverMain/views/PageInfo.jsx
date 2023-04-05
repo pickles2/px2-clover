@@ -647,14 +647,13 @@ export default function PageInfo(props){
 	/**
 	 * ページを削除する
 	 */
-	function deletePage(e){
-		e.preventDefault();
-		var pageInfoRaw = {};
-		var modal;
-		var originatedCsv = main.pageInfo.originated_csv;
+	function deletePage(){
+		let pageInfoRaw = {};
+		let modal;
+		let originatedCsv = main.pageInfo.originated_csv;
 		iterate79.fnc({}, [
 			(it1) => {
-				var params = {
+				let params = {
 					'filefullname': originatedCsv.basename,
 					'row': originatedCsv.row,
 				};
@@ -760,6 +759,53 @@ export default function PageInfo(props){
 				it1.next();
 			},
 		]);
+	}
+
+	/**
+	 * ブログ記事を削除する
+	 */
+	function deleteBlogArticle(blog_id, path){
+		let modal;
+		const $body = $(main.cloverUtils.bindTwig(
+			require('-!text-loader!./PageInfo_files/templates/deleteBlogArticle.twig'),
+			{
+				blog_id: blog_id,
+				path: path,
+			}
+		));
+		modal = px2style.modal({
+			"title": "記事を削除する",
+			"body": $body,
+			"buttons": [
+				$('<button type="submit" class="px2-btn px2-btn--danger">').text('削除する'),
+			],
+			"form": {
+				"submit": function(e){
+					e.preventDefault();
+					modal.lock();
+
+					main.px2utils.px2cmd(
+						`?PX=admin.api.blogkit.delete_article`,
+						{
+							blog_id: blog_id,
+							path: path,
+						},
+						function( result ){
+							if( !result.result ){
+								alert('ERROR: '+result.message);
+								modal.unlock();
+								return;
+							}
+							modal.unlock();
+							px2style.closeModal();
+
+							main.cloverUtils.autoCommit();
+							main.link('/?PX=admin.page_info');
+						}
+					);
+				},
+			},
+		});
 	}
 
 	/**
@@ -1067,7 +1113,22 @@ export default function PageInfo(props){
 					</div>
 
 					{(typeof(main.pageInfo.current_page_info) === typeof({}) && !!main.pageInfo.current_page_info.id.length && (<>
-						<p className="px2-text-align-center"><button type="button" onClick={deletePage} className="px2-btn px2-btn--danger">このページを削除する</button></p>
+						{(main.pageInfo.originated_csv)
+							?<>
+							<p className="px2-text-align-center"><button type="button" onClick={(e)=>{
+								e.preventDefault();
+								deletePage();
+								}} className="px2-btn px2-btn--danger">このページを削除する</button></p>
+							</>
+						:<>{(main.pageInfo.blog && main.pageInfo.blog.originated_csv)
+							?<>
+							<p className="px2-text-align-center"><button type="button" onClick={(e)=>{
+								e.preventDefault();
+								deleteBlogArticle( main.pageInfo.blog.blog_id, main.pageInfo.current_page_info.path );
+								}} className="px2-btn px2-btn--danger">このブログ記事を削除する</button></p>
+							</>
+						:<>
+						</>}</>}
 					</>))}
 				</>
 			:<>
