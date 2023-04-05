@@ -83,6 +83,19 @@ class pageInfo{
 		$px2dthelper = new \tomk79\pickles2\px2dthelper\main( $this->px );
 		$rtn['editor_mode'] = $px2dthelper->check_editor_mode();
 
+
+		// blog
+		$rtn['blog'] = false;
+		if( is_object($this->px->blog) ){
+			$current_blog_article_info = $this->px->blog->get_article_info( $rtn['current_page_info']['path'] ?? null );
+			$rtn['blog'] = array(
+				"blog_id" => $current_blog_article_info->blog_id ?? null,
+				"article_info" => $current_blog_article_info->article_info ?? null,
+				"originated_csv" => $current_blog_article_info->originated_csv ?? null,
+			);
+		}
+
+
 		$this->px->header('Content-type: text/json');
 		echo json_encode($rtn);
 		exit;

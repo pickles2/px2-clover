@@ -145,6 +145,12 @@
 /**
  * module: themeEditorModules:layouts/fullcolumn
  */
+:root {
+  --theme-keycolor: #00a0e6;
+  --theme-textcolor-on-keycolor: #eee;
+  --theme-subcolor: #00a0e6;
+  --theme-textcolor-on-subcolor: #eee;
+}
 html, body {
   margin: 0;
   padding: 0;
@@ -285,6 +291,12 @@ p, li, dt, dd {
  * module: themeEditorModules:layouts/header
  */
 @charset "UTF-8";
+:root {
+  --theme-keycolor: #00a0e6;
+  --theme-textcolor-on-keycolor: #eee;
+  --theme-subcolor: #00a0e6;
+  --theme-textcolor-on-subcolor: #eee;
+}
 /**
  * Header
  */
@@ -394,6 +406,8 @@ p, li, dt, dd {
  * コンテンツエリア
  */
 .contents {
+  width: 100%;
+  box-sizing: border-box;
   margin-bottom: 3em;
 }
 /**
@@ -423,11 +437,11 @@ blockquote {
   list-style-type: none;
 }
 .theme-breadcrumb ul li:after {
-  content: ' > ';
+  content: " > ";
   margin: 0 0.3em;
 }
 .theme-breadcrumb ul li:last-child:after {
-  content: '';
+  content: "";
   margin: 0;
 }
 .theme-breadcrumb ul li span {
