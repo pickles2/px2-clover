@@ -880,7 +880,7 @@ export default function PageInfo(props){
 									{(main.pageInfo !== null && typeof(main.pageInfo.parent) === typeof({}) && (<>
 										<div className="cont-pagenavi__parent"><Link href={main.px2utils.href(main.pageInfo.parent.path + "?PX=admin.page_info")}>{main.pageInfo.parent.title}</Link></div>
 									</>))}
-									{(main.pageInfo !== null && typeof(main.pageInfo.bros) === typeof([]) && (<>
+									{(main.pageInfo !== null && typeof(main.pageInfo.bros) === typeof([]) && !!main.pageInfo.originated_csv && (<>
 										<ul>
 										{(!!main.pageInfo.current_page_info.id.length && (
 											<li><a href="?" onClick={createNewBrosBefore}>(+) ページを追加する</a></li>
@@ -950,7 +950,16 @@ export default function PageInfo(props){
 									<col style={{width: "70%"}} />
 								</colgroup>
 								<tbody>
-									<tr><th>Originated CSV</th><td>{(main.pageInfo.originated_csv ? `${main.pageInfo.originated_csv.basename} Line: ${main.pageInfo.originated_csv.row}` : '---')}</td></tr>
+									{( main.pageInfo.blog && main.pageInfo.blog.article_info ) ?<>
+										{/* ブログ */}
+										<tr><th>Page Type</th><td>Blog Article</td></tr>
+										<tr><th>Originated CSV</th><td>{(main.pageInfo.blog.originated_csv ? `${main.pageInfo.blog.originated_csv.basename} Line: ${main.pageInfo.blog.originated_csv.row}` : '---')}</td></tr>
+									</>
+									:<>
+										{/* ページ */}
+										<tr><th>Page Type</th><td>Sitemap Page</td></tr>
+										<tr><th>Originated CSV</th><td>{(main.pageInfo.originated_csv ? `${main.pageInfo.originated_csv.basename} Line: ${main.pageInfo.originated_csv.row}` : '---')}</td></tr>
+									</>}
 									<tr><th>Process Type</th><td>{main.pageInfo.proc_type}</td></tr>
 									<tr><th>Editor Mode</th><td>{main.pageInfo.editor_mode}</td></tr>
 								</tbody>
