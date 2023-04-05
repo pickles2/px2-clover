@@ -1026,7 +1026,7 @@ export default React.memo(function PageInfo(props){
 									<div>
 										{main.pageInfo.blog.child_blogs.map( ( child_blog_info )=>{
 											return (<div key={child_blog_info.blog_id}>
-												<h3>{child_blog_info.blog_id}</h3>
+												<h3><Link href={main.px2utils.href('?PX=admin.blog.'+child_blog_info.blog_id)}>{child_blog_info.blog_id}</Link></h3>
 												{(!blogArticleList[child_blog_info.blog_id])
 												?<>
 													{(()=>{
@@ -1109,6 +1109,13 @@ export default React.memo(function PageInfo(props){
 										</ul>
 									</>))}
 								</div>
+								{(main.pageInfo.blog && main.pageInfo.blog.blog_id)
+									?<>
+										<div className="px2-p">
+											<div>ブログID: <Link href={main.px2utils.href('?PX=admin.blog.'+main.pageInfo.blog.blog_id)}>{main.pageInfo.blog.blog_id}</Link></div>
+										</div>
+									</>
+									:<></>}
 							</nav>
 						</>))}
 					</div>
