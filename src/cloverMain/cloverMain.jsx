@@ -179,6 +179,7 @@ class Layout extends React.Component {
 			updateGlobalData(()=>{
 				window.scrollTo(0,0);
 			});
+			$('.theme-layout__main').animate({scrollTop: 0}, 'fast');
 		};
 
 		const parsedUrl = parseUrl(location);

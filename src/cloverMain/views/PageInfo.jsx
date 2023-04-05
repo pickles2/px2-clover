@@ -6,7 +6,7 @@ import iterate79 from 'iterate79';
 import Utils from './PageInfo_files/js/Utils.js';
 const utils = new Utils();
 
-export default function PageInfo(props){
+export default React.memo(function PageInfo(props){
 
 	const main = useContext(MainContext);
 	const [sitemapDefinition, updateSitemapDefinition] = useState({
@@ -30,6 +30,7 @@ export default function PageInfo(props){
 
 		"**delete_flg": {"label": "(削除フラグ)"},
 	});
+	const [blogArticleList, update_blogArticleList] = useState({});
 
 	useEffect(() => {
 		main.px2utils.px2cmd(
@@ -532,6 +533,7 @@ export default function PageInfo(props){
 									modal.unlock();
 									px2style.closeModal();
 
+									update_blogArticleList({});
 									main.cloverUtils.autoCommit();
 									main.link(main.px2utils.href(fields.path) + '?PX=admin.page_info');
 								}
@@ -799,6 +801,7 @@ export default function PageInfo(props){
 							modal.unlock();
 							px2style.closeModal();
 
+							update_blogArticleList({});
 							main.cloverUtils.autoCommit();
 							main.link('/?PX=admin.page_info');
 						}
@@ -1017,6 +1020,60 @@ export default function PageInfo(props){
 										</>}
 									</ul>
 								</div>
+
+								{(main.pageInfo.blog && main.pageInfo.blog.child_blogs.length) ?<>
+									<h2>ブログ記事</h2>
+									<div>
+										{main.pageInfo.blog.child_blogs.map( ( child_blog_info )=>{
+											return (<div key={child_blog_info.blog_id}>
+												<h3>{child_blog_info.blog_id}</h3>
+												{(!blogArticleList[child_blog_info.blog_id])
+												?<>
+													{(()=>{
+														main.px2utils.px2cmd(
+															`?PX=admin.api.blogkit.get_article_list`,
+															{
+																blog_id: child_blog_info.blog_id,
+															},
+															function( result ){
+																let newState = {};
+																newState[child_blog_info.blog_id] = result.article_list;
+																update_blogArticleList(newState);
+															}
+														);
+													})()}
+													<div>...</div>
+												</>
+												:<>												
+													<div className="px2-linklist">
+														<ul>
+															{blogArticleList[child_blog_info.blog_id].map( ( articleInfo, idx )=>{
+																return (
+																	<li key={idx}>
+																		<a href="#" onClick={(e)=>{
+																			e.preventDefault();
+																			main.link( main.px2utils.href(articleInfo.path + "?PX=admin.page_info") );
+																			return false;
+																		}}>
+																			<div className="cont-blog-kit-article-list-item">
+																				<div className="cont-blog-kit-article-list-item__title">{ articleInfo.title }</div>
+																				<div className="cont-blog-kit-article-list-item__update_date">{ articleInfo.update_date }</div>
+																			</div>
+																		</a>
+																	</li>
+																)
+															} )}
+														</ul>
+													</div>
+												</>}
+											</div>)
+										} )}
+									</div>
+								</>
+								:<>
+								</>}
+
+
 							</div>
 
 							<nav className="cont-layout__right-navibar">
@@ -1136,4 +1193,4 @@ export default function PageInfo(props){
 			</>}</>}
 		</>
 	);
-}
+});
