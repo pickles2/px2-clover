@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import {MainContext} from '../context/MainContext';
 import Link from '../components/Link';
 import $ from 'jquery';
-import it79 from 'iterate79';
+import iterate79 from 'iterate79';
 import Utils from './Blog_files/js/Utils.js';
 const utils = new Utils();
 
@@ -180,10 +180,11 @@ export default React.memo(function Blog(props){
 	// --------------------------------------
 	// 新規記事作成
 	function createNewArticle(e){
+		var modal;
 		const blog_id = $(e.target).attr(`data-btn-create-new-article`);
 		let sitemapDefinition;
 		let blogmapDefinition;
-		it79.fnc({}, [
+		iterate79.fnc({}, [
 			function(it){
 				main.px2utils.px2cmd(
 					`?PX=admin.api.blogkit.get_sitemap_definition`,
@@ -207,7 +208,7 @@ export default React.memo(function Blog(props){
 				);
 			},
 			function(it){
-				blogmapDefinition = utils.fixSitemapDefinition(blogmapDefinition, sitemapDefinition);
+				blogmapDefinition = utils.fixBlogmapDefinition(blogmapDefinition, sitemapDefinition);
 				const $body = $('<div>')
 					.append( main.cloverUtils.bindTwig(
 						require('-!text-loader!./Blog_files/templates/createNewArticle.twig'),
@@ -216,7 +217,7 @@ export default React.memo(function Blog(props){
 							blogmapDefinition: blogmapDefinition,
 						}
 					) );
-				px2style.modal({
+				modal = px2style.modal({
 					"title": "記事を作成する",
 					"body": $body,
 					"buttons": [
@@ -224,6 +225,7 @@ export default React.memo(function Blog(props){
 					],
 					"form": {
 						"submit": function(e){
+							modal.lock();
 							const $form = $(this);
 							let fields = {};
 							for( let idx in blogmapDefinition ){
@@ -239,12 +241,14 @@ export default React.memo(function Blog(props){
 								},
 								function( result ){
 									if( !result.result ){
+										modal.unlock();
 										form.reportValidationError({
 											errors: result.errors,
 										});
 										return;
 									}
 
+									modal.unlock();
 									px2style.closeModal();
 									gotoArticleList( blog_id );
 								}
@@ -260,13 +264,13 @@ export default React.memo(function Blog(props){
 	}
 
 	// --------------------------------------
-	// 記事編集
-	function editArticle(path){
-		const blog_id = currentBlogId;
+	// ブログ記事編集
+	function editBlogArticle(blog_id, path){
+		var modal;
 		let sitemapDefinition;
 		let blogmapDefinition;
 		let article_info;
-		it79.fnc({}, [
+		iterate79.fnc({}, [
 			function(it){
 				main.px2utils.px2cmd(
 					`?PX=admin.api.blogkit.get_sitemap_definition`,
@@ -302,16 +306,16 @@ export default React.memo(function Blog(props){
 				);
 			},
 			function(it){
-				blogmapDefinition = utils.fixSitemapDefinition(blogmapDefinition, sitemapDefinition);
+				blogmapDefinition = utils.fixBlogmapDefinition(blogmapDefinition, sitemapDefinition);
 				const $body = $(main.cloverUtils.bindTwig(
-					require('-!text-loader!./Blog_files/templates/editArticle.twig'),
+					require('-!text-loader!./Blog_files/templates/editBlogArticle.twig'),
 					{
 						blog_id: blog_id,
 						blogmapDefinition: blogmapDefinition,
 						article_info: article_info,
 					}
 				));
-				px2style.modal({
+				modal = px2style.modal({
 					"title": "記事を編集する",
 					"body": $body,
 					"buttons": [
@@ -512,14 +516,10 @@ export default React.memo(function Blog(props){
 					<ul className="px2-horizontal-list px2-horizontal-list--left">
 						<li><button type="button" className="px2-btn" onClick={(e)=>{
 							e.preventDefault();
-							editArticle( localState.articleInfo.path );
-							}}>ページ情報を編集する</button></li>
-						<li><button type="button" className="px2-btn" onClick={(e)=>{
-							window.open(main.px2utils.href(localState.articleInfo.path + '?PX=admin.edit_content'));
-							}}>コンテンツを編集する</button></li>
-						<li><button type="button" className="px2-btn" onClick={(e)=>{
-							window.open(main.px2utils.href(localState.articleInfo.path));
-							}}>プレビューに戻る</button></li>
+							editBlogArticle( currentBlogId, localState.articleInfo.path );
+							}}>ブログ記事情報を編集する</button></li>
+						<li><a href="?PX=admin.edit_content" className="px2-btn">コンテンツを編集する</a></li>
+						<li><a href="?" className="px2-btn">プレビューに戻る</a></li>
 					</ul>
 
 					<div className="px2-p">

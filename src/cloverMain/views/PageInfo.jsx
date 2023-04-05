@@ -3,6 +3,8 @@ import React, { useContext, useState, useEffect } from "react";
 import {MainContext} from '../context/MainContext';
 import Link from '../components/Link';
 import iterate79 from 'iterate79';
+import Utils from './PageInfo_files/js/Utils.js';
+const utils = new Utils();
 
 export default function PageInfo(props){
 
@@ -181,17 +183,6 @@ export default function PageInfo(props){
 				}
 				fixedSitemapDefinition = fixSitemapDefinition(page_info);
 
-				// var template = require('./PageInfo_files/templates/editPage.twig');
-				// var $body = $('<div>')
-				// 	.append( template( {
-				// 		"page_info": page_info,
-				// 		"sitemapDefinition": fixedSitemapDefinition,
-				// 		"lockedField": {
-				// 			"logical_path": "lock",
-				// 		},
-				// 	} ) )
-				// ;
-				;
 				var $body = $('<div>')
 					.append( main.cloverUtils.bindTwig(
 						require('-!text-loader!./PageInfo_files/templates/editPage.twig'),
@@ -285,8 +276,7 @@ export default function PageInfo(props){
 	/**
 	 * カレントページ情報を更新する
 	 */
-	function editPage(e){
-		e.preventDefault();
+	function editPage(){
 		var pageInfoRaw = {};
 		var modal;
 		var originatedCsv = main.pageInfo.originated_csv;
@@ -318,17 +308,6 @@ export default function PageInfo(props){
 				}
 				fixedSitemapDefinition = fixSitemapDefinition(page_info);
 
-				// var template = require('./PageInfo_files/templates/editPage.twig');
-				// var $body = $('<div>')
-				// 	.append( template( {
-				// 		"page_info": page_info,
-				// 		"sitemapDefinition": fixedSitemapDefinition,
-				// 		"lockedField": {
-				// 			// "path": "lock",
-				// 			// "logical_path": "lock",
-				// 		},
-				// 	} ) )
-				// ;
 				var $body = $('<div>')
 					.append( main.cloverUtils.bindTwig(
 						require('-!text-loader!./PageInfo_files/templates/editPage.twig'),
@@ -455,6 +434,113 @@ export default function PageInfo(props){
 					},
 				});
 				it1.next();
+			},
+		]);
+	}
+
+	/**
+	 * カレントブログ記事情報を更新する
+	 */
+	function editBlogArticle(blog_id, path){
+		var modal;
+		let sitemapDefinition;
+		let blogmapDefinition;
+		let article_info;
+		iterate79.fnc({}, [
+			function(it){
+				main.px2utils.px2cmd(
+					`?PX=admin.api.blogkit.get_sitemap_definition`,
+					{},
+					function( res ){
+						sitemapDefinition = res.sitemap_definition;
+						it.next();
+					}
+				);
+			},
+			function(it){
+				main.px2utils.px2cmd(
+					`?PX=admin.api.blogkit.get_blogmap_definition`,
+					{
+						blog_id: blog_id,
+					},
+					function( res ){
+						blogmapDefinition = res.blogmap_definition;
+						it.next();
+					}
+				);
+			},
+			function(it){
+				main.px2utils.px2cmd(
+					`?PX=admin.api.blogkit.get_article_info`,
+					{
+						path: path,
+					},
+					function( res ){
+						article_info = res.article_info;
+						it.next();
+					}
+				);
+			},
+			function(it){
+				blogmapDefinition = utils.fixBlogmapDefinition(blogmapDefinition, sitemapDefinition);
+				const $body = $(main.cloverUtils.bindTwig(
+					require('-!text-loader!./PageInfo_files/templates/editBlogArticle.twig'),
+					{
+						blog_id: blog_id,
+						blogmapDefinition: blogmapDefinition,
+						article_info: article_info,
+					}
+				));
+				modal = px2style.modal({
+					"title": "記事を編集する",
+					"body": $body,
+					"buttons": [
+						$('<button type="submit" class="px2-btn px2-btn--primary">').text('保存する'),
+					],
+					"buttonsSecondary": [
+						$('<button type="button" class="px2-btn px2-btn--secondary">').text('キャンセル')
+							.on('click', function(){ px2style.closeModal(); }),
+					],
+					"form": {
+						"submit": function(e){
+							modal.lock();
+							const $form = $(this);
+							let fields = {};
+							for( let idx in blogmapDefinition ){
+								const blogmapDefinitionRow = blogmapDefinition[idx];
+								fields[blogmapDefinitionRow.key] = $form.find(`[name=${blogmapDefinitionRow.key}]`).val();
+							}
+							main.px2utils.px2cmd(
+								`?PX=admin.api.blogkit.update_article`,
+								{
+									blog_id: blog_id,
+									path: path,
+									fields: JSON.stringify(fields),
+								},
+								function( result ){
+									if( !result.result ){
+										modal.unlock();
+										form.reportValidationError({
+											errors: result.errors,
+										});
+										return;
+									}
+
+									main.setMainState({
+										"pageInfoLoaded": false,
+									});
+									modal.unlock();
+									px2style.closeModal();
+
+									main.cloverUtils.autoCommit();
+									main.link(main.px2utils.href(fields.path) + '?PX=admin.page_info');
+								}
+							);
+						},
+					},
+				});
+				var form = px2style.form($body);
+				it.next();
 			},
 		]);
 	}
@@ -820,9 +906,22 @@ export default function PageInfo(props){
 				?<>
 					<div className="cont-menubar">
 						<ul>
-							{main.pageInfo.originated_csv && <>
-							<li><a href="?" className="px2-btn" onClick={editPage}>ページ情報を編集する</a></li>
-							</>}
+							{(main.pageInfo.originated_csv)
+								?<>
+								<li><button className="px2-btn" onClick={(e)=>{
+									e.preventDefault();
+									editPage();
+									}}>ページ情報を編集する</button></li>
+								</>
+							:<>{(main.pageInfo.blog && main.pageInfo.blog.originated_csv)
+								?<>
+								<li><button className="px2-btn" onClick={(e)=>{
+									e.preventDefault();
+									editBlogArticle( main.pageInfo.blog.blog_id, main.pageInfo.current_page_info.path );
+									}}>ブログ記事情報を編集する</button></li>
+								</>
+							:<>
+							</>}</>}
 							<li><a href="?PX=admin.edit_content" className="px2-btn">コンテンツを編集する</a></li>
 							<li><a href="?" className="px2-btn">プレビューに戻る</a></li>
 						</ul>
@@ -870,7 +969,6 @@ export default function PageInfo(props){
 										<li><a href="?" onClick={singlePagePublish}>単体パブリッシュ</a></li>
 										{main.pageInfo.editor_mode == 'html.gui' && <li><a href="?" onClick={rebuildBroccoliContent}>ブロックエディタのコンテンツを再構成する</a></li>}
 										</>}
-										{/* <li><a href="?" onClick={createNewPage}>ページ情報を追加する</a></li> */}
 									</ul>
 								</div>
 							</div>
@@ -952,7 +1050,7 @@ export default function PageInfo(props){
 								<tbody>
 									{( main.pageInfo.blog && main.pageInfo.blog.article_info ) ?<>
 										{/* ブログ */}
-										<tr><th>Page Type</th><td>Blog Article</td></tr>
+										<tr><th>Page Type</th><td>Blog Article - <Link href={main.px2utils.href("/?PX=admin.blog."+main.pageInfo.blog.blog_id)}>{main.pageInfo.blog.blog_id}</Link></td></tr>
 										<tr><th>Originated CSV</th><td>{(main.pageInfo.blog.originated_csv ? `${main.pageInfo.blog.originated_csv.basename} Line: ${main.pageInfo.blog.originated_csv.row}` : '---')}</td></tr>
 									</>
 									:<>
@@ -974,8 +1072,7 @@ export default function PageInfo(props){
 				</>
 			:<>
 				<p>このページは存在しません。</p>
-			</>}
-			</>}
+			</>}</>}
 		</>
 	);
 }
