@@ -92,7 +92,26 @@ class pageInfo{
 				"blog_id" => $current_blog_article_info->blog_id ?? null,
 				"article_info" => $current_blog_article_info->article_info ?? null,
 				"originated_csv" => $current_blog_article_info->originated_csv ?? null,
+				"child_blogs" => array(),
 			);
+
+			$blog_list = $this->px->blog->get_blog_list();
+			foreach( $blog_list as $blog_info ){
+				$blog_info["logical_path"] = trim($blog_info["logical_path"] ?? '');
+				if( !strlen($blog_info["logical_path"]) ){
+					if( !strlen($rtn['current_page_info']['id']) ){
+						array_push($rtn['blog']['child_blogs'], $blog_info);
+					}
+					continue;
+				}
+				$logical_path_ary = explode('>', $blog_info["logical_path"]);
+				switch( $logical_path_ary[count($logical_path_ary) - 1] ){
+					case $rtn['current_page_info']['id']??null:
+					case $rtn['current_page_info']['path']??null:
+						array_push($rtn['blog']['child_blogs'], $blog_info);
+						break;
+				}
+			}
 		}
 
 
