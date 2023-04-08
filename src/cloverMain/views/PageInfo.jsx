@@ -2,6 +2,7 @@ import $ from 'jquery';
 import React, { useContext, useState, useEffect } from "react";
 import {MainContext} from '../context/MainContext';
 import Link from '../components/Link';
+import BlogArticleList from '../components/BlogArticleList';
 import iterate79 from 'iterate79';
 import Utils from './PageInfo_files/js/Utils.js';
 const utils = new Utils();
@@ -30,7 +31,6 @@ export default React.memo(function PageInfo(props){
 
 		"**delete_flg": {"label": "(削除フラグ)"},
 	});
-	const [blogArticleList, update_blogArticleList] = useState({});
 
 	useEffect(() => {
 		main.px2utils.px2cmd(
@@ -561,7 +561,6 @@ export default React.memo(function PageInfo(props){
 									modal.unlock();
 									px2style.closeModal();
 
-									update_blogArticleList({});
 									main.cloverUtils.autoCommit();
 									main.link(main.px2utils.href(fields.path) + '?PX=admin.page_info');
 
@@ -850,7 +849,6 @@ export default React.memo(function PageInfo(props){
 									modal.unlock();
 									px2style.closeModal();
 
-									update_blogArticleList({});
 									main.cloverUtils.autoCommit();
 									main.link('/?PX=admin.page_info');
 
@@ -1080,45 +1078,7 @@ export default React.memo(function PageInfo(props){
 										{main.pageInfo.blog.child_blogs.map( ( child_blog_info )=>{
 											return (<div key={child_blog_info.blog_id}>
 												<h3><Link href={main.px2utils.href('?PX=admin.blog.'+child_blog_info.blog_id)}>{child_blog_info.blog_id}</Link></h3>
-												{(!blogArticleList[child_blog_info.blog_id])
-												?<>
-													{(()=>{
-														main.px2utils.px2cmd(
-															`?PX=admin.api.blogkit.get_article_list`,
-															{
-																blog_id: child_blog_info.blog_id,
-															},
-															function( result ){
-																let newState = {};
-																newState[child_blog_info.blog_id] = result.article_list;
-																update_blogArticleList(newState);
-															}
-														);
-													})()}
-													<div>...</div>
-												</>
-												:<>												
-													<div className="px2-linklist">
-														<ul>
-															{blogArticleList[child_blog_info.blog_id].map( ( articleInfo, idx )=>{
-																return (
-																	<li key={idx}>
-																		<a href="#" onClick={(e)=>{
-																			e.preventDefault();
-																			main.link( main.px2utils.href(articleInfo.path + "?PX=admin.page_info") );
-																			return false;
-																		}}>
-																			<div className="cont-blog-kit-article-list-item">
-																				<div className="cont-blog-kit-article-list-item__title">{ articleInfo.title }</div>
-																				<div className="cont-blog-kit-article-list-item__update_date">{ articleInfo.update_date }</div>
-																			</div>
-																		</a>
-																	</li>
-																)
-															} )}
-														</ul>
-													</div>
-												</>}
+												<BlogArticleList blog_id={child_blog_info.blog_id} />
 											</div>)
 										} )}
 									</div>

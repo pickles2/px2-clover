@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import {MainContext} from '../context/MainContext';
 import Link from '../components/Link';
+import BlogArticleList from '../components/BlogArticleList';
 import $ from 'jquery';
 import iterate79 from 'iterate79';
 import Utils from './Blog_files/js/Utils.js';
@@ -437,6 +438,10 @@ export default React.memo(function Blog(props){
 					"articleList": {},
 					"articleInfo": null,
 				};
+				update_localState({
+					...localState,
+					...newState,
+				});
 				newState.articleList[blog_id] = result.article_list;
 				update_localState({
 					...localState,
@@ -459,7 +464,7 @@ export default React.memo(function Blog(props){
 					update_localState({
 						...localState,
 						"blogList": null,
-						"articleList": [],
+						"articleList": {},
 						"articleInfo": null,
 						"enableBlogKit": false,
 						"blogList": [],
@@ -493,7 +498,7 @@ export default React.memo(function Blog(props){
 			:(currentAction === "article_info" && localState.articleInfo && localState.articleInfo.path)
 				?<>
 				{/* --------------------------------------
-					記事詳細画面 */}
+					ブログ記事詳細画面 */}
 
 					<p><button type="button" data-back className="px2-btn" data-btn-article-list={currentBlogId} onClick={(e)=>{
 							e.preventDefault();
@@ -554,7 +559,7 @@ export default React.memo(function Blog(props){
 			:(currentAction === "article_list")
 				?<>
 				{/* --------------------------------------
-					記事一覧画面 */}
+					ブログ記事一覧画面 */}
 					<p><button type="button" className="px2-btn" onClick={(e)=>{
 						gotoBlogList();
 					}}>&lt; ブログ一覧へ戻る</button></p>
@@ -578,28 +583,14 @@ export default React.memo(function Blog(props){
 						<li><button type="button" className="px2-btn px2-btn--primary" data-btn-create-new-article={currentBlogId} onClick={createNewArticle}>新規記事を追加</button></li>
 					</ul>
 
-					{(localState.articleList && localState.articleList[currentBlogId] && localState.articleList[currentBlogId].length)
-						? <div className="px2-linklist">
-							<ul>
-							{localState.articleList[currentBlogId].map( ( articleInfo, idx )=>{
-								return (
-									<li key={idx}>
-										<a href="#" onClick={(e)=>{
-											e.preventDefault();
-											const path = articleInfo.path;
-											gotoArticleInfo(path);
-										}}>
-											<div className="cont-blog-kit-article-list-item">
-												<div className="cont-blog-kit-article-list-item__title">{ articleInfo.title }</div>
-												<div className="cont-blog-kit-article-list-item__update_date">{ articleInfo.update_date }</div>
-											</div>
-										</a>
-									</li>
-								)
-							} )}
-							</ul>
-						</div>
-					:<></>}
+					{(localState.articleList && localState.articleList[currentBlogId])
+						? <>
+						<BlogArticleList blog_id={currentBlogId} />
+						</>
+						: <>
+						<div>loading...</div>
+						</>
+					}
 
 					<p className="px2-text-align-center"><button type="button" className="px2-btn px2-btn--danger" data-delete-blog={currentBlogId} onClick={deleteBlog}>ブログ { currentBlogId } を削除する</button></p>
 				</>
