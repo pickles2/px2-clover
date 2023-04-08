@@ -1078,7 +1078,7 @@ export default React.memo(function PageInfo(props){
 										{main.pageInfo.blog.child_blogs.map( ( child_blog_info )=>{
 											return (<div key={child_blog_info.blog_id}>
 												<h3><Link href={main.px2utils.href('?PX=admin.blog.'+child_blog_info.blog_id)}>{child_blog_info.blog_id}</Link></h3>
-												<BlogArticleList blog_id={child_blog_info.blog_id} />
+												<BlogArticleList blog_id={child_blog_info.blog_id} dpp={10} />
 											</div>)
 										} )}
 									</div>

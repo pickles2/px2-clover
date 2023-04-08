@@ -573,7 +573,7 @@ export default React.memo(function Blog(props){
 
 					{(localState.articleList && localState.articleList[currentBlogId])
 						? <>
-						<BlogArticleList blog_id={currentBlogId} />
+						<BlogArticleList blog_id={currentBlogId} dpp={100} />
 						</>
 						: <>
 						<div>loading...</div>

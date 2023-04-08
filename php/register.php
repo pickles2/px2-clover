@@ -370,11 +370,27 @@ class register{
 									break;
 								case 'get_article_list':
 									$blog_id = $this->px->req()->get_param('blog_id');
+									$dpp = intval($this->px->req()->get_param('dpp') ?? 0);
+									if( !$dpp ){
+										$dpp = 50;
+									}
+									$p = intval($this->px->req()->get_param('p') ?? 0);
+									if( !$p ){
+										$p = 1;
+									}
 									$article_list = $blog->get_article_list($blog_id);
+									$sliced_article_list = array_slice(
+										$article_list,
+										$dpp * ($p-1),
+										$dpp
+									);
 									echo json_encode(array(
 										"result" => true,
 										"blog_id" => $blog_id,
-										"article_list" => $article_list,
+										"count" => count($article_list),
+										"dpp" => $dpp,
+										"p" => $p,
+										"article_list" => $sliced_article_list,
 									));
 									exit;
 									break;
