@@ -145,13 +145,12 @@ export default React.memo(function PageInfo(props){
 				);
 			},
 			(it1) => {
-				var params = {
-					'filefullname': originatedCsv.basename,
-					'row': originatedCsv.row,
-				};
 				main.px2utils.px2cmd(
 					'/?PX=px2dthelper.page.get_page_info_raw',
-					params,
+					{
+						'filefullname': originatedCsv.basename,
+						'row': originatedCsv.row,
+					},
 					function( res ){
 						if( !res.result ){
 							alert( 'Error: ' + res.message );
@@ -233,14 +232,13 @@ export default React.memo(function PageInfo(props){
 								}
 							});
 
-							var params = {
-								'filefullname': originatedCsv.basename,
-								'row': (originatedCsv.row + (basePageInfo.insert == 'before' ? 0 : 1)),
-								'page_info': new_page_info,
-							};
 							main.px2utils.px2cmd(
 								'/?PX=px2dthelper.page.add_page_info_raw',
-								params,
+								{
+									'filefullname': originatedCsv.basename,
+									'row': (originatedCsv.row + (basePageInfo.insert == 'before' ? 0 : 1)),
+									'page_info': new_page_info,
+								},
 								function( res ){
 									if( !res.result ){
 										for( const key in res.errors){
@@ -284,13 +282,12 @@ export default React.memo(function PageInfo(props){
 		var fixedSitemapDefinition;
 		iterate79.fnc({}, [
 			(it1) => {
-				var params = {
-					'filefullname': originatedCsv.basename,
-					'row': originatedCsv.row,
-				};
 				main.px2utils.px2cmd(
 					'/?PX=px2dthelper.page.get_page_info_raw',
-					params,
+					{
+						'filefullname': originatedCsv.basename,
+						'row': originatedCsv.row,
+					},
 					function( res ){
 						if( !res.result ){
 							alert( 'Error: ' + res.message );
@@ -364,14 +361,13 @@ export default React.memo(function PageInfo(props){
 									it2.next();
 								},
 								(it2) => {
-									var params = {
-										'filefullname': originatedCsv.basename,
-										'row': originatedCsv.row,
-										'page_info': new_page_info,
-									};
 									main.px2utils.px2cmd(
 										'/?PX=px2dthelper.page.update_page_info_raw',
-										params,
+										{
+											'filefullname': originatedCsv.basename,
+											'row': originatedCsv.row,
+											'page_info': new_page_info,
+										},
 										function( res ){
 											if( !res.result ){
 												for( const key in res.errors){
@@ -403,13 +399,12 @@ export default React.memo(function PageInfo(props){
 										return;
 									}
 
-									var params = {
-										'from': contentBefore,
-										'to': contentAfter,
-									};
 									main.px2utils.px2cmd(
 										'/?PX=px2dthelper.content.move',
-										params,
+										{
+											'from': contentBefore,
+											'to': contentAfter,
+										},
 										function( res ){
 											if( !res.result ){
 												console.error('Error:', res);
@@ -511,22 +506,55 @@ export default React.memo(function PageInfo(props){
 								const blogmapDefinitionRow = blogmapDefinition[idx];
 								fields[blogmapDefinitionRow.key] = $form.find(`[name=${blogmapDefinitionRow.key}]`).val();
 							}
-							main.px2utils.px2cmd(
-								`?PX=admin.api.blogkit.update_article`,
-								{
-									blog_id: blog_id,
-									path: path,
-									fields: JSON.stringify(fields),
+							iterate79.fnc({}, [
+								(it) => {
+									main.px2utils.px2cmd(
+										`?PX=admin.api.blogkit.update_article`,
+										{
+											blog_id: blog_id,
+											path: path,
+											fields: JSON.stringify(fields),
+										},
+										function( result ){
+											if( !result.result ){
+												modal.unlock();
+												form.reportValidationError({
+													errors: result.errors,
+												});
+												return;
+											}
+											it.next();
+										}
+									);
 								},
-								function( result ){
-									if( !result.result ){
-										modal.unlock();
-										form.reportValidationError({
-											errors: result.errors,
-										});
+								(it) => {
+									var contentBefore = path;
+									if( article_info.content ){ contentBefore = article_info.content; }
+									var contentAfter = fields.path;
+									if( fields.content ){ contentAfter = fields.content; }
+
+									if( contentBefore === contentAfter ){
+										// コンテンツパスの変更はないので、スキップ
+										it.next();
 										return;
 									}
 
+									main.px2utils.px2cmd(
+										'/?PX=px2dthelper.content.move',
+										{
+											'from': contentBefore,
+											'to': contentAfter,
+										},
+										function( res ){
+											if( !res.result ){
+												console.error('Error:', res);
+											}
+											it.next();
+										}
+									);
+									return;
+								},
+								(it) => {
 									main.setMainState({
 										"pageInfoLoaded": false,
 									});
@@ -536,8 +564,10 @@ export default React.memo(function PageInfo(props){
 									update_blogArticleList({});
 									main.cloverUtils.autoCommit();
 									main.link(main.px2utils.href(fields.path) + '?PX=admin.page_info');
-								}
-							);
+
+									it.next();
+								},
+							]);
 						},
 					},
 				});
@@ -655,13 +685,12 @@ export default React.memo(function PageInfo(props){
 		let originatedCsv = main.pageInfo.originated_csv;
 		iterate79.fnc({}, [
 			(it1) => {
-				let params = {
-					'filefullname': originatedCsv.basename,
-					'row': originatedCsv.row,
-				};
 				main.px2utils.px2cmd(
 					'/?PX=px2dthelper.page.get_page_info_raw',
-					params,
+					{
+						'filefullname': originatedCsv.basename,
+						'row': originatedCsv.row,
+					},
 					function( res ){
 						if( !res.result ){
 							alert( 'Error: ' + res.message );
@@ -727,13 +756,12 @@ export default React.memo(function PageInfo(props){
 									);
 								},
 								(it2) => {
-									var params = {
-										'filefullname': originatedCsv.basename,
-										'row': originatedCsv.row,
-									};
 									main.px2utils.px2cmd(
 										'/?PX=px2dthelper.page.delete_page_info_raw',
-										params,
+										{
+											'filefullname': originatedCsv.basename,
+											'row': originatedCsv.row,
+										},
 										function( res ){
 											if( !res.result ){
 												alert( 'Error: ' + res.message );
