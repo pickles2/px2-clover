@@ -52,7 +52,7 @@ class view{
 		$data['path_client_resources'] = $this->clover->path_files();
 		$data['csrf_token'] = $this->clover->auth()->get_csrf_token();
 		$data['lb'] = $this->clover->lang();
-		$data['current_page_info'] = $this->px->site()->get_current_page_info();
+		$data['current_page_info'] = ($this->px->site() ? $this->px->site()->get_current_page_info() : null);
 
 		$rtn = $twig->render( $path_template, $data );
 		return $rtn;
