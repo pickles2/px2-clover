@@ -11,8 +11,11 @@ export default function BlogArticleList(props){
 		"pageCount": 0,
 	});
 	const dpp = props.dpp || 50;
+	const onLoad = props.onLoad || function(){};
+	const onUpdate = props.onUpdate || function(){};
 
 	useEffect(() => {
+		px2style.loading();
 		main.px2utils.px2cmd(
 			`?PX=admin.api.blogkit.get_article_list`,
 			{
@@ -30,12 +33,18 @@ export default function BlogArticleList(props){
 					...localState,
 					...newState,
 				});
+
+				px2style.closeLoading();
+				onLoad();
 			}
 		);
 		return () => {
 		};
 	}, []);
 
+	/**
+	 * ページネーションを更新する
+	 */
 	function gotoPage(page){
 		if( page < 1 ){
 			page = 1;
@@ -55,11 +64,13 @@ export default function BlogArticleList(props){
 				let newState = {};
 				newState.blogArticleList = result.article_list;
 				newState.page = page;
-				px2style.closeLoading();
 				update_localState({
 					...localState,
 					...newState,
 				});
+
+				px2style.closeLoading();
+				onUpdate();
 			}
 		);
 	}
@@ -71,10 +82,12 @@ export default function BlogArticleList(props){
 				<div className="px2-text-align-center">loading...</div>
 			</>
 			:<>												
-				<div className="px2-text-align-center">
-					<button type="button" className="px2-btn" onClick={()=>{gotoPage(localState.page - 1);}}>&lt; 前へ</button>
-					{localState.page} / {localState.pageCount}
-					<button type="button" className="px2-btn" onClick={()=>{gotoPage(localState.page + 1);}}>次へ &gt;</button>
+				<div className="px2-clover-pagenation">
+					<ul>
+						<li><button type="button" className="px2-btn" onClick={()=>{gotoPage(localState.page - 1);}} disabled={(localState.page <= 1 ? true : false)}>&lt; 前へ</button></li>
+						<li>{localState.page} / {localState.pageCount}</li>
+						<li><button type="button" className="px2-btn" onClick={()=>{gotoPage(localState.page + 1);}} disabled={(localState.page >= localState.pageCount ? true : false)}>次へ &gt;</button></li>
+					</ul>
 				</div>
 				<div className="px2-linklist">
 					<ul>
@@ -96,10 +109,12 @@ export default function BlogArticleList(props){
 						} )}
 					</ul>
 				</div>
-				<div className="px2-text-align-center">
-					<button type="button" className="px2-btn" onClick={()=>{gotoPage(localState.page - 1);}}>&lt; 前へ</button>
-					{localState.page} / {localState.pageCount}
-					<button type="button" className="px2-btn" onClick={()=>{gotoPage(localState.page + 1);}}>次へ &gt;</button>
+				<div className="px2-clover-pagenation">
+					<ul>
+						<li><button type="button" className="px2-btn" onClick={()=>{gotoPage(localState.page - 1);}} disabled={(localState.page <= 1 ? true : false)}>&lt; 前へ</button></li>
+						<li>{localState.page} / {localState.pageCount}</li>
+						<li><button type="button" className="px2-btn" onClick={()=>{gotoPage(localState.page + 1);}} disabled={(localState.page >= localState.pageCount ? true : false)}>次へ &gt;</button></li>
+					</ul>
 				</div>
 			</>}
 

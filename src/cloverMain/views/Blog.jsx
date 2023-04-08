@@ -573,10 +573,15 @@ export default React.memo(function Blog(props){
 
 					{(localState.articleList && localState.articleList[currentBlogId])
 						? <>
-						<BlogArticleList blog_id={currentBlogId} dpp={100} />
+						<BlogArticleList
+							blog_id={currentBlogId}
+							dpp={100}
+							onUpdate={()=>{
+								$('.theme-layout__main').animate({scrollTop: 0}, 'fast');
+							}} />
 						</>
 						: <>
-						<div>loading...</div>
+						<div className="px2-text-align-center">loading...</div>
 						</>
 					}
 

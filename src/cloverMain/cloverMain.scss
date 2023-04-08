@@ -244,6 +244,25 @@
 	padding: 0;
 }
 
+.px2-clover-pagenation {
+	margin: 1em auto;
+	> ul {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 10px;
+		margin: 0;
+		padding: 0;
+		> li {
+			display: flex;
+			align-items: center;
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+		}
+	}
+}
+
 [data-px="admin.sitemap"] {
 	@import "./views/Sitemap_files/cont.scss";
 }
@@ -256,9 +275,10 @@
 [data-px="admin.publish"] {
 	@import "./views/Publish_files/cont.scss";
 }
-.common-file-editor__tab-bar {
-    display: none;
-}
 [data-px="admin.config.find_unassigned_contents"] {
 	@import "./views/FindUnassignedContents_files/cont.scss";
+}
+
+.common-file-editor__tab-bar {
+    display: none;
 }
