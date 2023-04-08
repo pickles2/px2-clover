@@ -402,23 +402,26 @@ export default React.memo(function Blog(props){
 	// --------------------------------------
 	// 記事詳細画面へ
 	function gotoArticleInfo(path){
-		main.px2utils.px2cmd(
-			`/?PX=admin.api.blogkit.get_article_info`,
-			{
-				path: path,
-			},
-			function( result ){
-				let newState = {
-					"articleInfo": result.article_info,
-				};
-				update_localState({
-					...localState,
-					...newState,
-				});
-				main.link(main.px2utils.href( result.article_info.path )+'?PX=admin.blog.'+currentBlogId+'.article_info');
-			}
-		);
+		main.link(main.px2utils.href( path )+'?PX=admin.page_info');
 		return;
+
+		// main.px2utils.px2cmd(
+		// 	`/?PX=admin.api.blogkit.get_article_info`,
+		// 	{
+		// 		path: path,
+		// 	},
+		// 	function( result ){
+		// 		let newState = {
+		// 			"articleInfo": result.article_info,
+		// 		};
+		// 		update_localState({
+		// 			...localState,
+		// 			...newState,
+		// 		});
+		// 		main.link(main.px2utils.href( result.article_info.path )+'?PX=admin.blog.'+currentBlogId+'.article_info');
+		// 	}
+		// );
+		// return;
 	}
 
 	// --------------------------------------
@@ -554,7 +557,7 @@ export default React.memo(function Blog(props){
 					記事一覧画面 */}
 					<p><button type="button" className="px2-btn" onClick={(e)=>{
 						gotoBlogList();
-					}}>戻る</button></p>
+					}}>&lt; ブログ一覧へ戻る</button></p>
 
 					<div className="px2-p">
 						<table className="px2-table" style={{width:"100%"}}>
