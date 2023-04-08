@@ -6,23 +6,26 @@ export default function BlogArticleList(props){
 	const main = useContext(MainContext);
 	const [blogArticleList, update_blogArticleList] = useState({});
 
+	useEffect(() => {
+		main.px2utils.px2cmd(
+			`?PX=admin.api.blogkit.get_article_list`,
+			{
+				blog_id: props.blog_id,
+			},
+			function( result ){
+				let newState = {};
+				newState[props.blog_id] = result.article_list;
+				update_blogArticleList(newState);
+			}
+		);
+		return () => {
+		};
+	}, []);
+
 	return (
 		<>
 			{(!blogArticleList[props.blog_id])
 			?<>
-				{(()=>{
-					main.px2utils.px2cmd(
-						`?PX=admin.api.blogkit.get_article_list`,
-						{
-							blog_id: props.blog_id,
-						},
-						function( result ){
-							let newState = {};
-							newState[props.blog_id] = result.article_list;
-							update_blogArticleList(newState);
-						}
-					);
-				})()}
 				<div>...</div>
 			</>
 			:<>												
