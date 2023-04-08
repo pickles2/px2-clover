@@ -56,23 +56,17 @@ export default React.memo(function Blog(props){
 	}
 
 	if( currentAction == 'article_list' && !localState.articleList ){
-		main.px2utils.px2cmd(
-			`?PX=admin.api.blogkit.get_article_list`,
-			{
-				blog_id: currentBlogId,
-			},
-			function( result ){
-				let newState = {
-					"articleList": {},
-					"articleInfo": null,
-				};
-				newState.articleList[currentBlogId] = result.article_list;
-				update_localState({
-					...localState,
-					...newState,
-				});
-			}
-		);
+		(() => {
+			let newState = {
+				"articleList": {},
+				"articleInfo": null,
+			};
+			newState.articleList[currentBlogId] = true;
+			update_localState({
+				...localState,
+				...newState,
+			});
+		})();
 	}
 
 	if( currentAction == 'article_info' && !localState.articleInfo ){
@@ -428,28 +422,22 @@ export default React.memo(function Blog(props){
 	// --------------------------------------
 	// 記事一覧へ
 	function gotoArticleList(blog_id){
-		main.px2utils.px2cmd(
-			`?PX=admin.api.blogkit.get_article_list`,
-			{
-				blog_id: blog_id,
-			},
-			function( result ){
-				let newState = {
-					"articleList": {},
-					"articleInfo": null,
-				};
-				update_localState({
-					...localState,
-					...newState,
-				});
-				newState.articleList[blog_id] = result.article_list;
-				update_localState({
-					...localState,
-					...newState,
-				});
-				main.link(main.px2utils.href('/')+'?PX=admin.blog.'+blog_id);
-			}
-		);
+		(() => {
+			let newState = {
+				"articleList": {},
+				"articleInfo": null,
+			};
+			update_localState({
+				...localState,
+				...newState,
+			});
+			newState.articleList[blog_id] = true;
+			update_localState({
+				...localState,
+				...newState,
+			});
+			main.link(main.px2utils.href('/')+'?PX=admin.blog.'+blog_id);
+		})();
 		return;
 	}
 
@@ -475,7 +463,7 @@ export default React.memo(function Blog(props){
 				update_localState({
 					...localState,
 					"blogList": null,
-					"articleList": [],
+					"articleList": {},
 					"articleInfo": null,
 					"enableBlogKit": true,
 					"blogList": result.blog_list,
