@@ -708,7 +708,6 @@ export default React.memo(function PageInfo(props){
 							iterate79.fnc({}, [
 								(it2) => {
 									var isChecked = modal.$modal.find('[name=delete_contents]:checked').val();
-									console.log(isChecked);
 									if( !isChecked ){
 										it2.next();
 										return;
@@ -786,26 +785,52 @@ export default React.memo(function PageInfo(props){
 					e.preventDefault();
 					modal.lock();
 
-					main.px2utils.px2cmd(
-						`?PX=admin.api.blogkit.delete_article`,
-						{
-							blog_id: blog_id,
-							path: path,
-						},
-						function( result ){
-							if( !result.result ){
-								alert('ERROR: '+result.message);
-								modal.unlock();
+					iterate79.fnc({}, [
+						(it) => {
+							var isChecked = modal.$modal.find('[name=delete_contents]:checked').val();
+							if( !isChecked ){
+								it.next();
 								return;
 							}
-							modal.unlock();
-							px2style.closeModal();
+							main.px2utils.px2cmd(
+								'?PX=px2dthelper.content.delete',
+								{},
+								function( res ){
+									if( !res.result ){
+										alert( 'Error: ' + res.message );
+										console.error('Error:', res);
+										modal.unlock();
+										return;
+									}
+									it.next();
+								}
+							);
+						},
+						(it) => {
+							main.px2utils.px2cmd(
+								`?PX=admin.api.blogkit.delete_article`,
+								{
+									blog_id: blog_id,
+									path: path,
+								},
+								function( result ){
+									if( !result.result ){
+										alert('ERROR: '+result.message);
+										modal.unlock();
+										return;
+									}
+									modal.unlock();
+									px2style.closeModal();
 
-							update_blogArticleList({});
-							main.cloverUtils.autoCommit();
-							main.link('/?PX=admin.page_info');
-						}
-					);
+									update_blogArticleList({});
+									main.cloverUtils.autoCommit();
+									main.link('/?PX=admin.page_info');
+
+									it.next();
+								}
+							);
+						},
+					]);
 				},
 			},
 		});
