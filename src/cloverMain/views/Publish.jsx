@@ -126,6 +126,7 @@ export default React.memo(function Publish(props){
 
 			var getParams = '';
 			if(publishOptions.paths_region && publishOptions.paths_region.length){
+				getParams += `&path_region=${encodeURIComponent(publishOptions.paths_region.shift())}`;
 				publishOptions.paths_region.forEach((row)=>{
 					if( !row ){
 						return;
