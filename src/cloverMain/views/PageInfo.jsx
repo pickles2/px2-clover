@@ -183,17 +183,16 @@ export default React.memo(function PageInfo(props){
 				}
 				fixedSitemapDefinition = fixSitemapDefinition(page_info);
 
-				var $body = $('<div>')
-					.append( main.cloverUtils.bindTwig(
-						require('-!text-loader!./PageInfo_files/templates/editPage.twig'),
-						{
-							"page_info": page_info,
-							"sitemapDefinition": fixedSitemapDefinition,
-							"lockedField": {
-								"logical_path": "lock",
-							},
-						}
-					) );
+				var $body = $( main.cloverUtils.bindTwig(
+					require('-!text-loader!./PageInfo_files/templates/editPage.twig'),
+					{
+						"page_info": page_info,
+						"sitemapDefinition": fixedSitemapDefinition,
+						"lockedField": {
+							"logical_path": "lock",
+						},
+					}
+				) );
 
 				modal = px2style.modal({
 					'title': "ページ情報を追加する",
@@ -306,18 +305,17 @@ export default React.memo(function PageInfo(props){
 				}
 				fixedSitemapDefinition = fixSitemapDefinition(page_info);
 
-				var $body = $('<div>')
-					.append( main.cloverUtils.bindTwig(
-						require('-!text-loader!./PageInfo_files/templates/editPage.twig'),
-						{
-							"page_info": page_info,
-							"sitemapDefinition": fixedSitemapDefinition,
-							"lockedField": {
-								// "path": "lock",
-								// "logical_path": "lock",
-							},
-						}
-					) );
+				var $body = $( main.cloverUtils.bindTwig(
+					require('-!text-loader!./PageInfo_files/templates/editPage.twig'),
+					{
+						"page_info": page_info,
+						"sitemapDefinition": fixedSitemapDefinition,
+						"lockedField": {
+							// "path": "lock",
+							// "logical_path": "lock",
+						},
+					}
+				) );
 
 				modal = px2style.modal({
 					'title': "ページ情報を編集する",

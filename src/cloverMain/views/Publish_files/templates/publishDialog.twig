@@ -1,3 +1,14 @@
+{% if publish_patterns %}
+<div class="px2-p px2-text-align-right">
+	<select name="publish_patterns" class="px2-input">
+		<option value="">select pattern...</option>
+		{% for index, publish_pattern in publish_patterns %}
+		<option value="{{ index }}">{{ publish_pattern.label }}</option>
+		{% endfor %}
+	</select>
+</div>
+{% endif %}
+
 <div class="px2-form-input-list">
 	<ul class="px2-form-input-list__ul">
 		<li class="px2-form-input-list__li">

@@ -36,13 +36,19 @@ export default React.memo(function Publish(props){
 	 * パブリッシュダイアログを表示する
 	 */
 	function publishDialog(){
-		var modal;
+		let modal;
+		let publish_patterns = null;
+
+		try {
+			publish_patterns = main.pxConfig.plugins.px2dt.publish_patterns;
+		}catch(e){}
+
 		iterate79.fnc({}, [
 			function(it){
 				const $body = $(main.cloverUtils.bindTwig(
 					require('-!text-loader!./Publish_files/templates/publishDialog.twig'),
 					{
-						config: null, // TODO: プリセットを処理するため pickles2 config 情報を渡す
+						"publish_patterns": publish_patterns,
 					}
 				));
 				modal = px2style.modal({
@@ -52,7 +58,7 @@ export default React.memo(function Publish(props){
 						$('<button type="submit" class="px2-btn px2-btn--primary">').text('パブリッシュを実行する'),
 					],
 					"buttonsSecondary": [
-						$('<button type="button" class="px2-btn px2-btn--secondary">').text('キャンセル')
+						$('<button type="button" class="px2-btn">').text('キャンセル')
 							.on('click', function(){ px2style.closeModal(); }),
 					],
 					"form": {
@@ -76,6 +82,34 @@ export default React.memo(function Publish(props){
 					},
 				});
 				var form = px2style.form($body);
+
+				var $select = $body.find('select[name=publish_patterns]');
+				$select.on('change', function(){
+					var selectedValue = $(this).val();
+					var data = publish_patterns[selectedValue];
+					$(this).val('');
+					if( !data ){
+						alert('ERROR: 設定を読み込めません。');
+						return;
+					}
+					try {
+						$body.find('textarea[name=paths_region]').val( data.paths_region.join("\n") );
+					} catch (e) {
+						$body.find('textarea[name=paths_region]').val( '/' );
+					}
+					try {
+						$body.find('textarea[name=paths_ignore]').val( data.paths_ignore.join("\n") );
+					} catch (e) {
+						$body.find('textarea[name=paths_ignore]').val( '' );
+					}
+					try {
+						$body.find('input[name=keep_cache]').prop("checked", !!(data.keep_cache));
+					} catch (e) {
+						$body.find('input[name=keep_cache]').prop("checked", false);
+					}
+					return;
+				});
+
 				it.next();
 			},
 		]);

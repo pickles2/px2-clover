@@ -115,13 +115,13 @@ return call_user_func( function(){
 		)),
 
 		// PX=clearcache
-		'picklesFramework2\commands\clearcache::register' ,
+		'picklesFramework2\commands\clearcache::register',
 
 		// PX=config
-		'picklesFramework2\commands\config::register' ,
+		'picklesFramework2\commands\config::register',
 
 		// PX=phpinfo
-		'picklesFramework2\commands\phpinfo::register' ,
+		'picklesFramework2\commands\phpinfo::register',
 
 		// sitemapExcel
 		'tomk79\pickles2\sitemap_excel\pickles_sitemap_excel::exec',
@@ -144,17 +144,17 @@ return call_user_func( function(){
 		) ),
 
 		// PX=api
-		'picklesFramework2\commands\api::register' ,
+		'picklesFramework2\commands\api::register',
 
 		// PX=publish
-		'picklesFramework2\commands\publish::register('.json_encode(array(
+		picklesFramework2\commands\publish::register( array(
 			'paths_ignore' => array(
 				"/caches/p/__console_resources/*",
 			),
-		)).')' ,
+		) ),
 
 		// PX=px2dthelper
-		'tomk79\pickles2\px2dthelper\main::register' ,
+		'tomk79\pickles2\px2dthelper\main::register',
 	];
 
 
@@ -163,7 +163,7 @@ return call_user_func( function(){
 
 	$conf->funcs->processor->html = [
 		// ページ内目次を自動生成する
-		'picklesFramework2\processors\autoindex\autoindex::exec' ,
+		'picklesFramework2\processors\autoindex\autoindex::exec',
 
 		// テーマ
 		'theme'=>'tomk79\pickles2\multitheme\theme::exec('.json_encode(array(
@@ -172,39 +172,39 @@ return call_user_func( function(){
 			'path_theme_collection'=>'./px-files/themes/',
 			'attr_bowl_name_by'=>'data-contents-area',
 			'default_theme_id' => 'clover',
-		)).')' ,
+		)).')',
 
 		// Apache互換のSSIの記述を解決する
-		'picklesFramework2\processors\ssi\ssi::exec' ,
+		'picklesFramework2\processors\ssi\ssi::exec',
 
 		// output_encoding, output_eol_coding の設定に従ってエンコード変換する。
-		'picklesFramework2\processors\encodingconverter\encodingconverter::exec' ,
+		'picklesFramework2\processors\encodingconverter\encodingconverter::exec',
 	];
 
 	$conf->funcs->processor->css = [
 		// output_encoding, output_eol_coding の設定に従ってエンコード変換する。
-		'picklesFramework2\processors\encodingconverter\encodingconverter::exec' ,
+		'picklesFramework2\processors\encodingconverter\encodingconverter::exec',
 	];
 
 	$conf->funcs->processor->js = [
 		// output_encoding, output_eol_coding の設定に従ってエンコード変換する。
-		'picklesFramework2\processors\encodingconverter\encodingconverter::exec' ,
+		'picklesFramework2\processors\encodingconverter\encodingconverter::exec',
 	];
 
 	$conf->funcs->processor->md = [
 		// Markdown文法を処理する
-		'picklesFramework2\processors\md\ext::exec' ,
+		'picklesFramework2\processors\md\ext::exec',
 
 		// html の処理を追加
-		$conf->funcs->processor->html ,
+		$conf->funcs->processor->html,
 	];
 
 	$conf->funcs->processor->scss = [
 		// SCSS文法を処理する
-		'picklesFramework2\processors\scss\ext::exec' ,
+		'picklesFramework2\processors\scss\ext::exec',
 
 		// css の処理を追加
-		$conf->funcs->processor->css ,
+		$conf->funcs->processor->css,
 	];
 
 
@@ -223,6 +223,27 @@ return call_user_func( function(){
 	];
 	$conf->plugins->px2dt->path_module_templates_dir = "./px-files/modules/";
 
+	/** パブリッシュのパターンを登録 */
+	$conf->plugins->px2dt->publish_patterns = array(
+		array(
+			'label'=>'すべて',
+			'paths_region'=> array('/'),
+			'paths_ignore'=> array(),
+			'keep_cache'=>false
+		),
+		array(
+			'label'=>'vendorを除外',
+			'paths_region'=> array('/'),
+			'paths_ignore'=> array('/vendor/'),
+			'keep_cache'=>true
+		),
+		array(
+			'label'=>'マニュアル',
+			'paths_region'=> array('/manual/'),
+			'paths_ignore'=> array('/vendor/'),
+			'keep_cache'=>true
+		),
+	);
 
 	/**
 	 * メインメニューの一覧
