@@ -58,9 +58,19 @@ export default React.memo(function Publish(props){
 					"form": {
 						"submit": function(e){
 							const $form = $(this);
-							px2style.closeModal();
-							let publishOptions = {};
 
+							let publishOptions = {};
+							publishOptions.paths_region = (()=>{
+								const strInput = $form.find(`textarea[name=paths_region]`).val();
+								return strInput.split(/\r\n|\r|\n/);
+							})();
+							publishOptions.paths_ignore = (()=>{
+								const strInput = $form.find(`textarea[name=paths_ignore]`).val();
+								return strInput.split(/\r\n|\r|\n/);
+							})();
+							publishOptions.keep_cache = ($form.find(`input[name=keep_cache]`).prop('checked') ? 1 : null);
+
+							px2style.closeModal();
 							publish( publishOptions );
 						},
 					},
@@ -77,9 +87,6 @@ export default React.memo(function Publish(props){
 	function publish( publishOptions ){
 		console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
 
-		if( !confirm('パブリッシュを実行しますか？') ){
-			return;
-		}
 		if( healthCheckStatus.scheduler.is_available ){
 			// --------------------------------------
 			// スケジューラが利用可能な場合
@@ -117,8 +124,29 @@ export default React.memo(function Publish(props){
 			var $publishStdout = $('.cont-publish-stdout pre');
 			$publishStdout.text(progressTotalMessage);
 
+			var getParams = '';
+			if(publishOptions.paths_region && publishOptions.paths_region.length){
+				publishOptions.paths_region.forEach((row)=>{
+					if( !row ){
+						return;
+					}
+					getParams += `&paths_region[]=${encodeURIComponent(row)}`;
+				});
+			}
+			if(publishOptions.paths_ignore && publishOptions.paths_ignore.length){
+				publishOptions.paths_ignore.forEach((row)=>{
+					if( !row ){
+						return;
+					}
+					getParams += `&paths_ignore[]=${encodeURIComponent(row)}`;
+				});
+			}
+			if(publishOptions.keep_cache){
+				getParams += `&keep_cache=1`;
+			}
+
 			main.px2utils.px2cmd(
-				"?PX=publish.run",
+				`?PX=publish.run${getParams}`,
 				{},
 				{
 					"timeout": 30 * 60 * 1000, // 30分待つ
