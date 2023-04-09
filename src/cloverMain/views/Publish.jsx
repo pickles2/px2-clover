@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import {MainContext} from '../context/MainContext';
+import iterate79 from 'iterate79';
 import $ from 'jquery';
 
 export default React.memo(function Publish(props){
@@ -32,9 +33,48 @@ export default React.memo(function Publish(props){
 	}, []);
 
 	/**
+	 * パブリッシュダイアログを表示する
+	 */
+	function publishDialog(){
+		var modal;
+		iterate79.fnc({}, [
+			function(it){
+				const $body = $(main.cloverUtils.bindTwig(
+					require('-!text-loader!./Publish_files/templates/publishDialog.twig'),
+					{
+						config: null, // TODO: プリセットを処理するため pickles2 config 情報を渡す
+					}
+				));
+				modal = px2style.modal({
+					"title": "パブリッシュ",
+					"body": $body,
+					"buttons": [
+						$('<button type="submit" class="px2-btn px2-btn--primary">').text('パブリッシュを実行する'),
+					],
+					"buttonsSecondary": [
+						$('<button type="button" class="px2-btn px2-btn--secondary">').text('キャンセル')
+							.on('click', function(){ px2style.closeModal(); }),
+					],
+					"form": {
+						"submit": function(e){
+							const $form = $(this);
+							px2style.closeModal();
+							let publishOptions = {};
+
+							publish( publishOptions );
+						},
+					},
+				});
+				var form = px2style.form($body);
+				it.next();
+			},
+		]);
+	}
+
+	/**
 	 * パブリッシュを実行する
 	 */
-	function publish(){
+	function publish( publishOptions ){
 		console.log('--- scheduler available:', healthCheckStatus.scheduler.is_available);
 
 		if( !confirm('パブリッシュを実行しますか？') ){
@@ -142,7 +182,7 @@ export default React.memo(function Publish(props){
 				:<>
 					{(!healthCheckStatus.publish.is_running)
 						?<>
-							<p><button type="button" onClick={publish} className="px2-btn px2-btn--primary">パブリッシュ</button></p>
+							<p><button type="button" onClick={publishDialog} className="px2-btn px2-btn--primary">パブリッシュ</button></p>
 						</>
 						:<>
 							<p>パブリッシュ中です...</p>
