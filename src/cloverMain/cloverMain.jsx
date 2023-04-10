@@ -52,12 +52,16 @@ class Layout extends React.Component {
 			};
 			return newState;
 		}
-		const updateGlobalData = ( callback )=>{
+		const updateGlobalData = ( newState, callback )=>{
+			newState = {
+				...this.state,
+				...(newState || {})
+			};
 			callback = callback || function(){};
-			let tmpNewState = {};
+
 			iterate79.fnc({}, [
 				(it1) => {
-					if( this.state.profileLoaded && this.state.lbLoaded && this.state.pageInfoLoaded && this.state.configLoaded ){
+					if( newState.profileLoaded && newState.lbLoaded && newState.pageInfoLoaded && newState.configLoaded ){
 						return;
 					}
 					it1.next();
@@ -67,44 +71,44 @@ class Layout extends React.Component {
 					it1.next();
 				},
 				(it1) => {
-					if( this.state.profileLoaded ){
+					if( newState.profileLoaded ){
 						it1.next();
 						return;
 					}
-					this.state.cloverUtils.getProfile((data)=>{
-						tmpNewState.profile = data.profile;
-						tmpNewState.profileLoaded = true;
+					newState.cloverUtils.getProfile((data)=>{
+						newState.profile = data.profile;
+						newState.profileLoaded = true;
 						it1.next();
 					});
 				},
 				(it1) => {
-					if( this.state.lbLoaded ){
+					if( newState.lbLoaded ){
 						it1.next();
 						return;
 					}
 					const lb = new LangBank(languageCsv, ()=>{
 						let lang = 'ja';
-						lang = ( this.state.profile && this.state.profile.lang ? this.state.profile.lang : lang);
-						lang = ( tmpNewState.profile && tmpNewState.profile.lang ? tmpNewState.profile.lang : lang);
+						lang = ( newState.profile && newState.profile.lang ? newState.profile.lang : lang);
+						lang = ( newState.profile && newState.profile.lang ? newState.profile.lang : lang);
 						lb.setLang( lang );
-						tmpNewState.lb = lb;
-						tmpNewState.lbLoaded = true;
+						newState.lb = lb;
+						newState.lbLoaded = true;
 						it1.next();
 					});
 				},
 				(it1) => {
-					if( this.state.configLoaded ){
+					if( newState.configLoaded ){
 						it1.next();
 						return;
 					}
-					this.state.cloverUtils.getConfig((data)=>{
-						tmpNewState.config = data.config;
-						tmpNewState.configLoaded = true;
+					newState.cloverUtils.getConfig((data)=>{
+						newState.config = data.config;
+						newState.configLoaded = true;
 						it1.next();
 					});
 				},
 				(it1) => {
-					if( this.state.pxConfigLoaded ){
+					if( newState.pxConfigLoaded ){
 						it1.next();
 						return;
 					}
@@ -115,39 +119,39 @@ class Layout extends React.Component {
 							if( !res ){
 								console.error('Error: PX Config:', res);
 							}
-							tmpNewState.pxConfig = res;
-							tmpNewState.pxConfigLoaded = true;
+							newState.pxConfig = res;
+							newState.pxConfigLoaded = true;
 							it1.next();
 						}
 					);
 				},
 				(it1) => {
-					if( this.state.pageInfoLoaded ){
+					if( newState.pageInfoLoaded ){
 						it1.next();
 						return;
 					}
-					this.state.px2utils.getCurrentPageInfo((data)=>{
-						tmpNewState.pageInfo = data;
-						tmpNewState.pageInfoLoaded = true;
+					newState.px2utils.getCurrentPageInfo((data)=>{
+						newState.pageInfo = data;
+						newState.pageInfoLoaded = true;
 						it1.next();
 					});
 				},
 				(it1) => {
-					tmpNewState.currentRoute = getCurrentRoute(this.state.PX);
-					tmpNewState.title = tmpNewState.currentRoute.title;
+					newState.currentRoute = getCurrentRoute(newState.PX);
+					newState.title = newState.currentRoute.title;
 
-					if( this.state.lb && tmpNewState.currentRoute.langKey ){
-						tmpNewState.title = this.state.lb.get(tmpNewState.currentRoute.langKey);
-					}else if( tmpNewState.lb && tmpNewState.currentRoute.langKey ){
-						tmpNewState.title = tmpNewState.lb.get(tmpNewState.currentRoute.langKey);
+					if( newState.lb && newState.currentRoute.langKey ){
+						newState.title = newState.lb.get(newState.currentRoute.langKey);
+					}else if( newState.lb && newState.currentRoute.langKey ){
+						newState.title = newState.lb.get(newState.currentRoute.langKey);
 					}
 
-					if( this.state.PX == "admin.page_info" && tmpNewState.pageInfo ){
+					if( newState.PX == "admin.page_info" && newState.pageInfo ){
 						// PageInfo 画面にて、routeのタイトルをページのタイトルで置き換える
-						let currentTitle = tmpNewState.title;
-						if( currentTitle != tmpNewState.pageInfo.current_page_info.title ){
-							currentTitle = tmpNewState.pageInfo.current_page_info.title;
-							tmpNewState.title = currentTitle;
+						let currentTitle = newState.title;
+						if( currentTitle != newState.pageInfo.current_page_info.title ){
+							currentTitle = newState.pageInfo.current_page_info.title;
+							newState.title = currentTitle;
 						}
 					}
 					it1.next();
@@ -155,7 +159,7 @@ class Layout extends React.Component {
 				},
 				(it1) => {
 					px2style.closeLoading();
-					this.setState( tmpNewState );
+					this.setState( newState );
 					callback();
 					it1.next();
 				},
@@ -175,8 +179,7 @@ class Layout extends React.Component {
 			const newState = parseUrl(url);
 			history.pushState({}, '', url);
 			newState.pageInfoLoaded = false;
-			this.setState(newState);
-			updateGlobalData(()=>{
+			updateGlobalData(newState, ()=>{
 				window.scrollTo(0,0);
 			});
 			$('.theme-layout__main').animate({scrollTop: 0}, 'fast');
@@ -349,13 +352,12 @@ class Layout extends React.Component {
 			"setMainState": setMainState,
 		};
 
-		updateGlobalData();
+		updateGlobalData({});
 
 		window.addEventListener('popstate', (event) => {
 			const newState = parseUrl(location);
 			newState.pageInfoLoaded = false;
-			this.setState(newState);
-			updateGlobalData();
+			updateGlobalData(newState);
 		});
 	}
 
