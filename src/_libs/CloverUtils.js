@@ -1,8 +1,7 @@
 export default function CloverUtils(){
 	const $ = require('jquery');
 	const _ = require('lodash');
-	const Twig = require('twig'),
-		twig = Twig.twig;
+	const Twig = require('twig');
 
 	/**
 	 * ログインユーザーのプロフィール情報を取得する
