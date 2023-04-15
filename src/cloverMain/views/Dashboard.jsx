@@ -95,11 +95,7 @@ export default function Dashboard(props){
 				?<></>
 				:<>
 					<h2>Site Profile</h2>
-					<table className="px2-table">
-						<colgroup>
-							<col width="30%" />
-							<col width="70%" />
-						</colgroup>
+					<table className="px2-table px2-table--dl">
 						<tbody>
 						<tr>
 							<th>Site Name</th>
@@ -115,7 +111,7 @@ export default function Dashboard(props){
 						</tr>
 						</tbody>
 					</table>
-					<p>
+					<p class="px2-text-align-right">
 						<button type="button" className="px2-btn px2-btn--primary" onClick={editSiteProfile}>編集する</button>
 					</p>
 				</>

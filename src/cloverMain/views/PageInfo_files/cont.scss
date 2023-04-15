@@ -10,8 +10,18 @@
 			padding: 0;
 			list-style-type: none;
 			&::after {
-				content: ">";
-				margin: 0 5px;
+				content: "";
+				display: inline-block;
+				width: .4em;
+				height: .4em;
+				border-top: 1px solid #000;
+				border-right: 1px solid #000;
+				transform: rotate(45deg);
+				margin-left: 9px;
+				margin-right: 9px;
+				vertical-align: middle;
+				position: relative;
+				top: -0.1em;
 			}
 		}
 		li:last-child {
@@ -71,23 +81,48 @@
 	border: 1px solid #ddd;
 	border-radius: 5px;
 	overflow: hidden;
+	background-color: #fff;
 	a {
 		display: block;
-		padding: 5px 10px;
+		padding: 15px 10px;
+		&:hover {
+			background-color: #f5faff;
+		}
 	}
 	&__current > a {
 		font-weight: bold;
 	}
 	&__parent {
-		border-bottom: 1px solid #ddd;
+		a {
+			padding-top: 8px;
+			padding-bottom: 8px;
+			background-color: #f6f6f6;
+			&::before {
+				content: "";
+				display: inline-block;
+				width: .4em;
+				height: .4em;
+				border-top: 1px solid #000;
+				border-right: 1px solid #000;
+				transform: rotate(-45deg);
+				margin-right: 9px;
+				vertical-align: middle;
+				position: relative;
+			}
+		}
 	}
 	ul {
 		margin: 0;
 		padding: 0;
+		border-top: 1px dotted #999;
 		li {
 			margin: 0;
 			padding: 0;
 			list-style-type: none;
+			border-bottom: 1px dotted #999;
+			&:last-child{
+				border-bottom: none;
+			}
 		}
 	}
 	li a {
@@ -99,44 +134,17 @@
 	li li li a {
 		padding-left: 50px;
 	}
-}
 
-.cont-page-list-table {
-	word-wrap: break-word;
-	word-break: break-all;
-
-	table {
-		width: 100%;
-	}
-	th, td {
-		border-bottom: 1px solid #ddd;
-		padding: 10px 10px 3px 10px;
-	}
-	th {
-		text-align: right;
+	&__add-new-page {
 		font-size: 12px;
-		color: #666;
-		width: 30%;
-		font-weight: normal;
-	}
-	td {
-		text-align: left;
-		width: 70%;
-	}
-
-	@media all and (max-width: 580px) {
-		table, thead, tbody, tr, th, td {
-			display: block;
-			width: auto;
-			text-align: left;
-		}
-		th {
-			border: none;
-			padding: 10px 0 3px 0;
-		}
-		td {
-			padding: 3px 0 3px 30px;
-			min-height: 1em;
+		a {
+			color: #000;
+			text-decoration: none;
+			padding-top: 8px;
+			padding-bottom: 8px;
+			&:hover {
+				text-decoration: underline;
+			}
 		}
 	}
 }

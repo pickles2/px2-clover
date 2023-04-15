@@ -706,10 +706,7 @@ export default React.memo(function PageInfo(props){
 				}
 
 				var template = require('./PageInfo_files/templates/deletePage.twig');
-				var $body = $('<div>')
-					.append( template( {
-					} ) )
-				;
+				var $body = $(template({}));
 				modal = px2style.modal({
 					'title': "ページ情報を削除する",
 					'body': $body,
@@ -1039,16 +1036,14 @@ export default React.memo(function PageInfo(props){
 					<div className="cont-layout">
 						{(typeof(main.pageInfo.current_page_info) === typeof({}) && (<>
 							<div className="cont-layout__main">
-								<div className="cont-page-list-table">
-									<table>
-										<tbody>
-											<tr><th>{sitemapDefinition['id'].label}</th><td>{main.pageInfo.current_page_info.id}</td></tr>
-											<tr><th>{sitemapDefinition['title'].label}</th><td><a href={main.px2utils.href(main.pageInfo.current_page_info.path)}>{main.pageInfo.current_page_info.title}</a></td></tr>
-											<tr><th>{sitemapDefinition['path'].label}</th><td>{main.pageInfo.current_page_info.path}</td></tr>
-											<tr><th>{sitemapDefinition['content'].label}</th><td>{main.pageInfo.current_page_info.content}</td></tr>
-										</tbody>
-									</table>
-								</div>
+								<table className="px2-table px2-table--dl">
+									<tbody>
+										<tr><th>{sitemapDefinition['id'].label}</th><td>{main.pageInfo.current_page_info.id}</td></tr>
+										<tr><th>{sitemapDefinition['title'].label}</th><td><a href={main.px2utils.href(main.pageInfo.current_page_info.path)}>{main.pageInfo.current_page_info.title}</a></td></tr>
+										<tr><th>{sitemapDefinition['path'].label}</th><td>{main.pageInfo.current_page_info.path}</td></tr>
+										<tr><th>{sitemapDefinition['content'].label}</th><td>{main.pageInfo.current_page_info.content}</td></tr>
+									</tbody>
+								</table>
 								<p className="px2-text-align-right"><button type="button" className="px2-btn" onClick={()=>{
 									px2style.modal({
 										"title": "ページの詳細情報",
@@ -1095,7 +1090,7 @@ export default React.memo(function PageInfo(props){
 									{(main.pageInfo !== null && typeof(main.pageInfo.bros) === typeof([]) && !!main.pageInfo.originated_csv && (<>
 										<ul>
 										{(!!main.pageInfo.current_page_info.id.length && (
-											<li><a href="?" onClick={createNewBrosBefore}>(+) ページを追加する</a></li>
+											<li className="cont-pagenavi__add-new-page"><a href="?" onClick={createNewBrosBefore}>(+) ページを追加する</a></li>
 										))}
 										{main.pageInfo.bros.map( ( bros_page_info )=>{
 											return (
@@ -1107,7 +1102,7 @@ export default React.memo(function PageInfo(props){
 																<li key={child_page_info.id}><Link href={main.px2utils.href(child_page_info.path + "?PX=admin.page_info")}>{child_page_info.title}</Link></li>
 															)
 														} )}
-															<li><a href="?" onClick={createNewChildAfter}>(+) ページを追加する</a></li>
+															<li className="cont-pagenavi__add-new-page"><a href="?" onClick={createNewChildAfter}>(+) ページを追加する</a></li>
 														</ul>
 													</>)
 													)}
@@ -1115,7 +1110,7 @@ export default React.memo(function PageInfo(props){
 											)
 										} )}
 										{(!!main.pageInfo.current_page_info.id.length && (
-											<li><a href="?" onClick={createNewBrosAfter}>(+) ページを追加する</a></li>
+											<li className="cont-pagenavi__add-new-page"><a href="?" onClick={createNewBrosAfter}>(+) ページを追加する</a></li>
 										))}
 										</ul>
 									</>))}
@@ -1136,11 +1131,7 @@ export default React.memo(function PageInfo(props){
 							const fixedSitemapDefinition = fixSitemapDefinition(main.pageInfo.current_page_info);
 							return <>
 						<div className="px2-p">
-							<table className="px2-table" style={{width:'100%',}}>
-								<colgroup>
-									<col style={{width: "30%"}} />
-									<col style={{width: "70%"}} />
-								</colgroup>
+							<table className="px2-table px2-table--dl">
 								<tbody>
 									<tr><th>{fixedSitemapDefinition['id'].label}</th><td>{main.pageInfo.current_page_info.id}</td></tr>
 									<tr><th>{fixedSitemapDefinition['title'].label}</th><td><a href={main.px2utils.href(main.pageInfo.current_page_info.path)}>{main.pageInfo.current_page_info.title}</a></td></tr>
@@ -1163,11 +1154,7 @@ export default React.memo(function PageInfo(props){
 							</>
 						})()}
 						<div className="px2-p">
-							<table className="px2-table" style={{width:'100%',}}>
-								<colgroup>
-									<col style={{width: "30%"}} />
-									<col style={{width: "70%"}} />
-								</colgroup>
+							<table className="px2-table px2-table--dl">
 								<tbody>
 									{( main.pageInfo.blog && main.pageInfo.blog.article_info ) ?<>
 										{/* ブログ */}

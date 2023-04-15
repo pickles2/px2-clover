@@ -495,11 +495,7 @@ export default React.memo(function Blog(props){
 						}}>戻る</button></p>
 
 					<div className="px2-p">
-						<table className="px2-table" style={{width: "100%",}}>
-							<colgroup>
-								<col style={{width: "30%",}} />
-								<col style={{width: "70%",}} />
-							</colgroup>
+						<table className="px2-table px2-table--dl">
 							<tbody>
 								<tr>
 									<th>ブログID</th>
@@ -553,11 +549,7 @@ export default React.memo(function Blog(props){
 					}}>&lt; ブログ一覧へ戻る</button></p>
 
 					<div className="px2-p">
-						<table className="px2-table" style={{width:"100%"}}>
-							<colgroup>
-								<col style={{width:"30%"}} />
-								<col style={{width:"70%"}} />
-							</colgroup>
+						<table className="px2-table px2-table--dl">
 							<tbody>
 								<tr>
 									<th>ブログID</th>

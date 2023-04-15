@@ -123,7 +123,10 @@ class register{
 			$client_resources_dist = $px->realpath_plugin_files('/');
 			if( is_array($command) && count($command) && $command[0] == 'admin' || !is_file( $client_resources_dist.'cloverMain/cloverMain.js' ) ){
 				// クライアントリソースを公開ディレクトリに配置
-				if( !is_file( $client_resources_dist.'cloverMain/cloverMain.js' ) || $px->fs()->is_newer_a_than_b(__DIR__.'/../public/resources/'.'cloverMain/cloverMain.js', $client_resources_dist.'cloverMain/cloverMain.js') ){
+				if(
+					!is_file( $client_resources_dist.'cloverMain/cloverMain.js' ) ||
+					$px->fs()->is_newer_a_than_b(__DIR__.'/../public/resources/'.'cloverMain/cloverMain.js', $client_resources_dist.'cloverMain/cloverMain.js') ||
+					$px->fs()->is_newer_a_than_b(__DIR__.'/../public/resources/'.'cloverMain/cloverMain.css', $client_resources_dist.'cloverMain/cloverMain.css') ){
 					$px->fs()->copy_r(__DIR__.'/../public/resources/', $client_resources_dist);
 				}
 			}
