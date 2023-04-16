@@ -275,6 +275,9 @@
 [data-px="admin.publish"] {
 	@import "./views/Publish_files/cont.scss";
 }
+[data-px="admin.history"] {
+	@import "./views/History_files/cont.scss";
+}
 [data-px="admin.config.find_unassigned_contents"] {
 	@import "./views/FindUnassignedContents_files/cont.scss";
 }
