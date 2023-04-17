@@ -60,7 +60,7 @@
 			}
 		}
 
-        @media (max-width: 720px) {
+		@media (max-width: 720px) {
 			padding: 10px 10px;
 			text-align: center;
 			font-size: 14px;
@@ -130,11 +130,11 @@
 		max-width: 100%;
 		box-sizing: border-box;
 		overflow: auto;
-        @media (max-width: 720px) {
-            width: 100%;
+		@media (max-width: 720px) {
+			width: 100%;
 			margin: 0px;
 			padding: 20px 15px;
-        }
+		}
 	}
 	&__left-navbar {
 		width: 100%;
@@ -218,31 +218,29 @@
 		flex-grow: 1000;
 	}
 	&__footer {
-		display: none;
-
-		// margin-top: 50px;
-		// padding: 10px 20px;
-		// border-top: 1px solid #e5e5e5;
-		// font-size: 13px;
-		// color: #333;
-		// a {
-		// 	color: #333;
-		// 	&:hover {
-		// 		color: #000;
-		// 	}
-		// }
-		// ul {
-		// 	padding: 0px;
-		// 	margin: 0px;
-		// 	display: flex;
-		// 	justify-content: center;
-		// 	gap: 20px;
-		// 	li {
-		// 		list-style-type: none;
-		// 		padding: 0px;
-		// 		margin: 0px;
-		// 	}
-		// }
+		margin-top: 50px;
+		padding: 10px 20px;
+		border-top: 1px solid #e5e5e5;
+		font-size: 13px;
+		color: #333;
+		a {
+			color: #333;
+			&:hover {
+				color: #000;
+			}
+		}
+		ul {
+			padding: 0px;
+			margin: 0px;
+			display: flex;
+			justify-content: center;
+			gap: 20px;
+			li {
+				list-style-type: none;
+				padding: 0px;
+				margin: 0px;
+			}
+		}
 	}
 }
 
@@ -284,7 +282,6 @@
 [data-px="admin.config.files_and_folders"] {
 	.theme-layout__main {
 		padding-bottom: 0;
-		overflow: hidden;
 	}
 	.contents {
 		padding-left: 50px;
@@ -293,7 +290,17 @@
 		margin-right: -50px;
 		box-sizing: border-box;
 		overflow: auto;
-		height: calc(100vh - 110px);
+		height: calc(100svh - 120px);
+
+        @media (max-width: 720px) {
+			padding-left: 15px;
+			padding-right: 15px;
+			margin-left: -15px;
+			margin-right: -15px;
+        }
+	}
+	.theme-layout__footer {
+		display: none;
 	}
 }
 
@@ -328,7 +335,7 @@
 // 結合調整
 
 .common-file-editor__tab-bar {
-    display: none;
+	display: none;
 }
 
 // px2style のスタイリング合わせ

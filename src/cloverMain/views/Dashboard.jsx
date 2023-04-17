@@ -114,18 +114,6 @@ export default function Dashboard(props){
 					<p class="px2-text-align-right">
 						<button type="button" className="px2-btn px2-btn--primary" onClick={editSiteProfile}>編集する</button>
 					</p>
-
-					<footer className="cont-footer">
-						{(main.profile && main.profile.name)
-							? <>
-								<div className="px2-text-align-center">Logged in as: {main.profile.name}</div>
-							</>
-							: <></>}
-						<ul>
-							<li><a href="?">{main.lb.get('page_title.back_to_preview')}</a></li>
-							<li><a href="?PX=admin.logout">{main.lb.get('page_title.logout')}</a></li>
-						</ul>
-					</footer>
 				</>
 			}
 		</>
