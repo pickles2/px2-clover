@@ -15,6 +15,7 @@
 		height: 100%;
 		box-shadow: 0 10px 10px -5px rgba(0,0,0,.1);
 		overflow: auto;
+		z-index: 10000;
 
 		a {
 			color: #000;
@@ -130,7 +131,7 @@
         @media (max-width: 720px) {
             width: 100%;
 			margin: 0px;
-			padding: 20px 10px;
+			padding: 20px 15px;
         }
 	}
 	&__left-navbar {

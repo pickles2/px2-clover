@@ -172,17 +172,11 @@ export default function CustomConsoleExtensions(props){
 									<p>拡張機能は登録されていません。</p>
 								</>
 							}
-							<div className="px2-p">
-								<Link href="?PX=admin.config">戻る</Link>
-							</div>
 						</>
 						: <>
 							<div className="cont-custom-console-extensions">
 								<div className="cont-custom-console-extensions__main"></div>
 								<div className="cont-custom-console-extensions__resources"></div>
-							</div>
-							<div className="px2-p">
-								<Link href="?PX=admin.cce">戻る</Link>
 							</div>
 							{(()=>{
 								initializeCce();

@@ -279,7 +279,7 @@ export default function ConfigMembers(props){
 					<p>...</p>
 				</>
 			:<>
-			<p><button type="button" className={"px2-btn"} onClick={createNewMember}>新規メンバーを登録する</button></p>
+			<p><button type="button" className="px2-btn px2-btn--primary" onClick={createNewMember}>新規メンバーを登録する</button></p>
 			{(memberList.list && memberList.list.length)
 				?<>
 					<div class="px2-responsive">
@@ -302,7 +302,7 @@ export default function ConfigMembers(props){
 										<td>(You)</td>
 									</> : <>
 										<td>
-											<button type="button" className="px2-btn" onClick={(e)=>{editMember(e, memberInfo)}}>編集</button>
+											<button type="button" className="px2-btn px2-btn--primary" onClick={(e)=>{editMember(e, memberInfo)}}>編集</button>
 											<button type="button" className="px2-btn px2-btn--danger" onClick={(e)=>{deleteMember(e, memberInfo)}}>削除</button>
 										</td>
 									</> }
@@ -318,7 +318,6 @@ export default function ConfigMembers(props){
 					</p>
 				</>
 			}</>}
-			<p><Link href="?PX=admin.config">戻る</Link></p>
 		</>
 	);
 }

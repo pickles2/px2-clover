@@ -64,7 +64,6 @@ export default function ConfigScheduler(props){
 					</>);
 				})()}</code></pre>
 			</div>
-			<p><Link href="?PX=admin.config">戻る</Link></p>
 		</>
 	);
 }

@@ -85,7 +85,6 @@ export default function ConfigMaintenance(props){
 							<p>メンテナンスモードを開始しますか？</p>
 							<p><button type="button" className={"px2-btn px2-btn--primary"} onClick={startMaintenanceMode}>メンテナンスモードを開始する</button></p>
 					</>}
-					<p><Link href="?PX=admin.config">戻る</Link></p>
 			</>}
 		</>
 	);
