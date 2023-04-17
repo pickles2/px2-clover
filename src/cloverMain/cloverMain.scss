@@ -1,3 +1,5 @@
+// --------------------------------------
+// レイアウトスタイル
 .theme-layout {
 	display: flex;
 	flex-direction: row;
@@ -214,7 +216,6 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		flex-grow: 1000;
-		min-height: calc(100vh - 260px);
 	}
 	&__footer {
 		display: none;
@@ -253,6 +254,10 @@
 	padding: 0;
 }
 
+
+// --------------------------------------
+// コンテンツモジュール
+
 .px2-clover-pagenation {
 	margin: 1em auto;
 	> ul {
@@ -271,6 +276,30 @@
 		}
 	}
 }
+
+
+// --------------------------------------
+// 画面個別 flex-fit 適用
+[data-px="admin.history"],
+[data-px="admin.config.files_and_folders"] {
+	.theme-layout__main {
+		padding-bottom: 0;
+		overflow: hidden;
+	}
+	.contents {
+		padding-left: 50px;
+		padding-right: 50px;
+		margin-left: -50px;
+		margin-right: -50px;
+		box-sizing: border-box;
+		overflow: auto;
+		height: calc(100vh - 110px);
+	}
+}
+
+
+// --------------------------------------
+// 画面個別スタイルシートの読み込み
 
 [data-px="admin"] {
 	@import "./views/Dashboard_files/cont.scss";
@@ -293,6 +322,10 @@
 [data-px="admin.config.find_unassigned_contents"] {
 	@import "./views/FindUnassignedContents_files/cont.scss";
 }
+
+
+// --------------------------------------
+// 結合調整
 
 .common-file-editor__tab-bar {
     display: none;
