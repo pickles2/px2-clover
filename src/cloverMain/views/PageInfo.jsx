@@ -1021,7 +1021,7 @@ export default React.memo(function PageInfo(props){
 							<li><a href="?" className="px2-btn">プレビューに戻る</a></li>
 						</ul>
 					</div>
-					{(main.pageInfo !== null && typeof(main.pageInfo.breadcrumb) === typeof([]) && (
+					{(main.pageInfo !== null && (main.pageInfo.current_page_info.id.length >= 0) && typeof(main.pageInfo.breadcrumb) === typeof([]) && (
 						<div className="cont-layout-breadcrumb">
 							<ul>
 							{main.pageInfo.breadcrumb.map( ( breadcrumb_info )=>{
@@ -1029,7 +1029,7 @@ export default React.memo(function PageInfo(props){
 									<li key={breadcrumb_info.id}><Link href={main.px2utils.href(breadcrumb_info.path + "?PX=admin.page_info")}>{breadcrumb_info.title}</Link></li>
 								)
 							} )}
-							<li>{main.pageInfo.current_page_info.title}</li>
+							<li><span>{main.pageInfo.current_page_info.title}</span></li>
 							</ul>
 						</div>
 					))}
