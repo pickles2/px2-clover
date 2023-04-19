@@ -3,15 +3,17 @@
 	margin-bottom: 1em;
 }
 .px2-section.px2-section--framed {
-	border: 1px solid #f0f0f0;
-	border-radius: 10px;
+	border: 1px solid #ddd;
+	border-radius: 8px;
 	box-sizing: border-box;
 	background-color: #fff;
+	margin-left: -15px;
+	margin-right: -15px;
 
 	.px2-section__heading {
-		padding: 0.5em 1em;
+		padding: 0.75em 15px;
 		box-sizing: border-box;
-		border-bottom: 1px solid #f0f0f0;
+		border-bottom: 1px solid #ddd;
 
 		*,
 		.px2-h2, h2,
@@ -20,16 +22,26 @@
 		.px2-h5, h5,
 		.px2-h6, h6 {
 			margin: 0px;
+			font-size: medium;
+			small {
+				font-size: 80%;
+			}
 		}
 	}
 	.px2-section__body {
-		padding: 0.5em 1em;
+		padding: 0.75em 15px;
 		box-sizing: border-box;
 		> *:first-child {
 			margin-top: 0px;
+			> *:first-child {
+				margin-top: 0px;
+			}
 		}
 		> *:last-child {
 			margin-bottom: 0px;
+			> *:last-child {
+				margin-bottom: 0px;
+			}
 		}
 	}
 }

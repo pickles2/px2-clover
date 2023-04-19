@@ -21,13 +21,13 @@ module.exports = function( $html, callback, $supply ){
             // それより古い Broccoli への対応
             $tabLabel = $loop.fields['tab-label'];
         }
-        $src_tabs += '<div><a href="javascript:;">'+htmlspecialchars($tabLabel)+'</a></div>';
+        $src_tabs += '<li><a href="javascript:;">'+htmlspecialchars($tabLabel)+'</a></li>';
     }
 
     // 置換
     $html = $html
         .split('<div class="px2-tabs__tabs"></div>')
-        .join('<div class="px2-tabs__tabs">'+$src_tabs+'</div>');
+        .join('<div class="px2-tabs__tabs"><ul>'+$src_tabs+'</ul></div>');
 
     callback($html);
     return;

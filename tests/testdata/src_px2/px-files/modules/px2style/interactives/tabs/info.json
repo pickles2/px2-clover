@@ -6,6 +6,22 @@
             "loop": {
                 "fieldType": "loop",
                 "label": "タブコンテンツ"
+            },
+            "tabs-overflow": {
+                "fieldType": "input",
+                "type": "select",
+                "label": "タブの折返し",
+                "description": "タブが画面幅に収まりきらない場合の処理方法を設定します。",
+                "options": [
+                    {
+                        "label": "スクロールして全体を表示する",
+                        "value": "scroll"
+                    },
+                    {
+                        "label": "タブを折り返して全体を表示する",
+                        "value": "wrap"
+                    }
+                ]
             }
         },
         "subModule": {

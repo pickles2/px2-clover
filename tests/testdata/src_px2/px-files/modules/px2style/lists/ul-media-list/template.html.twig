@@ -3,15 +3,13 @@
 
 {% for row in loop %}
 {{ loopitem_start('loop') }}
-	<li>{% if row.href %}<a href="{{ row.href }}"{% if row.target %} target="{{ row.target }}"{% endif %}>{% endif %}
-<div class="px2-medialist__list-item">
+	<li>{% if row.href %}<a href="{{ row.href }}"{% if row.target %} target="{{ row.target }}"{% endif %} class="px2-medialist__list-item">{% else %}<div class="px2-medialist__list-item">{% endif %}
   <div class="px2-medialist__image"><img src="{{ row.image }}" alt="" /></div>
   <div class="px2-medialist__body">
     <div class="px2-medialist__label">{{ row.label }}</div>
     <div class="px2-medialist__description">{{ row.description }}</div>
   </div>
-</div>
-{% if row.href %}</a>{% endif %}</li>
+{% if row.href %}</a>{% else %}</div>{% endif %}</li>
 {{ loopitem_end() }}{% endfor %}{{ appender('loop') }}
 </ul>
 </div>

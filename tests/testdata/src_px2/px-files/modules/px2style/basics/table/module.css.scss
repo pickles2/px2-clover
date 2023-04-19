@@ -3,12 +3,14 @@ table.px2-table {
 	border-collapse: collapse;
 	margin: 0;
 	text-align: left;
+	border: 1px solid #dee2e6;
 
 	th,
 	td {
 		border: 1px solid #dee2e6;
 		background: #fff;
-		padding: 0.4em 1em;
+		padding: 0.6em 1em;
+		word-wrap: break-word;
 	}
 
 	th {
@@ -34,5 +36,50 @@ table.px2-table {
 	}
 	&--right{
 		margin: 0 0 0 auto;
+	}
+
+	&--dl {
+		width: 100%;
+		table-layout: fixed;
+		th {
+			width: 30%;
+			border-right: none;
+			border-left: none;
+		}
+		td {
+			width: 70%;
+			border-right: none;
+			border-left: none;
+		}
+		@media all and (max-width: 544px) {
+			display: block;
+			box-sizing: border-box;
+			border-bottom: none;
+			tbody,
+			thead,
+			tr,
+			th,
+			td {
+				display: block;
+				box-sizing: border-box;
+				width: 100%;
+			}
+			th {
+				border: none;
+			}
+			td {
+				border-top: none;
+				padding-bottom: 1em;
+			}
+		}
+	}
+
+	th > *:first-child,
+	td > *:first-child {
+		margin-top: 0;
+	}
+	th > *:last-child,
+	td > *:last-child {
+		margin-bottom: 0;
 	}
 }
