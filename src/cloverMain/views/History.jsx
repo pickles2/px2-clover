@@ -26,10 +26,11 @@ export default React.memo(function History(props){
 				});
 			},
 			{
+				"lang": main.lb.getLang(),
 				"committer": {
 					"name": (main.profile ? main.profile.name : '' ),
 					"email": (main.profile ? main.profile.email : ''),
-				}
+				},
 			}
 		);
 		gitUi79.init(function(){

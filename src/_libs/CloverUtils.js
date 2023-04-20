@@ -2,6 +2,15 @@ export default function CloverUtils(){
 	const $ = require('jquery');
 	const _ = require('lodash');
 	const Twig = require('twig');
+	const _this = this;
+	this.lang = "ja";
+
+	/**
+	 * 言語コードをセットする
+	 */
+	this.setLang = function(lang){
+		this.lang = lang;
+	}
 
 	/**
 	 * ログインユーザーのプロフィール情報を取得する
@@ -191,6 +200,7 @@ export default function CloverUtils(){
 		var commonFileEditor = new CommonFileEditor(
 			$body,
 			{
+				"lang": this.lang,
 				"read": function(filename, callback){ // required
 					window.px2utils.px2cmd(
 						'/?PX=admin.api.common_file_editor',
@@ -227,7 +237,7 @@ export default function CloverUtils(){
 				"onemptytab": function(){
 					modalObj.closable(true);
 					px2style.closeModal();
-				}
+				},
 			}
 		);
 
