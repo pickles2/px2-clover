@@ -210,6 +210,10 @@ class register{
 					// --------------------------------------
 					// API
 					switch( $command[2] ?? '' ){
+						case 'get_bootup_informations':
+							$app = new funcs\api\bootupInformations($this->clover);
+							$app->get();
+							break;
 						case 'health_check':
 							$app = new funcs\api\healthChecker($this->clover);
 							$app->status();

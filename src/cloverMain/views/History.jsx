@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import {MainContext} from '../context/MainContext';
+import iterate79 from 'iterate79';
 import $ from 'jquery';
 
 export default React.memo(function History(props){
@@ -11,12 +12,15 @@ export default React.memo(function History(props){
 		if( !$contGit ){
 			return () => {};
 		}
+
+		if( !main.bootupInfo.git.is_init ){
+			// git init されていない場合はここで終了
+			return () => {};
+		}
+
 		const gitUi79 = new GitUi79(
 			$contGit,
 			function(cmdAry, callback){
-				// var result = [];
-				// console.log('=-=-=-=-=-=-= GPI Request:', cmdAry, callback);
-
 				px2style.loading();
 				main.px2utils.px2cmd("?PX=admin.api.git", {
 					'git': JSON.stringify(cmdAry),
@@ -44,13 +48,20 @@ export default React.memo(function History(props){
 
 	return (
 		<>
-			{(!main.profile)
-				? <>
-					<p>...</p>
-				</>
-				: <>
-					<div className="cont-git"></div>
-			</>}
+			{(!main.bootupInfo.git.is_init) ? <>
+				{/* git init されていない場合 */}
+				<div className="px2-p">
+					<p>git環境が初期化されていません。</p>
+				</div>
+			</>
+			: <>{(!main.profile) ? <>
+				<p>...</p>
+			</>
+			: <>
+				<div className="cont-git"></div>
+			</>
+			}</>}
+
 		</>
 	);
 });

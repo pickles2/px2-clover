@@ -13,6 +13,29 @@ export default function CloverUtils(){
 	}
 
 	/**
+	 * 起動時情報を取得する
+	 */
+	this.getBootupInformations = function( callback ){
+		let tmpPageInfo;
+		$.ajax({
+			"url": "?PX=admin.api.get_bootup_informations",
+			"method": "post",
+			"data": {
+				'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
+			},
+			"error": function(error){
+				tmpPageInfo = error;
+			},
+			"success": function(data){
+				tmpPageInfo = data;
+			},
+			"complete": function(){
+				callback(tmpPageInfo);
+			},
+		});
+	}
+
+	/**
 	 * ログインユーザーのプロフィール情報を取得する
 	 */
 	this.getProfile = function( callback ){
@@ -24,11 +47,9 @@ export default function CloverUtils(){
 				'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
 			},
 			"error": function(error){
-				// console.error('------ admin.api.get_profile Response Error:', typeof(error), error);
 				tmpPageInfo = error;
 			},
 			"success": function(data){
-				// console.log('------ admin.api.get_profile Response:', typeof(data), data);
 				tmpPageInfo = data;
 			},
 			"complete": function(){
@@ -49,11 +70,9 @@ export default function CloverUtils(){
 			"method": "post",
 			"data": data,
 			"error": function(error){
-				// console.error('------ admin.api.update_profile Response Error:', typeof(error), error);
 				result = error;
 			},
 			"success": function(data){
-				// console.log('------ admin.api.update_profile Response:', typeof(data), data);
 				result = data;
 			},
 			"complete": function(){
@@ -74,11 +93,9 @@ export default function CloverUtils(){
 				'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
 			},
 			"error": function(error){
-				// console.error('------ admin.api.get_profile Response Error:', typeof(error), error);
 				tmpConfig = error;
 			},
 			"success": function(data){
-				// console.log('------ admin.api.get_profile Response:', typeof(data), data);
 				tmpConfig = data;
 			},
 			"complete": function(){
@@ -175,7 +192,6 @@ export default function CloverUtils(){
 				},
 			}
 		);
-		// console.log(remoteFinder);
 		remoteFinder.init(path, {}, function(){
 			callback(true);
 		});

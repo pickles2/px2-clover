@@ -210,7 +210,7 @@ class git{
 		}
 
 		$git_remote = $this->url_bind_confidentials();
-		if( !strlen($git_remote) ){
+		if( !strlen($git_remote ?? '') ){
 			return true;
 		}
 		$this->exec_git_command(array('remote', 'add', 'origin', $git_remote));
@@ -226,7 +226,7 @@ class git{
 			return false;
 		}
 
-		if( isset($this->cloverConfig->history->git_remote) && strlen(''.$this->cloverConfig->history->git_remote) ){
+		if( isset($this->cloverConfig->history->git_remote) && strlen($this->cloverConfig->history->git_remote ?? '') ){
 			$git_remote = $this->cloverConfig->history->git_remote;
 			$this->exec_git_command(array('remote', 'add', 'origin', $git_remote));
 			$this->exec_git_command(array('remote', 'set-url', 'origin', $git_remote));
@@ -240,7 +240,7 @@ class git{
 	 * 有効なGit設定がされているか？
 	 */
 	private function has_valid_git_config(){
-		if( !isset($this->cloverConfig->history->git_remote) || !strlen(''.$this->cloverConfig->history->git_remote) ){
+		if( !isset($this->cloverConfig->history->git_remote) || !strlen($this->cloverConfig->history->git_remote ?? '') ){
 			return false;
 		}
 		$git_remote = $this->cloverConfig->history->git_remote;
@@ -256,7 +256,7 @@ class git{
 	 * @return string 秘匿情報を隠蔽加工したテキスト
 	 */
 	private function conceal_confidentials($str){
-		if( is_null($str) ){
+		if( !strlen($str ?? '') ){
 			return $str;
 		}
 
@@ -273,13 +273,13 @@ class git{
 	private function url_bind_confidentials($url = null, $user_name = null, $password = null){
 		$crypt = new crypt( $this->clover );
 		$this->cloverConfig = $this->clover->conf();
-		if( isset($this->cloverConfig->history->git_remote) && !strlen(''.$url) ){
+		if( isset($this->cloverConfig->history->git_remote) && !strlen($url ?? '') ){
 			$url = $this->cloverConfig->history->git_remote;
 		}
-		if( isset($this->cloverConfig->history->git_id) && !strlen(''.$user_name) ){
+		if( isset($this->cloverConfig->history->git_id) && !strlen($user_name ?? '') ){
 			$user_name = $this->cloverConfig->history->git_id;
 		}
-		if( isset($this->cloverConfig->history->git_pw) && strlen($crypt->decrypt($this->cloverConfig->history->git_pw)) && !strlen(''.$password) ){
+		if( isset($this->cloverConfig->history->git_pw) && strlen($crypt->decrypt($this->cloverConfig->history->git_pw ?? '')) && !strlen($password ?? '') ){
 			$password = $crypt->decrypt($this->cloverConfig->history->git_pw);
 		}
 		if( !strlen($url) ){
@@ -297,11 +297,11 @@ class git{
 			$rtn .= '@';
 		}
 		$rtn .= $parsed_git_url['host'];
-		if( array_key_exists('port', $parsed_git_url) && strlen($parsed_git_url['port']) ){
+		if( array_key_exists('port', $parsed_git_url) && strlen($parsed_git_url['port'] ?? '') ){
 			$rtn .= ':'.$parsed_git_url['port'];
 		}
 		$rtn .= $parsed_git_url['path'];
-		if( array_key_exists('query', $parsed_git_url) && strlen($parsed_git_url['query']) ){
+		if( array_key_exists('query', $parsed_git_url) && strlen($parsed_git_url['query'] ?? '') ){
 			$rtn .= '?'.$parsed_git_url['query'];
 		}
 		return $rtn;

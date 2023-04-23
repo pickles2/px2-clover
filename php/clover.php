@@ -120,15 +120,18 @@ class clover{
 		$current_dir = $this->px->fs()->get_realpath('./');
 		while( 1 ){
 			if( file_exists( $current_dir.'/.git' ) ){
+				// .git を見つけたら、それが答え。
 				return $current_dir;
 			}
 			if( file_exists( $current_dir.'/composer.json' ) ){
+				// composer.json を見つけたら、それ以上深追いせず諦める。
 				break;
 			}
 			if( $current_dir == $this->px->fs()->get_realpath($current_dir.'../') ){
 				// これ以上階層を上がれない場合
 				break;
 			}
+
 			$current_dir = $this->px->fs()->get_realpath($current_dir.'../');
 		}
 		return false;

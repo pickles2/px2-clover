@@ -61,7 +61,9 @@ class Layout extends React.Component {
 
 			iterate79.fnc({}, [
 				(it1) => {
-					if( newState.profileLoaded && newState.lbLoaded && newState.pageInfoLoaded && newState.configLoaded ){
+					if( newState.bootupInfoLoaded && newState.profileLoaded && newState.lbLoaded && newState.pageInfoLoaded && newState.configLoaded ){
+						this.setState( newState );
+						callback();
 						return;
 					}
 					it1.next();
@@ -69,6 +71,17 @@ class Layout extends React.Component {
 				(it1) => {
 					px2style.loading();
 					it1.next();
+				},
+				(it1) => {
+					if( newState.bootupInfoLoaded ){
+						it1.next();
+						return;
+					}
+					newState.cloverUtils.getBootupInformations((data)=>{
+						newState.bootupInfo = data.bootupInfo;
+						newState.bootupInfoLoaded = true;
+						it1.next();
+					});
 				},
 				(it1) => {
 					if( newState.profileLoaded ){
@@ -329,6 +342,8 @@ class Layout extends React.Component {
 
 		// Initialize State
 		this.state = {
+			"bootupInfoLoaded": false,
+			"bootupInfo": null,
 			"route": route,
 			"currentRoute": currentRoute,
 			"title": currentRoute.title,
