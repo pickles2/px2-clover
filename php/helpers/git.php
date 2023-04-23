@@ -338,7 +338,7 @@ class git {
 			$git_sub_commands[$key] = escapeshellarg($val);
 		}
 
-		$cmd = 'git '.implode( ' ', $git_sub_commands );
+		$cmd = ($this->px->conf()->commands->git ?? 'git').' '.implode( ' ', $git_sub_commands );
 
 		// コマンドを実行
 		ob_start();
