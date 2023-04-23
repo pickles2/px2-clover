@@ -2,34 +2,34 @@
 	<ul class="px2-form-input-list__ul">
 {% for key, value in page_info %}
 	<li class="px2-form-input-list__li">
-		<div class="px2-form-input-list__label"><label for="form-element--{{ key }}">{{ sitemapDefinition[key].label ?? key }}</label></div>
+		<div class="px2-form-input-list__label"><label for="form-element--{{ key|e("html_attr") }}">{{ sitemapDefinition[key].label ?? key|e }}</label></div>
 		{% if (lockedField[key] == 'lock') %}
 			<div class="px2-form-input-list__input">
-				{{ value }}<input type="hidden" name="{{ key }}" value="{{ value }}" />
+				{{ value|e }}<input type="hidden" name="{{ key|e("html_attr") }}" value="{{ value|e("html_attr") }}" />
 			</div>
 		{% else %}
 			<div class="px2-form-input-list__input">
 				{% if ( sitemapDefinition[key].type == "integer" ) %}
-				<input type="number" id="form-element--{{ key }}" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" />
+				<input type="number" id="form-element--{{ key|e("html_attr") }}" name="{{ key|e("html_attr") }}" value="{{ value|e("html_attr") }}" class="px2-input px2-input--block" />
 				{% elseif ( sitemapDefinition[key].type == "date" ) %}
-				<input type="date" id="form-element--{{ key }}" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" />
+				<input type="date" id="form-element--{{ key|e("html_attr") }}" name="{{ key|e("html_attr") }}" value="{{ value|e("html_attr") }}" class="px2-input px2-input--block" />
 				{% elseif ( sitemapDefinition[key].type == "datetime" ) %}
-				<input type="datetime" id="form-element--{{ key }}" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" />
+				<input type="datetime" id="form-element--{{ key|e("html_attr") }}" name="{{ key|e("html_attr") }}" value="{{ value|e("html_attr") }}" class="px2-input px2-input--block" />
 				{% elseif ( sitemapDefinition[key].type == "boolean" ) %}
-				<label><input type="radio" name="{{ key }}" value="1" {{ value == "1" ? 'checked="checked"' : '' }} class="px2-input px2-input--block" /> ON</label>
-				<label><input type="radio" name="{{ key }}" value="" {{ value == "" or value == "0" ? 'checked="checked"' : '' }} class="px2-input px2-input--block" /> OFF</label>
+				<label><input type="radio" name="{{ key|e("html_attr") }}" value="1" {{ value == "1" ? 'checked="checked"' : '' }} class="px2-input px2-input--block" /> ON</label>
+				<label><input type="radio" name="{{ key|e("html_attr") }}" value="" {{ value == "" or value == "0" ? 'checked="checked"' : '' }} class="px2-input px2-input--block" /> OFF</label>
 				{% elseif ( sitemapDefinition[key].type == "path" ) %}
-				<input type="text" id="form-element--{{ key }}" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" />
+				<input type="text" id="form-element--{{ key|e("html_attr") }}" name="{{ key|e("html_attr") }}" value="{{ value|e("html_attr") }}" class="px2-input px2-input--block" />
 				{% elseif ( sitemapDefinition[key].type == "logical_path" ) %}
-				<input type="text" id="form-element--{{ key }}" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" />
+				<input type="text" id="form-element--{{ key|e("html_attr") }}" name="{{ key|e("html_attr") }}" value="{{ value|e("html_attr") }}" class="px2-input px2-input--block" />
 				{% elseif ( sitemapDefinition[key].type == "page_id" ) %}
-				<input type="text" id="form-element--{{ key }}" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" />
+				<input type="text" id="form-element--{{ key|e("html_attr") }}" name="{{ key|e("html_attr") }}" value="{{ value|e("html_attr") }}" class="px2-input px2-input--block" />
 				{% elseif ( sitemapDefinition[key].type == "layout_id" ) %}
-				<input type="text" id="form-element--{{ key }}" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" />
+				<input type="text" id="form-element--{{ key|e("html_attr") }}" name="{{ key|e("html_attr") }}" value="{{ value|e("html_attr") }}" class="px2-input px2-input--block" />
 				{% elseif ( sitemapDefinition[key].type == "text" ) %}
-				<input type="text" id="form-element--{{ key }}" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" />
+				<input type="text" id="form-element--{{ key|e("html_attr") }}" name="{{ key|e("html_attr") }}" value="{{ value|e("html_attr") }}" class="px2-input px2-input--block" />
 				{% else %}
-				<input type="text" id="form-element--{{ key }}" name="{{ key }}" value="{{ value }}" class="px2-input px2-input--block" />
+				<input type="text" id="form-element--{{ key|e("html_attr") }}" name="{{ key|e("html_attr") }}" value="{{ value|e("html_attr") }}" class="px2-input px2-input--block" />
 				{% endif %}
 			</div>
 		{% endif %}

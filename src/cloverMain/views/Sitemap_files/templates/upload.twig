@@ -1,5 +1,5 @@
 <form action="?PX=px2dthelper.sitemap.upload" method="post" encType="multipart/form-data">
-	<input type="hidden" name="ADMIN_USER_CSRF_TOKEN" value={{ csrf_token }} />
+	<input type="hidden" name="ADMIN_USER_CSRF_TOKEN" value={{ csrf_token|e("html_attr") }} />
 
 	<p>サイトマップファイルをアップロードします。</p>
 	<p>同名のファイルがすでに存在する場合は、上書きされます。</p>

@@ -34,17 +34,6 @@ export default function ConfigMembers(props){
 		var modal;
 		iterate79.fnc({}, [
 			(it1) => {
-				// var template = require('./ConfigMembers_files/templates/edit.twig');
-				// var $body = template( {
-				// 	"values": {
-				// 		'name': '',
-				// 		'id': '',
-				// 		'pw': '',
-				// 		'email': '',
-				// 		'lang': '',
-				// 		'role': '',
-				// 	},
-				// } );
 				var $body = $('<div>')
 					.append( main.cloverUtils.bindTwig(
 						require('-!text-loader!./ConfigMembers_files/templates/edit.twig'),
@@ -130,10 +119,6 @@ export default function ConfigMembers(props){
 		var targetId = memberInfo.id;
 		iterate79.fnc({}, [
 			(it1) => {
-				// var template = require('./ConfigMembers_files/templates/edit.twig');
-				// var $body = template( {
-				// 	"values": memberInfo,
-				// } );
 				var $body = $('<div>')
 					.append( main.cloverUtils.bindTwig(
 						require('-!text-loader!./ConfigMembers_files/templates/edit.twig'),

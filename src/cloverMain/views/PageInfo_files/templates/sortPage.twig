@@ -3,7 +3,7 @@
 <p>
 	<select class="px2-input px2-input--block">
 {% for key,value in bros %}
-		<option value="{{ value.path }}"{% if current_page_info.path == value.path %} selected="selected"{% endif %}>{{ value.title }}</option>
+		<option value="{{ value.path|e("html_attr") }}"{% if current_page_info.path == value.path %} selected="selected"{% endif %}>{{ value.title|e }}</option>
 {% endfor %}
 	</select>
 </p>

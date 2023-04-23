@@ -3,7 +3,7 @@
 	<select name="publish_patterns" class="px2-input">
 		<option value="">select pattern...</option>
 		{% for index, publish_pattern in publish_patterns %}
-		<option value="{{ index }}">{{ publish_pattern.label }}</option>
+		<option value="{{ index|e("html_attr") }}">{{ publish_pattern.label|e }}</option>
 		{% endfor %}
 	</select>
 </div>
@@ -15,14 +15,14 @@
 			<div class="px2-form-input-list__label"><label for="form-element--paths_region">パブリッシュ対象範囲</label></div>
 			<div class="px2-form-input-list__input">
 				<p class="px2-note">パブリッシュ対象のディレクトリパスを指定してください。スラッシュから始まるパスで指定します。1行1ディレクトリで複数件指定できます。</p>
-				<label><textarea name="paths_region" class="px2-input px2-input--block" />{{ paths_region }}</textarea></label>
+				<label><textarea name="paths_region" class="px2-input px2-input--block" />{{ paths_region|e }}</textarea></label>
 			</div>
 		</li>
 		<li class="px2-form-input-list__li">
 			<div class="px2-form-input-list__label"><label for="form-element--paths_ignore">パブリッシュ対象外範囲</label></div>
 			<div class="px2-form-input-list__input">
 				<p class="px2-note">パブリッシュ対象外にするディレクトリパスを指定してください。スラッシュから始まるパスで指定します。1行1ディレクトリで複数件指定できます。</p>
-				<label><textarea name="paths_ignore" class="px2-input px2-input--block" />{{ paths_ignore }}</textarea></label>
+				<label><textarea name="paths_ignore" class="px2-input px2-input--block" />{{ paths_ignore|e }}</textarea></label>
 			</div>
 		</li>
 		<li class="px2-form-input-list__li">

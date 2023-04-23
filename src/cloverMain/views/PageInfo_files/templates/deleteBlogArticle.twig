@@ -1,4 +1,4 @@
-<p>ブログ {{ blog_id }} の記事 {{ path }} を削除します。</p>
+<p>ブログ {{ blog_id|e }} の記事 {{ path|e }} を削除します。</p>
 <p>よろしいですか？</p>
 <p>
 	<label><input type="checkbox" name="delete_contents" value="1" checked="checked" /> コンテンツも削除する</label>
