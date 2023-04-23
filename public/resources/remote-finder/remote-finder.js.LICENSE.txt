@@ -7,18 +7,18 @@
  */
 
 /*!
- * Sizzle CSS Selector Engine v2.3.9
+ * Sizzle CSS Selector Engine v2.3.10
  * https://sizzlejs.com/
  *
  * Copyright JS Foundation and other contributors
  * Released under the MIT license
  * https://js.foundation/
  *
- * Date: 2022-12-19
+ * Date: 2023-02-14
  */
 
 /*!
- * jQuery JavaScript Library v3.6.3
+ * jQuery JavaScript Library v3.6.4
  * https://jquery.com/
  *
  * Includes Sizzle.js
@@ -28,15 +28,15 @@
  * Released under the MIT license
  * https://jquery.org/license
  *
- * Date: 2022-12-20T21:28Z
+ * Date: 2023-03-08T15:28Z
  */
 
 /*! For license information please see px2style.js.LICENSE.txt */
 
 /**
-	 * Twig.js
-	 *
-	 * @copyright 2011-2016 John Roepke and the Twig.js Contributors
-	 * @license   Available under the BSD 2-Clause License
-	 * @link      https://github.com/twigjs/twig.js
-	 */
+ * Twig.js
+ *
+ * @copyright 2011-2020 John Roepke and the Twig.js Contributors
+ * @license   Available under the BSD 2-Clause License
+ * @link      https://github.com/twigjs/twig.js
+ */
