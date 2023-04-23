@@ -35,18 +35,42 @@ class bootupInformations {
 		$rtn['result'] = true;
 		$rtn['message'] = 'OK';
 
-        $rtn['bootupInfo'] = array();
-        // $rtn['bootupInfo']['cmd_available'] = array();
-        // $rtn['bootupInfo']['cmd_available']['php'] = true;
-        // $rtn['bootupInfo']['cmd_available']['composer'] = true;
-        // $rtn['bootupInfo']['cmd_available']['git'] = true;
+		$rtn['bootupInfo'] = array();
+		$rtn['bootupInfo']['cmd_version'] = array();
 
-        $rtn['bootupInfo']['git'] = array();
-        // $rtn['bootupInfo']['git']['available'] = !!$rtn['bootupInfo']['cmd_available']['git'];
+		// PHP version
+		ob_start();
+		passthru(($this->px->conf()->commands->php ?? 'php').' -v', $phpResultCode);
+		$php_version = ob_get_clean();
+		$rtn['bootupInfo']['cmd_version']['php'] = false;
+		if( strlen($php_version ?? '') ){
+			$rtn['bootupInfo']['cmd_version']['php'] = trim($php_version);
+		}
 
-        // git init 済みか？
-        $realpath_git_root = $this->clover->realpath_git_root();
-        $rtn['bootupInfo']['git']['is_init'] = (is_string($realpath_git_root) && strlen($realpath_git_root));
+		// composer version
+		ob_start();
+		passthru(($this->px->conf()->commands->composer ?? 'composer').' --version', $composerResultCode);
+		$composer_version = ob_get_clean();
+		$rtn['bootupInfo']['cmd_version']['composer'] = false;
+		if( strlen($composer_version ?? '') ){
+			$rtn['bootupInfo']['cmd_version']['composer'] = trim($composer_version);
+		}
+
+		// git version
+		$gitHelper = new \tomk79\pickles2\px2clover\helpers\git( $this->clover );
+		$gitVersion = (object) $gitHelper->git(['--version']);
+		$rtn['bootupInfo']['cmd_version']['git'] = false;
+		if( $gitVersion->result ){
+			$rtn['bootupInfo']['cmd_version']['git'] = trim($gitVersion->stdout);
+		}
+
+
+		// git availability
+		$rtn['bootupInfo']['git'] = array();
+
+		// git init 済みか？
+		$realpath_git_root = $this->clover->realpath_git_root();
+		$rtn['bootupInfo']['git']['is_init'] = (is_string($realpath_git_root) && strlen($realpath_git_root));
 
 		$this->px->header('Content-type: text/json');
 		echo json_encode($rtn);

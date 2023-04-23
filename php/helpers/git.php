@@ -4,7 +4,7 @@ namespace tomk79\pickles2\px2clover\helpers;
 /**
  * px2-clover: Git操作Helper
  */
-class git{
+class git {
 
 	/** Cloverオブジェクト */
 	private $clover;
@@ -389,8 +389,9 @@ class git{
 		}
 
 		// 許可されたコマンド
-		switch( $git_sub_command[0] ){
+		switch( $git_sub_command[0] ?? null ){
 			case 'init':
+			case '--version':
 			case 'clone':
 			case 'config':
 			case 'status':
@@ -420,6 +421,9 @@ class git{
 			if( preg_match( '/^\-\-output(?:\=.*)?$/', $git_sub_command_row ) ){
 				return false;
 			}
+		}
+		if( $git_sub_command[0] == '--version' && count($git_sub_command) != 1 ){
+			return false;
 		}
 
 		return true;
