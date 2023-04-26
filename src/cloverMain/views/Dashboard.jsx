@@ -91,7 +91,10 @@ export default function Dashboard(props){
 	/**
 	 * Gitリポジトリの初期化を実行する
 	 */
-	function gitInit(){
+	function gitInit(e){
+		const $btn = $(e.target);
+		$btn.attr('disabled', true);
+		px2style.loading();
 		iterate79.fnc({}, [
 			function(it1){
 				window.px2utils.px2cmd(
@@ -100,10 +103,32 @@ export default function Dashboard(props){
 					function( res ){
 						if( !res.result ){
 							alert('Gitリポジトリの初期化に失敗しました。'+"\n"+res.message);
+							$btn.attr('disabled', false);
+							px2style.closeLoading();
 							return;
 						}
-						// 画面をリロードする
-						window.location.href = '?PX=admin';
+
+						const $body = $(`<div>
+							<p>Gitリポジトリを初期化しました。</p>
+							<p>画面を再読み込みしてください。</p>
+						</div>`);
+
+						const resultModal = px2style.modal({
+							"title": "Gitリポジトリの初期化",
+							"body": $body,
+							"buttons": [
+								$('<button type="button" class="px2-btn px2-btn--primary"></button>')
+									.text('再読み込みする')
+									.on('click', ()=>{
+										// 画面をリロードする
+										window.location.href = '?PX=admin';
+									}),
+							],
+						});
+						resultModal.closable(false);
+						$btn.attr('disabled', false);
+						px2style.closeLoading();
+
 					}
 				);
 			},
