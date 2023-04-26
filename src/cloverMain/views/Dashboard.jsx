@@ -133,7 +133,7 @@ export default function Dashboard(props){
 						:<>
 						</>
 					}
-					{(main.bootupInfo.cmd_version.git && !main.bootupInfo.git.is_init || 1)
+					{(main.bootupInfo.cmd_version.git && !main.bootupInfo.git.is_init)
 						?<>
 							<div className="px2-notice">
 								<p>Gitリポジトリを初期化して、編集履歴の管理を開始しましょう。</p>
