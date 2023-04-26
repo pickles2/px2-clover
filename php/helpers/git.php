@@ -390,7 +390,6 @@ class git {
 
 		// 許可されたコマンド
 		switch( $git_sub_command[0] ?? null ){
-			case '--version':
 			case 'clone':
 			case 'config':
 			case 'status':
@@ -420,9 +419,6 @@ class git {
 			if( preg_match( '/^\-\-output(?:\=.*)?$/', $git_sub_command_row ) ){
 				return false;
 			}
-		}
-		if( $git_sub_command[0] == '--version' && count($git_sub_command) != 1 ){
-			return false;
 		}
 
 		return true;

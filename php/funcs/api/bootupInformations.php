@@ -57,11 +57,12 @@ class bootupInformations {
 		}
 
 		// git version
-		$gitHelper = new \tomk79\pickles2\px2clover\helpers\git( $this->clover );
-		$gitVersion = (object) $gitHelper->git(['--version']);
+		ob_start();
+		passthru(($this->px->conf()->commands->git ?? 'git').' --version', $gitResultCode);
+		$git_version = ob_get_clean();
 		$rtn['bootupInfo']['cmd_version']['git'] = false;
-		if( $gitVersion->result ){
-			$rtn['bootupInfo']['cmd_version']['git'] = trim($gitVersion->stdout);
+		if( strlen($git_version ?? '') ){
+			$rtn['bootupInfo']['cmd_version']['git'] = trim($git_version);
 		}
 
 
