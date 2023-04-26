@@ -88,34 +88,93 @@ export default function Dashboard(props){
 	}
 
 
+	/**
+	 * Gitリポジトリの初期化を実行する
+	 */
+	function gitInit(){
+		iterate79.fnc({}, [
+			function(it1){
+				window.px2utils.px2cmd(
+					'/?PX=admin.api.git_init',
+					{},
+					function( res ){
+						if( !res.result ){
+							alert('Gitリポジトリの初期化に失敗しました。'+"\n"+res.message);
+							return;
+						}
+						// 画面をリロードする
+						window.location.href = '?PX=admin';
+					}
+				);
+			},
+		]);
+	}
+
 	return (
-		<>
+		<div>
 			<p>ようこそ、Pickles 2 Clover CMS へ！</p>
-			{!main.pxConfig
-				?<></>
+			{(main.bootupInfo && main.bootupInfo.cmd_version)
+				?<>
+					{(!main.bootupInfo.cmd_version.php)
+						?<>
+							<div className="px2-notice px2-notice--warning">
+								<p>PHPコマンドがインストールされていないか、パスが通っていません。</p>
+							</div>
+						</>
+						:<>
+						</>
+					}
+					{(!main.bootupInfo.cmd_version.git)
+						?<>
+							<div className="px2-notice px2-notice--warning">
+								<p>Gitコマンドがインストールされていないか、パスが通っていません。</p>
+							</div>
+						</>
+						:<>
+						</>
+					}
+					{(main.bootupInfo.cmd_version.git && !main.bootupInfo.git.is_init || 1)
+						?<>
+							<div className="px2-notice">
+								<p>Gitリポジトリを初期化して、編集履歴の管理を開始しましょう。</p>
+								<p><button type="button" className="px2-btn px2-btn--primary" onClick={gitInit}>Gitリポジトリを初期化する</button></p>
+							</div>
+						</>
+						:<>
+						</>
+					}
+				</>
 				:<>
-					<h2>Site Profile</h2>
-					<table className="px2-table px2-table--dl">
-						<tbody>
-						<tr>
-							<th>Site Name</th>
-							<td>{main.pxConfig.name || '---'}</td>
-						</tr>
-						<tr>
-							<th>Domain</th>
-							<td>{main.pxConfig.domain || '---'}</td>
-						</tr>
-						<tr>
-							<th>Copyright</th>
-							<td>{main.pxConfig.copyright ? <>&copy;{main.pxConfig.copyright}, All rights reserved.</> : '---'}</td>
-						</tr>
-						</tbody>
-					</table>
-					<p class="px2-text-align-right">
-						<button type="button" className="px2-btn px2-btn--primary" onClick={editSiteProfile}>編集する</button>
-					</p>
 				</>
 			}
-		</>
+			{!main.pxConfig
+				?<>
+				</>
+				:<>
+					<h2>Site Profile</h2>
+					<div className="px2-p">
+						<table className="px2-table px2-table--dl">
+							<tbody>
+							<tr>
+								<th>Site Name</th>
+								<td>{main.pxConfig.name || '---'}</td>
+							</tr>
+							<tr>
+								<th>Domain</th>
+								<td>{main.pxConfig.domain || '---'}</td>
+							</tr>
+							<tr>
+								<th>Copyright</th>
+								<td>{main.pxConfig.copyright ? <>&copy;{main.pxConfig.copyright}, All rights reserved.</> : '---'}</td>
+							</tr>
+							</tbody>
+						</table>
+						<p className="px2-text-align-right">
+							<button type="button" className="px2-btn px2-btn--primary" onClick={editSiteProfile}>編集する</button>
+						</p>
+					</div>
+				</>
+			}
+		</div>
 	);
 }

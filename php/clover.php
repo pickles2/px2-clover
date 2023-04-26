@@ -123,9 +123,29 @@ class clover{
 				// .git を見つけたら、それが答え。
 				return $current_dir;
 			}
-			if( file_exists( $current_dir.'/composer.json' ) ){
+			if( is_file( $current_dir.'/composer.json' ) ){
 				// composer.json を見つけたら、それ以上深追いせず諦める。
 				break;
+			}
+			if( $current_dir == $this->px->fs()->get_realpath($current_dir.'../') ){
+				// これ以上階層を上がれない場合
+				break;
+			}
+
+			$current_dir = $this->px->fs()->get_realpath($current_dir.'../');
+		}
+		return false;
+	}
+
+	/**
+	 * Composerのルートディレクトリを取得する
+	 */
+	public function realpath_composer_root(){
+		$current_dir = $this->px->fs()->get_realpath('./');
+		while( 1 ){
+			if( is_file( $current_dir.'/composer.json' ) && is_dir( $current_dir.'/vendor' ) ){
+				// composer.json を見つけたら、それが答え。
+				return $current_dir;
 			}
 			if( $current_dir == $this->px->fs()->get_realpath($current_dir.'../') ){
 				// これ以上階層を上がれない場合

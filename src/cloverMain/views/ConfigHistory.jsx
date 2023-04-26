@@ -10,7 +10,6 @@ export default function ConfigHistory(props){
 	const updateConfig = (e) => {
 		e.preventDefault();
 		var $form = $(e.target);
-		// console.log(e.target);
 		var newConfig = {
 			'history->git_remote': $form.find('input[name=git_remote]').val(),
 			'history->git_id': $form.find('input[name=git_param_1]').val(),

@@ -81,6 +81,7 @@ $conf->allow_pxcommands = 1;
 - クライアントサイド `cceAgent` の `editContent()`、 `editThemeLayout()`、 `openInBrowser()` に対応。
 - ブログ管理メニューを追加。
 - 古いバージョンの git環境で、削除されたファイルをコミットできない不具合を修正した。
+- Gitリポジトリの初期化機能を追加した。
 - その他、不具合の修正、UI改善など。
 
 ### pickles2/px2-clover v0.2.5 (2023年3月11日)

@@ -222,6 +222,10 @@ class register{
 							$app = new funcs\api\csrfToken($this->clover);
 							$app->get();
 							break;
+						case 'git_init':
+							$app = new funcs\api\gitInit($this->clover);
+							$app->git_init();
+							break;
 						case 'get_page_info':
 							$app = new funcs\api\pageInfo($this->clover);
 							$app->get();

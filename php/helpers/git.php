@@ -390,7 +390,6 @@ class git {
 
 		// 許可されたコマンド
 		switch( $git_sub_command[0] ?? null ){
-			case 'init':
 			case '--version':
 			case 'clone':
 			case 'config':
