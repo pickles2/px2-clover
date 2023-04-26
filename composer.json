@@ -11,10 +11,10 @@
     ],
     "scripts":{
 		"start": [
-			"@php ./tests/testdata/src_px2/.px_execute.php \"/?PX=serve&S=localhost:8080\""
+			"@php ./tests/testdata/src_px2/.px_execute.php \"/?PX=serve&S=localhost:8090\""
 		],
 		"start-subapp": [
-			"@php ./tests/testdata/src_px2/controot/.px_execute.php \"/?PX=serve&S=localhost:8081\""
+			"@php ./tests/testdata/src_px2/controot/.px_execute.php \"/?PX=serve&S=localhost:8091\""
 		],
         "test": [
             "@php ./vendor/phpunit/phpunit/phpunit"

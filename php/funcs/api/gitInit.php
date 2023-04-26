@@ -56,13 +56,37 @@ class gitInit{
 		chdir($realpath_git_root);
 
 		shell_exec('git init');
+		shell_exec('git add ./');
+
+		$realpath_homedir = $this->px->get_realpath_homedir();
+		foreach( array('_sys/ram/applock/.gitkeep', '_sys/ram/caches/.gitkeep', '_sys/ram/data/.gitkeep', '_sys/ram/publish/.gitkeep' ) as $localpath ){
+			if( !is_file( $realpath_homedir.$localpath ) ){
+				$this->px->fs()->save_file($realpath_homedir.$localpath, '');
+				clearstatcache();
+			}
+			if( is_file( $realpath_homedir.$localpath ) ){
+				shell_exec('git add -f ./'.$this->px->fs()->get_relatedpath($realpath_homedir.$localpath));
+			}
+		}
+		$realpath_public_cache_dir = $this->px->get_realpath_docroot().'/'.$this->px->conf()->public_cache_dir;
+		if( $realpath_public_cache_dir && is_dir($realpath_public_cache_dir) ){
+			if( !is_file( $realpath_public_cache_dir.'.gitkeep' ) ){
+				$this->px->fs()->save_file($realpath_public_cache_dir.'.gitkeep', '');
+				clearstatcache();
+			}
+			if( is_file( $realpath_public_cache_dir.'.gitkeep' ) ){
+				shell_exec('git add -f ./'.$this->px->fs()->get_relatedpath($realpath_public_cache_dir.'.gitkeep'));
+			}
+		}
+
+		shell_exec('git commit -m "Initial Commit"');
 
 		chdir($cd);
 
 		clearstatcache();
 
 		$realpath_git_root = $this->clover->realpath_git_root();
-		if( $realpath_git_root && is_dir($realpath_git_root) ){
+		if( !$realpath_git_root || !is_dir($realpath_git_root) ){
 			$this->px->error('Failed to git init.');
 			echo json_encode(array(
 				"result" => false,
