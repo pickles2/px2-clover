@@ -69,12 +69,6 @@
 		&.px2-tabs--active{
 			display: block;
 		}
-		> *:first-child {
-			margin-top: 0;
-		}
-		> *:last-child {
-			margin-bottom: 0;
-		}
 	}
 
 	&--allow-tabs-wrap &__tabs ul {

@@ -1,6 +1,6 @@
 // Links
 .px2-a {
-	&:before {
+	&::before {
 		content: ' ';
 		width: 0;
 		height: 0;
@@ -18,7 +18,7 @@
 	}
 }
 .px2-open-in-new-window {
-	&:after {
+	&::after {
 		content: '';
 		background-image: url("./resources/link.png");
 		width: 0.8em;

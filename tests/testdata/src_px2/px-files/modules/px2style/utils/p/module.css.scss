@@ -6,12 +6,6 @@
 	// 上下のマージンはその場に表示される文字の大きさが基準になるべきなので、 rem ではなく em を採用する。
 	margin-top: 1em;
 	margin-bottom: 1em;
-	> *:first-child {
-		margin-top: 0px;
-	}
-	> *:last-child {
-		margin-bottom: 0px;
-	}
 }
 
 // 水平方向の文字揃え

@@ -682,39 +682,6 @@
 .contents .px2-modal.px2-modal--type-drawer-right .px2-modal__dialog--closed {
   right: -100%;
 }
-.contents .px2-notice {
-  background-color: #cce5ff;
-  border: 1px solid #b8daff;
-  border-radius: 0.25em;
-  color: #004085;
-  margin-bottom: 1.5em;
-  margin-top: 1.5em;
-  padding: 0.75em 1.25em;
-}
-.contents .px2-notice * {
-  margin-bottom: 0;
-  margin-top: 0;
-}
-.contents .px2-notice.px2-notice--success {
-  background-color: #d4edda;
-  border-color: #c3e6cb;
-  color: #155724;
-}
-.contents .px2-notice.px2-notice--warning {
-  background-color: #fff3cd;
-  border-color: #ffeeba;
-  color: #856404;
-}
-.contents .px2-notice.px2-notice--danger {
-  background-color: #f8d7da;
-  border-color: #f5c6cb;
-  color: #721c24;
-}
-.contents .px2-notice.px2-notice--info {
-  background-color: #d1ecf1;
-  border-color: #bee5eb;
-  color: #0c5460;
-}
 @keyframes px2-loading {
   0% {
     opacity: 1;
@@ -771,7 +738,7 @@
   font-size: 0.8rem;
   text-align: center;
 }
-.contents .px2-a:before {
+.contents .px2-a::before {
   content: " ";
   width: 0;
   height: 0;
@@ -787,7 +754,7 @@
   display: block;
   width: 100%;
 }
-.contents .px2-open-in-new-window:after {
+.contents .px2-open-in-new-window::after {
   content: "";
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAmCAMAAACf4xmcAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQ1IDc5LjE2MzQ5OSwgMjAxOC8wOC8xMy0xNjo0MDoyMiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDplZDc1YjU3Zi0xN2JmLTQ1M2QtYTU2Yi04NzdkZDRjYjdmNTMiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RkZGNTIyODQ5QThGMTFFOThGRDdBQTREMEZBOEJGRTkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RkZGNTIyODM5QThGMTFFOThGRDdBQTREMEZBOEJGRTkiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTkgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDplZDc1YjU3Zi0xN2JmLTQ1M2QtYTU2Yi04NzdkZDRjYjdmNTMiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6ZWQ3NWI1N2YtMTdiZi00NTNkLWE1NmItODc3ZGQ0Y2I3ZjUzIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+XVsr4gAAAAlQTFRF4uLiZmZm////FEU16AAAAAN0Uk5T//8A18oNQQAAAEBJREFUeNpiYAIDBkIAqowRLxhVRq4ywgCijKA5o8ooVEYw/AepMlSP0EkZNjYWZbAyZngow5eQaKOMqLIZIMAA4+ID9MPe1VIAAAAASUVORK5CYII=");
   width: 0.8em;
@@ -1611,7 +1578,7 @@
 .contents .px2-accordion > .px2-accordion__unit:last-child {
   border-bottom: 1px solid #dee2e6;
 }
-.contents .px2-accordion > .px2-accordion__unit:after {
+.contents .px2-accordion > .px2-accordion__unit::after {
   content: " ";
   display: block;
   visibility: hidden;
@@ -1956,12 +1923,6 @@
 }
 .contents .px2-tabs__content.px2-tabs--active {
   display: block;
-}
-.contents .px2-tabs__content > *:first-child {
-  margin-top: 0;
-}
-.contents .px2-tabs__content > *:last-child {
-  margin-bottom: 0;
 }
 .contents .px2-tabs--allow-tabs-wrap .px2-tabs__tabs ul {
   flex-wrap: wrap;
@@ -2484,7 +2445,7 @@
   margin-bottom: 1em;
   clear: both;
 }
-.contents .px2-float-media:after {
+.contents .px2-float-media::after {
   content: " ";
   display: block;
   visibility: hidden;
@@ -2711,12 +2672,6 @@
   background-color: #cce5ff;
   border: 1px solid #b8daff;
 }
-.contents .px2-notice > *:first-child {
-  margin-top: 0;
-}
-.contents .px2-notice > *:last-child {
-  margin-bottom: 0;
-}
 .contents .px2-notice.px2-notice--success {
   color: #155724;
   background-color: #d4edda;
@@ -2755,8 +2710,8 @@
   border-bottom: 1px solid #ddd;
 }
 .contents .px2-section.px2-section--framed .px2-section__heading *, .contents .px2-section.px2-section--framed .px2-section__heading .px2-h2, .contents .px2-section.px2-section--framed .px2-section__heading h2, .contents .px2-section.px2-section--framed .px2-section__heading .px2-h3, .contents .px2-section.px2-section--framed .px2-section__heading h3, .contents .px2-section.px2-section--framed .px2-section__heading .px2-h4, .contents .px2-section.px2-section--framed .px2-section__heading h4, .contents .px2-section.px2-section--framed .px2-section__heading .px2-h5, .contents .px2-section.px2-section--framed .px2-section__heading h5, .contents .px2-section.px2-section--framed .px2-section__heading .px2-h6, .contents .px2-section.px2-section--framed .px2-section__heading h6 {
-  margin: 0px;
-  font-size: medium;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 .contents .px2-section.px2-section--framed .px2-section__heading * small, .contents .px2-section.px2-section--framed .px2-section__heading .px2-h2 small, .contents .px2-section.px2-section--framed .px2-section__heading h2 small, .contents .px2-section.px2-section--framed .px2-section__heading .px2-h3 small, .contents .px2-section.px2-section--framed .px2-section__heading h3 small, .contents .px2-section.px2-section--framed .px2-section__heading .px2-h4 small, .contents .px2-section.px2-section--framed .px2-section__heading h4 small, .contents .px2-section.px2-section--framed .px2-section__heading .px2-h5 small, .contents .px2-section.px2-section--framed .px2-section__heading h5 small, .contents .px2-section.px2-section--framed .px2-section__heading .px2-h6 small, .contents .px2-section.px2-section--framed .px2-section__heading h6 small {
   font-size: 80%;
@@ -2765,27 +2720,9 @@
   padding: 0.75em 15px;
   box-sizing: border-box;
 }
-.contents .px2-section.px2-section--framed .px2-section__body > *:first-child {
-  margin-top: 0px;
-}
-.contents .px2-section.px2-section--framed .px2-section__body > *:first-child > *:first-child {
-  margin-top: 0px;
-}
-.contents .px2-section.px2-section--framed .px2-section__body > *:last-child {
-  margin-bottom: 0px;
-}
-.contents .px2-section.px2-section--framed .px2-section__body > *:last-child > *:last-child {
-  margin-bottom: 0px;
-}
 .contents .px2-p {
   margin-top: 1em;
   margin-bottom: 1em;
-}
-.contents .px2-p > *:first-child {
-  margin-top: 0px;
-}
-.contents .px2-p > *:last-child {
-  margin-bottom: 0px;
 }
 .contents .px2-text-align-left {
   text-align: left;

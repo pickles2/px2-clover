@@ -33,10 +33,13 @@ class view{
 
 		$cloverCommon = '';
 		ob_start(); ?>
+<!-- jquery -->
 <script><?= ( file_get_contents(__DIR__.'/../public/resources/jquery-3.6.0.min.js') ); ?></script>
+<!-- px2style -->
 <style><?= ( file_get_contents(__DIR__.'/../public/resources/px2style/px2style.css') ); ?></style>
 <style><?= ( file_get_contents(__DIR__.'/../public/resources/px2style/themes/default.css') ); ?></style>
 <script><?= ( file_get_contents(__DIR__.'/../public/resources/px2style/px2style.js') ); ?></script>
+<!-- cloverCommon -->
 <style><?= ( file_get_contents(__DIR__.'/../public/resources/cloverCommon/cloverCommon.css') ); ?></style>
 <script><?= ( file_get_contents(__DIR__.'/../public/resources/cloverCommon/cloverCommon.js') ); ?></script>
 <?php
