@@ -21,9 +21,6 @@
 				display: flex;
 				align-items: stretch;
 				text-decoration: none;
-				&:hover {
-					background-color: #f5faff;
-				}
 			}
 		}
 	}
@@ -49,11 +46,6 @@
 	}
 	&__description{
 		font-weight: normal;
-		color: #666;
-		p, .px2-p {
-			margin-top: 0.1em;
-			margin-bottom: 0.1em;
-		}
 	}
 
 	// カードスタイル
@@ -61,10 +53,7 @@
 		.px2-medialist {
 			&__list-item {
 				flex-direction: column;
-				border: 1px solid #ddd;
-				border-radius: 5px;
 				margin: 10px auto;
-				box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.05);
 				width: calc(100% - 20px);
 			}
 			&__image{

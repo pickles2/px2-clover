@@ -8,24 +8,7 @@ table.px2-table {
 	th,
 	td {
 		border: 1px solid #dee2e6;
-		background: #fff;
-		padding: 0.6em 1em;
 		word-wrap: break-word;
-	}
-
-	th {
-		background: #f9f9f9;
-	}
-
-	thead th,
-	tfoot th {
-		background: #eee;
-		text-align: center;
-	}
-
-	thead td,
-	tfoot td {
-		background: #eee;
 	}
 
 	&--left{
@@ -41,16 +24,14 @@ table.px2-table {
 	&--dl {
 		width: 100%;
 		table-layout: fixed;
+
 		th {
 			width: 30%;
-			border-right: none;
-			border-left: none;
 		}
 		td {
 			width: 70%;
-			border-right: none;
-			border-left: none;
 		}
+
 		@media all and (max-width: 544px) {
 			display: block;
 			box-sizing: border-box;
@@ -64,22 +45,6 @@ table.px2-table {
 				box-sizing: border-box;
 				width: 100%;
 			}
-			th {
-				border: none;
-			}
-			td {
-				border-top: none;
-				padding-bottom: 1em;
-			}
 		}
-	}
-
-	th > *:first-child,
-	td > *:first-child {
-		margin-top: 0;
-	}
-	th > *:last-child,
-	td > *:last-child {
-		margin-bottom: 0;
 	}
 }
