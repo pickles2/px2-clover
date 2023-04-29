@@ -6,24 +6,73 @@
 	ul {
 		padding: 0;
 		margin: 0;
+		border: 1px solid #e5e5e5;
 		overflow: hidden;
 
 		li {
 			list-style-type: none;
+			border-top: 1px solid #e5e5e5;
 			padding: 0;
 			margin: 0;
+			&:first-child {
+				border-top: none;
+			}
 
 			> a {
 				display: block;
 				position: relative;
+				padding: 20px 45px 20px 30px;
+				&::before {
+					content: none;
+				}
+				&::after {
+					content: '';
+					width: 14px;
+					height: 14px;
+					display: inline-block;
+					border-top: 1px solid #000;
+					border-right: 1px solid #000;
+					border-bottom: none;
+					border-left: none;
+					position: absolute;
+					right: 20px;
+					top: calc(50% - 8px);
+					transform:rotate(45deg);
+				}
 			}
 			> span {
 				display: block;
+				padding: 20px 30px;
 			}
 			ul {
 				border: none;
+				border-radius: 0px;
 				overflow: auto;
 				box-shadow: none;
+				li,
+				li:first-child {
+					border-top: 1px dashed #e5e5e5;
+				}
+			}
+			ul li > a,
+			ul li > span {
+				padding-top: 10px;
+				padding-bottom: 10px;
+				padding-left: 55px;
+				&::after {
+					content: '';
+					width: 14px;
+					height: 14px;
+					display: inline-block;
+					border-top: 1.4px solid #000;
+					border-right: 1.4px solid #000;
+					border-bottom: none;
+					border-left: none;
+					position: absolute;
+					right: 20px;
+					top: calc(50% - 8px);
+					transform:rotate(45deg);
+				}
 			}
 			ul ul li>a,
 			ul ul li>span {
@@ -45,6 +94,14 @@
 			ul ul ul ul li>span {
 				padding-top: 10px;
 				padding-bottom: 10px;
+				&::after {
+					content: '';
+					width: 10px;
+					height: 10px;
+					border-top: 0.5px solid #0006;
+					border-right: 0.5px solid #0006;
+					top: calc(50% - 5px);
+				}
 			}
 		}
 	}
@@ -86,15 +143,15 @@
 		border: none;
 		box-shadow: none;
 
-		li>a {
+		li > a {
 			&::before,
 			&::after {
 				content: none;
 			}
 		}
 
-		>ul>li ,
-		>li {
+		> ul > li,
+		> li {
 			list-style-type: none;
 			border-top: none;
 			&:first-child {
@@ -114,6 +171,13 @@
 		&--right {
 			justify-content: flex-end;
 		}
+		&--left,
+		&--center,
+		&--right {
+			a {
+				padding: 0.4em 1em;
+			}
+		}
 	}
 }
 
@@ -127,6 +191,19 @@ h6, .px2-h6 {
 	.px2-linklist {
 		padding: 0;
 		margin: 0;
+		> ul {
+			padding: 0;
+			margin: 0;
+			border-bottom: none;
+			> li {
+				padding: 0;
+				margin: 0;
+				border-top: none;
+				a {
+					padding: 0.1em 0.5em;
+				}
+			}
+		}
 	}
 }
 

@@ -11,14 +11,14 @@
 .px2-accordion {
 	margin-top: 1em;
 	margin-bottom: 1em;
-	> .px2-accordion__unit{
+	> .px2-accordion__unit {
 		border-top: 1px solid #dee2e6;
 		border-left: 1px solid #dee2e6;
 		border-right: 1px solid #dee2e6;
-		&:last-child{
+		&:last-child {
 			border-bottom: 1px solid #dee2e6;
 		}
-		&::after{
+		&::after {
 			content: " ";
 			display: block;
 			visibility: hidden;
@@ -27,7 +27,7 @@
 			line-height: 0;
 			clear: both;
 		}
-		> .px2-accordion__label{
+		> .px2-accordion__label {
 			text-align: left;
 			a{
 				display: block;
@@ -44,20 +44,19 @@
 					margin-right: 1em;
 					transition: transform 0.1s ease-in;
 					transform: rotate(-45deg);
-					// transform-origin: 50% 50%;
 				}
 			}
 		}
-		> .px2-accordion__content{
+		> .px2-accordion__content {
 			margin: 1rem;
 			display: none;
 		}
 	}
-	> .px2-accordion--active > .px2-accordion__content{
+	> .px2-accordion--active > .px2-accordion__content {
 		display: block;
 		animation: px2-accordion__content--show-hide .3s ease 0s 1 normal none running;
 	}
-	> .px2-accordion--active > .px2-accordion__label a::before{
+	> .px2-accordion--active > .px2-accordion__label a::before {
 		transform: rotate(45deg) translate(-0.1em, -0.1em);
 	}
 }
