@@ -25,4 +25,30 @@ module.exports = function(){
 		return blogmapDefinition;
 	};
 
+	this.editArticleFormInteraction = function( $body ){
+		$body.find(`[data-btn-function="today"]`).on('click', function(e){
+			const $this = $(this);
+			const setFor = $this.attr('data-for');
+			$(`#${setFor}`).val((function(){
+				const date = new Date();
+				return date.getFullYear() +
+					'-' + ('0' + (date.getMonth() + 1)).slice(-2) +
+					'-' + ('0' + date.getDate()).slice(-2);
+			})());
+		});
+		$body.find(`[data-btn-function="now"]`).on('click', function(e){
+			const $this = $(this);
+			const setFor = $this.attr('data-for');
+			$(`#${setFor}`).val((function(){
+				const date = new Date();
+				return date.getFullYear() +
+					'-' + ('0' + (date.getMonth() + 1)).slice(-2) +
+					'-' + ('0' + date.getDate()).slice(-2) +
+					' ' + ('0' + date.getHours()).slice(-2) +
+					':' + ('0' + date.getMinutes()).slice(-2) +
+					':' + ('0' + date.getSeconds()).slice(-2);
+			})());
+		});
+	}
+
 };

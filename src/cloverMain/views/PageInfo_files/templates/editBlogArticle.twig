@@ -7,9 +7,15 @@
 				{% if ( blogmapDefinitionRow.type == "integer" ) %}
 				<input type="number" id="{{ blogmapDefinitionRow.key|e("html_attr") }}" name="{{ blogmapDefinitionRow.key|e("html_attr") }}" value="{{ article_info[blogmapDefinitionRow.key]|e("html_attr") }}" class="px2-input px2-input--block" />
 				{% elseif ( blogmapDefinitionRow.type == "date" ) %}
-				<input type="date" id="{{ blogmapDefinitionRow.key|e("html_attr") }}" name="{{ blogmapDefinitionRow.key|e("html_attr") }}" value="{{ article_info[blogmapDefinitionRow.key]|e("html_attr") }}" class="px2-input px2-input--block" />
+				<div class="px2-input-group px2-input-group--fluid">
+					<input type="date" id="{{ blogmapDefinitionRow.key|e("html_attr") }}" name="{{ blogmapDefinitionRow.key|e("html_attr") }}" value="{{ article_info[blogmapDefinitionRow.key]|e("html_attr") }}" class="px2-input" style="flex-grow: 100;" />
+					<button type="button" class="px2-btn" data-btn-function="today" data-for="{{ blogmapDefinitionRow.key|e("html_attr") }}">今日</button>
+				</div>
 				{% elseif ( blogmapDefinitionRow.type == "datetime" ) %}
-				<input type="datetime" id="{{ blogmapDefinitionRow.key|e("html_attr") }}" name="{{ blogmapDefinitionRow.key|e("html_attr") }}" value="{{ article_info[blogmapDefinitionRow.key]|e("html_attr") }}" class="px2-input px2-input--block" />
+				<div class="px2-input-group px2-input-group--fluid">
+					<input type="datetime" id="{{ blogmapDefinitionRow.key|e("html_attr") }}" name="{{ blogmapDefinitionRow.key|e("html_attr") }}" value="{{ article_info[blogmapDefinitionRow.key]|e("html_attr") }}" class="px2-input" style="flex-grow: 100;" />
+					<button type="button" class="px2-btn" data-btn-function="now" data-for="{{ blogmapDefinitionRow.key|e("html_attr") }}">今日</button>
+				</div>
 				{% elseif ( blogmapDefinitionRow.type == "boolean" ) %}
 				<label><input type="radio" name="{{ blogmapDefinitionRow.key|e("html_attr") }}" value="1" {{ value == "1" ? 'checked="checked"' : '' }} class="px2-input px2-input--block" /> ON</label>
 				<label><input type="radio" name="{{ blogmapDefinitionRow.key|e("html_attr") }}" value="" {{ value == "" or value == "0" ? 'checked="checked"' : '' }} class="px2-input px2-input--block" /> OFF</label>

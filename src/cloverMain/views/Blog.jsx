@@ -253,6 +253,7 @@ export default React.memo(function Blog(props){
 					},
 				});
 				var form = px2style.form($body);
+				utils.editArticleFormInteraction($body);
 				it.next();
 			},
 		]);
@@ -350,6 +351,7 @@ export default React.memo(function Blog(props){
 					},
 				});
 				var form = px2style.form($body);
+				utils.editArticleFormInteraction($body);
 				it.next();
 			},
 		]);

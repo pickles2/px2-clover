@@ -569,6 +569,7 @@ export default React.memo(function PageInfo(props){
 					},
 				});
 				var form = px2style.form($body);
+				utils.editArticleFormInteraction($body);
 				it.next();
 			},
 		]);
