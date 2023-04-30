@@ -43,6 +43,7 @@ export default function Dashboard(props){
 							const params = {
 								"values": {
 									"name": $body.find('[name=name]').val(),
+									"tagline": $body.find('[name=tagline]').val(),
 									"domain": $body.find('[name=domain]').val(),
 									"copyright": $body.find('[name=copyright]').val(),
 								},
@@ -181,8 +182,12 @@ export default function Dashboard(props){
 						<table className="px2-table px2-table--dl">
 							<tbody>
 							<tr>
-								<th>Site Name</th>
+								<th>Site name</th>
 								<td>{main.pxConfig.name || '---'}</td>
+							</tr>
+							<tr>
+								<th>Tag line</th>
+								<td>{main.pxConfig.tagline || '---'}</td>
 							</tr>
 							<tr>
 								<th>Domain</th>
