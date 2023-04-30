@@ -59,6 +59,9 @@ export default React.memo(function Theme(props){
 							window.open(href+'?PX=admin.edit_theme_layout&theme_id='+encodeURIComponent(themeId)+'&layout_id='+encodeURIComponent(layoutId));
 							return;
 						},
+						'openInBrowser': function(path){
+							window.open(path);
+						},
 						'openInFinder': function(path){
 							const $body = document.createElement('div');
 							const modalObj = px2style.modal({
