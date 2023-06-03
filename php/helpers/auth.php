@@ -15,6 +15,9 @@ class auth{
 	/** 管理ユーザー定義ディレクトリ */
 	private $realpath_admin_users;
 
+	/** アカウントロック情報格納ディレクトリ */
+	private $realpath_account_lock;
+
 	/** CSRFトークンの有効期限 */
 	private $csrf_token_expire = 60 * 60;
 
@@ -35,6 +38,12 @@ class auth{
 		$this->realpath_admin_users = $this->clover->realpath_private_data_dir('/admin_users/');
 		if( !is_dir($this->realpath_admin_users) ){
 			$this->px->fs()->mkdir_r($this->realpath_admin_users);
+		}
+
+		// アカウントロック情報格納ディレクトリ
+		$this->realpath_account_lock = $this->clover->realpath_private_data_dir('/account_lock/');
+		if( !is_dir($this->realpath_account_lock) ){
+			$this->px->fs()->mkdir_r($this->realpath_account_lock);
 		}
 	}
 
@@ -70,9 +79,16 @@ class auth{
 				exit;
 			}
 
+			if( $this->is_account_locked( $login_challenger_id ) ){
+				// アカウントがロックされている
+				$this->login_page('failed');
+				exit;
+			}
+
 			$user_info = $this->get_admin_user_info( $login_challenger_id );
 			if( !is_object($user_info) ){
 				// 不正なユーザーデータ
+				$this->admin_user_login_failed( $login_challenger_id );
 				$this->clover->logger()->error_log('Failed to logged in user \''.$login_challenger_id.'\'. User undefined.');
 				$this->login_page('failed');
 				exit;
@@ -81,6 +97,7 @@ class auth{
 			$admin_pw = $user_info->pw;
 
 			if( $login_challenger_id == $admin_id && password_verify($this->px->req()->get_param('ADMIN_USER_PW'), $admin_pw) ){
+				$this->admin_user_login_successful( $login_challenger_id );
 				$this->px->req()->set_session('ADMIN_USER_ID', $login_challenger_id);
 				$this->px->req()->set_session('ADMIN_USER_PW', $user_info->pw);
 
@@ -95,6 +112,7 @@ class auth{
 			}
 
 			if( !$this->is_login() ){
+				$this->admin_user_login_failed( $login_challenger_id );
 				$this->clover->logger()->error_log('Failed to logged in user \''.$login_challenger_id.'\'.');
 				$this->login_page('failed');
 				exit;
@@ -204,6 +222,74 @@ class auth{
 		));
 		exit;
 
+	}
+
+
+	// --------------------------------------
+	// アカウントロック制御
+
+	/**
+	 * 管理ユーザーアカウントがロックされているか確認する
+	 */
+	private function is_account_locked( $user_id ){
+		$realpath_json_php = $this->realpath_account_lock.urlencode($user_id).'.json.php';
+		$data = new \stdClass;
+		if( is_file($realpath_json_php) ){
+			$data = dataDotPhp::read_json($realpath_json_php);
+		}
+
+		if( !is_array($data->failed_log ?? null) ){
+			return false;
+		}
+
+		$counter = 0;
+		foreach( $data->failed_log as $log ){
+			$time = strtotime( $log->at );
+			if( $time > time() - (60 * 60) ){
+				// 60分以内の失敗ログがあればカウントする
+				$counter ++;
+			}
+			if( $counter >= 5 ){
+				// 失敗ログ 5回 でロックする
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * 管理ユーザーがログインに失敗したことを記録する
+	 */
+	private function admin_user_login_failed( $user_id ){
+		$realpath_json_php = $this->realpath_account_lock.urlencode($user_id).'.json.php';
+		$data = new \stdClass;
+		if( is_file($realpath_json_php) ){
+			$data = dataDotPhp::read_json($realpath_json_php);
+		}
+
+		if( !is_array($data->failed_log ?? null) ){
+			$data->last_failed = null;
+			$data->failed_log = array();
+		}
+		$failed_date = date('Y-m-d H:i:s');
+		$data->last_failed = $failed_date;
+		array_push($data->failed_log, (object) array(
+			"at" => $failed_date,
+			"client_ip" => $_SERVER['REMOTE_ADDR'] ?? null,
+		));
+
+		$result = dataDotPhp::write_json($realpath_json_php, $data);
+		return true;
+	}
+
+	/**
+	 * 管理ユーザーがログインに成功したことを記録する
+	 */
+	private function admin_user_login_successful( $user_id ){
+		$realpath_json_php = $this->realpath_account_lock.urlencode($user_id).'.json.php';
+		$this->px->fs()->rm( $realpath_json_php );
+		return true;
 	}
 
 

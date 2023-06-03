@@ -76,6 +76,10 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
+### pickles2/px2-clover v0.2.7 (リリース日未定)
+
+- アカウントロック機能を追加。
+
 ### pickles2/px2-clover v0.2.6 (2023年5月1日)
 
 - クライアントサイド `cceAgent` の `editContent()`、 `editThemeLayout()`、 `openInBrowser()` に対応。
