@@ -67,7 +67,7 @@ class auth{
 
 			if( !strlen($login_challenger_id ?? '') ){
 				// User ID が未指定
-				$this->clover->logger()->error_log('Failed to logged. User ID is not set.');
+				$this->clover->logger()->error_log('Failed to logged in. User ID is not set.');
 				$this->login_page('user_id_is_required');
 				exit;
 			}
@@ -81,6 +81,8 @@ class auth{
 
 			if( $this->is_account_locked( $login_challenger_id ) ){
 				// アカウントがロックされている
+				$this->admin_user_login_failed( $login_challenger_id );
+				$this->clover->logger()->error_log('Failed to logged in user \''.$login_challenger_id.'\'. Account is LOCKED.');
 				$this->login_page('failed');
 				exit;
 			}
