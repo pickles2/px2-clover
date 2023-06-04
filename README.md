@@ -79,6 +79,7 @@ $conf->allow_pxcommands = 1;
 ### pickles2/px2-clover v0.2.7 (リリース日未定)
 
 - アカウントロック機能を追加。
+- その他、不具合の修正、内部コードの修正など。
 
 ### pickles2/px2-clover v0.2.6 (2023年5月1日)
 

@@ -4,7 +4,7 @@ namespace tomk79\pickles2\px2clover\helpers;
 /**
  * px2-clover: auth
  */
-class auth{
+class auth {
 
 	/** Cloverオブジェクト */
 	private $clover;
@@ -20,10 +20,6 @@ class auth{
 
 	/** CSRFトークンの有効期限 */
 	private $csrf_token_expire = 60 * 60;
-
-	/** 初期デフォルトアカウント */
-	private $default_admin_user_id = 'admin';
-	private $default_admin_user_pw = 'admin';
 
 	/**
 	 * Constructor
@@ -494,16 +490,6 @@ class auth{
 					return null;
 				}
 			}
-		}elseif( $user_id == $this->default_admin_user_id ){
-			// デフォルトユーザー
-			$user_info = (object) array(
-				'id' => $this->default_admin_user_id,
-				'pw' => $this->password_hash($this->default_admin_user_pw),
-				'name' => 'Administrator',
-				'lang' => 'ja',
-				'email' => null,
-				'role' => null,
-			);
 		}
 		return $user_info;
 	}
