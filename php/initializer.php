@@ -40,6 +40,7 @@ class initializer{
 		// 管理ユーザーデータ
 		if( !is_dir($this->realpath_private_data_dir.'admin_users/') ){
 			$this->px->fs()->mkdir_r($this->realpath_private_data_dir.'admin_users/');
+			$this->px->fs()->chmod_r($this->realpath_private_data_dir.'admin_users/', 0700, 0700);
 		}
 		if( !is_dir($this->realpath_private_data_dir.'admin_users/') || !count( $this->px->fs()->ls($this->realpath_private_data_dir.'admin_users/') ) ){
 			$this->initialize_admin_user_page();
@@ -67,6 +68,7 @@ class initializer{
 				'role' => 'admin',
 			);
 			$result = $this->clover->auth()->create_admin_user( $user_info );
+			$this->px->fs()->chmod_r($this->realpath_private_data_dir.'admin_users/', 0700, 0700);
 			if( $result->result ){
 				header('Location:'.'?PX=admin');
 				exit;

@@ -685,6 +685,7 @@ class auth {
 		$realpath_json = $this->realpath_admin_users.urlencode($user_id).'.json';
 		$realpath_json_php = $realpath_json.'.php';
 		$result = dataDotPhp::write_json($realpath_json_php, $data);
+		$this->px->fs()->chmod_r($this->realpath_admin_users, 0700, 0700);
 		if( !$result ){
 			return false;
 		}
