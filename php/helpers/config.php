@@ -46,9 +46,9 @@ class config{
 
 		$login_user_info = $this->clover->auth()->get_login_user_info();
 
-		return array(
+		return (object) array(
 			'lang' => ( isset($login_user_info->lang) ? $login_user_info->lang : 'ja' ),
-			'history' => array(
+			'history' => (object) array(
 				'git_remote' => null,
 				'git_id' => null,
 				'git_pw' => null,
@@ -77,6 +77,8 @@ class config{
 		if( !$result ){
 			return false;
 		}
+		$this->px->fs()->chmod($this->realpath_config_json_php, 0700);
+
 		if( is_file($this->realpath_config_json) ){
 			unlink($this->realpath_config_json); // 素のJSONがあったら削除する
 		}

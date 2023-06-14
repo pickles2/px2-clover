@@ -68,8 +68,8 @@ class initializer{
 				'role' => 'admin',
 			);
 			$result = $this->clover->auth()->create_admin_user( $user_info );
-			$this->px->fs()->chmod_r($this->realpath_private_data_dir.'admin_users/', 0700, 0700);
 			if( $result->result ){
+				$this->px->fs()->chmod_r($this->realpath_private_data_dir.'admin_users/', 0700, 0700);
 				header('Location:'.'?PX=admin');
 				exit;
 			}
