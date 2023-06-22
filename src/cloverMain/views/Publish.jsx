@@ -6,26 +6,43 @@ import $ from 'jquery';
 export default React.memo(function Publish(props){
 
 	const main = useContext(MainContext);
-	const [ healthCheckStatus, updateHealthCheckStatus] = useState({"scheduler":{"is_available": null, "elapsed": null}});
+	const [ healthCheckStatus, updateHealthCheckStatus] = useState({
+		"scheduler": {
+			"is_available": null,
+			"elapsed": null,
+		},
+		"publish": {
+			"is_running": null,
+		},
+	});
 
-	const pollingUpdateStatus = () => {
+	const pollingUpdateStatus = (callback) => {
+		callback = callback || function(){};
 		main.px2utils.px2cmd(
 			'/?PX=admin.api.health_check',
 			{},
 			function( res ){
 				if( !res.result ){
 					console.error('Error:', res);
+					callback(healthCheckStatus);
+					return;
 				}
 				updateHealthCheckStatus(res);
+				callback(res);
 			}
 		);
 		return;
 	}
 	useEffect(() => {
-		pollingUpdateStatus();
-		let timer = setInterval(() => {
-			pollingUpdateStatus();
-		}, 5 * 1000);
+		let timer;
+		pollingUpdateStatus((res) => {
+			if( !res.scheduler.is_available ){
+				return;
+			}
+			timer = setInterval(() => {
+				pollingUpdateStatus();
+			}, 5 * 1000);
+		});
 
 		return () => {
 			clearInterval(timer);
