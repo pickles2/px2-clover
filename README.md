@@ -76,7 +76,7 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
-### pickles2/px2-clover v0.2.7 (リリース日未定)
+### pickles2/px2-clover v0.2.7 (2023年6月25日)
 
 - アカウントロック機能を追加。
 - パブリッシュ中の不要なポーリングを削除した。
