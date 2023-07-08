@@ -41,6 +41,7 @@ class git{
 
 	/**
 	 * コミットする
+	 * autoCommit機能からコールされる
 	 */
 	public function commit(){
 		$this->px->header('Content-type: text/json');
@@ -52,58 +53,58 @@ class git{
 		exit;
 	}
 
-	/**
-	 * 状態を知る
-	 */
-	public function status(){
-		$this->px->header('Content-type: text/json');
+	// /**
+	//  * 状態を知る
+	//  */
+	// public function status(){
+	// 	$this->px->header('Content-type: text/json');
 
-		$gitHelper = new \tomk79\pickles2\px2clover\helpers\git( $this->clover );
-		$rtn = $gitHelper->status();
+	// 	$gitHelper = new \tomk79\pickles2\px2clover\helpers\git( $this->clover );
+	// 	$rtn = $gitHelper->status();
 
-		echo json_encode($rtn);
-		exit;
-	}
+	// 	echo json_encode($rtn);
+	// 	exit;
+	// }
 
-	/**
-	 * フェッチする
-	 */
-	public function fetch(){
-		$this->px->header('Content-type: text/json');
+	// /**
+	//  * フェッチする
+	//  */
+	// public function fetch(){
+	// 	$this->px->header('Content-type: text/json');
 
-		$gitHelper = new \tomk79\pickles2\px2clover\helpers\git( $this->clover );
-		$rtn = $gitHelper->fetch();
+	// 	$gitHelper = new \tomk79\pickles2\px2clover\helpers\git( $this->clover );
+	// 	$rtn = $gitHelper->fetch();
 
-		echo json_encode($rtn);
-		exit;
-	}
+	// 	echo json_encode($rtn);
+	// 	exit;
+	// }
 
-	/**
-	 * プルする
-	 */
-	public function pull(){
-		$this->px->header('Content-type: text/json');
+	// /**
+	//  * プルする
+	//  */
+	// public function pull(){
+	// 	$this->px->header('Content-type: text/json');
 
-		$gitHelper = new \tomk79\pickles2\px2clover\helpers\git( $this->clover );
-		$rtn = $gitHelper->fetch();
-		$rtn = $gitHelper->pull();
+	// 	$gitHelper = new \tomk79\pickles2\px2clover\helpers\git( $this->clover );
+	// 	$rtn = $gitHelper->fetch();
+	// 	$rtn = $gitHelper->pull();
 
-		echo json_encode($rtn);
-		exit;
-	}
+	// 	echo json_encode($rtn);
+	// 	exit;
+	// }
 
-	/**
-	 * プッシュする
-	 */
-	public function push(){
-		$this->px->header('Content-type: text/json');
+	// /**
+	//  * プッシュする
+	//  */
+	// public function push(){
+	// 	$this->px->header('Content-type: text/json');
 
-		$gitHelper = new \tomk79\pickles2\px2clover\helpers\git( $this->clover );
-		$rtn = $gitHelper->fetch();
-		$rtn = $gitHelper->push();
+	// 	$gitHelper = new \tomk79\pickles2\px2clover\helpers\git( $this->clover );
+	// 	$rtn = $gitHelper->fetch();
+	// 	$rtn = $gitHelper->push();
 
-		echo json_encode($rtn);
-		exit;
-	}
+	// 	echo json_encode($rtn);
+	// 	exit;
+	// }
 
 }

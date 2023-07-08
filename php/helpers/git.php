@@ -126,6 +126,7 @@ class git {
 
 	/**
 	 * コミットする
+	 * autoCommit機能からコールされる
 	 */
 	public function commit(){
 		$rtn = array();
@@ -134,6 +135,7 @@ class git {
 
 		$res_cmd = $this->exec_git_command(array(
 			'add',
+			'--all',
 			'.',
 		));
 		if( !$res_cmd['result'] ){
@@ -158,81 +160,81 @@ class git {
 		return $rtn;
 	}
 
-	/**
-	 * フェッチする
-	 */
-	public function fetch(){
-		$this->px->header('Content-type: text/json');
+	// /**
+	//  * フェッチする
+	//  */
+	// public function fetch(){
+	// 	$this->px->header('Content-type: text/json');
 
-		$rtn = array();
-		$rtn['result'] = true;
-		$rtn['message'] = 'OK';
+	// 	$rtn = array();
+	// 	$rtn['result'] = true;
+	// 	$rtn['message'] = 'OK';
 
-		$this->set_remote_origin();
-		$res_cmd = $this->exec_git_command(array(
-			'fetch',
-			'--prune',
-		));
-		$this->clear_remote_origin();
-		if( !$res_cmd['result'] ){
-			return array(
-				'result' => false,
-				'message' => $this->conceal_confidentials($res_cmd['stdout']).$this->conceal_confidentials($res_cmd['stderr']),
-			);
-		}
+	// 	$this->set_remote_origin();
+	// 	$res_cmd = $this->exec_git_command(array(
+	// 		'fetch',
+	// 		'--prune',
+	// 	));
+	// 	$this->clear_remote_origin();
+	// 	if( !$res_cmd['result'] ){
+	// 		return array(
+	// 			'result' => false,
+	// 			'message' => $this->conceal_confidentials($res_cmd['stdout']).$this->conceal_confidentials($res_cmd['stderr']),
+	// 		);
+	// 	}
 
-		return $rtn;
-	}
+	// 	return $rtn;
+	// }
 
-	/**
-	 * プルする
-	 */
-	public function pull(){
-		$this->px->header('Content-type: text/json');
+	// /**
+	//  * プルする
+	//  */
+	// public function pull(){
+	// 	$this->px->header('Content-type: text/json');
 
-		$rtn = array();
-		$rtn['result'] = true;
-		$rtn['message'] = 'OK';
+	// 	$rtn = array();
+	// 	$rtn['result'] = true;
+	// 	$rtn['message'] = 'OK';
 
-		$this->set_remote_origin();
-		$res_cmd = $this->exec_git_command(array(
-			'pull',
-		));
-		$this->clear_remote_origin();
-		if( !$res_cmd['result'] ){
-			return array(
-				'result' => false,
-				'message' => $this->conceal_confidentials($res_cmd['stdout']).$this->conceal_confidentials($res_cmd['stderr']),
-			);
-		}
+	// 	$this->set_remote_origin();
+	// 	$res_cmd = $this->exec_git_command(array(
+	// 		'pull',
+	// 	));
+	// 	$this->clear_remote_origin();
+	// 	if( !$res_cmd['result'] ){
+	// 		return array(
+	// 			'result' => false,
+	// 			'message' => $this->conceal_confidentials($res_cmd['stdout']).$this->conceal_confidentials($res_cmd['stderr']),
+	// 		);
+	// 	}
 
-		return $rtn;
-	}
+	// 	return $rtn;
+	// }
 
-	/**
-	 * プッシュする
-	 */
-	public function push(){
-		$this->px->header('Content-type: text/json');
+	// /**
+	//  * プッシュする
+	//  */
+	// public function push(){
+	// 	$this->px->header('Content-type: text/json');
 
-		$rtn = array();
-		$rtn['result'] = true;
-		$rtn['message'] = 'OK';
+	// 	$rtn = array();
+	// 	$rtn['result'] = true;
+	// 	$rtn['message'] = 'OK';
 
-		$this->set_remote_origin();
-		$res_cmd = $this->exec_git_command(array(
-			'push',
-		));
-		$this->clear_remote_origin();
-		if( !$res_cmd['result'] ){
-			return array(
-				'result' => false,
-				'message' => $this->conceal_confidentials($res_cmd['stdout']).$this->conceal_confidentials($res_cmd['stderr']),
-			);
-		}
+	// 	$this->set_remote_origin();
+	// 	$res_cmd = $this->exec_git_command(array(
+	// 		'push',
+	// 	));
+	// 	$this->clear_remote_origin();
+	// 	if( !$res_cmd['result'] ){
+	// 		return array(
+	// 			'result' => false,
+	// 			'message' => $this->conceal_confidentials($res_cmd['stdout']).$this->conceal_confidentials($res_cmd['stderr']),
+	// 		);
+	// 	}
 
-		return $rtn;
-	}
+	// 	return $rtn;
+	// }
 
 
 	/**
@@ -443,8 +445,10 @@ class git {
 		$rtn['exitcode'] = $stat['exitcode'];
 		$rtn['stdout'] = $io[1]; // stdout
 		if( isset($io[2]) && strlen( $io[2] ) ){
-			$rtn['result'] = false;
 			$rtn['stderr'] = $io[2]; // stderr
+		}
+		if( $rtn['exitcode'] ){
+			$rtn['result'] = false;
 		}
 
 		chdir($cd);
