@@ -28,7 +28,34 @@ class git {
 	}
 
 	/**
+	 * Gitリモートサーバーからデフォルトのブランチ名を取得する
+	 */
+	public function get_remote_default_branch_name( $git_url = null ) {
+		$default = 'master';
+		if( !strlen( $git_url ?? '' ) ){
+			$git_url = $this->url_bind_confidentials($git_url);
+		}
+		if( !strlen( $git_url ?? '' ) ){
+			return $default;
+		}
+		$realpath_git_command = (strlen($this->env_config->commands->git ?? '') ? $this->env_config->commands->git : ($this->rencon->conf()->commands->git ?? 'git'));
+		$result = shell_exec($realpath_git_command.' ls-remote --symref '.escapeshellarg($git_url).' HEAD');
+		if(!is_string($result) || !strlen($result ?? '')){
+			return $default;
+		}
+
+		if( !preg_match('/^ref\: refs\/heads\/([^\s]+)\s+HEAD/', $result, $matched) ){
+			return $default;
+		}
+
+		return $matched[1];
+	}
+
+	/**
 	 * Gitコマンドを直接実行する
+	 *
+	 * @param array $git_command_array Gitコマンドオプション
+	 * @return array 実行結果
 	 */
 	public function git( $git_command_array = array() ){
 		$rtn = array();
@@ -39,12 +66,19 @@ class git {
 			return array(
 				'result' => false,
 				'message' => 'Invalid Command.',
+				'stdout' => '',
+				'stderr' => 'Internal Error: Invalid arguments are given.',
+				'exitcode' => 1,
 			);
 		}
+
 		if( !$this->is_valid_command($git_command_array) ){
 			return array(
-				'result' => true,
+				'result' => false,
 				'message' => 'Invalid Command.',
+				'stdout' => '',
+				'stderr' => 'Internal Error: Command not permitted.',
+				'exitcode' => 1,
 			);
 		}
 
@@ -204,12 +238,12 @@ class git {
 	/**
 	 * origin をセットする
 	 */
-	public function set_remote_origin(){
+	public function set_remote_origin($git_url = null){
 		if( !$this->has_valid_git_config() ){
 			return false;
 		}
 
-		$git_remote = $this->url_bind_confidentials();
+		$git_remote = $this->url_bind_confidentials($git_url);
 		if( !strlen($git_remote ?? '') ){
 			return true;
 		}
@@ -251,6 +285,46 @@ class git {
 	}
 
 	/**
+	 * URLに認証情報を埋め込む
+	 */
+	private function url_bind_confidentials($url = null, $user_name = null, $password = null){
+		$crypt = new crypt( $this->clover );
+		$this->cloverConfig = $this->clover->conf();
+		if( isset($this->cloverConfig->history->git_remote) && !strlen($url ?? '') ){
+			$url = $this->cloverConfig->history->git_remote;
+		}
+		if( isset($this->cloverConfig->history->git_id) && !strlen($user_name ?? '') ){
+			$user_name = $this->cloverConfig->history->git_id;
+		}
+		if( isset($this->cloverConfig->history->git_pw) && strlen($crypt->decrypt($this->cloverConfig->history->git_pw ?? '')) && !strlen($password ?? '') ){
+			$password = $crypt->decrypt($this->cloverConfig->history->git_pw);
+		}
+		if( !strlen($url ?? '') ){
+			return null;
+		}
+
+		$parsed_git_url = parse_url($url);
+		$rtn = '';
+		$rtn .= $parsed_git_url['scheme'].'://';
+		if( strlen($user_name ?? '') ){
+			$rtn .= urlencode($user_name);
+			if( strlen($password ?? '') ){
+				$rtn .= ':'.urlencode($password);
+			}
+			$rtn .= '@';
+		}
+		$rtn .= $parsed_git_url['host'];
+		if( array_key_exists('port', $parsed_git_url) && strlen($parsed_git_url['port'] ?? '') ){
+			$rtn .= ':'.$parsed_git_url['port'];
+		}
+		$rtn .= $parsed_git_url['path'];
+		if( array_key_exists('query', $parsed_git_url) && strlen($parsed_git_url['query'] ?? '') ){
+			$rtn .= '?'.$parsed_git_url['query'];
+		}
+		return $rtn;
+	}
+
+	/**
 	 * gitコマンドの結果から、秘匿な情報を隠蔽する
 	 * @param string $str 出力テキスト
 	 * @return string 秘匿情報を隠蔽加工したテキスト
@@ -268,46 +342,6 @@ class git {
 	}
 
 	/**
-	 * URLに認証情報を埋め込む
-	 */
-	private function url_bind_confidentials($url = null, $user_name = null, $password = null){
-		$crypt = new crypt( $this->clover );
-		$this->cloverConfig = $this->clover->conf();
-		if( isset($this->cloverConfig->history->git_remote) && !strlen($url ?? '') ){
-			$url = $this->cloverConfig->history->git_remote;
-		}
-		if( isset($this->cloverConfig->history->git_id) && !strlen($user_name ?? '') ){
-			$user_name = $this->cloverConfig->history->git_id;
-		}
-		if( isset($this->cloverConfig->history->git_pw) && strlen($crypt->decrypt($this->cloverConfig->history->git_pw ?? '')) && !strlen($password ?? '') ){
-			$password = $crypt->decrypt($this->cloverConfig->history->git_pw);
-		}
-		if( !strlen($url) ){
-			return null;
-		}
-
-		$parsed_git_url = parse_url($url);
-		$rtn = '';
-		$rtn .= $parsed_git_url['scheme'].'://';
-		if( strlen($user_name) ){
-			$rtn .= urlencode($user_name);
-			if( strlen($password) ){
-				$rtn .= ':'.urlencode($password);
-			}
-			$rtn .= '@';
-		}
-		$rtn .= $parsed_git_url['host'];
-		if( array_key_exists('port', $parsed_git_url) && strlen($parsed_git_url['port'] ?? '') ){
-			$rtn .= ':'.$parsed_git_url['port'];
-		}
-		$rtn .= $parsed_git_url['path'];
-		if( array_key_exists('query', $parsed_git_url) && strlen($parsed_git_url['query'] ?? '') ){
-			$rtn .= '?'.$parsed_git_url['query'];
-		}
-		return $rtn;
-	}
-
-	/**
 	 * Gitのルートディレクトリを取得する
 	 */
 	private function realpath_git_root(){
@@ -316,6 +350,9 @@ class git {
 
 	/**
 	 * Gitコマンドを実行する
+	 *
+	 * @param array $git_sub_commands Gitコマンドオプション
+	 * @return array 実行結果
 	 */
 	private function exec_git_command( $git_sub_commands ){
 		$rtn = array(
@@ -331,14 +368,49 @@ class git {
 				'stderr' => '.git is not found.',
 			);
 		}
+
+		if( !is_array($git_sub_commands) ){
+			return array(
+				'result' => false,
+				'stdout' => '',
+				'stderr' => 'Internal Error: Invalid arguments are given.',
+				'exitcode' => 1,
+			);
+		}
+
+		if( !$this->is_valid_command($git_sub_commands) ){
+			return array(
+				'result' => false,
+				'stdout' => '',
+				'stderr' => 'Internal Error: Command not permitted.',
+				'exitcode' => 1,
+			);
+		}
+
+		clearstatcache();
+
+		if( !is_dir($realpath_git_root) || !is_dir($realpath_git_root.'.git/') ){
+			if( $git_sub_commands[0] !== 'init' && $git_sub_commands[0] !== 'clone' ){
+				// .git がなければ実行させない。
+				return array(
+					'result' => false,
+					'stdout' => '',
+					'stderr' => 'Git is not initialized.',
+					'exitcode' => 1,
+				);
+			}
+		}
+
+
 		$cd = realpath('.');
 		chdir($realpath_git_root);
 
-		foreach($git_sub_commands as $key=>$val){
-			$git_sub_commands[$key] = escapeshellarg($val);
+		foreach($git_sub_commands as $idx=>$git_sub_commands_row){
+			$git_sub_commands[$idx] = escapeshellarg($git_sub_commands_row);
 		}
 
-		$cmd = ($this->px->conf()->commands->git ?? 'git').' '.implode( ' ', $git_sub_commands );
+		$realpath_git_command = ($this->px->conf()->commands->git ?? 'git');
+		$cmd = $realpath_git_command.' '.implode(' ', $git_sub_commands);
 
 		// コマンドを実行
 		ob_start();
@@ -347,6 +419,7 @@ class git {
 			1 => array('pipe','w'),
 			2 => array('pipe','w'),
 		), $pipes);
+
 		$io = array();
 		foreach($pipes as $idx=>$pipe){
 			$io[$idx] = null;
@@ -390,7 +463,6 @@ class git {
 
 		// 許可されたコマンド
 		switch( $git_sub_command[0] ?? null ){
-			case 'clone':
 			case 'config':
 			case 'status':
 			case 'branch':
