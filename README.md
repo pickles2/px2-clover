@@ -76,9 +76,10 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
-### pickles2/px2-clover v0.2.8 (リリース日未定)
+### pickles2/px2-clover v0.2.8 (2023年7月14日)
 
 - ブログ記事情報編集ダイアログで、フラグ形式の項目の値がプリセットされない不具合を修正した。
+- その他、不具合の修正、内部コードの修正など。
 
 ### pickles2/px2-clover v0.2.7 (2023年6月25日)
 
