@@ -246,6 +246,9 @@ export default React.memo(function Blog(props){
 								return `${date.getFullYear()}-${("00"+(date.getMonth() + 1)).slice(-2)}-${("00"+date.getDate()).slice(-2)}`;
 							})();
 							break;
+						case "layout":
+							page_info[blogmapDefinition[idx].key] = page_info[blogmapDefinition[idx].key] || "article";
+							break;
 					}
 				}
 
