@@ -92,45 +92,53 @@ export default React.memo(function Blog(props){
 	// 新規ブログ作成
 	function createNewBlog(e){
 		e.preventDefault();
-		var $body = $('<div>')
-			.append( main.cloverUtils.bindTwig(
-				require('-!text-loader!./Blog_files/templates/createNewBlog.twig'),
-				{}
-			) );
-		px2style.modal({
-			"title": "新規ブログを追加する",
-			"body": $body,
-			"buttons": [
-				$('<button type="submit" class="px2-btn px2-btn--primary">').text('作成する'),
-			],
-			"form": {
-				"submit": function(e){
-					const $form = $(this);
-					const newBlogId = $form.find(`[name=blog_id]`).val();
 
-					main.px2utils.px2cmd(
-						`?PX=admin.api.blogkit.create_new_blog`,
-						{
-							blog_id: newBlogId,
+		iterate79.fnc({}, [
+			(it1) => {
+
+				var $body = $('<div>')
+					.append( main.cloverUtils.bindTwig(
+						require('-!text-loader!./Blog_files/templates/createNewBlog.twig'),
+						{}
+					) );
+				px2style.modal({
+					"title": "新規ブログを追加する",
+					"body": $body,
+					"buttons": [
+						$('<button type="submit" class="px2-btn px2-btn--primary">').text('作成する'),
+					],
+					"form": {
+						"submit": function(e){
+							const $form = $(this);
+							const newBlogId = $form.find(`[name=blog_id]`).val();
+
+							main.px2utils.px2cmd(
+								`?PX=admin.api.blogkit.create_new_blog`,
+								{
+									blog_id: newBlogId,
+								},
+								function( result ){
+									if( !result.result ){
+										form.reportValidationError({
+											errors: result.errors,
+										});
+										return;
+									}
+									px2style.closeModal();
+									update_localState({
+										...localState,
+										"blogList": null,
+									});
+								}
+							);
 						},
-						function( result ){
-							if( !result.result ){
-								form.reportValidationError({
-									errors: result.errors,
-								});
-								return;
-							}
-							px2style.closeModal();
-							update_localState({
-								...localState,
-								"blogList": null,
-							});
-						}
-					);
-				},
+					},
+				});
+				var form = px2style.form($body);
+
+				it1.next();
 			},
-		});
-		var form = px2style.form($body);
+		]);
 	}
 
 	// --------------------------------------
@@ -175,10 +183,11 @@ export default React.memo(function Blog(props){
 	// --------------------------------------
 	// 新規記事作成
 	function createNewArticle(e){
-		var modal;
 		const blog_id = $(e.target).attr(`data-btn-create-new-article`);
+		let basePageInfo;
 		let sitemapDefinition;
 		let blogmapDefinition;
+		let modal;
 		iterate79.fnc({}, [
 			function(it){
 				main.px2utils.px2cmd(
@@ -202,14 +211,48 @@ export default React.memo(function Blog(props){
 					}
 				);
 			},
+			(it1) => {
+				main.px2utils.px2cmd(
+					`?PX=admin.api.blogkit.get_article_list`,
+					{
+						blog_id: blog_id,
+						dpp: 100,
+						p: 1,
+					},
+					function( result ){
+						basePageInfo = result.article_list[0] || undefined;
+						it1.next();
+					}
+				);
+			},
 			function(it){
 				blogmapDefinition = utils.fixBlogmapDefinition(blogmapDefinition, sitemapDefinition);
+
+				let page_info = {};
+				let blogmapDefinitionAssoc = {};
+				for( let idx = 0; blogmapDefinition.length > idx; idx ++ ){
+					blogmapDefinitionAssoc[blogmapDefinition[idx].key] = blogmapDefinition[idx];
+					page_info[blogmapDefinition[idx].key] = basePageInfo[blogmapDefinition[idx].key];
+
+					// 初期値の調整
+					switch( blogmapDefinition[idx].key ){
+						case "release_date":
+						case "update_date":
+							page_info[blogmapDefinition[idx].key] = (function(){
+								const date = new Date();
+								return `${date.getFullYear()}-${("00"+(date.getMonth() + 1)).slice(-2)}-${("00"+date.getDate()).slice(-2)}`;
+							})();
+							break;
+					}
+				}
+
 				const $body = $('<div>')
 					.append( main.cloverUtils.bindTwig(
 						require('-!text-loader!./Blog_files/templates/createNewArticle.twig'),
 						{
 							blog_id: blog_id,
-							blogmapDefinition: blogmapDefinition,
+							blogmapDefinitionAssoc: blogmapDefinitionAssoc,
+							page_info: page_info,
 						}
 					) );
 				modal = px2style.modal({

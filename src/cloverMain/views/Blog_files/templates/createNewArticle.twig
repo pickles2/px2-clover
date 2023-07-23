@@ -1,36 +1,36 @@
 <div class="px2-form-input-list">
 	<ul class="px2-form-input-list__ul">
-{% for blogmapDefinitionRow in blogmapDefinition %}
-		<li class="px2-form-input-list__li" data-name="{{ blogmapDefinitionRow.key|e("html_attr") }}">
-			<div class="px2-form-input-list__label"><label for="{{ blogmapDefinitionRow.key|e("html_attr") }}">{{ blogmapDefinitionRow.label|e }}</label></div>
+{% for key, value in page_info %}
+		<li class="px2-form-input-list__li" data-name="{{ key|e("html_attr") }}">
+			<div class="px2-form-input-list__label"><label for="{{ key|e("html_attr") }}">{{ blogmapDefinitionAssoc[key].label|e }}</label></div>
 			<div class="px2-form-input-list__input">
-				{% if ( blogmapDefinitionRow.type == "integer" ) %}
-				<input type="number" id="{{ blogmapDefinitionRow.key|e("html_attr") }}" name="{{ blogmapDefinitionRow.key|e("html_attr") }}" value="" class="px2-input px2-input--block" />
-				{% elseif ( blogmapDefinitionRow.type == "date" ) %}
+				{% if ( blogmapDefinitionAssoc[key].type == "integer" ) %}
+				<input type="number" id="{{ key|e("html_attr") }}" name="{{ key|e("html_attr") }}" value="{{ value|e("html_attr") }}" class="px2-input px2-input--block" />
+				{% elseif ( blogmapDefinitionAssoc[key].type == "date" ) %}
 				<div class="px2-input-group px2-input-group--fluid">
-					<input type="date" id="{{ blogmapDefinitionRow.key|e("html_attr") }}" name="{{ blogmapDefinitionRow.key|e("html_attr") }}" value="" class="px2-input" style="flex-grow: 100;" />
-					<button type="button" class="px2-btn" data-btn-function="today" data-for="{{ blogmapDefinitionRow.key|e("html_attr") }}">今日</button>
+					<input type="date" id="{{ key|e("html_attr") }}" name="{{ key|e("html_attr") }}" value="{{ value|e("html_attr") }}" class="px2-input" style="flex-grow: 100;" />
+					<button type="button" class="px2-btn" data-btn-function="today" data-for="{{ key|e("html_attr") }}">今日</button>
 				</div>
-				{% elseif ( blogmapDefinitionRow.type == "datetime" ) %}
+				{% elseif ( blogmapDefinitionAssoc[key].type == "datetime" ) %}
 				<div class="px2-input-group px2-input-group--fluid">
-					<input type="datetime" id="{{ blogmapDefinitionRow.key|e("html_attr") }}" name="{{ blogmapDefinitionRow.key|e("html_attr") }}" value="" class="px2-input" style="flex-grow: 100;" />
-					<button type="button" class="px2-btn" data-btn-function="now" data-for="{{ blogmapDefinitionRow.key|e("html_attr") }}">今日</button>
+					<input type="datetime" id="{{ key|e("html_attr") }}" name="{{ key|e("html_attr") }}" value="{{ value|e("html_attr") }}" class="px2-input" style="flex-grow: 100;" />
+					<button type="button" class="px2-btn" data-btn-function="now" data-for="{{ key|e("html_attr") }}">今日</button>
 				</div>
-				{% elseif ( blogmapDefinitionRow.type == "boolean" ) %}
-				<label><input type="radio" name="{{ blogmapDefinitionRow.key|e("html_attr") }}" value="1" {{ value == "1" ? 'checked="checked"' : '' }} class="px2-input px2-input--block" /> ON</label>
-				<label><input type="radio" name="{{ blogmapDefinitionRow.key|e("html_attr") }}" value="" {{ value == "" or value == "0" ? 'checked="checked"' : '' }} class="px2-input px2-input--block" /> OFF</label>
-				{% elseif ( blogmapDefinitionRow.type == "path" ) %}
-				<input type="text" id="{{ blogmapDefinitionRow.key|e("html_attr") }}" name="{{ blogmapDefinitionRow.key|e("html_attr") }}" value="" class="px2-input px2-input--block" />
-				{% elseif ( blogmapDefinitionRow.type == "logical_path" ) %}
-				<input type="text" id="{{ blogmapDefinitionRow.key|e("html_attr") }}" name="{{ blogmapDefinitionRow.key|e("html_attr") }}" value="" class="px2-input px2-input--block" />
-				{% elseif ( blogmapDefinitionRow.type == "page_id" ) %}
-				<input type="text" id="{{ blogmapDefinitionRow.key|e("html_attr") }}" name="{{ blogmapDefinitionRow.key|e("html_attr") }}" value="" class="px2-input px2-input--block" />
-				{% elseif ( blogmapDefinitionRow.type == "layout_id" ) %}
-				<input type="text" id="{{ blogmapDefinitionRow.key|e("html_attr") }}" name="{{ blogmapDefinitionRow.key|e("html_attr") }}" value="" class="px2-input px2-input--block" />
-				{% elseif ( blogmapDefinitionRow.type == "text" ) %}
-				<input type="text" id="{{ blogmapDefinitionRow.key|e("html_attr") }}" name="{{ blogmapDefinitionRow.key|e("html_attr") }}" value="" class="px2-input px2-input--block" />
+				{% elseif ( blogmapDefinitionAssoc[key].type == "boolean" ) %}
+				<label><input type="radio" name="{{ key|e("html_attr") }}" value="1" {{ value == "1" ? 'checked="checked"' : '' }} class="px2-input px2-input--block" /> ON</label>
+				<label><input type="radio" name="{{ key|e("html_attr") }}" value="" {{ value == "" or value == "0" ? 'checked="checked"' : '' }} class="px2-input px2-input--block" /> OFF</label>
+				{% elseif ( blogmapDefinitionAssoc[key].type == "path" ) %}
+				<input type="text" id="{{ key|e("html_attr") }}" name="{{ key|e("html_attr") }}" value="{{ value|e("html_attr") }}" class="px2-input px2-input--block" />
+				{% elseif ( blogmapDefinitionAssoc[key].type == "logical_path" ) %}
+				<input type="text" id="{{ key|e("html_attr") }}" name="{{ key|e("html_attr") }}" value="{{ value|e("html_attr") }}" class="px2-input px2-input--block" />
+				{% elseif ( blogmapDefinitionAssoc[key].type == "page_id" ) %}
+				<input type="text" id="{{ key|e("html_attr") }}" name="{{ key|e("html_attr") }}" value="{{ value|e("html_attr") }}" class="px2-input px2-input--block" />
+				{% elseif ( blogmapDefinitionAssoc[key].type == "layout_id" ) %}
+				<input type="text" id="{{ key|e("html_attr") }}" name="{{ key|e("html_attr") }}" value="{{ value|e("html_attr") }}" class="px2-input px2-input--block" />
+				{% elseif ( blogmapDefinitionAssoc[key].type == "text" ) %}
+				<input type="text" id="{{ key|e("html_attr") }}" name="{{ key|e("html_attr") }}" value="{{ value|e("html_attr") }}" class="px2-input px2-input--block" />
 				{% else %}
-				<input type="text" id="{{ blogmapDefinitionRow.key|e("html_attr") }}" name="{{ blogmapDefinitionRow.key|e("html_attr") }}" value="" class="px2-input px2-input--block" />
+				<input type="text" id="{{ key|e("html_attr") }}" name="{{ key|e("html_attr") }}" value="{{ value|e("html_attr") }}" class="px2-input px2-input--block" />
 				{% endif %}
 			</div>
 		</li>
