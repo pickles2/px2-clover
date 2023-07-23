@@ -190,6 +190,7 @@ export default React.memo(function Blog(props){
 		let modal;
 		iterate79.fnc({}, [
 			function(it){
+				// サイトマップ定義を取得
 				main.px2utils.px2cmd(
 					`?PX=admin.api.blogkit.get_sitemap_definition`,
 					{},
@@ -200,6 +201,7 @@ export default React.memo(function Blog(props){
 				);
 			},
 			function(it){
+				// ブログマップ定義を取得
 				main.px2utils.px2cmd(
 					`?PX=admin.api.blogkit.get_blogmap_definition`,
 					{
@@ -212,15 +214,16 @@ export default React.memo(function Blog(props){
 				);
 			},
 			(it1) => {
+				// 既存ブログの一覧を取得
 				main.px2utils.px2cmd(
 					`?PX=admin.api.blogkit.get_article_list`,
 					{
 						blog_id: blog_id,
-						dpp: 100,
+						dpp: 1,
 						p: 1,
 					},
 					function( result ){
-						basePageInfo = result.article_list[0] || undefined;
+						basePageInfo = result.article_list[0] || {};
 						it1.next();
 					}
 				);
