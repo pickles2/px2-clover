@@ -192,13 +192,18 @@
 						);
 					},
 					'onClickContentsLink': function( uri, data ){
-						// TODO: 編集リンクを生成する
-						console.info('Edit: ' + uri);
+						// プレビュー上のリンクをクリックしたときのイベント処理
+						console.info('Open URL: ', uri, data);
+						if( (data.tagName == 'a' || data.tagName == 'form') && uri.match(/^https?\:\/\//) ){
+							if( confirm('リンクを開きますか？'+"\n\n"+uri) ){
+								window.open(uri);
+							}
+						}
 					},
 					'onMessage': function( message ){
 						// ユーザーへ知らせるメッセージを表示する
+						console.info('message:', message);
 						px2style.flashMessage(message);
-						console.info('message: '+message);
 					}
 				},
 				function(){

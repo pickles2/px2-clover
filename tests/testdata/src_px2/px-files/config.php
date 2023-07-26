@@ -178,6 +178,13 @@ return call_user_func( function(){
 		// Apache互換のSSIの記述を解決する
 		'picklesFramework2\processors\ssi\ssi::exec',
 
+		// broccoli-receive-message スクリプトを挿入
+		'tomk79\pickles2\px2dthelper\broccoli_receive_message::apply('.json_encode( array(
+			// 許可する接続元を指定
+			'enabled_origin'=>array(
+			)
+		) ).')' ,
+
 		// output_encoding, output_eol_coding の設定に従ってエンコード変換する。
 		'picklesFramework2\processors\encodingconverter\encodingconverter::exec',
 	];
