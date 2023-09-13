@@ -270,7 +270,7 @@ class auth {
 			$data->last_failed = null;
 			$data->failed_log = array();
 		}
-		$failed_date = date('Y-m-d H:i:s');
+		$failed_date = date('c');
 		$data->last_failed = $failed_date;
 		array_push($data->failed_log, (object) array(
 			"at" => $failed_date,

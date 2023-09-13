@@ -239,7 +239,7 @@ class scheduler{
 		$realpath_admin_scheduler = $this->realpath_admin_scheduler();
 		$realpath_log = $realpath_admin_scheduler.'logs/scheduler-'.date('Y-m-d').'.log.php';
 		$log_row = array(
-			date('Y-m-d H:i:s'),
+			date('c'),
 			getmypid(),
 			trim($row),
 		);

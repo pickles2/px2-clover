@@ -54,7 +54,7 @@ class logger{
 		}
 
 		$log = array(
-			date('Y-m-d H:i:s'), // 時刻
+			date('c'), // 時刻
 			getmypid(), // プロセスID
 			$this->px->req()->get_session('ADMIN_USER_ID'), // ログインユーザーID (未ログイン時は null)
 			$message, // ログメッセージ
@@ -88,8 +88,11 @@ class logger{
 			$remote_addr = $_SERVER["REMOTE_ADDR"];
 		}
 
+		$log_datetime = date('c');
+		$log_date = date('Y-m-d');
+
 		$log = array(
-			date('Y-m-d H:i:s'), // 時刻
+			$log_datetime, // 時刻
 			getmypid(), // プロセスID
 			$this->px->req()->get_session('ADMIN_USER_ID'), // ログインユーザーID (未ログイン時は null)
 			$message, // ログメッセージ
@@ -97,10 +100,10 @@ class logger{
 			$trace[0]['line'], // 呼び出した行番号
 			$remote_addr, // IPアドレス
 		);
-		dataDotPhp::write_a( $this->realpath_logs.'errorlog-'.date('Y-m-d').'.csv.php', $this->px->fs()->mk_csv( array($log) ) );
+		dataDotPhp::write_a( $this->realpath_logs.'errorlog-'.$log_date.'.csv.php', $this->px->fs()->mk_csv( array($log) ) );
 
 		$log = array(
-			date('Y-m-d H:i:s'), // 時刻
+			$log_datetime, // 時刻
 			getmypid(), // プロセスID
 			$this->px->req()->get_session('ADMIN_USER_ID'), // ログインユーザーID (未ログイン時は null)
 			'Error: '.$message, // ログメッセージ
@@ -108,7 +111,7 @@ class logger{
 			$trace[0]['line'], // 呼び出した行番号
 			$remote_addr, // IPアドレス
 		);
-		dataDotPhp::write_a( $this->realpath_logs.'log-'.date('Y-m-d').'.csv.php', $this->px->fs()->mk_csv( array($log) ) );
+		dataDotPhp::write_a( $this->realpath_logs.'log-'.$log_date.'.csv.php', $this->px->fs()->mk_csv( array($log) ) );
 		return;
 	}
 

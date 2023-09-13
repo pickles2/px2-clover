@@ -36,8 +36,8 @@ class maintenanceMode{
 	public function set(){
 		$login_user = $this->clover->auth()->get_login_user_info();
 		$maintenance_mode_settings = array(
-			'start_at' => date('Y-m-d H:i:s'),
-			'exit_at' => date('Y-m-d H:i:s', time() + 3600),
+			'start_at' => date('c'),
+			'exit_at' => date('c', time() + 3600),
 			'maintainer' => $login_user->id,
 		);
 
