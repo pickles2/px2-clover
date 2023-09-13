@@ -55,7 +55,8 @@ ui_message.logged_out,"Logged out.","ログアウトしました。",,
 login_error.csrf_token_expired,"Token Expired.","認証トークンが無効か、期限が切れています。"
 login_error.user_id_is_required,"User ID is required.","ユーザーIDを入力してください。"
 login_error.invalid_user_id,"Invalid User ID.","ユーザーIDの形式が不正です。"
-login_error.failed,"Failed to login.","認証情報が正しくありません。"
+login_error.failed,"Failed to login. Incorrect credentials.","ログインに失敗しました。 認証情報が正しくありません。"
+login_error.account_locked,"Account is locked. Please try again after a while.","アカウントがロックされています。しばらく時間をおいてお試しください。"
 error_message.invalid,"There is a problem with the input content.","入力内容に不備があります。",,
 error_message.invalid_user_id,"Malformed User ID.","不正な形式のユーザーIDです。",,
 error_message.invalid_email,"Malformed E-mail address.","不正な形式のメールアドレスです。",,
