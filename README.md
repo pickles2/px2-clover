@@ -1,6 +1,6 @@
 # px2-clover
 
-[Pickles 2](https://pickles2.pxt.jp/) のプラグイン型CMS。
+[Pickles 2](https://pickles2.com/) のプラグイン型CMS。
 
 
 ## Usage - 使い方
@@ -79,7 +79,7 @@ $conf->allow_pxcommands = 1;
 ### pickles2/px2-clover v0.2.10 (リリース日未定)
 
 - アカウントがロックされているときに、メッセージを表示するようになった。
-- ログと内部管理される時刻情報を ISO 8601 に変更した。
+- ログと内部管理される時刻情報を ISO 8601 形式 に変更した。
 - いくつかのログメッセージを修正。
 
 ### pickles2/px2-clover v0.2.9 (2023年8月29日)
