@@ -796,9 +796,7 @@ class auth {
 			$ADMIN_USER_CSRF_TOKEN = array();
 		}
 
-		$id = $this->px->req()->get_param('ADMIN_USER_ID');
-		$rand = uniqid('clover'.$id, true);
-		$hash = md5( $rand );
+		$hash = bin2hex(random_bytes(32));
 		array_push($ADMIN_USER_CSRF_TOKEN, array(
 			'hash' => $hash,
 			'created_at' => time(),
