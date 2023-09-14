@@ -56,7 +56,7 @@ class auth {
 
 		if( $this->px->req()->get_param('ADMIN_USER_FLG') ){
 			$login_challenger_id = $this->px->req()->get_param('ADMIN_USER_ID');
-			if( $_SERVER['REQUEST_METHOD'] !== 'POST' ){
+			if( strtoupper($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' ){
 				$this->login_page();
 				exit;
 			}
@@ -813,14 +813,13 @@ class auth {
 		if( !is_array($command) || !count($command) || (count($command) == 1 && !strlen($command[0])) ){
 			// --------------------------------------
 			// プレビューリクエスト
-			if( $_SERVER['REQUEST_METHOD'] == 'GET' ){
-				// PXコマンドなしのGETのリクエストでは、CSRFトークンを要求しない
+			// PXコマンドなしのGETのリクエストでは、CSRFトークンを要求しない
+			if( strtoupper($_SERVER['REQUEST_METHOD'] ?? '') == 'GET' ){
 				return false;
 			}
 		}elseif( $command[0] == 'admin' ){
 			// --------------------------------------
 			// px2-clover 管理画面
-			// その他のPXコマンドではCSRFトークンが必要
 			$subCmd = (isset( $command[1] ) ? $command[1] : '');
 			switch($subCmd){
 				case '':
@@ -837,12 +836,15 @@ class auth {
 				case 'modules':
 				case 'history':
 				case 'cce':
-					if( $_SERVER['REQUEST_METHOD'] == 'GET' ){
+					if( strtoupper($_SERVER['REQUEST_METHOD'] ?? '') == 'GET' ){
 						// 既知の特定の画面へのGETのリクエストでは、CSRFトークンを要求しない
 						return false;
 					}
 					break;
 			}
+		}else{
+			// --------------------------------------
+			// その他のPXコマンドではCSRFトークンが必要
 		}
 		return true;
 	}
@@ -870,9 +872,13 @@ class auth {
 		if( !is_array($ADMIN_USER_CSRF_TOKEN) ){
 			$ADMIN_USER_CSRF_TOKEN = array();
 		}
-		foreach( $ADMIN_USER_CSRF_TOKEN as $token ){
+		foreach( $ADMIN_USER_CSRF_TOKEN as $idx => $token ){
 			if( $token['created_at'] < time() - $this->csrf_token_expire ){
-				continue; // 有効期限が切れていたら評価できない
+				// 有効期限が切れていたら評価できない。
+				// 配列から削除する。
+				unset($ADMIN_USER_CSRF_TOKEN[$idx]);
+				$this->px->req()->set_session('ADMIN_USER_CSRF_TOKEN', $ADMIN_USER_CSRF_TOKEN);
+				continue;
 			}
 			if( $token['hash'] == $csrf_token ){
 				return true;
