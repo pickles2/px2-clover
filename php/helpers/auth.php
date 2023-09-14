@@ -813,10 +813,10 @@ class auth {
 		if( !is_array($command) || !count($command) || (count($command) == 1 && !strlen($command[0])) ){
 			// --------------------------------------
 			// プレビューリクエスト
-			// PXコマンドなしのGETのリクエストでは、CSRFトークンを要求しない
-			if( strtoupper($_SERVER['REQUEST_METHOD'] ?? '') == 'GET' ){
-				return false;
-			}
+			// PXコマンドなしのリクエストでは、CSRFトークンを要求しない (POSTでも要求しない)
+			// NOTE: PXコマンドがないリクエストは、管理画面ではなくウェブサイト側の処理なので、cloverが制御するべきではない。 Paprika に委ねるべき。
+			return false;
+
 		}elseif( $command[0] == 'admin' ){
 			// --------------------------------------
 			// px2-clover 管理画面
