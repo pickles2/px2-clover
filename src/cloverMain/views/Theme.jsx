@@ -37,6 +37,7 @@ export default React.memo(function Theme(props){
 				}
 
 				var pickles2ThemeEditor = new Pickles2ThemeEditor();
+				var isOpenInFinderAuthorized = (main.bootupInfoLoaded && main.bootupInfo.authorization.write_file_directly);
 				pickles2ThemeEditor.init(
 					{
 						'elmCanvas': document.getElementById('cont-px2te-canvas'),
@@ -62,25 +63,28 @@ export default React.memo(function Theme(props){
 						'openInBrowser': function(path){
 							window.open(path);
 						},
-						'openInFinder': function(path){
-							const $body = document.createElement('div');
-							const modalObj = px2style.modal({
-								"title": "Theme Collection",
-								"body": $body,
-								"width": "100%",
-								"height": "100%",
-								"contentFill": true,
-							});
-							main.cloverUtils.openInFinder(
-								'theme_collection',
-								$body,
-								path,
-								function(res){
-									callback(res);
-								}
-							);
-							return;
-						},
+						'openInFinder': (
+							isOpenInFinderAuthorized
+							? function(path){
+								const $body = document.createElement('div');
+								const modalObj = px2style.modal({
+									"title": "Theme Collection",
+									"body": $body,
+									"width": "100%",
+									"height": "100%",
+									"contentFill": true,
+								});
+								main.cloverUtils.openInFinder(
+									'theme_collection',
+									$body,
+									path,
+									function(res){
+										callback(res);
+									}
+								);
+								return;
+							}
+							: null ),
 					},
 					function(){
 						// スタンバイ完了したら呼び出されるコールバックメソッドです。

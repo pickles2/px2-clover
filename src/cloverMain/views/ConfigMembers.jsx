@@ -308,7 +308,7 @@ export default function ConfigMembers(props){
 				?<>
 					<p>...</p>
 				</>
-			:((memberList !== false && !memberList.result)
+			:((main.bootupInfoLoaded && !main.bootupInfo.authorization.members)
 				?<>
 					<p>権限がありません。</p>
 				</>

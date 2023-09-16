@@ -518,7 +518,6 @@ class register{
 				case 'edit_theme_layout':
 					// --------------------------------------
 					// テーマレイアウトを編集
-					$this->clover->authorize_required('write_file_directly', 'json');
 					$app = new funcs\editThemeLayout\editThemeLayout($this->clover);
 					$app->start();
 					break;

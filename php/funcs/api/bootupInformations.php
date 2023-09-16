@@ -73,6 +73,14 @@ class bootupInformations {
 		$realpath_git_root = $this->clover->realpath_git_root();
 		$rtn['bootupInfo']['git']['is_init'] = (is_string($realpath_git_root) && strlen($realpath_git_root));
 
+
+		// Authorization
+		$rtn['bootupInfo']['authorization'] = array();
+		$rtn['bootupInfo']['authorization']['members'] = $this->clover->auth()->is_authorized('members');
+		$rtn['bootupInfo']['authorization']['git_init'] = $this->clover->auth()->is_authorized('git_init');
+		$rtn['bootupInfo']['authorization']['write_file_directly'] = $this->clover->auth()->is_authorized('write_file_directly');
+
+
 		$this->px->header('Content-type: text/json');
 		echo json_encode($rtn);
 		exit;

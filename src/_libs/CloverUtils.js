@@ -91,6 +91,7 @@ export default function CloverUtils(){
 	 */
 	this.getConfig = function( callback ){
 		let tmpConfig;
+		let tmpError;
 		$.ajax({
 			"url": "?PX=admin.api.get_config",
 			"method": "post",
@@ -98,13 +99,17 @@ export default function CloverUtils(){
 				'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
 			},
 			"error": function(error){
-				tmpConfig = error;
+				tmpConfig = {
+					result: false,
+					message: error,
+				};
+				tmpError = error;
 			},
 			"success": function(data){
 				tmpConfig = data;
 			},
 			"complete": function(){
-				callback(tmpConfig);
+				callback(tmpConfig, tmpError);
 			},
 		});
 	}
@@ -113,7 +118,8 @@ export default function CloverUtils(){
 	 * 設定を更新する
 	 */
 	this.updateConfig = function( newConfig, callback ){
-		let result;
+		let returnResult;
+		let returnError;
 		let data = newConfig;
 		data.ADMIN_USER_CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 		$.ajax({
@@ -121,13 +127,17 @@ export default function CloverUtils(){
 			"method": "post",
 			"data": data,
 			"error": function(error){
-				result = error;
+				returnResult = {
+					result: false,
+					message: error,
+				};
+				returnError = error;
 			},
 			"success": function(data){
-				result = data;
+				returnResult = data;
 			},
 			"complete": function(){
-				callback(result);
+				callback(returnResult, returnError);
 			},
 		});
 	}
@@ -141,7 +151,6 @@ export default function CloverUtils(){
 		}
 		clearTimeout(timer_autoCommit);
 		timer_autoCommit = setTimeout(function(){
-			console.log('===== auto_commit');
 			$.ajax({
 				"url": '?PX=admin.api.git_commit',
 				"method": 'post',
@@ -149,13 +158,12 @@ export default function CloverUtils(){
 					'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
 				},
 				"error": function(error){
-					console.error('------ git_commit Error:', typeof(error), error);
+					console.error('------ Auto commit: Error:', typeof(error), error);
 				},
 				"success": function(data){
-					console.log('------ git_commit Response:', typeof(data), data);
+					console.log('------ Auto commit: Response:', typeof(data), data);
 				},
 				"complete": function(){
-					console.log('===== auto_commit: done');
 				},
 			});
 		}, 2000);
@@ -178,9 +186,14 @@ export default function CloverUtils(){
 							'mode': rootDirectory,
 							'input': input,
 						},
-						function( res ){
-							if( !res.result ){
+						function( res, error ){
+							if( error || !res.result ){
 								console.error('Error:', res);
+								callback({
+									result: false,
+									message: "API Error",
+								});
+								return;
 							}
 							callback(res.output);
 						}
@@ -230,9 +243,14 @@ export default function CloverUtils(){
 							'method': 'read',
 							'filename': filename,
 						},
-						function( res ){
-							if( !res.result ){
+						function( res, error ){
+							if( error || !res.result ){
 								console.error('Error:', res);
+								callback({
+									result: false,
+									message: "API Error",
+								});
+								return;
 							}
 							callback(res);
 						}
@@ -247,9 +265,14 @@ export default function CloverUtils(){
 							'filename': filename,
 							'base64': base64,
 						},
-						function( res ){
-							if( !res.result ){
+						function( res, error ){
+							if( error || !res.result ){
 								console.error('Error:', res);
+								callback({
+									result: false,
+									message: "API Error",
+								});
+								return;
 							}
 							callback(res);
 						}
@@ -284,7 +307,6 @@ export default function CloverUtils(){
 	// CSRFトークンの更新
 	$(window).on('click', _.debounce(
 		function (e) {
-			console.log('=-=-=-=-=-=-= csrf_token update;');
 			$.ajax({
 				"url": '?PX=admin.api.csrf_token',
 				"method": 'post',
@@ -294,7 +316,7 @@ export default function CloverUtils(){
 				"error": function(error){
 				},
 				"success": function(data){
-					console.log( 'CSRF Token:', $('meta[name="csrf-token"]').attr('content'), 'to', data.token );
+					console.info( 'CSRF Token:', $('meta[name="csrf-token"]').attr('content'), 'to', data.token );
 					$('meta[name="csrf-token"]')
 						.attr({
 							'content': data.token,
