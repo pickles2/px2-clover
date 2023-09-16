@@ -163,7 +163,7 @@ export default function ConfigProfile(props){
 									<li className={"px2-form-input-list__li"}>
 										<div className="px2-form-input-list__label"><label htmlFor="input-role">{main.lb.get('ui_label.user_role')}</label></div>
 										<div className="px2-form-input-list__input">
-											{main.profile.role}
+											{ main.lb.get(`role.${main.profile.role}`) }
 										</div>
 									</li>
 								</ul>

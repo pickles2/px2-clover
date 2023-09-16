@@ -38,6 +38,7 @@ export default function ConfigMembers(props){
 					.append( main.cloverUtils.bindTwig(
 						require('-!text-loader!./ConfigMembers_files/templates/edit.twig'),
 						{
+							"main": main,
 							"values": {
 								'current_pw': '',
 								'name': '',
@@ -94,6 +95,7 @@ export default function ConfigMembers(props){
 										modal.replaceBody( main.cloverUtils.bindTwig(
 											require('-!text-loader!./ConfigMembers_files/templates/edit.twig'),
 											{
+												"main": main,
 												"values": params,
 												"errors": res.errors,
 											}
@@ -130,6 +132,7 @@ export default function ConfigMembers(props){
 					.append( main.cloverUtils.bindTwig(
 						require('-!text-loader!./ConfigMembers_files/templates/edit.twig'),
 						{
+							"main": main,
 							"values": memberInfo,
 						}
 					) );
@@ -178,6 +181,7 @@ export default function ConfigMembers(props){
 										modal.replaceBody( main.cloverUtils.bindTwig(
 											require('-!text-loader!./ConfigMembers_files/templates/edit.twig'),
 											{
+												"main": main,
 												"values": params,
 												"errors": res.errors,
 											}
@@ -214,6 +218,7 @@ export default function ConfigMembers(props){
 					.append( main.cloverUtils.bindTwig(
 						require('-!text-loader!./ConfigMembers_files/templates/delete.twig'),
 						{
+							"main": main,
 							"values": memberInfo,
 						}
 					) )
@@ -255,6 +260,7 @@ export default function ConfigMembers(props){
 										modal.replaceBody( main.cloverUtils.bindTwig(
 											require('-!text-loader!./ConfigMembers_files/templates/delete.twig'),
 											{
+												"main": main,
 												"values": params,
 												"errors": res.errors,
 											}
@@ -278,6 +284,24 @@ export default function ConfigMembers(props){
 		]);
 	}
 
+	let memberListAry = [];
+	if( memberList ){
+		const roleScore = {
+			"member": 0,
+			"specialist": 50,
+			"admin": 100,
+		};
+		memberListAry = JSON.parse(JSON.stringify(memberList.list));
+		memberListAry.sort(function(a, b){
+			if(roleScore[a.role] > roleScore[b.role]){
+				return -1;
+			}else if(roleScore[a.role] < roleScore[b.role]){
+				return 1;
+			}
+			return 0;
+		});
+	}
+
 	return (
 		<>
 			{(!memberList || !main.profile)
@@ -286,12 +310,13 @@ export default function ConfigMembers(props){
 				</>
 			:<>
 			<p><button type="button" className="px2-btn px2-btn--primary" onClick={createNewMember}>新規メンバーを登録する</button></p>
-			{(memberList.list && memberList.list.length)
+			{(memberListAry && memberListAry.length)
 				?<>
 					<div className="px2-responsive">
 						<table className="px2-table">
 							<thead>
 								<tr>
+									<th>{main.lb.get('ui_label.user_id')}</th>
 									<th>{main.lb.get('ui_label.user_name')}</th>
 									<th>{main.lb.get('ui_label.user_email')}</th>
 									<th>{main.lb.get('ui_label.user_role')}</th>
@@ -299,11 +324,12 @@ export default function ConfigMembers(props){
 								</tr>
 							</thead>
 							<tbody>
-							{memberList.list.map((memberInfo, index) => {
+							{memberListAry.map((memberInfo, index) => {
 								return <tr key={index}>
+									<td>{ memberInfo.id }</td>
 									<td>{ memberInfo.name }</td>
 									<td>{ memberInfo.email }</td>
-									<td>{ memberInfo.role }</td>
+									<td>{ main.lb.get(`role.${memberInfo.role}`) }</td>
 									{ memberInfo.id == main.profile.id ? <>
 										<td>(You)</td>
 									</> : <>

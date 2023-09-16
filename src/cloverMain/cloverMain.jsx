@@ -23,7 +23,7 @@ import CustomConsoleExtensions from './views/CustomConsoleExtensions';
 import iterate79 from 'iterate79';
 import LangBank from 'langbank';
 
-const languageCsv = require('../../public/resources/data/language.csv');
+const languageCsv = require('../../data/lang/language.csv');
 
 class Layout extends React.Component {
 

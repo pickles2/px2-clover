@@ -776,6 +776,8 @@ class auth {
 		}
 		switch( $user_info->role ){
 			case 'admin':
+			case 'specialist':
+			case 'member':
 				break;
 			default:
 				$rtn->is_valid = false;

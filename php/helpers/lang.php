@@ -28,7 +28,7 @@ class lang{
 		$this->clover = $clover;
 		$this->px = $clover->px();
 		$this->loginUserInfo = $this->clover->auth()->get_login_user_info();
-		$this->lb = new \tomk79\LangBank(__DIR__.'/../../public/resources/data/language.csv');
+		$this->lb = new \tomk79\LangBank(__DIR__.'/../../data/lang/language.csv');
 		if( strlen($this->px->req()->get_param('ADMIN_USER_LANG') ?? '') ){
 			$this->lb->setLang( $this->px->req()->get_param('ADMIN_USER_LANG') );
 		}elseif( strlen($this->loginUserInfo->lang ?? '') ){
