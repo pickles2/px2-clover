@@ -1,6 +1,17 @@
 <div class="px2-p">
 	<div class="px2-form-input-list">
 		<ul class="px2-form-input-list__ul">
+			<li class="px2-form-input-list__li px2-form-input-list__li--required{{ errors.current_pw ? ' px2-form-input-list__li--error' : '' }}">
+				<div class="px2-form-input-list__label"><label for="input-current_pw">パスワード</label></div>
+				<div class="px2-form-input-list__input">
+					<input type="password" id="input-current_pw" name="current_pw" value="{{ values.current_pw|e("html_attr") }}" class="px2-input px2-input--block" />
+					{% if errors.current_pw %}
+						{% for errorText in errors.current_pw %}
+							<p  class="px2-error">{{ errorText|e }}</p>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</li>
 			<li class="px2-form-input-list__li px2-form-input-list__li--required{{ errors.name ? ' px2-form-input-list__li--error' : '' }}">
 				<div class="px2-form-input-list__label"><label for="input-name">名前</label></div>
 				<div class="px2-form-input-list__input">
@@ -24,13 +35,20 @@
 					{% endif %}
 				</div>
 			</li>
-			<li class="px2-form-input-list__li{{ errors.pw ? ' px2-form-input-list__li--error' : '' }}">
+			<li class="px2-form-input-list__li{{ errors.pw or errors.pw_retype ? ' px2-form-input-list__li--error' : '' }}">
 				<div class="px2-form-input-list__label"><label for="input-pw">パスワード</label></div>
 				<div class="px2-form-input-list__input">
 					<p class="px2-note">パスワードを変更する場合のみ入力してください。</p>
-					<input type="password" id="input-pw" name="pw" value="" class="px2-input px2-input--block" />
+					<input type="password" id="input-pw" name="pw" value="{{ values.pw|e("html_attr") }}" class="px2-input px2-input--block" />
 					{% if errors.pw %}
 						{% for errorText in errors.pw %}
+							<p  class="px2-error">{{ errorText|e }}</p>
+						{% endfor %}
+					{% endif %}
+					<p class="px2-note">確認のためもう一度入力してください。</p>
+					<input type="password" id="input-pw_retype" name="pw_retype" value="{{ values.pw_retype|e("html_attr") }}" class="px2-input px2-input--block" />
+					{% if errors.pw_retype %}
+						{% for errorText in errors.pw_retype %}
 							<p  class="px2-error">{{ errorText|e }}</p>
 						{% endfor %}
 					{% endif %}

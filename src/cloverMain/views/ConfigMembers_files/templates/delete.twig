@@ -1,3 +1,20 @@
 <p>
     このメンバー {{ values.name|e }} を削除します。よろしいですか？<br />
 </p>
+<div class="px2-p">
+	<div class="px2-form-input-list">
+		<ul class="px2-form-input-list__ul">
+			<li class="px2-form-input-list__li px2-form-input-list__li--required{{ errors.current_pw ? ' px2-form-input-list__li--error' : '' }}">
+				<div class="px2-form-input-list__label"><label for="input-current_pw">パスワード</label></div>
+				<div class="px2-form-input-list__input">
+					<input type="password" id="input-current_pw" name="current_pw" value="{{ values.current_pw|e("html_attr") }}" class="px2-input px2-input--block" />
+					{% if errors.current_pw %}
+						{% for errorText in errors.current_pw %}
+							<p  class="px2-error">{{ errorText|e }}</p>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>

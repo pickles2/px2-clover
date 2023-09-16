@@ -39,9 +39,11 @@ export default function ConfigMembers(props){
 						require('-!text-loader!./ConfigMembers_files/templates/edit.twig'),
 						{
 							"values": {
+								'current_pw': '',
 								'name': '',
 								'id': '',
 								'pw': '',
+								'pw_retype': '',
 								'email': '',
 								'lang': '',
 								'role': '',
@@ -72,25 +74,30 @@ export default function ConfigMembers(props){
 							modal.lock();
 
 							var params = {
+								'current_pw': modal.$modal.find('[name=current_pw]').val(),
 								'name': modal.$modal.find('[name=name]').val(),
 								'id': modal.$modal.find('[name=id]').val(),
 								'email': modal.$modal.find('[name=email]').val(),
 								'lang': modal.$modal.find('select[name=lang]').val(),
 								'role': modal.$modal.find('select[name=role]').val(),
 							};
-							if( modal.$modal.find('[name=pw]').val().length ){
+							if( modal.$modal.find('[name=pw]').val().length || modal.$modal.find('[name=pw_retype]').val().length ){
 								params.pw = modal.$modal.find('[name=pw]').val();
+								params.pw_retype = modal.$modal.find('[name=pw_retype]').val();
 							}
 							main.px2utils.px2cmd(
 								'/?PX=admin.api.create_new_member',
 								params,
-								function( res ){
-									if( !res.result ){
+								function( res, error ){
+									if( !res.result || error ){
 										console.error('Error:', res);
-										modal.replaceBody( template( {
-											"values": params,
-											"errors": res.errors,
-										} ) );
+										modal.replaceBody( main.cloverUtils.bindTwig(
+											require('-!text-loader!./ConfigMembers_files/templates/edit.twig'),
+											{
+												"values": params,
+												"errors": res.errors,
+											}
+										) );
 
 										modal.unlock();
 										return;
@@ -151,27 +158,30 @@ export default function ConfigMembers(props){
 
 							var params = {
 								'target_id': targetId,
+								'current_pw': modal.$modal.find('[name=current_pw]').val(),
 								'name': modal.$modal.find('[name=name]').val(),
 								'id': modal.$modal.find('[name=id]').val(),
 								'email': modal.$modal.find('[name=email]').val(),
 								'lang': modal.$modal.find('select[name=lang]').val(),
 								'role': modal.$modal.find('select[name=role]').val(),
 							};
-							if( modal.$modal.find('[name=pw]').val().length ){
+							if( modal.$modal.find('[name=pw]').val().length || modal.$modal.find('[name=pw_retype]').val().length ){
 								params.pw = modal.$modal.find('[name=pw]').val();
+								params.pw_retype = modal.$modal.find('[name=pw_retype]').val();
 							}
 
 							main.px2utils.px2cmd(
 								'/?PX=admin.api.update_member',
 								params,
-								function( res ){
-									if( !res.result ){
-										console.error('Error:', res);
-
-										modal.replaceBody( template( {
-											"values": params,
-											"errors": res.errors,
-										} ) );
+								function( res, error ){
+									if( error || !res.result ){
+										modal.replaceBody( main.cloverUtils.bindTwig(
+											require('-!text-loader!./ConfigMembers_files/templates/edit.twig'),
+											{
+												"values": params,
+												"errors": res.errors,
+											}
+										) );
 
 										modal.unlock();
 										return;
@@ -200,11 +210,13 @@ export default function ConfigMembers(props){
 		var targetId = memberInfo.id;
 		iterate79.fnc({}, [
 			(it1) => {
-				var template = require('./ConfigMembers_files/templates/delete.twig');
 				var $body = $('<div>')
-					.append( template( {
-						"values": memberInfo,
-					} ) )
+					.append( main.cloverUtils.bindTwig(
+						require('-!text-loader!./ConfigMembers_files/templates/delete.twig'),
+						{
+							"values": memberInfo,
+						}
+					) )
 				;
 				modal = px2style.modal({
 					'title': "メンバーを削除する",
@@ -230,15 +242,24 @@ export default function ConfigMembers(props){
 
 							var params = {
 								'target_id': targetId,
+								'current_pw': modal.$modal.find('[name=current_pw]').val(),
 							};
 
 							main.px2utils.px2cmd(
 								'/?PX=admin.api.delete_member',
 								params,
-								function( res ){
-									if( !res.result ){
-										alert( 'Error: ' + res.message );
+								function( res, error ){
+									if( error || !res.result ){
 										console.error('Error:', res);
+
+										modal.replaceBody( main.cloverUtils.bindTwig(
+											require('-!text-loader!./ConfigMembers_files/templates/delete.twig'),
+											{
+												"values": params,
+												"errors": res.errors,
+											}
+										) );
+
 										modal.unlock();
 										return;
 									}

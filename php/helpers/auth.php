@@ -83,7 +83,7 @@ class auth {
 				exit;
 			}
 
-			$user_info = $this->get_admin_user_info( $login_challenger_id );
+			$user_info = $this->get_admin_user_info_full( $login_challenger_id );
 			if( !is_object($user_info) ){
 				// 不正なユーザーデータ
 				$this->admin_user_login_failed( $login_challenger_id );
@@ -160,7 +160,7 @@ class auth {
 			return false;
 		}
 
-		$admin_user_info = $this->get_admin_user_info( $ADMIN_USER_ID );
+		$admin_user_info = $this->get_admin_user_info_full( $ADMIN_USER_ID );
 		if( !is_object($admin_user_info) || !isset($admin_user_info->id) ){
 			return false;
 		}
@@ -295,7 +295,77 @@ class auth {
 	// 管理ユーザー情報
 
 	/**
+	 * 管理ユーザーを作成する
+	 *
+	 * @param array|object $new_profile 作成するユーザー情報
+	 */
+	public function create_admin_user( $new_profile, $login_password ){
+		$result = (object) array(
+			'result' => true,
+			'message' => 'OK',
+			'errors' => (object) array(),
+		);
+
+		$new_profile = json_decode(json_encode($new_profile));
+		$current_user_info = $this->get_admin_user_info_full( $this->px->req()->get_session('ADMIN_USER_ID') );
+		if( !is_string($login_password) || !strlen($login_password) || !password_verify($login_password, $current_user_info->pw) ){
+			// 現在のパスワードを確認
+			return (object) array(
+				'result' => false,
+				'message' => 'Authentication Failed.',
+				'errors' => (object) array(
+					'current_pw' => array('現在のログインパスワードを正しく入力してください。'),
+				),
+			);
+		}
+
+		if( $this->admin_user_data_exists( $new_profile->id ) ){
+			return (object) array(
+				'result' => false,
+				'message' => 'そのユーザーIDはすでに存在します。',
+				'errors' => (object) array(
+					'id' => array('そのユーザーIDはすでに存在します。')
+				),
+			);
+		}
+
+		if( (strlen($new_profile->pw ?? '') || strlen($new_profile->pw_retype ?? '')) && $new_profile->pw !== $new_profile->pw_retype ){
+			return (object) array(
+				'result' => false,
+				'message' => 'Password not matched.',
+				'errors' => (object) array(
+					'pw_retype' => array('パスワードが一致しません。'),
+				),
+			);
+		}
+
+		$user_info_validated = $this->validate_admin_user_info($new_profile);
+		if( !$user_info_validated->is_valid ){
+			// 不正な形式のユーザー情報
+			return (object) array(
+				'result' => false,
+				'message' => $user_info_validated->message,
+				'errors' => $user_info_validated->errors,
+			);
+		}
+
+		$new_profile->pw = $this->clover->auth()->password_hash($new_profile->pw);
+		if( !$this->write_admin_user_data($new_profile->id, $new_profile) ){
+			return (object) array(
+				'result' => false,
+				'message' => 'ユーザー情報の保存に失敗しました。',
+				'errors' => (object) array(),
+			);
+		}
+		return $result;
+	}
+
+	/**
 	 * 現在のログインユーザーの情報を取得する
+	 *
+	 * NOTE: このメソッドは、ユーザーパスワードのハッシュ情報を含まない情報を返します。
+	 *
+	 * @return object 現在のユーザーの情報 (ただしパスワードハッシュを含まない)
 	 */
 	public function get_login_user_info(){
 		$login_user_id = $this->px->req()->get_session('ADMIN_USER_ID');
@@ -314,7 +384,72 @@ class auth {
 			return null;
 		}
 		unset( $user_info->pw ); // パスワードハッシュは出さない
-		unset( $user_info->pw_retype ); unset( $user_info->pw_before ); // 存在しないはずだが、不具合があったときの保険
+		unset( $user_info->pw_retype ); unset( $user_info->current_pw ); // 存在しないはずだが、不具合があったときの保険
+		return $user_info;
+	}
+
+	/**
+	 * 管理者ユーザーの一覧を取得する
+	 */
+	public function get_admin_user_list(){
+		if( !is_dir($this->realpath_admin_users) ){
+			return array();
+		}
+		$filelist = $this->px->fs()->ls($this->realpath_admin_users);
+		$rtn = array();
+		foreach( $filelist as $basename ){
+			$user_id = preg_replace( '/\.json(?:\.php)?$/si', '', $basename );
+			$json = (array) $this->read_admin_user_data( $user_id );
+			unset($json['pw']); // パスワードハッシュはクライアントに送出しない
+			unset($json['pw_retype'], $json['current_pw']); // 存在しないはずだが、不具合があったときの保険
+			array_push($rtn, $json);
+		}
+		return $rtn;
+	}
+
+
+	/**
+	 * 管理者ユーザーの情報を取得する
+	 *
+	 * NOTE: このメソッドは、ユーザーパスワードのハッシュ情報を含まない情報を返します。
+	 *
+	 * @param string $user_id 対象のユーザーID
+	 * @return object 対象のユーザー情報 (パスワードハッシュを含まない)
+	 */
+	private function get_admin_user_info($user_id){
+		$user_info = $this->get_admin_user_info_full($user_id);
+		if( !$user_info ){
+			return null;
+		}
+		unset( $user_info->pw ); // パスワードハッシュは出さない
+		unset( $user_info->pw_retype ); unset( $user_info->current_pw ); // 存在しないはずだが、不具合があったときの保険
+		return $user_info;
+	}
+
+	/**
+	 * 管理者ユーザーの情報を取得する
+	 *
+	 * *Attention*: このメソッドの戻り値には、パスワードハッシュが含まれます。
+	 *
+	 * @param string $user_id 対象のユーザーID
+	 * @return object 対象のユーザー情報 (パスワードハッシュを含む)
+	 */
+	private function get_admin_user_info_full($user_id){
+		if( !$this->validate_admin_user_id($user_id) ){
+			// 不正な形式のID
+			return null;
+		}
+
+		$user_info = null;
+		if( is_dir($this->realpath_admin_users) && $this->px->fs()->ls($this->realpath_admin_users) ){
+			if( $this->admin_user_data_exists( $user_id ) ){
+				$user_info = $this->read_admin_user_data( $user_id );
+				if( !isset($user_info->id) || $user_info->id != $user_id ){
+					// ID値が不一致だったら
+					return null;
+				}
+			}
+		}
 		return $user_info;
 	}
 
@@ -361,7 +496,7 @@ class auth {
 			}
 			$this->px->req()->set_session('ADMIN_USER_ID', $new_login_user_id);
 			if( isset($new_profile->pw) && is_string($new_profile->pw) && strlen($new_profile->pw) ){
-				$new_user_info = $this->get_admin_user_info($new_login_user_id);
+				$new_user_info = $this->get_admin_user_info_full($new_login_user_id);
 				$this->px->req()->set_session('ADMIN_USER_PW', $new_user_info->pw);
 			}
 		}
@@ -380,14 +515,14 @@ class auth {
 			'errors' => (object) array(),
 		);
 
-		$login_user_info = $this->get_admin_user_info( $this->px->req()->get_session('ADMIN_USER_ID') );
-		if( !is_string($login_password) || !strlen($login_password) || !password_verify($login_password, $login_user_info->pw) ){
+		$current_user_info = $this->get_admin_user_info_full( $this->px->req()->get_session('ADMIN_USER_ID') );
+		if( !is_string($login_password) || !strlen($login_password) || !password_verify($login_password, $current_user_info->pw) ){
 			// 現在のパスワードを確認
 			return (object) array(
 				'result' => false,
 				'message' => 'Authentication Failed.',
 				'errors' => (object) array(
-					'pw_before' => array('現在のログインパスワードを正しく入力してください。'),
+					'current_pw' => array('現在のログインパスワードを正しく入力してください。'),
 				),
 			);
 		}
@@ -410,7 +545,7 @@ class auth {
 			);
 		}
 
-		$user_info = $this->get_admin_user_info( $target_user_id );
+		$user_info = $this->get_admin_user_info_full( $target_user_id );
 		if( !is_object($user_info) ){
 			return (object) array(
 				'result' => false,
@@ -508,95 +643,21 @@ class auth {
 
 
 	/**
-	 * 管理者ユーザーの一覧を取得する
-	 */
-	public function get_admin_user_list(){
-		if( !is_dir($this->realpath_admin_users) ){
-			return array();
-		}
-		$filelist = $this->px->fs()->ls($this->realpath_admin_users);
-		$rtn = array();
-		foreach( $filelist as $basename ){
-			$user_id = preg_replace( '/\.json(?:\.php)?$/si', '', $basename );
-			$json = (array) $this->read_admin_user_data( $user_id );
-			unset($json['pw']); // パスワードハッシュはクライアントに送出しない
-			unset($json['pw_retype'], $json['pw_before']); // 存在しないはずだが、不具合があったときの保険
-			array_push($rtn, $json);
-		}
-		return $rtn;
-	}
-
-
-	/**
-	 * 管理者ユーザーの情報を取得する
-	 *
-	 * このメソッドの戻り値には、パスワードハッシュが含まれます。
-	 */
-	private function get_admin_user_info($user_id){
-		if( !$this->validate_admin_user_id($user_id) ){
-			// 不正な形式のID
-			return null;
-		}
-
-		$user_info = null;
-		if( is_dir($this->realpath_admin_users) && $this->px->fs()->ls($this->realpath_admin_users) ){
-			if( $this->admin_user_data_exists( $user_id ) ){
-				$user_info = $this->read_admin_user_data( $user_id );
-				if( !isset($user_info->id) || $user_info->id != $user_id ){
-					// ID値が不一致だったら
-					return null;
-				}
-			}
-		}
-		return $user_info;
-	}
-
-	/**
-	 * 管理ユーザーを作成する
-	 *
-	 * @param array|object $user_info 作成するユーザー情報
-	 */
-	public function create_admin_user( $user_info ){
-		$result = (object) array(
-			'result' => true,
-			'message' => 'OK',
-			'errors' => (object) array(),
-		);
-		$user_info = (object) $user_info;
-
-		$user_info_validated = $this->validate_admin_user_info($user_info);
-		if( !$user_info_validated->is_valid ){
-			// 不正な形式のユーザー情報
-			return (object) array(
-				'result' => false,
-				'message' => $user_info_validated->message,
-				'errors' => $user_info_validated->errors,
-			);
-		}
-
-		if( $this->admin_user_data_exists( $user_info->id ) ){
-			return (object) array(
-				'result' => false,
-				'message' => 'そのユーザーIDはすでに存在します。',
-				'errors' => (object) array(),
-			);
-		}
-
-		$user_info->pw = $this->clover->auth()->password_hash($user_info->pw);
-		if( !$this->write_admin_user_data($user_info->id, $user_info) ){
-			return (object) array(
-				'result' => false,
-				'message' => 'ユーザー情報の保存に失敗しました。',
-				'errors' => (object) array(),
-			);
-		}
-		return $result;
-	}
-
-	/**
 	 * 管理者ユーザーの情報を削除する
 	 */
-	public function delete_admin_user_info( $target_user_id ){
+	public function delete_admin_user_info( $target_user_id, $login_password ){
+		$current_user_info = $this->get_admin_user_info_full( $this->px->req()->get_session('ADMIN_USER_ID') );
+		if( !is_string($login_password) || !strlen($login_password) || !password_verify($login_password, $current_user_info->pw) ){
+			// 現在のパスワードを確認
+			return (object) array(
+				'result' => false,
+				'message' => 'Authentication Failed.',
+				'errors' => (object) array(
+					'current_pw' => array('現在のログインパスワードを正しく入力してください。'),
+				),
+			);
+		}
+
 		$result = (object) array(
 			'result' => true,
 			'message' => 'OK',
@@ -620,7 +681,7 @@ class auth {
 			);
 		}
 
-		$user_info = $this->get_admin_user_info( $target_user_id );
+		$user_info = $this->get_admin_user_info_full( $target_user_id );
 		if( !is_object($user_info) ){
 			return (object) array(
 				'result' => false,

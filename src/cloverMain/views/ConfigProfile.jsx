@@ -13,7 +13,7 @@ export default function ConfigProfile(props){
 		var $form = $(e.target);
 		// console.log(e.target);
 		var newProfile = {
-			'pw_before': $form.find('input[name=pw_before]').val(),
+			'current_pw': $form.find('input[name=current_pw]').val(),
 			'id': $form.find('input[name=id]').val(),
 			'name': $form.find('input[name=name]').val(),
 			'lang': $form.find('select[name=lang]').val(),
@@ -62,13 +62,13 @@ export default function ConfigProfile(props){
 						<div className="px2-p">
 							<div className="px2-form-input-list">
 								<ul className="px2-form-input-list__ul">
-									<li className={"px2-form-input-list__li"+(hasValidationError('pw_before') ? ' px2-form-input-list__li--error' : '')}>
-										<div className="px2-form-input-list__label"><label htmlFor="input-pw_before">{main.lb.get('ui_label.user_pw')}</label></div>
+									<li className={"px2-form-input-list__li"+(hasValidationError('current_pw') ? ' px2-form-input-list__li--error' : '')}>
+										<div className="px2-form-input-list__label"><label htmlFor="input-current_pw">{main.lb.get('ui_label.user_pw')}</label></div>
 										<div className="px2-form-input-list__input">
-											<input type="password" id="input-pw_before" name="pw_before" defaultValue="" className={"px2-input px2-input--block"+(hasValidationError('pw') ? ' px2-input--error' : '')} />
-											{(hasValidationError('pw_before'))
+											<input type="password" id="input-current_pw" name="current_pw" defaultValue="" className={"px2-input px2-input--block"+(hasValidationError('pw') ? ' px2-input--error' : '')} />
+											{(hasValidationError('current_pw'))
 												? <>
-													{validationErrors.pw_before.map((errorText, index) => {
+													{validationErrors.current_pw.map((errorText, index) => {
 														return <p key={index} className={"px2-error"}>{errorText}</p>;
 													})}
 												</>

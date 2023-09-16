@@ -257,7 +257,7 @@ class register{
 								'role' => $this->px->req()->get_param('role'),
 							);
 							$app = new funcs\api\members($this->clover);
-							$app->create_new( $params, $this->px->req()->get_param('pw_before') );
+							$app->create_new( $params, $this->px->req()->get_param('current_pw') );
 							break;
 						case 'update_member':
 							$this->clover->allowed_method('post');
@@ -271,12 +271,12 @@ class register{
 								'role' => $this->px->req()->get_param('role'),
 							);
 							$app = new funcs\api\members($this->clover);
-							$app->update( $this->px->req()->get_param('target_id'), $params, $this->px->req()->get_param('pw_before') );
+							$app->update( $this->px->req()->get_param('target_id'), $params, $this->px->req()->get_param('current_pw') );
 							break;
 						case 'delete_member':
 							$this->clover->allowed_method('post');
 							$app = new funcs\api\members($this->clover);
-							$app->delete( $this->px->req()->get_param('target_id'), $this->px->req()->get_param('pw_before') );
+							$app->delete( $this->px->req()->get_param('target_id'), $this->px->req()->get_param('current_pw') );
 							break;
 						case 'git':
 							$this->clover->allowed_method('post');
