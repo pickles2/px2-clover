@@ -1052,6 +1052,8 @@ class auth {
 			case "admin":
 			case "specialist":
 			case "member":
+				break;
+			default:
 				return false;
 		}
 		$this->authorization_table->setLang( $current_user_info->role );

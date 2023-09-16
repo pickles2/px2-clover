@@ -224,6 +224,7 @@ class register{
 							break;
 						case 'git_init':
 							$app = new funcs\api\gitInit($this->clover);
+							$this->clover->authorize_required('git_init', 'json');
 							$app->git_init();
 							break;
 						case 'get_page_info':
@@ -242,11 +243,13 @@ class register{
 							break;
 						case 'get_members':
 							$this->clover->allowed_method('post');
+							$this->clover->authorize_required('members', 'json');
 							$app = new funcs\api\members($this->clover);
 							$app->get_list();
 							break;
 						case 'create_new_member':
 							$this->clover->allowed_method('post');
+							$this->clover->authorize_required('members', 'json');
 							$params = array(
 								'name' => $this->px->req()->get_param('name'),
 								'id' => $this->px->req()->get_param('id'),
@@ -261,6 +264,7 @@ class register{
 							break;
 						case 'update_member':
 							$this->clover->allowed_method('post');
+							$this->clover->authorize_required('members', 'json');
 							$params = array(
 								'name' => $this->px->req()->get_param('name'),
 								'id' => $this->px->req()->get_param('id'),
@@ -275,6 +279,7 @@ class register{
 							break;
 						case 'delete_member':
 							$this->clover->allowed_method('post');
+							$this->clover->authorize_required('members', 'json');
 							$app = new funcs\api\members($this->clover);
 							$app->delete( $this->px->req()->get_param('target_id'), $this->px->req()->get_param('current_pw') );
 							break;
@@ -350,11 +355,13 @@ class register{
 							break;
 						case 'remote_finder':
 							$this->clover->allowed_method('post');
+							$this->clover->authorize_required('write_file_directly', 'json');
 							$app = new funcs\api\remoteFinder($this->clover);
 							$app->gpi();
 							break;
 						case 'common_file_editor':
 							$this->clover->allowed_method('post');
+							$this->clover->authorize_required('write_file_directly', 'json');
 							$app = new funcs\api\commonFileEditor($this->clover);
 							$app->gpi();
 							break;
@@ -511,6 +518,7 @@ class register{
 				case 'edit_theme_layout':
 					// --------------------------------------
 					// テーマレイアウトを編集
+					$this->clover->authorize_required('write_file_directly', 'json');
 					$app = new funcs\editThemeLayout\editThemeLayout($this->clover);
 					$app->start();
 					break;

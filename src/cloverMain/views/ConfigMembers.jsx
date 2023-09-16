@@ -19,7 +19,11 @@ export default function ConfigMembers(props){
 		main.px2utils.px2cmd(
 			'/?PX=admin.api.get_members',
 			{},
-			function( res ){
+			function( res, error ){
+				if( error || !res.result ){
+					alert('権限がありません。');
+					return;
+				}
 				setMemberList(res);
 				return;
 			}

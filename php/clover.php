@@ -180,4 +180,85 @@ class clover{
 		));
 		exit;
 	}
+
+	/**
+	 * 認可を要求する
+	 */
+	public function authorize_required($division, $format = 'text/html'){
+		if( !$this->auth()->is_authorized($division) ){
+			$this->forbidden($format);
+			exit();
+		}
+		return;
+	}
+
+	/**
+	 * 403 Forbidden を返す
+	 */
+	public function forbidden( $format = 'text/html' ){
+		while (ob_get_level()) { ob_end_clean(); }
+		$this->px->set_status(403);
+		switch($format){
+			case "json":
+			case "text/json":
+				$this->px->header('Content-type: text/json');
+				echo json_encode(array(
+					'result' => false,
+					'message' => '403 Forbidden.',
+				));
+				exit;
+				break;
+			default:
+				break;
+		}
+		$this->px->header('Content-type: text/html');
+		ob_start(); ?>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>403 Forbidden</title>
+	</head>
+	<body>
+		<p>403 Forbidden</p>
+	</body>
+</html>
+		<?php
+		echo ob_get_clean();
+		exit;
+	}
+
+	/**
+	 * 404 Not Found を返す
+	 */
+	public function notfound( $format = 'text/html' ){
+		while (ob_get_level()) { ob_end_clean(); }
+		$this->px->set_status(404);
+		switch($format){
+			case "json":
+			case "text/json":
+				$this->px->header('Content-type: text/json');
+				echo json_encode(array(
+					'result' => false,
+					'message' => '404 Not Found.',
+				));
+				exit;
+				break;
+			default:
+				break;
+		}
+		$this->px->header('Content-type: text/html');
+		ob_start(); ?>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>404 Not Found</title>
+	</head>
+	<body>
+		<p>404 Not Found</p>
+	</body>
+</html>
+		<?php
+		echo ob_get_clean();
+		exit;
+	}
 }

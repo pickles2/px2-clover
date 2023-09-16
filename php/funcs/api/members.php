@@ -22,6 +22,8 @@ class members{
 	public function __construct( $clover ){
 		$this->clover = $clover;
 		$this->px = $clover->px();
+
+		$this->clover->authorize_required('members', 'json');
 	}
 
 	/**
