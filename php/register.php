@@ -251,12 +251,13 @@ class register{
 								'name' => $this->px->req()->get_param('name'),
 								'id' => $this->px->req()->get_param('id'),
 								'pw' => $this->px->req()->get_param('pw'),
+								'pw_retype' => $this->px->req()->get_param('pw_retype'),
 								'email' => $this->px->req()->get_param('email'),
 								'lang' => $this->px->req()->get_param('lang'),
 								'role' => $this->px->req()->get_param('role'),
 							);
 							$app = new funcs\api\members($this->clover);
-							$app->create_new( $params );
+							$app->create_new( $params, $this->px->req()->get_param('pw_before') );
 							break;
 						case 'update_member':
 							$this->clover->allowed_method('post');
@@ -264,17 +265,18 @@ class register{
 								'name' => $this->px->req()->get_param('name'),
 								'id' => $this->px->req()->get_param('id'),
 								'pw' => $this->px->req()->get_param('pw'),
+								'pw_retype' => $this->px->req()->get_param('pw_retype'),
 								'email' => $this->px->req()->get_param('email'),
 								'lang' => $this->px->req()->get_param('lang'),
 								'role' => $this->px->req()->get_param('role'),
 							);
 							$app = new funcs\api\members($this->clover);
-							$app->update( $this->px->req()->get_param('target_id'), $params );
+							$app->update( $this->px->req()->get_param('target_id'), $params, $this->px->req()->get_param('pw_before') );
 							break;
 						case 'delete_member':
 							$this->clover->allowed_method('post');
 							$app = new funcs\api\members($this->clover);
-							$app->delete( $this->px->req()->get_param('target_id') );
+							$app->delete( $this->px->req()->get_param('target_id'), $this->px->req()->get_param('pw_before') );
 							break;
 						case 'git':
 							$this->clover->allowed_method('post');

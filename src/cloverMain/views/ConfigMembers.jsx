@@ -267,8 +267,8 @@ export default function ConfigMembers(props){
 			<p><button type="button" className="px2-btn px2-btn--primary" onClick={createNewMember}>新規メンバーを登録する</button></p>
 			{(memberList.list && memberList.list.length)
 				?<>
-					<div class="px2-responsive">
-						<table class="px2-table">
+					<div className="px2-responsive">
+						<table className="px2-table">
 							<thead>
 								<tr>
 									<th>{main.lb.get('ui_label.user_name')}</th>

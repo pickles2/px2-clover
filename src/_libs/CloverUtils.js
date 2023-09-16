@@ -69,8 +69,13 @@ export default function CloverUtils(){
 			"url": "?PX=admin.api.update_profile",
 			"method": "post",
 			"data": data,
+			"timeout": 30000,
 			"error": function(error){
-				result = error;
+				console.error("Clover API ERROR:", error);
+				result = {
+					result: false,
+					message: "API Errored.",
+				};
 			},
 			"success": function(data){
 				result = data;

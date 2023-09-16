@@ -57,10 +57,11 @@ class profile{
 			'name' => $this->px->req()->get_param('name'),
 			'lang' => $this->px->req()->get_param('lang'),
 			'pw' => $this->px->req()->get_param('pw'),
+			'pw_retype' => $this->px->req()->get_param('pw_retype'),
 			'email' => $this->px->req()->get_param('email'),
 			'role' => $this->px->req()->get_param('role'),
 		);
-		$result = $this->clover->auth()->update_login_user_info($new_profile);
+		$result = $this->clover->auth()->update_login_user_info($new_profile, $this->px->req()->get_param('pw_before'));
 		if( !$result->result ){
 			$rtn['result'] = false;
 			$rtn['message'] = 'Failed to update profile. ('.$result->message.')';

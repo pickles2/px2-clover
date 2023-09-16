@@ -13,19 +13,19 @@ export default function ConfigProfile(props){
 		var $form = $(e.target);
 		// console.log(e.target);
 		var newProfile = {
+			'pw_before': $form.find('input[name=pw_before]').val(),
 			'id': $form.find('input[name=id]').val(),
 			'name': $form.find('input[name=name]').val(),
 			'lang': $form.find('select[name=lang]').val(),
 			'email': $form.find('input[name=email]').val(),
-			'role': $form.find('select[name=role]').val(),
 		};
-		if( $form.find('input[name=pw]').val().length ){
+		if( $form.find('input[name=pw]').val().length || $form.find('input[name=pw_retype]').val().length ){
 			newProfile.pw = $form.find('input[name=pw]').val();
+			newProfile.pw_retype = $form.find('input[name=pw_retype]').val();
 		}
 		main.cloverUtils.updateProfile(
 			newProfile,
 			(result) => {
-				// console.log(result);
 				if( !result.result ){
 					// alert('Failed to update profile.');
 					setValidationErrors(result.errors);
@@ -45,7 +45,7 @@ export default function ConfigProfile(props){
 	 * 項目別に入力エラーがあったか確認する
 	 */
 	function hasValidationError(key){
-		if( validationErrors[key] ){
+		if( validationErrors && validationErrors[key] ){
 			return true;
 		}
 		return false;
@@ -62,6 +62,20 @@ export default function ConfigProfile(props){
 						<div className="px2-p">
 							<div className="px2-form-input-list">
 								<ul className="px2-form-input-list__ul">
+									<li className={"px2-form-input-list__li"+(hasValidationError('pw_before') ? ' px2-form-input-list__li--error' : '')}>
+										<div className="px2-form-input-list__label"><label htmlFor="input-pw_before">{main.lb.get('ui_label.user_pw')}</label></div>
+										<div className="px2-form-input-list__input">
+											<input type="password" id="input-pw_before" name="pw_before" defaultValue="" className={"px2-input px2-input--block"+(hasValidationError('pw') ? ' px2-input--error' : '')} />
+											{(hasValidationError('pw_before'))
+												? <>
+													{validationErrors.pw_before.map((errorText, index) => {
+														return <p key={index} className={"px2-error"}>{errorText}</p>;
+													})}
+												</>
+												: <>
+											</>}
+										</div>
+									</li>
 									<li className={"px2-form-input-list__li px2-form-input-list__li--required"+(hasValidationError('name') ? ' px2-form-input-list__li--error' : '')}>
 										<div className="px2-form-input-list__label"><label htmlFor="input-name">{main.lb.get('ui_label.user_name')}</label></div>
 										<div className="px2-form-input-list__input">
@@ -90,7 +104,7 @@ export default function ConfigProfile(props){
 											</>}
 										</div>
 									</li>
-									<li className={"px2-form-input-list__li"+(hasValidationError('pw') ? ' px2-form-input-list__li--error' : '')}>
+									<li className={"px2-form-input-list__li"+(hasValidationError('pw')||hasValidationError('pw_retype') ? ' px2-form-input-list__li--error' : '')}>
 										<div className="px2-form-input-list__label"><label htmlFor="input-pw">{main.lb.get('ui_label.user_pw')}</label></div>
 										<div className="px2-form-input-list__input">
 											<p className="px2-note">{main.lb.get('ui_message.enter_only_when_changing_the_password')}</p>
@@ -98,6 +112,16 @@ export default function ConfigProfile(props){
 											{(hasValidationError('pw'))
 												? <>
 													{validationErrors.pw.map((errorText, index) => {
+														return <p key={index} className={"px2-error"}>{errorText}</p>;
+													})}
+												</>
+												: <>
+											</>}
+											<p className="px2-note">確認のため、もう一度入力してください。</p>
+											<input type="password" id="input-pw_retype" name="pw_retype" defaultValue="" className={"px2-input px2-input--block"+(hasValidationError('pw_retype') ? ' px2-input--error' : '')} />
+											{(hasValidationError('pw_retype'))
+												? <>
+													{validationErrors.pw_retype.map((errorText, index) => {
 														return <p key={index} className={"px2-error"}>{errorText}</p>;
 													})}
 												</>
@@ -136,20 +160,10 @@ export default function ConfigProfile(props){
 											</>}
 										</div>
 									</li>
-									<li className={"px2-form-input-list__li"+(hasValidationError('role') ? ' px2-form-input-list__li--error' : '')}>
+									<li className={"px2-form-input-list__li"}>
 										<div className="px2-form-input-list__label"><label htmlFor="input-role">{main.lb.get('ui_label.user_role')}</label></div>
 										<div className="px2-form-input-list__input">
-											<select id="input-role" name="role" className={"px2-input"+(hasValidationError('role') ? ' px2-input--error' : '')} defaultValue={main.profile.role}>
-												<option value="admin">Admin</option>
-											</select>
-											{(hasValidationError('role'))
-												? <>
-													{validationErrors.role.map((errorText, index) => {
-														return <p key={index} className={"px2-error"}>{errorText}</p>;
-													})}
-												</>
-												: <>
-											</>}
+											{main.profile.role}
 										</div>
 									</li>
 								</ul>

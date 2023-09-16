@@ -43,8 +43,8 @@ class members{
 	/**
 	 * 新規で追加
 	 */
-	public function create_new( $user_info ){
-		$rtn = $this->clover->auth()->create_admin_user( $user_info );
+	public function create_new( $user_info, $login_password ){
+		$rtn = $this->clover->auth()->create_admin_user( $user_info, $login_password );
 
 		$this->px->header('Content-type: text/json');
 		echo json_encode($rtn);
@@ -54,8 +54,8 @@ class members{
 	/**
 	 * 更新
 	 */
-	public function update( $target_id, $user_info ){
-		$rtn = $this->clover->auth()->update_admin_user_info( $target_id, $user_info );
+	public function update( $target_id, $user_info, $login_password ){
+		$rtn = $this->clover->auth()->update_admin_user_info( $target_id, $user_info, $login_password );
 
 		$this->px->header('Content-type: text/json');
 		echo json_encode($rtn);
@@ -65,8 +65,8 @@ class members{
 	/**
 	 * 削除
 	 */
-	public function delete( $target_id ){
-		$rtn = $this->clover->auth()->delete_admin_user_info( $target_id );
+	public function delete( $target_id, $login_password ){
+		$rtn = $this->clover->auth()->delete_admin_user_info( $target_id, $login_password );
 
 		$this->px->header('Content-type: text/json');
 		echo json_encode($rtn);

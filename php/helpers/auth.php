@@ -314,25 +314,44 @@ class auth {
 			return null;
 		}
 		unset( $user_info->pw ); // パスワードハッシュは出さない
+		unset( $user_info->pw_retype ); unset( $user_info->pw_before ); // 存在しないはずだが、不具合があったときの保険
 		return $user_info;
 	}
 
 	/**
-	 * 現在のログインユーザーの情報を更新する
+	 * 現在のログインユーザー自身の情報を更新する
 	 */
-	public function update_login_user_info( $new_profile ){
-		$new_profile = (object) $new_profile;
+	public function update_login_user_info( $new_profile, $login_password ){
+		$new_profile = json_decode(json_encode($new_profile));
 		$login_user_id = $this->px->req()->get_session('ADMIN_USER_ID');
 		if( !is_string($login_user_id) || !strlen($login_user_id) ){
 			// ログインしていない
 			return (object) array(
 				'result' => false,
-				'message' => 'ログインしてください。',
+				'message' => 'Authentication failed.',
 				'errors' => (object) array(),
 			);
 		}
 
-		$rtn = $this->update_admin_user_info( $login_user_id, $new_profile );
+		$allow_profile_keys = array(
+			'id',
+			'name',
+			'lang',
+			'pw',
+			'pw_retype',
+			'email',
+			// 'role', // 自分のロールは変更できない
+		);
+		foreach( $new_profile as $key=>$val ){
+			if( array_search($key, $allow_profile_keys) === false ){
+				unset($new_profile->{$key}); // 変更できないキーを削除する
+			}
+		}
+		if( !strlen($new_profile->pw || '') && !strlen($new_profile->pw_retype || '') ){
+			unset($new_profile->pw);
+			unset($new_profile->pw_retype);
+		}
+		$rtn = $this->update_admin_user_info( $login_user_id, $new_profile, $login_password );
 
 		if( $rtn->result ){
 			// ログインユーザーの情報を更新
@@ -353,18 +372,31 @@ class auth {
 	/**
 	 * 管理者ユーザーの情報を更新する
 	 */
-	public function update_admin_user_info( $target_user_id, $new_profile ){
-		$new_profile = (object) $new_profile;
+	public function update_admin_user_info( $target_user_id, $new_profile, $login_password ){
+		$new_profile = json_decode(json_encode($new_profile));
 		$result = (object) array(
 			'result' => true,
 			'message' => 'OK',
 			'errors' => (object) array(),
 		);
+
+		$login_user_info = $this->get_admin_user_info( $this->px->req()->get_session('ADMIN_USER_ID') );
+		if( !is_string($login_password) || !strlen($login_password) || !password_verify($login_password, $login_user_info->pw) ){
+			// 現在のパスワードを確認
+			return (object) array(
+				'result' => false,
+				'message' => 'Authentication Failed.',
+				'errors' => (object) array(
+					'pw_before' => array('現在のログインパスワードを正しく入力してください。'),
+				),
+			);
+		}
+
 		if( !is_string($target_user_id) || !strlen($target_user_id) ){
 			// 更新対象が未指定
 			return (object) array(
 				'result' => false,
-				'message' => '更新対象を指定してください。',
+				'message' => 'Target not set.',
 				'errors' => (object) array(),
 			);
 		}
@@ -373,7 +405,7 @@ class auth {
 			// 不正な形式のID
 			return (object) array(
 				'result' => false,
-				'message' => 'ログインユーザーのIDが不正です。',
+				'message' => 'Invalid Login User ID.',
 				'errors' => (object) array(),
 			);
 		}
@@ -382,11 +414,35 @@ class auth {
 		if( !is_object($user_info) ){
 			return (object) array(
 				'result' => false,
-				'message' => 'ユーザー情報の取得に失敗しました。',
+				'message' => 'Failed to get user information.',
 				'errors' => (object) array(),
 			);
 		}
-		foreach( $new_profile as $key=>$val ){
+
+		if( (strlen($new_profile->pw ?? '') || strlen($new_profile->pw_retype ?? '')) && $new_profile->pw !== $new_profile->pw_retype ){
+			return (object) array(
+				'result' => false,
+				'message' => 'Password not matched.',
+				'errors' => (object) array(
+					'pw_retype' => array('パスワードが一致しません。'),
+				),
+			);
+		}
+
+		$profile_keys = array(
+			'id',
+			'name',
+			'lang',
+			'pw',
+			'email',
+			'role',
+		);
+		foreach( $profile_keys as $key ){
+			// 変更項目の整理
+			if( !property_exists($new_profile, $key) ){
+				continue;
+			}
+			$val = $new_profile->{$key} ?? null;
 			if( $key == 'pw' ){
 				if( !is_string($val) || !strlen($val) ){
 					continue;
@@ -464,6 +520,7 @@ class auth {
 			$user_id = preg_replace( '/\.json(?:\.php)?$/si', '', $basename );
 			$json = (array) $this->read_admin_user_data( $user_id );
 			unset($json['pw']); // パスワードハッシュはクライアントに送出しない
+			unset($json['pw_retype'], $json['pw_before']); // 存在しないはずだが、不具合があったときの保険
 			array_push($rtn, $json);
 		}
 		return $rtn;
