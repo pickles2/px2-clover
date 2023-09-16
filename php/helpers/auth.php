@@ -298,6 +298,7 @@ class auth {
 	 * 管理ユーザーを作成する
 	 *
 	 * @param array|object $new_profile 作成するユーザー情報
+	 * @param string $login_password ログインしているユーザーの現在のパスワード
 	 */
 	public function create_admin_user( $new_profile, $login_password ){
 		$result = (object) array(
@@ -306,17 +307,21 @@ class auth {
 			'errors' => (object) array(),
 		);
 
+		$admin_user_list = $this->get_admin_user_list();
 		$new_profile = json_decode(json_encode($new_profile));
 		$current_user_info = $this->get_admin_user_info_full( $this->px->req()->get_session('ADMIN_USER_ID') );
-		if( !is_string($login_password) || !strlen($login_password) || !password_verify($login_password, $current_user_info->pw) ){
-			// 現在のパスワードを確認
-			return (object) array(
-				'result' => false,
-				'message' => 'Authentication Failed.',
-				'errors' => (object) array(
-					'current_pw' => array('現在のログインパスワードを正しく入力してください。'),
-				),
-			);
+		if( count($admin_user_list) ){
+			// NOTE: 始めてのユーザーを作成するときは、現在のパスワードを求めない。ログインしていることを前提にしない。
+			if( !is_string($login_password) || !strlen($login_password) || !password_verify($login_password, $current_user_info->pw) ){
+				// 現在のパスワードを確認
+				return (object) array(
+					'result' => false,
+					'message' => 'Authentication Failed.',
+					'errors' => (object) array(
+						'current_pw' => array('現在のログインパスワードを正しく入力してください。'),
+					),
+				);
+			}
 		}
 
 		if( $this->admin_user_data_exists( $new_profile->id ) ){
@@ -455,6 +460,9 @@ class auth {
 
 	/**
 	 * 現在のログインユーザー自身の情報を更新する
+	 *
+	 * @param array|object $new_profile 変更する新しいユーザー情報
+	 * @param string $login_password ログインしているユーザーの現在のパスワード
 	 */
 	public function update_login_user_info( $new_profile, $login_password ){
 		$new_profile = json_decode(json_encode($new_profile));
@@ -506,6 +514,10 @@ class auth {
 
 	/**
 	 * 管理者ユーザーの情報を更新する
+	 *
+	 * @param string $target_user_id 変更対象のユーザーID
+	 * @param array|object $new_profile 変更する新しいユーザー情報
+	 * @param string $login_password ログインしているユーザーの現在のパスワード
 	 */
 	public function update_admin_user_info( $target_user_id, $new_profile, $login_password ){
 		$new_profile = json_decode(json_encode($new_profile));
@@ -644,6 +656,9 @@ class auth {
 
 	/**
 	 * 管理者ユーザーの情報を削除する
+	 *
+	 * @param string $target_user_id 削除対象のユーザーID
+	 * @param string $login_password ログインしているユーザーの現在のパスワード
 	 */
 	public function delete_admin_user_info( $target_user_id, $login_password ){
 		$current_user_info = $this->get_admin_user_info_full( $this->px->req()->get_session('ADMIN_USER_ID') );

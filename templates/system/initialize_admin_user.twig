@@ -31,6 +31,11 @@
 			{% if errors.pw %}{% for error_message in errors.pw %}<div class="px2-error">{{error_message}}</div>{% endfor %}{% endif %}
 			<div class="auth-form__input"><input type="password" name="ADMIN_USER_PW" value="" class="px2-input px2-input--block" /></div>
 		</div>
+		<div class="auth-form__unit {% if errors.pw_retype %} auth-form__unit--error{% endif %}">
+			<div class="auth-form__label">{{ lb.get('ui_label.user_pw_retype') }}:</div>
+			{% if errors.pw_retype %}{% for error_message in errors.pw_retype %}<div class="px2-error">{{error_message}}</div>{% endfor %}{% endif %}
+			<div class="auth-form__input"><input type="password" name="admin_user_pw_retype" value="" class="px2-input px2-input--block" /></div>
+		</div>
 		<div class="auth-form__unit {% if errors.email %} auth-form__unit--error{% endif %}">
 			<div class="auth-form__label">{{ lb.get('ui_label.user_email') }}:</div>
 			{% if errors.email %}{% for error_message in errors.email %}<div class="px2-error">{{error_message}}</div>{% endfor %}{% endif %}

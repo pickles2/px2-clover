@@ -63,11 +63,12 @@ class initializer{
 				'name' => $this->px->req()->get_param('ADMIN_USER_NAME'),
 				'id' => $this->px->req()->get_param('ADMIN_USER_ID'),
 				'pw' => $this->px->req()->get_param('ADMIN_USER_PW'),
+				'pw_retype' => $this->px->req()->get_param('admin_user_pw_retype'),
 				'lang' => $this->px->req()->get_param('ADMIN_USER_LANG'),
 				'email' => $this->px->req()->get_param('admin_user_email'),
 				'role' => 'admin',
 			);
-			$result = $this->clover->auth()->create_admin_user( $user_info );
+			$result = $this->clover->auth()->create_admin_user( $user_info, null ); // NOTE: 最初のユーザー作成時には、現在のパスワードを確認しない。
 			if( $result->result ){
 				$this->px->fs()->chmod_r($this->realpath_private_data_dir.'admin_users/', 0700, 0700);
 				header('Location:'.'?PX=admin');

@@ -41,6 +41,7 @@ ui_label.dblclick_here_and_add_array_element,"Double click here to add array ele
 ui_label.user_name,Name,お名前,,
 ui_label.user_id,User ID,ユーザーID,,
 ui_label.user_pw,Password,パスワード,,
+ui_label.user_pw_retype,Password (Retype),パスワード (再入力),,
 ui_label.user_email,E-mail,メールアドレス,,
 ui_label.user_role,Role,ロール,,
 ui_message.first_register_an_administrator_account,"First, register an administrator account.","はじめに、管理者アカウントを登録してください。",,
