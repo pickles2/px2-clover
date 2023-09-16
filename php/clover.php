@@ -186,10 +186,45 @@ class clover{
 	 */
 	public function authorize_required($division, $format = 'text/html'){
 		if( !$this->auth()->is_authorized($division) ){
-			$this->forbidden($format);
+			$this->unauthorized($format);
 			exit();
 		}
 		return;
+	}
+
+	/**
+	 * 401 Unauthorized を返す
+	 */
+	public function unauthorized( $format = 'text/html' ){
+		while (ob_get_level()) { ob_end_clean(); }
+		$this->px->set_status(401);
+		switch($format){
+			case "json":
+			case "text/json":
+				$this->px->header('Content-type: text/json');
+				echo json_encode(array(
+					'result' => false,
+					'message' => '401 Unauthorized.',
+				));
+				exit;
+				break;
+			default:
+				break;
+		}
+		$this->px->header('Content-type: text/html');
+		ob_start(); ?>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>401 Unauthorized</title>
+	</head>
+	<body>
+		<p>401 Unauthorized</p>
+	</body>
+</html>
+		<?php
+		echo ob_get_clean();
+		exit;
 	}
 
 	/**

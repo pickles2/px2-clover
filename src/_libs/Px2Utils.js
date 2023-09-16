@@ -62,13 +62,18 @@ export default function Px2Utils(){
 			.done(function(data, textStatus, jqXHR){
 				pxCmdStdOut = data;
 			})
-			.fail(function(jqXHR, textStatus, error){
+			.fail(function(jqXHR, textStatus, errorMsg){
 				if( jqXHR.status == 403 ){
 					// alert('You logged out.');
 					window.location.reload();
 				}
-				console.error('PX Command Error:', jqXHR, textStatus, error);
-				error = error;
+				console.error('PX Command Error:', jqXHR, textStatus, errorMsg);
+				error = errorMsg;
+				if(jqXHR.responseJSON){
+					pxCmdStdOut = jqXHR.responseJSON;
+				}else if(jqXHR.responseText){
+					pxCmdStdOut = jqXHR.responseText;
+				}
 			})
 			.always(function(){
 				callback(pxCmdStdOut, error);

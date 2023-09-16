@@ -20,10 +20,6 @@ export default function ConfigMembers(props){
 			'/?PX=admin.api.get_members',
 			{},
 			function( res, error ){
-				if( error || !res.result ){
-					alert('権限がありません。');
-					return;
-				}
 				setMemberList(res);
 				return;
 			}
@@ -289,7 +285,7 @@ export default function ConfigMembers(props){
 	}
 
 	let memberListAry = [];
-	if( memberList ){
+	if( memberList && memberList.list ){
 		const roleScore = {
 			"member": 0,
 			"specialist": 50,
@@ -312,48 +308,56 @@ export default function ConfigMembers(props){
 				?<>
 					<p>...</p>
 				</>
-			:<>
-			<p><button type="button" className="px2-btn px2-btn--primary" onClick={createNewMember}>新規メンバーを登録する</button></p>
-			{(memberListAry && memberListAry.length)
+			:((memberList !== false && !memberList.result)
 				?<>
-					<div className="px2-responsive">
-						<table className="px2-table">
-							<thead>
-								<tr>
-									<th>{main.lb.get('ui_label.user_id')}</th>
-									<th>{main.lb.get('ui_label.user_name')}</th>
-									<th>{main.lb.get('ui_label.user_email')}</th>
-									<th>{main.lb.get('ui_label.user_role')}</th>
-									<th></th>
-								</tr>
-							</thead>
-							<tbody>
-							{memberListAry.map((memberInfo, index) => {
-								return <tr key={index}>
-									<td>{ memberInfo.id }</td>
-									<td>{ memberInfo.name }</td>
-									<td>{ memberInfo.email }</td>
-									<td>{ main.lb.get(`role.${memberInfo.role}`) }</td>
-									{ memberInfo.id == main.profile.id ? <>
-										<td>(You)</td>
-									</> : <>
-										<td>
-											<button type="button" className="px2-btn px2-btn--primary" onClick={(e)=>{editMember(e, memberInfo)}}>編集</button>
-											<button type="button" className="px2-btn px2-btn--danger" onClick={(e)=>{deleteMember(e, memberInfo)}}>削除</button>
-										</td>
-									</> }
-								</tr>;
-							})}
-							</tbody>
-						</table>
-					</div>
+					<p>権限がありません。</p>
 				</>
-				:<>
-					<p>
-						メンバー情報は登録されていません。<br />
+			:
+				<>
+					<p className="px2-text-align-right">
+						<button type="button" className="px2-btn px2-btn--primary" onClick={createNewMember}>新規メンバーを登録する</button>
 					</p>
-				</>
-			}</>}
+					{(memberListAry && memberListAry.length)
+						?<>
+							<div className="px2-responsive">
+								<table className="px2-table">
+									<thead>
+										<tr>
+											<th>{main.lb.get('ui_label.user_id')}</th>
+											<th>{main.lb.get('ui_label.user_name')}</th>
+											<th>{main.lb.get('ui_label.user_email')}</th>
+											<th>{main.lb.get('ui_label.user_role')}</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+									{memberListAry.map((memberInfo, index) => {
+										return <tr key={index}>
+											<td>{ memberInfo.id }</td>
+											<td>{ memberInfo.name }</td>
+											<td>{ memberInfo.email }</td>
+											<td>{ main.lb.get(`role.${memberInfo.role}`) }</td>
+											{ memberInfo.id == main.profile.id ? <>
+												<td>(You)</td>
+											</> : <>
+												<td>
+													<button type="button" className="px2-btn px2-btn--primary" onClick={(e)=>{editMember(e, memberInfo)}}>編集</button>
+													<button type="button" className="px2-btn px2-btn--danger" onClick={(e)=>{deleteMember(e, memberInfo)}}>削除</button>
+												</td>
+											</> }
+										</tr>;
+									})}
+									</tbody>
+								</table>
+							</div>
+						</>
+						:<>
+							<p>
+								メンバー情報は登録されていません。<br />
+							</p>
+						</>
+					}
+				</>)}
 		</>
 	);
 }
