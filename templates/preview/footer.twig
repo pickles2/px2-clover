@@ -3,11 +3,11 @@
 <div class="px2-clover-footer-menubar">
 {% if px2config.allow_pxcommands %}
 {% if current_page_info.id|length <= 0 %}
-<button type="button" class="px2-btn" onclick="location.href='?PX=admin';">ダッシュボード</button>
+<a href="?PX=admin" class="px2-btn">ダッシュボード</a>
 {% else %}
-<button type="button" class="px2-btn" onclick="location.href='?PX=admin.page_info';">ページ情報</button>
+<a href="?PX=admin.page_info" class="px2-btn">ページ情報</a>
 {% endif %}
-<button type="button" class="px2-btn" onclick="location.href='?PX=admin.edit_content&amp;backto=preview';">記事編集</button>
+<a href="?PX=admin.edit_content&amp;backto=preview" class="px2-btn">記事編集</a>
 {% else %}
 <p>Pickles 2 Clover を利用するには、<code>$conf-&gt;allow_pxcommands</code>フラグを <code>1</code> に設定してください。</p>
 {% endif %}
