@@ -12,6 +12,8 @@ class editContent {
 	/** Picklesオブジェクト */
 	private $px;
 
+	/** Authorize Helper オブジェクト */
+	private $authorizeHelper;
 
 	/**
 	 * Constructor
@@ -22,21 +24,16 @@ class editContent {
 	public function __construct( $clover ){
 		$this->clover = $clover;
 		$this->px = $clover->px();
+		$this->authorizeHelper = new \tomk79\pickles2\px2clover\helpers\authorizeHelper($this->clover);
 	}
 
 	/**
 	 * コンテンツ編集画面
 	 */
 	public function start(){
-		$is_authorized_write_file_directly = (
-			is_object($this->px->authorizer)
-				? $this->px->authorizer->is_authorized('write_file_directly')
-				: true
-		);
-
 		$backto = $this->px->req()->get_param('backto');
 
-		if( !$is_authorized_write_file_directly ){
+		if( !$this->authorizeHelper->is_authorized('write_file_directly') ){
 			if( $this->is_sanitize_desired() ){
 				echo $this->clover->view()->bind(
 					'/cont/editContent/editContentUnauthorized.twig',
@@ -74,7 +71,6 @@ class editContent {
 	/**
 	 * サニタイズが望まれる記述が含まれるか？
 	 *
-	 * @param string $src 検査対象のソースコード
 	 * @return boolean 検査結果。望まれる記述が発見された場合に true, 無毒だった場合に false。
 	 */
 	private function is_sanitize_desired(){
@@ -82,7 +78,7 @@ class editContent {
 		$px2dthelper = new \tomk79\pickles2\px2dthelper\main( $this->px );
 		$editor_mode = $px2dthelper->check_editor_mode();
 		$realpath_files = $this->px->realpath_files();
-		list($path_content, $proc_type) = $this->assemble_path_content_and_proc_type();
+		$path_content = $this->get_path_content( $this->px->req()->get_request_file_path() );
 		$target_files = array();
 
 		if( $editor_mode == '.not_exists' ){
@@ -116,7 +112,7 @@ class editContent {
 			if( preg_match('/\.json$/i', $realpath) ){
 				$src = json_encode($src, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
 			}
-			if( $this->is_sanitize_desired_code($src) ){
+			if( $this->authorizeHelper->is_sanitize_desired_in_code($src) ){
 				$result = true;
 				break;
 			}
@@ -126,60 +122,22 @@ class editContent {
 	}
 
 	/**
-	 * サニタイズが望まれる記述が含まれるか？
+	 * 現在のページの $path_content を計算する
 	 *
-	 * @param string $src 検査対象のソースコード
-	 * @return boolean 検査結果。望まれる記述が発見された場合に true, 無毒だった場合に false。
+	 * @return string $path_content
 	 */
-	private function is_sanitize_desired_code($src){
-		// サニタイズパターン
-		$patterns = array(
-			array(
-				'pattern' => '/\<\?php/',
-				'replace_to' => '<!-- ?php',
-			),
-			array(
-				'pattern' => '/\<\?\=/',
-				'replace_to' => '<!-- ?=',
-			),
-			array(
-				'pattern' => '/\<\?/',
-				'replace_to' => '<!-- ?',
-			),
-			array(
-				'pattern' => '/\?\>/',
-				'replace_to' => '? -->',
-			),
-		);
-		$result = false;
-		foreach($patterns as $pattern){
-			if( preg_match($pattern['pattern'], $src) ){
-				$result = true;
-				break;
-			}
-		}
-		return $result;
-	}
-
-
-	/**
-	 * $path_content を計算する
-	 * ※ via: px-fw-2.x/px.php
-	 *
-	 * @return array $path_content, $proc_type
-	 */
-	private function assemble_path_content_and_proc_type(){
-		$path_content = $this->px->req()->get_request_file_path();
-		$ext = $this->px->get_path_proc_type( $this->px->req()->get_request_file_path() );
+	private function get_path_content($request_file_path){
+		$path_content = $request_file_path;
+		$ext = $this->px->get_path_proc_type( $request_file_path );
 		if($ext !== 'direct' && $ext !== 'pass'){
 			if( is_object($this->px->site()) ){
-				$current_page_info = $this->px->site()->get_page_info( $this->px->req()->get_request_file_path() );
+				$current_page_info = $this->px->site()->get_page_info( $request_file_path );
 				$path_content = null;
 				if( is_array($current_page_info) && array_key_exists('content', $current_page_info) ){
 					$path_content = $current_page_info['content'];
 				}
 				if( is_null( $path_content ) ){
-					$path_content = $this->px->req()->get_request_file_path();
+					$path_content = $request_file_path;
 				}
 				unset($current_page_info);
 			}
@@ -194,9 +152,6 @@ class editContent {
 			}
 		}
 
-		$proc_type = $ext;
-		unset($ext);
-		return array($path_content, $proc_type);
+		return $path_content;
 	}
-
 }

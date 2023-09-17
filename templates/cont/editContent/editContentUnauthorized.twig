@@ -7,7 +7,7 @@
 {% block content %}
 	<div class="px2-p px2-text-align-center">
 		<p>このコンテンツには、PHPコードが含まれており、編集する権限がありません。</p>
-		<p><a href="{% if backto == "preview" %}?{% else %}?PX=admin.page_info{% endif %}" class="px2-btn px2-btn--primary">戻る</a></p>
+		<p><a href="{% if backto == "preview" %}?{% elseif backto == "close" %}javascript:window.close();{% else %}?PX=admin.page_info{% endif %}" class="px2-btn px2-btn--primary">戻る</a></p>
 	</div>
 {% endblock %}
 {% block foot %}

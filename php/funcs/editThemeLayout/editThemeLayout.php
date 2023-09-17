@@ -12,6 +12,8 @@ class editThemeLayout{
 	/** Picklesオブジェクト */
 	private $px;
 
+	/** Authorize Helper オブジェクト */
+	private $authorizeHelper;
 
 	/**
 	 * Constructor
@@ -22,20 +24,38 @@ class editThemeLayout{
 	public function __construct( $clover ){
 		$this->clover = $clover;
 		$this->px = $clover->px();
+		$this->authorizeHelper = new \tomk79\pickles2\px2clover\helpers\authorizeHelper($this->clover);
 	}
 
 	/**
 	 * コンテンツ編集画面
 	 */
 	public function start(){
+		$backto = $this->px->req()->get_param('backto');
+		if( !$backto ){
+			$backto = 'close';
+		}
+
+		if( !$this->authorizeHelper->is_authorized('write_file_directly') ){
+			if( $this->is_sanitize_desired() ){
+				echo $this->clover->view()->bind(
+					'/cont/editContent/editContentUnauthorized.twig',
+					array(
+						'title' => $this->px->site()->get_current_page_info()['title'] ?? '',
+						'page_path' => $this->px->req()->get_request_file_path(),
+						'backto' => $backto,
+					)
+				);
+				exit;
+			}
+		}
+
 		$path_client_resources = $this->clover->path_files('/');
 		$client_resources_dist = $this->clover->realpath_files('/edit-content/');
 		$this->px->fs()->mkdir_r($client_resources_dist); // ディレクトリが予め存在していないとファイル生成は失敗する。
 
 		$px2ce_res = $this->px->internal_sub_request('/?PX=px2dthelper.px2ce.client_resources&dist='.urlencode($client_resources_dist));
 		$px2ce_res = json_decode($px2ce_res, true);
-
-		$backto = $this->px->req()->get_param('backto');
 
 		echo $this->clover->view()->bind(
 			'/cont/editContent/editContent.twig',
@@ -49,5 +69,70 @@ class editThemeLayout{
 			)
 		);
 		exit;
+	}
+
+	/**
+	 * サニタイズが望まれる記述が含まれるか？
+	 *
+	 * @return boolean 検査結果。望まれる記述が発見された場合に true, 無毒だった場合に false。
+	 */
+	private function is_sanitize_desired(){
+		$result = false;
+		$target_files = array();
+
+		$theme_id = $this->px->req()->get_param('theme_id');
+		$layout_id = $this->px->req()->get_param('layout_id');
+
+		$px2dthelper = new \tomk79\pickles2\px2dthelper\main( $this->px );
+		$realpath_theme_collection_dir = $px2dthelper->get_realpath_theme_collection_dir();
+		$realpath_theme_dir = $realpath_theme_collection_dir.urlencode($theme_id).'/';
+		$realpath_layout = $realpath_theme_dir.urlencode($layout_id).'.html';
+		$realpath_layout_datajson = $realpath_theme_dir.'guieditor.ignore/'.urlencode($layout_id).'/data/data.json';
+
+		$editor_mode = ".not_exists";
+		if(is_file($realpath_layout_datajson)){
+			$editor_mode = "html.gui";
+		}elseif(is_file($realpath_layout)){
+			$editor_mode = "html";
+		}
+
+		if( $editor_mode == '.not_exists' ){
+			return false;
+		}
+
+		if( $editor_mode == "html.gui" ){
+			// Broccoli Editor
+			if( is_file($realpath_layout_datajson) ){
+				array_push($target_files, $realpath_layout_datajson);
+			}
+		}else{
+			// Default Editor
+			if( is_file($realpath_layout) ){
+				array_push($target_files, $realpath_layout);
+			}
+		}
+
+		if( is_file($realpath_theme_dir.'theme_files/layouts/'.urlencode($layout_id).'/style.css.scss') ){
+			array_push($target_files, $realpath_theme_dir.'theme_files/layouts/'.urlencode($layout_id).'/style.css.scss');
+		}
+		if( is_file($realpath_theme_dir.'theme_files/layouts/'.urlencode($layout_id).'/style.css') ){
+			array_push($target_files, $realpath_theme_dir.'theme_files/layouts/'.urlencode($layout_id).'/style.css');
+		}
+		if( is_file($realpath_theme_dir.'theme_files/layouts/'.urlencode($layout_id).'/script.js') ){
+			array_push($target_files, $realpath_theme_dir.'theme_files/layouts/'.urlencode($layout_id).'/script.js');
+		}
+
+		foreach($target_files as $realpath){
+			$src = file_get_contents($realpath);
+			if( preg_match('/\.json$/i', $realpath) ){
+				$src = json_encode($src, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
+			}
+			if( $this->authorizeHelper->is_sanitize_desired_in_code($src) ){
+				$result = true;
+				break;
+			}
+		}
+
+		return $result;
 	}
 }
