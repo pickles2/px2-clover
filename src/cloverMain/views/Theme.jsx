@@ -37,7 +37,7 @@ export default React.memo(function Theme(props){
 				}
 
 				var pickles2ThemeEditor = new Pickles2ThemeEditor();
-				var isOpenInFinderAuthorized = (main.bootupInfoLoaded && main.bootupInfo.authorization.write_file_directly);
+				var isOpenInFinderAuthorized = (main.bootupInfoLoaded && main.bootupInfo.authorization.write_file_directly && main.bootupInfo.authorization.server_side_scripting);
 				pickles2ThemeEditor.init(
 					{
 						'elmCanvas': document.getElementById('cont-px2te-canvas'),

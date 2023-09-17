@@ -10,7 +10,8 @@ export default function FilesAndFolders(props){
 	useEffect(() => {
 		const $body = document.getElementById('cont-remote-finder-content');
 
-		if( main.bootupInfoLoaded && !main.bootupInfo.authorization.write_file_directly ){
+		var isFilesAndFoldersAuthorized = (main.bootupInfoLoaded && main.bootupInfo.authorization.write_file_directly && main.bootupInfo.authorization.server_side_scripting);
+		if( !isFilesAndFoldersAuthorized ){
 			$($body).html('').append(`<p>権限がありません。</p>`);
 			return;
 		}

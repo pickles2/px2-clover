@@ -36,7 +36,7 @@ class editThemeLayout{
 			$backto = 'close';
 		}
 
-		if( !$this->authorizeHelper->is_authorized('write_file_directly') ){
+		if( !$this->authorizeHelper->is_authorized('server_side_scripting') ){
 			if( $this->is_sanitize_desired() ){
 				echo $this->clover->view()->bind(
 					'/cont/editContent/editContentUnauthorized.twig',

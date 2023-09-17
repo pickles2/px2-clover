@@ -364,12 +364,14 @@ class register{
 						case 'remote_finder':
 							$this->clover->allowed_method('post');
 							$this->clover->authorize_required('write_file_directly', 'json');
+							$this->clover->authorize_required('server_side_scripting', 'json');
 							$app = new funcs\api\remoteFinder($this->clover);
 							$app->gpi();
 							break;
 						case 'common_file_editor':
 							$this->clover->allowed_method('post');
 							$this->clover->authorize_required('write_file_directly', 'json');
+							$this->clover->authorize_required('server_side_scripting', 'json');
 							$app = new funcs\api\commonFileEditor($this->clover);
 							$app->gpi();
 							break;

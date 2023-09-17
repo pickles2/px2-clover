@@ -33,7 +33,7 @@ class editContent {
 	public function start(){
 		$backto = $this->px->req()->get_param('backto');
 
-		if( !$this->authorizeHelper->is_authorized('write_file_directly') ){
+		if( !$this->authorizeHelper->is_authorized('server_side_scripting') ){
 			if( $this->is_sanitize_desired() ){
 				echo $this->clover->view()->bind(
 					'/cont/editContent/editContentUnauthorized.twig',
