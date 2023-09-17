@@ -97,8 +97,10 @@ class register{
 
 			// --------------------------------------
 			// $px->authorizer を初期化する
-			$login_user_info = $clover->auth()->get_login_user_info();
-			\tomk79\pickles2\px2dthelper\authorizer::initialize($px, $login_user_info->role ?? null);
+			if( $px->get_px_command() ){
+				$login_user_info = $clover->auth()->get_login_user_info();
+				\tomk79\pickles2\px2dthelper\authorizer::initialize($px, $login_user_info->role ?? null);
+			}
 
 
 			// --------------------------------------

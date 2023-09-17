@@ -4,6 +4,7 @@
 - [Toppage](/)
 - [Anchor](#cont-dmy-anchor)
 
+
 <!-- autoindex -->
 
 <form action="https://pickles2.com/">
@@ -12,6 +13,16 @@
 
 
 <div style="height: 200vh;"></div>
+
+
+## $px->authorizer
+
+プレビューでは `$px->authorizer` は初期化されない。
+
+<pre><code><?php
+var_dump(gettype($px->authorizer));
+?></code></pre>
+
 
 ## #cont-dmy-anchor
 
