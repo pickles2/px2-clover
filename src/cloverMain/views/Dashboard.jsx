@@ -199,9 +199,14 @@ export default function Dashboard(props){
 							</tr>
 							</tbody>
 						</table>
+						{main.bootupInfoLoaded && main.bootupInfo.authorization.config
+							?<>
 						<p className="px2-text-align-right">
 							<button type="button" className="px2-btn px2-btn--primary" onClick={editSiteProfile}>編集する</button>
 						</p>
+							</>
+							:<>
+							</>}
 					</div>
 				</>
 			}

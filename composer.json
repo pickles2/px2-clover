@@ -10,12 +10,12 @@
         }
     ],
     "scripts":{
-		"start": [
-			"@php ./tests/testdata/src_px2/.px_execute.php \"/?PX=serve&S=localhost:8090\""
-		],
-		"start-subapp": [
-			"@php ./tests/testdata/src_px2/controot/.px_execute.php \"/?PX=serve&S=localhost:8091\""
-		],
+        "start": [
+            "@php ./tests/testdata/src_px2/.px_execute.php \"/?PX=serve&S=localhost:8090\""
+        ],
+        "start-subapp": [
+            "@php ./tests/testdata/src_px2/controot/.px_execute.php \"/?PX=serve&S=localhost:8091\""
+        ],
         "test": [
             "@php ./vendor/phpunit/phpunit/phpunit"
         ]
@@ -33,7 +33,7 @@
         "tomk79/remote-finder": "~0.2"
     },
     "require-dev": {
-		"pickles2/px2-blog-kit": "~0.1.0",
+        "pickles2/px2-blog-kit": "~0.1.0",
         "pickles2/px2-multitheme": "^2.0",
         "pickles2/px2-sitemapexcel": "~2.0",
         "pickles2/px2style": "~3.0",
