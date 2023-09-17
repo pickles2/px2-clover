@@ -76,9 +76,9 @@ class bootupInformations {
 
 		// Authorization
 		$rtn['bootupInfo']['authorization'] = array();
-		$rtn['bootupInfo']['authorization']['members'] = $this->clover->auth()->is_authorized('members');
-		$rtn['bootupInfo']['authorization']['git_init'] = $this->clover->auth()->is_authorized('git_init');
-		$rtn['bootupInfo']['authorization']['write_file_directly'] = $this->clover->auth()->is_authorized('write_file_directly');
+		$rtn['bootupInfo']['authorization']['members'] = $this->px->authorizer->is_authorized('members');
+		$rtn['bootupInfo']['authorization']['git_init'] = $this->px->authorizer->is_authorized('git_init');
+		$rtn['bootupInfo']['authorization']['write_file_directly'] = $this->px->authorizer->is_authorized('write_file_directly');
 
 
 		$this->px->header('Content-type: text/json');

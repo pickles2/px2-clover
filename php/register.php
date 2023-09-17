@@ -96,6 +96,12 @@ class register{
 			}
 
 			// --------------------------------------
+			// $px->authorizer を初期化する
+			$login_user_info = $clover->auth()->get_login_user_info();
+			\tomk79\pickles2\px2dthelper\authorizer::initialize($px, $login_user_info->role ?? null);
+
+
+			// --------------------------------------
 			// メンテナンスモードの評価
 			$maintenanceModeHelpers = new helpers\maintenanceMode( $clover );
 			$maintenanceModeHelpers->maintenance_page();

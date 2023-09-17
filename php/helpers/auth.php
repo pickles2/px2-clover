@@ -21,9 +21,6 @@ class auth {
 	/** CSRFトークンの有効期限 */
 	private $csrf_token_expire = 60 * 60;
 
-	/** 認可テーブル */
-	private $authorization_table;
-
 	/**
 	 * Constructor
 	 *
@@ -44,10 +41,6 @@ class auth {
 		if( !is_dir($this->realpath_account_lock) ){
 			$this->px->fs()->mkdir_r($this->realpath_account_lock);
 		}
-
-		// 認可テーブル
-		// NOTE: LangBank を利用した。
-		$this->authorization_table = new \tomk79\LangBank(__DIR__.'/../../data/auth/authorization.csv');
 	}
 
 
@@ -1027,40 +1020,6 @@ class auth {
 			}
 		}
 
-		return false;
-	}
-
-
-	// --------------------------------------
-	// 権限
-
-	/**
-	 * カレントユーザーに権限があるか確認する
-	 *
-	 * @param string $division 権限区分名
-	 * @return boolean 許可される場合に true, 許可されない場合 false
-	 */
-	public function is_authorized( $division ){
-		$current_user_info = $this->get_login_user_info();
-		if( !$current_user_info ){
-			return false;
-		}
-		if( !strlen($current_user_info->role) ){
-			return false;
-		}
-		switch($current_user_info->role){
-			case "admin":
-			case "specialist":
-			case "member":
-				break;
-			default:
-				return false;
-		}
-		$this->authorization_table->setLang( $current_user_info->role );
-		$permission = $this->authorization_table->get($division);
-		if( $permission === 1 || $permission === "1" || $permission === 'true' || $permission === 'yes' ){
-			return true;
-		}
 		return false;
 	}
 

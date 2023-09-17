@@ -185,7 +185,7 @@ class clover{
 	 * 認可を要求する
 	 */
 	public function authorize_required($division, $format = 'text/html'){
-		if( !$this->auth()->is_authorized($division) ){
+		if( !$this->px->authorizer->is_authorized($division) ){
 			$this->unauthorized($format);
 			exit();
 		}
