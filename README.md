@@ -13,7 +13,7 @@ composer require pickles2/px2-clover;
 
 ### セットアップ
 
-`px-files/config.php` の先頭に、 `tomk79\pickles2\px2clover\main::register()` の設定を追加する。
+`px-files/config.php` の `$conf->funcs->before_sitemap` 先頭に、 `tomk79\pickles2\px2clover\main::register()` の設定を追加する。
 
 ```php
 	// funcs: Before sitemap
