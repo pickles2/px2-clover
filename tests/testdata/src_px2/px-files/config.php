@@ -277,7 +277,10 @@ return call_user_func( function(){
 	$conf->plugins->px2dt->custom_console_extensions = array(
 		'sample' => 'tomk79\cmsTools\sample\main',
 		'sample2' => 'tomk79\cmsTools\sample\main',
-		'sample3' => 'tomk79\cmsTools\sample\main',
+		'sample3' => array(
+			'class_name' => 'tomk79\cmsTools\sample\main',
+			'capability' => array('manage'),
+		),
 	);
 
 	// -------- PHP Setting --------
