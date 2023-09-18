@@ -76,8 +76,8 @@ class bootupInformations {
 
 		// Authorization
 		$rtn['bootupInfo']['authorization'] = array();
+		$rtn['bootupInfo']['authorization']['manage'] = $this->px->authorizer->is_authorized('manage');
 		$rtn['bootupInfo']['authorization']['members'] = $this->px->authorizer->is_authorized('members');
-		$rtn['bootupInfo']['authorization']['git_init'] = $this->px->authorizer->is_authorized('git_init');
 		$rtn['bootupInfo']['authorization']['config'] = $this->px->authorizer->is_authorized('config');
 		$rtn['bootupInfo']['authorization']['server_side_scripting'] = $this->px->authorizer->is_authorized('server_side_scripting');
 		$rtn['bootupInfo']['authorization']['write_file_directly'] = $this->px->authorizer->is_authorized('write_file_directly');

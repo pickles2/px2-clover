@@ -232,7 +232,7 @@ class register{
 							break;
 						case 'git_init':
 							$app = new funcs\api\gitInit($this->clover);
-							$this->clover->authorize_required('git_init', 'json');
+							$this->clover->authorize_required('manage', 'json');
 							$app->git_init();
 							break;
 						case 'get_page_info':
