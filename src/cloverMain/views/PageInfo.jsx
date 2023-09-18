@@ -32,6 +32,9 @@ export default React.memo(function PageInfo(props){
 		"**delete_flg": {"label": "(削除フラグ)"},
 	});
 
+	var isChangeContentEditorModeAuthorized = (main.bootupInfoLoaded && main.bootupInfo.authorization.server_side_scripting);
+		// TODO: HTML中に動的コードを含まないコンテンツならば、'server_side_scripting' 権限は要らないかもしれない。
+
 	useEffect(() => {
 		main.px2utils.px2cmd(
 			'/?PX=api.get.sitemap_definition',
@@ -889,11 +892,9 @@ export default React.memo(function PageInfo(props){
 						main.px2utils.px2cmd(
 							`?PX=px2dthelper.change_content_editor_mode&editor_mode=${editorModeTo}`,
 							{},
-							function( result ){
-								console.log(result);
-
+							function( result, error ){
 								if( !result[0] ){
-									alert('編集モードの変更に失敗しました。'+result[1]);
+									alert('編集モードの変更に失敗しました。'+(result[1] || error));
 									px2style.closeLoading();
 									return;
 								}
@@ -1060,7 +1061,7 @@ export default React.memo(function PageInfo(props){
 										<li><a href="?" onClick={sortPage}>並べ替え</a></li>
 										</>}
 										{main.pageInfo.editor_mode !== '.not_exists' && <>
-										<li><a href="?" onClick={changeEditorType}>編集方法を変更する</a></li>
+										{isChangeContentEditorModeAuthorized ? <><li><a href="?" onClick={changeEditorType}>編集方法を変更する</a></li></> : <></>}
 										<li><a href="?" onClick={singlePagePublish}>単体パブリッシュ</a></li>
 										{main.pageInfo.editor_mode == 'html.gui' && <li><a href="?" onClick={rebuildBroccoliContent}>ブロックエディタのコンテンツを再構成する</a></li>}
 										</>}
