@@ -8,6 +8,8 @@ export default React.memo(function Modules(props){
 	const main = useContext(MainContext);
 	const path_client_resources = window.clover_config.paths.path_client_resources;
 
+	const isModuleEditorAuthorized = (main.bootupInfoLoaded && main.bootupInfo.authorization.server_side_scripting);
+
 	/**
 	 * 画面を初期化するする
 	 */
@@ -81,6 +83,10 @@ export default React.memo(function Modules(props){
 			$('.cont-px2-clover__px2me-resources').remove();
 		};
 	}, []);
+
+	if( !isModuleEditorAuthorized ){
+		return (<p>権限がありません。</p>);
+	}
 
 	return (
 		<>

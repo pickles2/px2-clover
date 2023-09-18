@@ -7,15 +7,14 @@ export default function FilesAndFolders(props){
 
 	const main = useContext(MainContext);
 
-	useEffect(() => {
-		const $body = document.getElementById('cont-remote-finder-content');
+	const isFilesAndFoldersAuthorized = (main.bootupInfoLoaded && main.bootupInfo.authorization.write_file_directly && main.bootupInfo.authorization.server_side_scripting);
 
-		var isFilesAndFoldersAuthorized = (main.bootupInfoLoaded && main.bootupInfo.authorization.write_file_directly && main.bootupInfo.authorization.server_side_scripting);
-		if( !isFilesAndFoldersAuthorized ){
-			$($body).html('').append(`<p>権限がありません。</p>`);
+	useEffect(() => {
+		if(!isFilesAndFoldersAuthorized){
 			return;
 		}
 
+		const $body = document.getElementById('cont-remote-finder-content');
 		main.cloverUtils.openInFinder(
 			'root',
 			$body,
@@ -25,6 +24,10 @@ export default function FilesAndFolders(props){
 			}
 		);
 	}, []);
+
+	if( !isFilesAndFoldersAuthorized ){
+		return (<p>権限がありません。</p>);
+	}
 
 	return (
 		<>
