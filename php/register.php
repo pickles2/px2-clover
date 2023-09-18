@@ -317,6 +317,8 @@ class register{
 							break;
 						case 'scheduler_setting_hint':
 							$this->clover->allowed_method('post');
+							$this->clover->authorize_required('config', 'json');
+							$this->clover->authorize_required('server_side_scripting', 'json');
 							$app = new funcs\api\scheduler($this->clover);
 							$app->setting_hint();
 							break;

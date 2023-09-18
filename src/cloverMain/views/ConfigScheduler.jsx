@@ -10,6 +10,8 @@ export default function ConfigScheduler(props){
 	const [ schedulerHint, updateSchedulerHint] = useState({});
 	const [ healthCheckStatus, updateHealthCheckStatus] = useState({"scheduler":{"is_available": null, "elapsed": null}});
 
+	const isModuleEditorAuthorized = (main.bootupInfoLoaded && main.bootupInfo.authorization.server_side_scripting);
+
 	const pollingUpdateStatus = () => {
 		main.px2utils.px2cmd(
 			'/?PX=admin.api.health_check',
@@ -47,6 +49,10 @@ export default function ConfigScheduler(props){
 			}
 		);
 	}, []);
+
+	if( !isModuleEditorAuthorized ){
+		return (<p>権限がありません。</p>);
+	}
 
 	return (
 		<>
