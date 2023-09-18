@@ -312,6 +312,8 @@ class register{
 							break;
 						case 'update_config':
 							$this->clover->allowed_method('post');
+							$this->clover->authorize_required('config', 'json');
+							$this->clover->authorize_required('server_side_scripting', 'json');
 							$app = new funcs\api\config($this->clover);
 							$app->update();
 							break;
