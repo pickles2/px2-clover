@@ -29,6 +29,12 @@ class auth {
 	/** CSRFトークンの有効期限 */
 	private $csrf_token_expire = 60 * 60;
 
+	/** Session Key: id */
+	private $session_key_id;
+
+	/** Session Key: pw */
+	private $session_key_pw;
+
 	/**
 	 * Constructor
 	 *
@@ -39,6 +45,10 @@ class auth {
 		$this->px = $this->clover->px();
 		$this->fs = $this->px->fs();
 		$this->req = $this->px->req();
+
+		// セッションキー
+		$this->session_key_id = 'ADMIN_USER_ID';
+		$this->session_key_pw = 'ADMIN_USER_PW';
 
 		// 管理ユーザー定義ディレクトリ
 		$this->realpath_admin_users = $this->clover->realpath_private_data_dir('/admin_users/');
@@ -67,7 +77,6 @@ class auth {
 	 * 認証プロセス
 	 */
 	public function auth(){
-
 		if( $this->is_csrf_token_required() && !$this->is_valid_csrf_token_given() ){
 			$this->login_page('csrf_token_expired');
 			exit;
@@ -118,8 +127,8 @@ class auth {
 				// ログイン評価
 				if( $login_challenger_id == $admin_id && password_verify($login_challenger_pw, $admin_pw) ){
 					$this->admin_user_login_successful( $login_challenger_id );
-					$this->req->set_session($ses_id, $login_challenger_id);
-					$this->req->set_session($ses_pw, $user_info->pw);
+					$this->req->set_session($this->session_key_id, $login_challenger_id);
+					$this->req->set_session($this->session_key_pw, $user_info->pw);
 
 					$redirect_to = '?';
 					if( is_string($this->req->get_param('PX')) ){
@@ -175,11 +184,8 @@ class auth {
 	 * ログインしているか確認する
 	 */
 	public function is_login(){
-		$ses_id = 'ADMIN_USER_ID';
-		$ses_pw = 'ADMIN_USER_PW';
-
-		$ADMIN_USER_ID = $this->req->get_session($ses_id);
-		$ADMIN_USER_PW = $this->req->get_session($ses_pw);
+		$ADMIN_USER_ID = $this->req->get_session($this->session_key_id);
+		$ADMIN_USER_PW = $this->req->get_session($this->session_key_pw);
 		if( !is_string($ADMIN_USER_ID) || !strlen($ADMIN_USER_ID) ){
 			return false;
 		}
@@ -855,10 +861,13 @@ class auth {
 	/**
 	 * 管理ユーザーデータファイルの書き込み
 	 */
-	private function write_admin_user_data( $user_id, $data ){
+	private function write_admin_user_data( $user_id, $new_profile ){
+		$new_profile = json_decode( json_encode($new_profile) );
+		unset($new_profile->pw_retype);
+
 		$realpath_json = $this->realpath_admin_users.urlencode($user_id).'.json';
 		$realpath_json_php = $realpath_json.'.php';
-		$result = dataDotPhp::write_json($realpath_json_php, $data);
+		$result = dataDotPhp::write_json($realpath_json_php, $new_profile);
 		if( !$result ){
 			return false;
 		}
