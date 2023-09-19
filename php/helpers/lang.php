@@ -4,7 +4,7 @@ namespace tomk79\pickles2\px2clover\helpers;
 /**
  * px2-clover: Language Helper
  */
-class lang{
+class lang {
 
 	/** Cloverオブジェクト */
 	private $clover;
@@ -15,7 +15,7 @@ class lang{
 	/** ログインユーザー情報 */
 	private $loginUserInfo;
 
-	/** Clover設定オブジェクト */
+	/** LangBankオブジェクト */
 	private $lb;
 
 	/**
