@@ -342,7 +342,7 @@ class auth {
 
 		$admin_user_list = $this->get_admin_user_list();
 		$new_profile = json_decode(json_encode($new_profile));
-		$current_user_info = $this->get_admin_user_info_full( $this->req->get_session('ADMIN_USER_ID') );
+		$current_user_info = $this->get_admin_user_info_full( $this->req->get_session($this->session_key_id) );
 		if( count($admin_user_list) ){
 			// NOTE: 始めてのユーザーを作成するときは、現在のパスワードを求めない。ログインしていることを前提にしない。
 			if( !is_string($login_password) || !strlen($login_password) || !password_verify($login_password, $current_user_info->pw) ){
@@ -406,7 +406,7 @@ class auth {
 	 * @return object 現在のユーザーの情報 (ただしパスワードハッシュを含まない)
 	 */
 	public function get_login_user_info(){
-		$login_user_id = $this->req->get_session('ADMIN_USER_ID');
+		$login_user_id = $this->req->get_session($this->session_key_id);
 		if( !is_string($login_user_id) || !strlen($login_user_id) ){
 			// ログインしていない
 			return null;
