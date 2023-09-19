@@ -2,7 +2,9 @@
 namespace tomk79\pickles2\px2clover\helpers;
 
 /**
- * px2-clover: auth
+ * px2-clover: Authentication
+ *
+ * @author Tomoya Koyanagi <tomk79@gmail.com>
  */
 class auth {
 
@@ -11,6 +13,15 @@ class auth {
 
 	/** Picklesオブジェクト */
 	private $px;
+
+	/** filesystem */
+	private $fs;
+
+	/** request */
+	private $req;
+
+	/** logger */
+	private $logger;
 
 	/** 管理ユーザー定義ディレクトリ */
 	private $realpath_admin_users;
@@ -29,17 +40,20 @@ class auth {
 	public function __construct( $clover ){
 		$this->clover = $clover;
 		$this->px = $this->clover->px();
+		$this->fs = $this->px->fs();
+		$this->req = $this->px->req();
+		$this->logger = $this->clover->logger();
 
 		// 管理ユーザー定義ディレクトリ
 		$this->realpath_admin_users = $this->clover->realpath_private_data_dir('/admin_users/');
-		if( !is_dir($this->realpath_admin_users) ){
-			$this->px->fs()->mkdir_r($this->realpath_admin_users);
+		if( is_string($this->realpath_admin_users ?? null) && !is_dir($this->realpath_admin_users) ){
+			$this->fs->mkdir_r($this->realpath_admin_users);
 		}
 
 		// アカウントロック情報格納ディレクトリ
 		$this->realpath_account_lock = $this->clover->realpath_private_data_dir('/account_lock/');
 		if( !is_dir($this->realpath_account_lock) ){
-			$this->px->fs()->mkdir_r($this->realpath_account_lock);
+			$this->fs->mkdir_r($this->realpath_account_lock);
 		}
 	}
 
@@ -54,8 +68,8 @@ class auth {
 			exit;
 		}
 
-		if( $this->px->req()->get_param('ADMIN_USER_FLG') ){
-			$login_challenger_id = $this->px->req()->get_param('ADMIN_USER_ID');
+		if( $this->req->get_param('ADMIN_USER_FLG') ){
+			$login_challenger_id = $this->req->get_param('ADMIN_USER_ID');
 			if( strtoupper($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' ){
 				$this->login_page();
 				exit;
@@ -63,14 +77,14 @@ class auth {
 
 			if( !strlen($login_challenger_id ?? '') ){
 				// User ID が未指定
-				$this->clover->logger()->error_log('Failed to login. User ID is not set.');
+				$this->logger->error_log('Failed to login. User ID is not set.');
 				$this->login_page('user_id_is_required');
 				exit;
 			}
 
 			if( !$this->validate_admin_user_id($login_challenger_id) ){
 				// 不正な形式のID
-				$this->clover->logger()->error_log('Failed to login as user \''.$login_challenger_id.'\'. Invalid user ID format.');
+				$this->logger->error_log('Failed to login as user \''.$login_challenger_id.'\'. Invalid user ID format.');
 				$this->login_page('invalid_user_id');
 				exit;
 			}
@@ -78,7 +92,7 @@ class auth {
 			if( $this->is_account_locked( $login_challenger_id ) ){
 				// アカウントがロックされている
 				$this->admin_user_login_failed( $login_challenger_id );
-				$this->clover->logger()->error_log('Failed to login as user \''.$login_challenger_id.'\'. Account is LOCKED.');
+				$this->logger->error_log('Failed to login as user \''.$login_challenger_id.'\'. Account is LOCKED.');
 				$this->login_page('account_locked');
 				exit;
 			}
@@ -87,31 +101,34 @@ class auth {
 			if( !is_object($user_info) ){
 				// 不正なユーザーデータ
 				$this->admin_user_login_failed( $login_challenger_id );
-				$this->clover->logger()->error_log('Failed to login as user \''.$login_challenger_id.'\'. User undefined.');
+				$this->logger->error_log('Failed to login as user \''.$login_challenger_id.'\'. User undefined.');
 				$this->login_page('failed');
 				exit;
 			}
 			$admin_id = $user_info->id;
 			$admin_pw = $user_info->pw;
 
-			if( $login_challenger_id == $admin_id && password_verify($this->px->req()->get_param('ADMIN_USER_PW'), $admin_pw) ){
-				$this->admin_user_login_successful( $login_challenger_id );
-				$this->px->req()->set_session('ADMIN_USER_ID', $login_challenger_id);
-				$this->px->req()->set_session('ADMIN_USER_PW', $user_info->pw);
+			if( strlen($login_challenger_id ?? '') && strlen($login_challenger_pw ?? '') ){
+				// ログイン評価
+				if( $login_challenger_id == $admin_id && password_verify($this->req->get_param('ADMIN_USER_PW'), $admin_pw) ){
+					$this->admin_user_login_successful( $login_challenger_id );
+					$this->req->set_session($ses_id, $login_challenger_id);
+					$this->req->set_session($ses_pw, $user_info->pw);
 
-				$redirect_to = '?';
-				if( is_string($this->px->req()->get_param('PX')) ){
-					$redirect_to = '?PX='.htmlspecialchars( $this->px->req()->get_param('PX') );
+					$redirect_to = '?';
+					if( is_string($this->req->get_param('PX')) ){
+						$redirect_to = '?PX='.htmlspecialchars( $this->req->get_param('PX') );
+					}
+					$this->req->set_cookie('LANG', $user_info->lang);
+					$this->logger->log('User \''.$login_challenger_id.'\' logged in.');
+					$this->px->header('Location:'.$redirect_to);
+					exit;
 				}
-				$this->px->req()->set_cookie('LANG', $user_info->lang);
-				$this->clover->logger()->log('User \''.$login_challenger_id.'\' logged in.');
-				$this->px->header('Location:'.$redirect_to);
-				exit;
 			}
 
 			if( !$this->is_login() ){
 				$this->admin_user_login_failed( $login_challenger_id );
-				$this->clover->logger()->error_log('Failed to login as user \''.$login_challenger_id.'\'.');
+				$this->logger->error_log('Failed to login as user \''.$login_challenger_id.'\'.');
 				$this->login_page('failed');
 				exit;
 			}
@@ -122,28 +139,29 @@ class auth {
 			exit;
 		}
 
+		return;
 	}
 
 	/**
 	 * ログアウトする
 	 */
 	public function logout(){
-		$pxcmd = $this->px->req()->get_param('PX');
+		$pxcmd = $this->req->get_param('PX');
 		if( !$this->is_login() && $pxcmd == 'admin.logout' ){
 			echo $this->clover->view()->bind(
 				'/system/logout.twig',
 				array(
-					'url_backto' => $this->px->href( $this->px->req()->get_request_file_path() ),
+					'url_backto' => $this->px->href( $this->req->get_request_file_path() ),
 				)
 			);
 			exit;
 		}
 
-		$user_id = $this->px->req()->get_session('ADMIN_USER_ID');
-		$this->px->req()->delete_session('ADMIN_USER_ID');
-		$this->px->req()->delete_session('ADMIN_USER_PW');
-		$this->clover->logger()->log('User \''.$user_id.'\' logged out.');
-		header('Location:'.$this->px->href( $this->px->req()->get_request_file_path().'?PX='.htmlspecialchars(''.$pxcmd) ));
+		$user_id = $this->req->get_session('ADMIN_USER_ID');
+		$this->req->delete_session('ADMIN_USER_ID');
+		$this->req->delete_session('ADMIN_USER_PW');
+		$this->logger->log('User \''.$user_id.'\' logged out.');
+		header('Location:'.$this->px->href( $this->req->get_request_file_path().'?PX='.htmlspecialchars(''.$pxcmd) ));
 		exit;
 	}
 
@@ -151,8 +169,11 @@ class auth {
 	 * ログインしているか確認する
 	 */
 	public function is_login(){
-		$ADMIN_USER_ID = $this->px->req()->get_session('ADMIN_USER_ID');
-		$ADMIN_USER_PW = $this->px->req()->get_session('ADMIN_USER_PW');
+		$ses_id = 'ADMIN_USER_ID';
+		$ses_pw = 'ADMIN_USER_PW';
+
+		$ADMIN_USER_ID = $this->req->get_session($ses_id);
+		$ADMIN_USER_PW = $this->req->get_session($ses_pw);
 		if( !is_string($ADMIN_USER_ID) || !strlen($ADMIN_USER_ID) ){
 			return false;
 		}
@@ -205,7 +226,7 @@ class auth {
 				'/system/login.twig',
 				array(
 					'url_backto' => '?',
-					'ADMIN_USER_ID' => $this->px->req()->get_param('ADMIN_USER_ID'),
+					'ADMIN_USER_ID' => $this->req->get_param('ADMIN_USER_ID'),
 					'csrf_token' => $this->get_csrf_token(),
 					'error_message' => ($error_message ? $this->clover->lang()->get('login_error.'.$error_message) : ''),
 				)
@@ -286,13 +307,13 @@ class auth {
 	 */
 	private function admin_user_login_successful( $user_id ){
 		$realpath_json_php = $this->realpath_account_lock.urlencode($user_id).'.json.php';
-		$this->px->fs()->rm( $realpath_json_php );
+		$this->fs->rm( $realpath_json_php );
 		return true;
 	}
 
 
 	// --------------------------------------
-	// 管理ユーザー情報
+	// 管理ユーザー情報操作
 
 	/**
 	 * 管理ユーザーを作成する
@@ -309,7 +330,7 @@ class auth {
 
 		$admin_user_list = $this->get_admin_user_list();
 		$new_profile = json_decode(json_encode($new_profile));
-		$current_user_info = $this->get_admin_user_info_full( $this->px->req()->get_session('ADMIN_USER_ID') );
+		$current_user_info = $this->get_admin_user_info_full( $this->req->get_session('ADMIN_USER_ID') );
 		if( count($admin_user_list) ){
 			// NOTE: 始めてのユーザーを作成するときは、現在のパスワードを求めない。ログインしていることを前提にしない。
 			if( !is_string($login_password) || !strlen($login_password) || !password_verify($login_password, $current_user_info->pw) ){
@@ -354,7 +375,7 @@ class auth {
 			);
 		}
 
-		$new_profile->pw = $this->clover->auth()->password_hash($new_profile->pw);
+		$new_profile->pw = $this->password_hash($new_profile->pw);
 		if( !$this->write_admin_user_data($new_profile->id, $new_profile) ){
 			return (object) array(
 				'result' => false,
@@ -373,7 +394,7 @@ class auth {
 	 * @return object 現在のユーザーの情報 (ただしパスワードハッシュを含まない)
 	 */
 	public function get_login_user_info(){
-		$login_user_id = $this->px->req()->get_session('ADMIN_USER_ID');
+		$login_user_id = $this->req->get_session('ADMIN_USER_ID');
 		if( !is_string($login_user_id) || !strlen($login_user_id) ){
 			// ログインしていない
 			return null;
@@ -400,7 +421,7 @@ class auth {
 		if( !is_dir($this->realpath_admin_users) ){
 			return array();
 		}
-		$filelist = $this->px->fs()->ls($this->realpath_admin_users);
+		$filelist = $this->fs->ls($this->realpath_admin_users);
 		$rtn = array();
 		foreach( $filelist as $basename ){
 			$user_id = preg_replace( '/\.json(?:\.php)?$/si', '', $basename );
@@ -446,7 +467,7 @@ class auth {
 		}
 
 		$user_info = null;
-		if( is_dir($this->realpath_admin_users) && $this->px->fs()->ls($this->realpath_admin_users) ){
+		if( strlen($this->realpath_admin_users ?? '') && is_dir($this->realpath_admin_users) && $this->fs->ls($this->realpath_admin_users) ){
 			if( $this->admin_user_data_exists( $user_id ) ){
 				$user_info = $this->read_admin_user_data( $user_id );
 				if( !isset($user_info->id) || $user_info->id != $user_id ){
@@ -455,7 +476,7 @@ class auth {
 				}
 			}
 		}
-		return $user_info;
+		return is_null($user_info) ? $user_info : (object) $user_info;
 	}
 
 	/**
@@ -466,7 +487,7 @@ class auth {
 	 */
 	public function update_login_user_info( $new_profile, $login_password ){
 		$new_profile = json_decode(json_encode($new_profile));
-		$login_user_id = $this->px->req()->get_session('ADMIN_USER_ID');
+		$login_user_id = $this->req->get_session('ADMIN_USER_ID');
 		if( !is_string($login_user_id) || !strlen($login_user_id) ){
 			// ログインしていない
 			return (object) array(
@@ -502,10 +523,10 @@ class auth {
 			if( isset($new_profile->id) && is_string($new_profile->id) ){
 				$new_login_user_id = $new_profile->id;
 			}
-			$this->px->req()->set_session('ADMIN_USER_ID', $new_login_user_id);
+			$this->req->set_session('ADMIN_USER_ID', $new_login_user_id);
 			if( isset($new_profile->pw) && is_string($new_profile->pw) && strlen($new_profile->pw) ){
 				$new_user_info = $this->get_admin_user_info_full($new_login_user_id);
-				$this->px->req()->set_session('ADMIN_USER_PW', $new_user_info->pw);
+				$this->req->set_session('ADMIN_USER_PW', $new_user_info->pw);
 			}
 		}
 
@@ -527,7 +548,7 @@ class auth {
 			'errors' => (object) array(),
 		);
 
-		$current_user_info = $this->get_admin_user_info_full( $this->px->req()->get_session('ADMIN_USER_ID') );
+		$current_user_info = $this->get_admin_user_info_full( $this->req->get_session('ADMIN_USER_ID') );
 		if( !is_string($login_password) || !strlen($login_password) || !password_verify($login_password, $current_user_info->pw) ){
 			// 現在のパスワードを確認
 			return (object) array(
@@ -648,7 +669,7 @@ class auth {
 		if(isset($new_profile->pw) && is_string($new_profile->pw) && strlen($new_profile->pw)){
 			$log_message .= '; Password changed';
 		}
-		$this->clover->logger()->log($log_message);
+		$this->logger->log($log_message);
 
 		return $result;
 	}
@@ -661,7 +682,7 @@ class auth {
 	 * @param string $login_password ログインしているユーザーの現在のパスワード
 	 */
 	public function delete_admin_user_info( $target_user_id, $login_password ){
-		$current_user_info = $this->get_admin_user_info_full( $this->px->req()->get_session('ADMIN_USER_ID') );
+		$current_user_info = $this->get_admin_user_info_full( $this->req->get_session('ADMIN_USER_ID') );
 		if( !is_string($login_password) || !strlen($login_password) || !password_verify($login_password, $current_user_info->pw) ){
 			// 現在のパスワードを確認
 			return (object) array(
@@ -814,6 +835,18 @@ class auth {
 	}
 
 	/**
+	 * 管理ユーザーデータファイルが存在するか確認する
+	 */
+	private function admin_user_data_exists( $user_id ){
+		$realpath_json = $this->realpath_admin_users.urlencode($user_id).'.json';
+		$realpath_json_php = $realpath_json.'.php';
+		if( is_file( $realpath_json ) || is_file($realpath_json_php) ){
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * 管理ユーザーデータファイルの書き込み
 	 */
 	private function write_admin_user_data( $user_id, $data ){
@@ -823,7 +856,7 @@ class auth {
 		if( !$result ){
 			return false;
 		}
-		$this->px->fs()->chmod_r($this->realpath_admin_users, 0700, 0700);
+		$this->fs->chmod_r($this->realpath_admin_users, 0700, 0700);
 
 		if( is_file($realpath_json) ){
 			unlink($realpath_json); // 素のJSONがあったら削除する
@@ -832,7 +865,7 @@ class auth {
 	}
 
 	/**
-	 * 管理ユーザーデータファイルを削除
+	 * 管理ユーザーデータファイルを改名
 	 */
 	private function rename_admin_user_data( $user_id, $new_user_id ){
 		$realpath_json = $this->realpath_admin_users.urlencode($user_id).'.json';
@@ -844,7 +877,7 @@ class auth {
 		$result = true;
 
 		if( is_file( $realpath_json ) ){
-			$res_rename = $this->px->fs()->rename(
+			$res_rename = $this->fs->rename(
 				$realpath_json,
 				$realpath_new_json
 			);
@@ -854,7 +887,7 @@ class auth {
 		}
 
 		if( is_file( $realpath_json_php ) ){
-			$res_rename = $this->px->fs()->rename(
+			$res_rename = $this->fs->rename(
 				$realpath_json_php,
 				$realpath_new_json_php
 			);
@@ -864,18 +897,6 @@ class auth {
 		}
 
 		return $result;
-	}
-
-	/**
-	 * 管理ユーザーデータファイルが存在するか確認する
-	 */
-	private function admin_user_data_exists( $user_id ){
-		$realpath_json = $this->realpath_admin_users.urlencode($user_id).'.json';
-		$realpath_json_php = $realpath_json.'.php';
-		if( is_file( $realpath_json ) || is_file($realpath_json_php) ){
-			return true;
-		}
-		return false;
 	}
 
 	/**
@@ -906,14 +927,14 @@ class auth {
 	 * CSRFトークンを取得する
 	 */
 	public function get_csrf_token(){
-		$ADMIN_USER_CSRF_TOKEN = $this->px->req()->get_session('ADMIN_USER_CSRF_TOKEN');
-		if( !is_array($ADMIN_USER_CSRF_TOKEN) ){
-			$ADMIN_USER_CSRF_TOKEN = array();
+		$CSRF_TOKEN = $this->req->get_session('ADMIN_USER_CSRF_TOKEN');
+		if( !is_array($CSRF_TOKEN) ){
+			$CSRF_TOKEN = array();
 		}
-		if( !count($ADMIN_USER_CSRF_TOKEN) ){
+		if( !count($CSRF_TOKEN) ){
 			return $this->create_csrf_token();
 		}
-		foreach( $ADMIN_USER_CSRF_TOKEN as $token ){
+		foreach( $CSRF_TOKEN as $token ){
 			if( $token['created_at'] < time() - ($this->csrf_token_expire / 2) ){
 				continue; // 有効期限が切れていたら評価できない
 			}
@@ -926,17 +947,17 @@ class auth {
 	 * 新しいCSRFトークンを発行する
 	 */
 	private function create_csrf_token(){
-		$ADMIN_USER_CSRF_TOKEN = $this->px->req()->get_session('ADMIN_USER_CSRF_TOKEN');
-		if( !is_array($ADMIN_USER_CSRF_TOKEN) ){
-			$ADMIN_USER_CSRF_TOKEN = array();
+		$CSRF_TOKEN = $this->req->get_session('ADMIN_USER_CSRF_TOKEN');
+		if( !is_array($CSRF_TOKEN) ){
+			$CSRF_TOKEN = array();
 		}
 
 		$hash = bin2hex(random_bytes(32));
-		array_push($ADMIN_USER_CSRF_TOKEN, array(
+		array_push($CSRF_TOKEN, array(
 			'hash' => $hash,
 			'created_at' => time(),
 		));
-		$this->px->req()->set_session('ADMIN_USER_CSRF_TOKEN', $ADMIN_USER_CSRF_TOKEN);
+		$this->req->set_session('ADMIN_USER_CSRF_TOKEN', $CSRF_TOKEN);
 		return $hash;
 	}
 
@@ -989,30 +1010,30 @@ class auth {
 	 */
 	public function is_valid_csrf_token_given(){
 
-		$csrf_token = $this->px->req()->get_param('ADMIN_USER_CSRF_TOKEN');
-		if( !$csrf_token ){
+		$CSRF_TOKEN = $this->req->get_param('ADMIN_USER_CSRF_TOKEN');
+		if( !$CSRF_TOKEN ){
 			$headers = getallheaders();
 			foreach($headers as $header_name=>$header_val){
 				if( strtolower($header_name) == 'x-px2-clover-admin-csrf-token' ){
-					$csrf_token = $header_val;
+					$CSRF_TOKEN = $header_val;
 					break;
 				}
 			}
 		}
-		if( !$csrf_token ){
+		if( !$CSRF_TOKEN ){
 			return false;
 		}
 
-		$ADMIN_USER_CSRF_TOKEN = $this->px->req()->get_session('ADMIN_USER_CSRF_TOKEN');
-		if( !is_array($ADMIN_USER_CSRF_TOKEN) ){
-			$ADMIN_USER_CSRF_TOKEN = array();
+		$CSRF_TOKEN = $this->req->get_session('ADMIN_USER_CSRF_TOKEN');
+		if( !is_array($CSRF_TOKEN) ){
+			$CSRF_TOKEN = array();
 		}
-		foreach( $ADMIN_USER_CSRF_TOKEN as $idx => $token ){
+		foreach( $CSRF_TOKEN as $idx => $token ){
 			if( $token['created_at'] < time() - $this->csrf_token_expire ){
 				// 有効期限が切れていたら評価できない。
 				// 配列から削除する。
-				unset($ADMIN_USER_CSRF_TOKEN[$idx]);
-				$this->px->req()->set_session('ADMIN_USER_CSRF_TOKEN', $ADMIN_USER_CSRF_TOKEN);
+				unset($CSRF_TOKEN[$idx]);
+				$this->req->set_session('ADMIN_USER_CSRF_TOKEN', $CSRF_TOKEN);
 				continue;
 			}
 			if( $token['hash'] == $csrf_token ){
@@ -1022,5 +1043,4 @@ class auth {
 
 		return false;
 	}
-
 }
