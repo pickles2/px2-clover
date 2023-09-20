@@ -77,13 +77,34 @@ export default function ConfigMembers(props){
 
 							iterate79.fnc({}, [
 								function(it2){
-									it2.next();
+									if( modal.$modal.find('[name=current_pw]').length ){
+										it2.next({
+											"current_pw": modal.$modal.find('[name=current_pw]').val(),
+										});
+										return;
+									}
+
+									var $body = $( main.cloverUtils.bindTwig(
+										require('-!text-loader!./ConfigMembers_files/templates/currentPassword.twig'),
+										{
+											main: main,
+										}
+									) );
+									px2style.modal({
+										"title": "パスワード",
+										"body": $body,
+										"form": {
+											"submit": function(){
+												it2.next({
+													"current_pw": $body.find('input[name=current_pw]').val(),
+												});
+											}
+										},
+									}, function(){
+									});
 								},
-								function(it2){
-									it2.next();
-								},
-								function(){
-									newMemberInfo.current_pw = modal.$modal.find('[name=current_pw]').val();
+								function(it2, data){
+									newMemberInfo.current_pw = data.current_pw;
 									newMemberInfo.name = modal.$modal.find('[name=name]').val();
 									newMemberInfo.id = modal.$modal.find('[name=id]').val();
 									newMemberInfo.email = modal.$modal.find('[name=email]').val();
@@ -121,9 +142,12 @@ export default function ConfigMembers(props){
 												return;
 											}
 											modal.unlock();
-											it1.next();
+											it2.next();
 										}
 									);
+								},
+								function(){
+									it1.next();
 								},
 							]);
 

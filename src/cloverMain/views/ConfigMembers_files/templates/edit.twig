@@ -1,6 +1,7 @@
 <div class="px2-p">
 	<div class="px2-form-input-list">
 		<ul class="px2-form-input-list__ul">
+			{% if errors.current_pw %}
 			<li class="px2-form-input-list__li px2-form-input-list__li--required{{ errors.current_pw ? ' px2-form-input-list__li--error' : '' }}">
 				<div class="px2-form-input-list__label"><label for="input-current_pw">{{ main.lb.get('ui_label.current_pw') }}</label></div>
 				<div class="px2-form-input-list__input">
@@ -12,6 +13,7 @@
 					{% endif %}
 				</div>
 			</li>
+			{% endif %}
 			<li class="px2-form-input-list__li px2-form-input-list__li--required{{ errors.name ? ' px2-form-input-list__li--error' : '' }}">
 				<div class="px2-form-input-list__label"><label for="input-name">{{ main.lb.get('ui_label.user_name') }}</label></div>
 				<div class="px2-form-input-list__input">
