@@ -172,6 +172,7 @@ export default function ConfigMembers(props){
 		e.preventDefault();
 		var modal;
 		var targetId = memberInfo.id;
+		var newMemberInfo = {};
 		iterate79.fnc({}, [
 			(it1) => {
 				var $body = $('<div>')
@@ -205,47 +206,92 @@ export default function ConfigMembers(props){
 							e.preventDefault();
 							modal.lock();
 
-							var params = {
-								'target_id': targetId,
-								'current_pw': modal.$modal.find('[name=current_pw]').val(),
-								'name': modal.$modal.find('[name=name]').val(),
-								'id': modal.$modal.find('[name=id]').val(),
-								'email': modal.$modal.find('[name=email]').val(),
-								'lang': modal.$modal.find('select[name=lang]').val(),
-								'role': modal.$modal.find('select[name=role]').val(),
-							};
-							if( modal.$modal.find('[name=pw]').val().length || modal.$modal.find('[name=pw_retype]').val().length ){
-								params.pw = modal.$modal.find('[name=pw]').val();
-								params.pw_retype = modal.$modal.find('[name=pw_retype]').val();
-							}
-
-							main.px2utils.px2cmd(
-								'/?PX=admin.api.update_member',
-								params,
-								function( res, error ){
-									if( error || !res.result ){
-										modal.replaceBody( main.cloverUtils.bindTwig(
-											require('-!text-loader!./ConfigMembers_files/templates/edit.twig'),
-											{
-												"main": main,
-												"values": params,
-												"errors": res.errors,
-											}
-										) );
-
-										modal.unlock();
+							iterate79.fnc({}, [
+								function(it2){
+									if( modal.$modal.find('[name=current_pw]').length ){
+										it2.next({
+											"current_pw": modal.$modal.find('[name=current_pw]').val(),
+										});
 										return;
 									}
-									reloadMemberList();
-									modal.unlock();
-									px2style.closeModal();
 
-									main.link('?PX=admin.config.members');
-								}
-							);
+									var $body = $( main.cloverUtils.bindTwig(
+										require('-!text-loader!./ConfigMembers_files/templates/currentPassword.twig'),
+										{
+											main: main,
+										}
+									) );
+									px2style.modal({
+										"title": "パスワード",
+										"body": $body,
+										"form": {
+											"submit": function(){
+												it2.next({
+													"current_pw": $body.find('input[name=current_pw]').val(),
+												});
+											}
+										},
+									}, function(){
+									});
+								},
+								function(it2, data){
+									newMemberInfo.current_pw = data.current_pw;
+									newMemberInfo.name = modal.$modal.find('[name=name]').val();
+									newMemberInfo.id = modal.$modal.find('[name=id]').val();
+									newMemberInfo.email = modal.$modal.find('[name=email]').val();
+									newMemberInfo.lang = modal.$modal.find('select[name=lang]').val();
+									newMemberInfo.role = modal.$modal.find('select[name=role]').val();
+
+									var params = {
+										'target_id': targetId,
+										'current_pw': newMemberInfo.current_pw,
+										'name': newMemberInfo.name,
+										'id': newMemberInfo.id,
+										'email': newMemberInfo.email,
+										'lang': newMemberInfo.lang,
+										'role': newMemberInfo.role,
+									};
+									if( modal.$modal.find('[name=pw]').val().length || modal.$modal.find('[name=pw_retype]').val().length ){
+										params.pw = modal.$modal.find('[name=pw]').val();
+										params.pw_retype = modal.$modal.find('[name=pw_retype]').val();
+									}
+
+									main.px2utils.px2cmd(
+										'/?PX=admin.api.update_member',
+										params,
+										function( res, error ){
+											if( !res.result || error ){
+												modal.replaceBody( main.cloverUtils.bindTwig(
+													require('-!text-loader!./ConfigMembers_files/templates/edit.twig'),
+													{
+														"main": main,
+														"values": params,
+														"errors": res.errors,
+													}
+												) );
+
+												modal.unlock();
+												return;
+											}
+											modal.unlock();
+											it2.next();
+										}
+									);
+								},
+								function(){
+									it1.next();
+								},
+							]);
+
 						}
 					},
 				});
+			},
+			(it1) => {
+				reloadMemberList();
+				px2style.closeModal();
+
+				main.link('?PX=admin.config.members');
 				it1.next();
 			},
 		]);
