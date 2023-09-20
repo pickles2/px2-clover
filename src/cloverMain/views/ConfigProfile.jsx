@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import it79 from 'iterate79';
+import iterate79 from 'iterate79';
 import React, { useContext, useState } from "react";
 import {MainContext} from '../context/MainContext';
 import Link from '../components/Link';
@@ -13,7 +13,7 @@ export default function ConfigProfile(props){
 		e.preventDefault();
 		var $form = $(e.target);
 
-		it79.fnc({}, [
+		iterate79.fnc({}, [
 			function(it){
 				if( $form.find('input[name=current_pw]').length ){
 					it.next({
@@ -191,7 +191,7 @@ export default function ConfigProfile(props){
 								</div>
 							</li>
 							<li className={"px2-form-input-list__li"+(hasValidationError('lang') ? ' px2-form-input-list__li--error' : '')}>
-								<div className="px2-form-input-list__label"><label htmlFor="input-lang">Language</label></div>
+								<div className="px2-form-input-list__label"><label htmlFor="input-lang">{main.lb.get('ui_label.user_lang')}</label></div>
 								<div className="px2-form-input-list__input">
 									<select id="input-lang" name="lang" className={"px2-input"+(hasValidationError('lang') ? ' px2-input--error' : '')} defaultValue={main.profile.lang}>
 										<option value="en">English</option>

@@ -32,6 +32,7 @@ export default function ConfigMembers(props){
 	function createNewMember(e){
 		e.preventDefault();
 		var modal;
+		var newMemberInfo = {};
 		iterate79.fnc({}, [
 			(it1) => {
 				var $body = $('<div>')
@@ -74,46 +75,67 @@ export default function ConfigMembers(props){
 							e.preventDefault();
 							modal.lock();
 
-							var params = {
-								'current_pw': modal.$modal.find('[name=current_pw]').val(),
-								'name': modal.$modal.find('[name=name]').val(),
-								'id': modal.$modal.find('[name=id]').val(),
-								'email': modal.$modal.find('[name=email]').val(),
-								'lang': modal.$modal.find('select[name=lang]').val(),
-								'role': modal.$modal.find('select[name=role]').val(),
-							};
-							if( modal.$modal.find('[name=pw]').val().length || modal.$modal.find('[name=pw_retype]').val().length ){
-								params.pw = modal.$modal.find('[name=pw]').val();
-								params.pw_retype = modal.$modal.find('[name=pw_retype]').val();
-							}
-							main.px2utils.px2cmd(
-								'/?PX=admin.api.create_new_member',
-								params,
-								function( res, error ){
-									if( !res.result || error ){
-										console.error('Error:', res);
-										modal.replaceBody( main.cloverUtils.bindTwig(
-											require('-!text-loader!./ConfigMembers_files/templates/edit.twig'),
-											{
-												"main": main,
-												"values": params,
-												"errors": res.errors,
-											}
-										) );
+							iterate79.fnc({}, [
+								function(it2){
+									it2.next();
+								},
+								function(it2){
+									it2.next();
+								},
+								function(){
+									newMemberInfo.current_pw = modal.$modal.find('[name=current_pw]').val();
+									newMemberInfo.name = modal.$modal.find('[name=name]').val();
+									newMemberInfo.id = modal.$modal.find('[name=id]').val();
+									newMemberInfo.email = modal.$modal.find('[name=email]').val();
+									newMemberInfo.lang = modal.$modal.find('select[name=lang]').val();
+									newMemberInfo.role = modal.$modal.find('select[name=role]').val();
 
-										modal.unlock();
-										return;
+									var params = {
+										'current_pw': newMemberInfo.current_pw,
+										'name': newMemberInfo.name,
+										'id': newMemberInfo.id,
+										'email': newMemberInfo.email,
+										'lang': newMemberInfo.lang,
+										'role': newMemberInfo.role,
+									};
+									if( modal.$modal.find('[name=pw]').val().length || modal.$modal.find('[name=pw_retype]').val().length ){
+										params.pw = modal.$modal.find('[name=pw]').val();
+										params.pw_retype = modal.$modal.find('[name=pw_retype]').val();
 									}
-									reloadMemberList();
-									modal.unlock();
-									px2style.closeModal();
+									main.px2utils.px2cmd(
+										'/?PX=admin.api.create_new_member',
+										params,
+										function( res, error ){
+											if( !res.result || error ){
+												console.error('Error:', res);
+												modal.replaceBody( main.cloverUtils.bindTwig(
+													require('-!text-loader!./ConfigMembers_files/templates/edit.twig'),
+													{
+														"main": main,
+														"values": params,
+														"errors": res.errors,
+													}
+												) );
 
-									main.link('?PX=admin.config.members');
-								}
-							);
+												modal.unlock();
+												return;
+											}
+											modal.unlock();
+											it1.next();
+										}
+									);
+								},
+							]);
+
 						}
 					},
 				});
+			},
+			(it1) => {
+				reloadMemberList();
+				px2style.closeModal();
+
+				main.link('?PX=admin.config.members');
 				it1.next();
 			},
 		]);
@@ -302,62 +324,59 @@ export default function ConfigMembers(props){
 		});
 	}
 
+	if(!memberList || !main.profile){
+		return (<p>...</p>);
+	}
+
+	if(main.bootupInfoLoaded && !main.bootupInfo.authorization.members){
+		return (<p>権限がありません。</p>);
+	}
+
 	return (
 		<>
-			{(!memberList || !main.profile)
+			<p className="px2-text-align-right">
+				<button type="button" className="px2-btn px2-btn--primary" onClick={createNewMember}>新規メンバーを登録する</button>
+			</p>
+			{(memberListAry && memberListAry.length)
 				?<>
-					<p>...</p>
+					<div className="px2-responsive">
+						<table className="px2-table">
+							<thead>
+								<tr>
+									<th>{main.lb.get('ui_label.user_id')}</th>
+									<th>{main.lb.get('ui_label.user_name')}</th>
+									<th>{main.lb.get('ui_label.user_email')}</th>
+									<th>{main.lb.get('ui_label.user_role')}</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+							{memberListAry.map((memberInfo, index) => {
+								return <tr key={index}>
+									<td>{ memberInfo.id }</td>
+									<td>{ memberInfo.name }</td>
+									<td>{ memberInfo.email }</td>
+									<td>{ main.lb.get(`role.${memberInfo.role}`) }</td>
+									{ memberInfo.id == main.profile.id ? <>
+										<td>(You)</td>
+									</> : <>
+										<td>
+											<button type="button" className="px2-btn px2-btn--primary" onClick={(e)=>{editMember(e, memberInfo)}}>編集</button>
+											<button type="button" className="px2-btn px2-btn--danger" onClick={(e)=>{deleteMember(e, memberInfo)}}>削除</button>
+										</td>
+									</> }
+								</tr>;
+							})}
+							</tbody>
+						</table>
+					</div>
 				</>
-			:((main.bootupInfoLoaded && !main.bootupInfo.authorization.members)
-				?<>
-					<p>権限がありません。</p>
-				</>
-			:
-				<>
-					<p className="px2-text-align-right">
-						<button type="button" className="px2-btn px2-btn--primary" onClick={createNewMember}>新規メンバーを登録する</button>
+				:<>
+					<p>
+						メンバー情報は登録されていません。<br />
 					</p>
-					{(memberListAry && memberListAry.length)
-						?<>
-							<div className="px2-responsive">
-								<table className="px2-table">
-									<thead>
-										<tr>
-											<th>{main.lb.get('ui_label.user_id')}</th>
-											<th>{main.lb.get('ui_label.user_name')}</th>
-											<th>{main.lb.get('ui_label.user_email')}</th>
-											<th>{main.lb.get('ui_label.user_role')}</th>
-											<th></th>
-										</tr>
-									</thead>
-									<tbody>
-									{memberListAry.map((memberInfo, index) => {
-										return <tr key={index}>
-											<td>{ memberInfo.id }</td>
-											<td>{ memberInfo.name }</td>
-											<td>{ memberInfo.email }</td>
-											<td>{ main.lb.get(`role.${memberInfo.role}`) }</td>
-											{ memberInfo.id == main.profile.id ? <>
-												<td>(You)</td>
-											</> : <>
-												<td>
-													<button type="button" className="px2-btn px2-btn--primary" onClick={(e)=>{editMember(e, memberInfo)}}>編集</button>
-													<button type="button" className="px2-btn px2-btn--danger" onClick={(e)=>{deleteMember(e, memberInfo)}}>削除</button>
-												</td>
-											</> }
-										</tr>;
-									})}
-									</tbody>
-								</table>
-							</div>
-						</>
-						:<>
-							<p>
-								メンバー情報は登録されていません。<br />
-							</p>
-						</>
-					}
-				</>)}
+				</>
+			}
 		</>
 	);
 }

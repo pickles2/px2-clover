@@ -2,7 +2,7 @@
 	<div class="px2-form-input-list">
 		<ul class="px2-form-input-list__ul">
 			<li class="px2-form-input-list__li px2-form-input-list__li--required{{ errors.current_pw ? ' px2-form-input-list__li--error' : '' }}">
-				<div class="px2-form-input-list__label"><label for="input-current_pw">パスワード</label></div>
+				<div class="px2-form-input-list__label"><label for="input-current_pw">{{ main.lb.get('ui_label.current_pw') }}</label></div>
 				<div class="px2-form-input-list__input">
 					<input type="password" id="input-current_pw" name="current_pw" value="{{ values.current_pw|e("html_attr") }}" class="px2-input px2-input--block" />
 					{% if errors.current_pw %}
@@ -13,7 +13,7 @@
 				</div>
 			</li>
 			<li class="px2-form-input-list__li px2-form-input-list__li--required{{ errors.name ? ' px2-form-input-list__li--error' : '' }}">
-				<div class="px2-form-input-list__label"><label for="input-name">名前</label></div>
+				<div class="px2-form-input-list__label"><label for="input-name">{{ main.lb.get('ui_label.user_name') }}</label></div>
 				<div class="px2-form-input-list__input">
 					<input type="text" id="input-name" name="name" value="{{ values.name|e("html_attr") }}" class="px2-input px2-input--block" />
 					{% if errors.name %}
@@ -24,7 +24,7 @@
 				</div>
 			</li>
 			<li class="px2-form-input-list__li px2-form-input-list__li--required{{ errors.id ? ' px2-form-input-list__li--error' : '' }}">
-				<div class="px2-form-input-list__label"><label for="input-id">ID</label></div>
+				<div class="px2-form-input-list__label"><label for="input-id">{{ main.lb.get('ui_label.user_id') }}</label></div>
 				<div class="px2-form-input-list__input">
 					<p class="px2-note">半角英数字、ハイフン、アンダースコア が使えます。</p>
 					<input type="text" id="input-id" name="id" value="{{ values.id|e("html_attr") }}" class="px2-input px2-input--block" />
@@ -36,7 +36,7 @@
 				</div>
 			</li>
 			<li class="px2-form-input-list__li{{ errors.pw or errors.pw_retype ? ' px2-form-input-list__li--error' : '' }}">
-				<div class="px2-form-input-list__label"><label for="input-pw">パスワード</label></div>
+				<div class="px2-form-input-list__label"><label for="input-pw">{{ main.lb.get('ui_label.user_pw') }}</label></div>
 				<div class="px2-form-input-list__input">
 					<p class="px2-note">パスワードを変更する場合のみ入力してください。</p>
 					<input type="password" id="input-pw" name="pw" value="{{ values.pw|e("html_attr") }}" class="px2-input px2-input--block" />
@@ -55,7 +55,7 @@
 				</div>
 			</li>
 			<li class="px2-form-input-list__li{{ errors.lang ? ' px2-form-input-list__li--error' : '' }}">
-				<div class="px2-form-input-list__label"><label for="input-lang">言語</label></div>
+				<div class="px2-form-input-list__label"><label for="input-lang">{{ main.lb.get('ui_label.user_lang') }}</label></div>
 				<div class="px2-form-input-list__input">
 					<select id="input-lang" name="lang" class="px2-input">
 						<option value="en"{{ values.lang == 'en' ? ' selected="selected"' : "" }}>English</option>
@@ -69,7 +69,7 @@
 				</div>
 			</li>
 			<li class="px2-form-input-list__li{{ errors.email ? ' px2-form-input-list__li--error' : '' }}">
-				<div class="px2-form-input-list__label"><label for="input-email">メールアドレス</label></div>
+				<div class="px2-form-input-list__label"><label for="input-email">{{ main.lb.get('ui_label.user_email') }}</label></div>
 				<div class="px2-form-input-list__input">
 					<input type="text" id="input-email" name="email" value="{{ values.email|e("html_attr") }}" class="px2-input px2-input--block" />
 					{% if errors.email %}
@@ -80,7 +80,7 @@
 				</div>
 			</li>
 			<li class="px2-form-input-list__li{{ errors.role ? ' px2-form-input-list__li--error' : '' }}">
-				<div class="px2-form-input-list__label"><label for="input-role">ロール</label></div>
+				<div class="px2-form-input-list__label"><label for="input-role">{{ main.lb.get('ui_label.user_role') }}</label></div>
 				<div class="px2-form-input-list__input">
 					<select id="input-role" name="role" class="px2-input">
 						<option value="member"{{ values.role == 'member' ? ' selected="selected"' : "" }}>{{main.lb.get('role.member')}}</option>
