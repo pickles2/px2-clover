@@ -172,9 +172,9 @@ class auth {
 			exit;
 		}
 
-		$user_id = $this->req->get_session('ADMIN_USER_ID');
-		$this->req->delete_session('ADMIN_USER_ID');
-		$this->req->delete_session('ADMIN_USER_PW');
+		$user_id = $this->req->get_session($this->session_key_id);
+		$this->req->delete_session($this->session_key_id);
+		$this->req->delete_session($this->session_key_pw);
 		$this->logger()->log('User \''.$user_id.'\' logged out.');
 		header('Location:'.$this->px->href( $this->req->get_request_file_path().'?PX='.htmlspecialchars(''.$pxcmd) ));
 		exit;
@@ -499,7 +499,7 @@ class auth {
 	 */
 	public function update_login_user_info( $new_profile, $login_password ){
 		$new_profile = json_decode(json_encode($new_profile));
-		$login_user_id = $this->req->get_session('ADMIN_USER_ID');
+		$login_user_id = $this->req->get_session($this->session_key_id);
 		if( !is_string($login_user_id) || !strlen($login_user_id) ){
 			// ログインしていない
 			return (object) array(
@@ -535,10 +535,10 @@ class auth {
 			if( isset($new_profile->id) && is_string($new_profile->id) ){
 				$new_login_user_id = $new_profile->id;
 			}
-			$this->req->set_session('ADMIN_USER_ID', $new_login_user_id);
+			$this->req->set_session($this->session_key_id, $new_login_user_id);
 			if( isset($new_profile->pw) && is_string($new_profile->pw) && strlen($new_profile->pw) ){
 				$new_user_info = $this->get_admin_user_info_full($new_login_user_id);
-				$this->req->set_session('ADMIN_USER_PW', $new_user_info->pw);
+				$this->req->set_session($this->session_key_pw, $new_user_info->pw);
 			}
 		}
 
@@ -560,7 +560,7 @@ class auth {
 			'errors' => (object) array(),
 		);
 
-		$current_user_info = $this->get_admin_user_info_full( $this->req->get_session('ADMIN_USER_ID') );
+		$current_user_info = $this->get_admin_user_info_full( $this->req->get_session($this->session_key_id) );
 		if( !is_string($login_password) || !strlen($login_password) || !password_verify($login_password, $current_user_info->pw) ){
 			// 現在のパスワードを確認
 			return (object) array(
@@ -694,7 +694,7 @@ class auth {
 	 * @param string $login_password ログインしているユーザーの現在のパスワード
 	 */
 	public function delete_admin_user_info( $target_user_id, $login_password ){
-		$current_user_info = $this->get_admin_user_info_full( $this->req->get_session('ADMIN_USER_ID') );
+		$current_user_info = $this->get_admin_user_info_full( $this->req->get_session($this->session_key_id) );
 		if( !is_string($login_password) || !strlen($login_password) || !password_verify($login_password, $current_user_info->pw) ){
 			// 現在のパスワードを確認
 			return (object) array(
