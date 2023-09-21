@@ -131,7 +131,7 @@ class scheduler{
 		$realpath_status_json_php = $realpath_status_json.'.php';
 
 		$json = array(
-			'last_run_at' => date('Y-m-d H:i:s'),
+			'last_run_at' => date('c'),
 		);
 		if( !dataDotPhp::write_json($realpath_status_json_php, $json) ){
 			$this->schedulerHelper->log('--- Error: Failed to write status.json.php');
