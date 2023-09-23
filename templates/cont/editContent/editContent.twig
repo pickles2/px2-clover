@@ -146,11 +146,16 @@
 						return;
 					},
 					'complete': function(){
+						var item = 'content:'+page_path;
+						if( target_mode == 'theme_layout' ){
+							item = 'theme:'+theme_id+'/'+layout_id;
+						}
+
 						$.ajax({
 							"url": '?PX=admin.api.checkout.release',
 							"method": 'post',
 							'data': {
-								'item': 'content:'+page_path,
+								'item': item,
 								'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
 							},
 							"cache": false,

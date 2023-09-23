@@ -12,6 +12,7 @@ class checkout{
 	/** Picklesオブジェクト */
 	private $px;
 
+	/** 編集ロックの期限 */
 	private $lock_expire = 30 * 60;
 
 	/**
@@ -26,6 +27,14 @@ class checkout{
 
 	/**
 	 * 編集を開始する
+	 *
+	 * @param string $item ロックする対象。
+	 * - `content:${path}`: コンテンツ
+	 * - `theme:${theme_id}/${layout_id}`: テーマ/レイアウト
+	 * @return object 結果
+	 * @return boolean $return->result 編集ロックに成功したら true, 失敗したら false
+	 * @return string $return->holder_id 現在編集中のユーザーのID
+	 * @return string $return->start_at 編集ロックを開始した時刻
 	 */
 	public function start( $item ){
 		$private_data_dir = $this->clover->realpath_private_data_dir();
