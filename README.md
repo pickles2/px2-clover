@@ -45,7 +45,6 @@ $conf->allow_pxcommands = 1;
 	$conf->funcs->before_sitemap = [
 		// px2-clover
 		tomk79\pickles2\px2clover\main::register( array(
-			"app_mode" => "web", // アプリの実行モード; "web" (default) | "desktop"
 			"protect_preview" => true, // プレビューに認証を要求するか？; false (default) | true
 		) ),
 	];
@@ -76,7 +75,7 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
-### pickles2/px2-clover v0.2.10 (リリース日未定)
+### pickles2/px2-clover v0.3.0 (リリース日未定)
 
 - プレビューへのリクエストに対して、POSTの場合でも管理画面用CSRFトークンを求めないように修正した。(アプリケーション側で処理するべきリクエストであるため)
 - チェックアウト機能を追加した。
@@ -85,6 +84,7 @@ $conf->allow_pxcommands = 1;
 - アカウントがロックされているときに、メッセージを表示するようになった。
 - ログと内部管理される時刻情報を ISO 8601 形式 に変更した。
 - いくつかのログメッセージを修正した。
+- プラグインオプション `app_mode` を廃止した。
 - その他、不具合の修正、安全性の向上、内部コードの修正など。
 
 ### pickles2/px2-clover v0.2.9 (2023年8月29日)

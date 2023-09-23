@@ -31,12 +31,12 @@ class register{
 		if( !is_object($options) ){
 			$options = (object) $options;
 		}
-		if( !isset($options->app_mode) ){
-			$options->app_mode = "web";
-		}
 		if( !isset($options->protect_preview) ){
 			$options->protect_preview = false;
 		}
+
+		// NOTE: `app_mode` オプションは、 px2-clover v0.3.0 で廃止されました。
+		$options->app_mode = "web";
 
 		if( !$px->req()->is_cmd() ){
 
@@ -46,31 +46,9 @@ class register{
 			$clover->initializer()->initialize();
 
 			// --------------------------------------
-			// ガード: ループバックIP以外は desktop モードを利用できないようにする。
-			if( !isset($_SERVER['REMOTE_ADDR']) ){
-				// ユーザーのIPアドレスを取得できない場合、desktopモードは無効にする。
-				$options->app_mode = 'web';
-			}else{
-				switch( $_SERVER['REMOTE_ADDR'] ){
-					case '127.0.0.1':
-					case '::1':
-						break;
-					default:
-						// ユーザーのIPアドレスがループバックIPでない場合、desktopモードは無効にする。
-						$options->app_mode = 'web';
-						break;
-				}
-			}
-
-			// --------------------------------------
-			// ガード: デスクトップモードが無効だったら、他のパッケージのデスクトップモードも無効化する。
-			if(
-				$options->app_mode != 'desktop' &&
-				(
-					$px->req()->get_param('appMode') == 'desktop'
-					|| $px->req()->get_param('app_mode') == 'desktop'
-				)
-			){
+			// ガード: 他のパッケージのデスクトップモードを無効化する。
+			if( $px->req()->get_param('appMode') == 'desktop' || $px->req()->get_param('app_mode') == 'desktop' ){
+				$px->set_status(403);
 				$px->header('Content-type: application/json');
 				echo json_encode(array(
 					'result' => false,
@@ -381,18 +359,6 @@ class register{
 						$this->clover->authorize_required('config', 'json');
 						$app = new funcs\api\maintenanceMode($this->clover);
 						$app->exit();
-						break;
-					case 'open_sitemap_file':
-						$filefullname = $this->px->req()->get_param('filefullname');
-						$sitemap_dir = $this->px->get_realpath_homedir().'sitemaps/';
-						$desktopHelper = new helpers\desktop($this->clover);
-						$result = $desktopHelper->open( $sitemap_dir.$filefullname );
-						$this->px->header('Content-type: application/json');
-						echo json_encode(array(
-							'result' => $result,
-							'message' => ($result ? 'OK' : 'Failed to open file.'),
-						));
-						exit;
 						break;
 					case 'remote_finder':
 						$this->clover->allowed_method('post');

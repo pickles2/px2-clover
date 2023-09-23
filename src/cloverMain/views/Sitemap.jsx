@@ -74,21 +74,6 @@ export default React.memo(function Sitemap(props){
 	}
 
 	/**
-	 * サイトマップファイルを開く
-	 * @param {*} origFileName 
-	 */
-	function openSitemapFile( origFileName ){
-		main.px2utils.px2cmd("?PX=admin.api.open_sitemap_file", {
-			'filefullname': origFileName,
-		}, (data)=>{
-			if( !data.result ){
-				console.error(data);
-				alert('Error: '+data.message);
-			}
-		});
-	}
-
-	/**
 	 * アップロードダイアログを開く
 	 */
 	function openUploadSitemapFileDialog(){
@@ -199,25 +184,14 @@ export default React.memo(function Sitemap(props){
 									<div className="cont-sitemap-file-list__edit-menu">
 										<ul>
 										{sitemapFileList.list[sitemapFileName].map( ( sitemapFileNameExt, idx )=>{
-											if( window.plugin_options.app_mode == "desktop" ){
-												return (
-													<li key={sitemapFileNameExt}>
-														{sitemapFileNameExt}: <a href="?PX=admin.api.open_sitemap_file" className="px2-btn px2-btn--secondary" onClick={(e)=>{
-															e.preventDefault();
-															openSitemapFile(sitemapFileName+'.'+sitemapFileNameExt);
-														}}>open</a>
-													</li>
-												);
-											}else{
-												return (
-													<li key={sitemapFileNameExt}>
-														{sitemapFileNameExt}: <a href="?PX=px2dthelper.sitemap.download" className="px2-btn px2-btn--secondary" onClick={(e)=>{
-															e.preventDefault();
-															downloadSitemapFile(sitemapFileName+'.'+sitemapFileNameExt);
-														}}>download</a>
-													</li>
-												);
-											}
+											return (
+												<li key={sitemapFileNameExt}>
+													{sitemapFileNameExt}: <a href="?PX=px2dthelper.sitemap.download" className="px2-btn px2-btn--secondary" onClick={(e)=>{
+														e.preventDefault();
+														downloadSitemapFile(sitemapFileName+'.'+sitemapFileNameExt);
+													}}>download</a>
+												</li>
+											);
 										} )}
 										</ul>
 										<ul>

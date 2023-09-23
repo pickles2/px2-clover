@@ -111,7 +111,6 @@ return call_user_func( function(){
 	$conf->funcs->before_sitemap = [
 		// px2-clover
 		tomk79\pickles2\px2clover\register::clover(array(
-			"app_mode" => "web",
 			"protect_preview" => false, // プレビューに認証を要求するか？
 		)),
 
