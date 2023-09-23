@@ -86,7 +86,6 @@
 				<div class="px2-form-input-list__input">
 					<select id="input-role" name="role" class="px2-input">
 						<option value="member"{{ values.role == 'member' ? ' selected="selected"' : "" }}>{{main.lb.get('role.member')}}</option>
-						<option value="specialist"{{ values.role == 'specialist' ? ' selected="selected"' : "" }}>{{main.lb.get('role.specialist')}}</option>
 						<option value="admin"{{ values.role == 'admin' ? ' selected="selected"' : "" }}>{{main.lb.get('role.admin')}}</option>
 					</select>
 					{% if errors.role %}

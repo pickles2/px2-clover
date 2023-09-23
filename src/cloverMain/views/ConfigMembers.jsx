@@ -269,7 +269,6 @@ export default function ConfigMembers(props){
 	if( memberList && memberList.list ){
 		const roleScore = {
 			"member": 0,
-			"specialist": 50,
 			"admin": 100,
 		};
 		memberListAry = JSON.parse(JSON.stringify(memberList.list));
