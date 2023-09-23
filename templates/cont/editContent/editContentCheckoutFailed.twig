@@ -1,0 +1,20 @@
+{% extends "/layouts/plain.twig" %}
+
+{% block title %}{{ title }} - コンテンツ編集 - Pickles 2 Admin Console{% endblock %}
+{% block head %}
+	{{ parent() }}
+{% endblock %}
+{% block content %}
+	<div class="px2-p px2-text-align-center">
+		<p>このコンテンツは編集中です。</p>
+		{% if holder %}
+		<ul class="px2-horizontal-list px2-horizontal-list--center">
+			<li>編集者: {{ holder.id }}</li>
+			<li>編集開始時刻: {{ start_at }}</li>
+		</ul>
+		{% endif %}
+		<p><a href="{% if backto == "preview" %}?{% elseif backto == "close" %}javascript:window.close();{% else %}?PX=admin.page_info{% endif %}" class="px2-btn px2-btn--primary">戻る</a></p>
+	</div>
+{% endblock %}
+{% block foot %}
+{% endblock %}

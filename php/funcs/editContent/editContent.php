@@ -54,6 +54,23 @@ class editContent {
 		$px2ce_res = $this->px->internal_sub_request('/?PX=px2dthelper.px2ce.client_resources&dist='.urlencode($client_resources_dist.'edit-content/'));
 		$px2ce_res = json_decode($px2ce_res, true);
 
+		$checkout_result = $this->clover->checkout()->start('content:'.$this->px->req()->get_request_file_path());
+		if( !$checkout_result->result ){
+			// 他のユーザーが編集中
+			$holder_info = $this->clover->auth()->get_admin_user_info($checkout_result->holder_id);
+			echo $this->clover->view()->bind(
+				'/cont/editContent/editContentCheckoutFailed.twig',
+				array(
+					'title' => $this->px->site()->get_current_page_info()['title'] ?? '',
+					'holder' => $holder_info,
+					'start_at' => $checkout_result->start_at,
+					'page_path' => $this->px->req()->get_request_file_path(),
+					'backto' => $backto,
+				)
+			);
+			exit;
+		}
+
 		echo $this->clover->view()->bind(
 			'/cont/editContent/editContent.twig',
 			array(

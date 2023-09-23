@@ -122,6 +122,8 @@
 										'data': encodedInput,
 										'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
 									},
+									"cache": false,
+									"timeout": 30000,
 									"error": function(error){
 										var result = null;
 										console.error('--- GPI Response Error:', input, typeof(error), error);
@@ -144,15 +146,37 @@
 						return;
 					},
 					'complete': function(){
-						if( target_mode == 'theme_layout' || backto == 'close' ){
-							window.close();
-							return;
-						}
-						if( backto == 'preview' ){
-							window.location.href = '?';
-							return;
-						}
-						window.location.href = '?PX=admin.page_info';
+						$.ajax({
+							"url": '?PX=admin.api.checkout.release',
+							"method": 'post',
+							'data': {
+								'item': 'content:'+page_path,
+								'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
+							},
+							"cache": false,
+							"timeout": 30000,
+							"error": function(error){
+								alert('Failed to unlock.');
+								console.error('--- Failed to unlock:', input, typeof(error), error);
+							},
+							"success": function(res){
+								var data = JSON.parse(res);
+								if(!data.result){
+									alert('Failed to unlock.');
+								}
+							},
+							"complete": function(){
+								if( target_mode == 'theme_layout' || backto == 'close' ){
+									window.close();
+									return;
+								}
+								if( backto == 'preview' ){
+									window.location.href = '?';
+									return;
+								}
+								window.location.href = '?PX=admin.page_info';
+							},
+						});
 					},
 					'clipboard': {
 						'set': function( data, type, event, callback ){

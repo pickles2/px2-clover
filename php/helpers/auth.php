@@ -474,7 +474,7 @@ class auth {
 	 * @param string $user_id 対象のユーザーID
 	 * @return object 対象のユーザー情報 (パスワードハッシュを含まない)
 	 */
-	private function get_admin_user_info($user_id){
+	public function get_admin_user_info($user_id){
 		$user_info = $this->get_admin_user_info_full($user_id);
 		if( !$user_info ){
 			return null;

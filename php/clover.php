@@ -72,6 +72,12 @@ class clover{
 		return $this->logger;
 	}
 
+	/** checkout */
+	public function checkout(){
+		$checkout = new helpers\checkout($this);
+		return $checkout;
+	}
+
 	/** プラグインオプションを取得 */
 	public function get_options(){
 		return $this->options;
@@ -82,6 +88,10 @@ class clover{
 		$config = new helpers\config($this);
 		return $config->get();
 	}
+
+
+	// --------------------------------------
+	// ディレクトリ取得
 
 	/** プラグイン専有の公開ディレクトリのパスを取得する */
 	public function path_files( $localpath = null ){
@@ -115,6 +125,9 @@ class clover{
 
 	/**
 	 * Gitのルートディレクトリを取得する
+	 *
+	 * @return string|boolean .git が置かれているディレクトリのパス。
+	 * 見つからない場合に false を返します。
 	 */
 	public function realpath_git_root(){
 		$current_dir = $this->px->fs()->get_realpath('./');
@@ -138,7 +151,10 @@ class clover{
 	}
 
 	/**
-	 * Composerのルートディレクトリを取得する
+	 * Composer のルートディレクトリを取得する
+	 *
+	 * @return string|boolean composer.json が置かれているディレクトリのパス。
+	 * 見つからない場合に false を返します。
 	 */
 	public function realpath_composer_root(){
 		$current_dir = $this->px->fs()->get_realpath('./');
@@ -158,8 +174,16 @@ class clover{
 	}
 
 
+	// --------------------------------------
+	// 認可
+
 	/**
 	 * 許可されたメソッドのみ通過できる
+	 * 
+	 * 許可されないメソッドの場合は、 `405 Method Not Allowed` を出力して終了する。
+	 *
+	 * @param string|array $methodList 許可されるメソッド名、またはメソッド名のリスト
+	 * @return boolean 許可されたメソッドの場合 true. 許可されないメソッドの場合は、終了するため返却されない。
 	 */
 	public function allowed_method( $methodList ){
 		if( !is_array($methodList) ){
@@ -183,17 +207,28 @@ class clover{
 
 	/**
 	 * 認可を要求する
+	 * 
+	 * 認可が得られない場合は、 `unauthorized` 画面を表示して終了する。
+	 *
+	 * @param string $authority_name 検証する権限名
+	 * @param string $format 認可が得られない場合に出力するエラー画面のフォーマット
+	 * @return boolean 認可された場合 true. 認可されない場合は、終了するため返却されない。
 	 */
-	public function authorize_required($division, $format = 'text/html'){
-		if( !$this->px->authorizer->is_authorized($division) ){
+	public function authorize_required($authority_name, $format = 'text/html'){
+		if( !$this->px->authorizer->is_authorized($authority_name) ){
 			$this->unauthorized($format);
 			exit();
 		}
-		return;
+		return true;
 	}
 
+	// --------------------------------------
+	// エラー・強制終了
+
 	/**
-	 * 401 Unauthorized を返す
+	 * 401 Unauthorized 画面を表示して終了する
+	 *
+	 * @param string $format 出力フォーマット
 	 */
 	public function unauthorized( $format = 'text/html' ){
 		while (ob_get_level()) { ob_end_clean(); }
@@ -228,7 +263,9 @@ class clover{
 	}
 
 	/**
-	 * 403 Forbidden を返す
+	 * 403 Forbidden 画面を表示して終了する
+	 *
+	 * @param string $format 出力フォーマット
 	 */
 	public function forbidden( $format = 'text/html' ){
 		while (ob_get_level()) { ob_end_clean(); }
@@ -263,7 +300,9 @@ class clover{
 	}
 
 	/**
-	 * 404 Not Found を返す
+	 * 404 Not Found 画面を表示して終了する
+	 *
+	 * @param string $format 出力フォーマット
 	 */
 	public function notfound( $format = 'text/html' ){
 		while (ob_get_level()) { ob_end_clean(); }
