@@ -588,7 +588,7 @@ class register{
 					$item = 'theme:'.$px->req()->get_param('theme_id').'/'.$px->req()->get_param('layout_id');
 				}elseif( $px->req()->get_param('target_mode') == 'theme_layout' ){
 					$tmp_data = json_decode(base64_decode($px->req()->get_param('data')));
-					preg_match('/^\/([a-zA-Z0-9\_\-]+)\/([a-zA-Z0-9\_\-]+)\.[a-zA-Z0-9]+$/', $tmp_data->page_path, $matched);
+					preg_match('/^\/([a-zA-Z0-9\_\-]+)\/([a-zA-Z0-9\_\-]+)\.[a-zA-Z0-9]+$/', $tmp_data->page_path ?? $px->req()->get_request_file_path(), $matched);
 					$tmp_theme_id = $matched[1] ?? $px->req()->get_param('theme_id') ?? null;
 					$tmp_layout_id = $matched[2] ?? $px->req()->get_param('layout_id') ?? null;
 					$item = 'theme:'.$tmp_theme_id.'/'.$tmp_layout_id;
