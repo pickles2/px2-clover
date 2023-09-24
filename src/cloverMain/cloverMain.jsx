@@ -185,7 +185,7 @@ class Layout extends React.Component {
 		const link = (url) => {
 			url = (url=>{
 				const a = document.createElement('a');
-				a.href = url;
+				a.href = (window.px2config != '/' ? window.px2config : '') + url;
 				return a.href;
 			})(url);
 			const newState = parseUrl(url);

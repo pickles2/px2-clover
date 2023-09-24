@@ -83,6 +83,7 @@ $conf->allow_pxcommands = 1;
 ### pickles2/px2-clover v0.3.1 (リリース日未定)
 
 - プラグインオプション `realpath_admin_user_dir` を追加した。
+- サブディレクトリにセットアップされたプロジェクトの場合に、リダイレクト先のパスが合わなくなることがある不具合を修正。
 
 ### pickles2/px2-clover v0.3.0 (2023年9月24日)
 
