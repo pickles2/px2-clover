@@ -45,7 +45,12 @@ $conf->allow_pxcommands = 1;
 	$conf->funcs->before_sitemap = [
 		// px2-clover
 		tomk79\pickles2\px2clover\main::register( array(
-			"protect_preview" => true, // プレビューに認証を要求するか？; false (default) | true
+			// プレビューに認証を要求するか？; false (default) | true
+			"protect_preview" => true,
+
+			// 管理ユーザーの格納ディレクトリ (省略可)
+			// 主に、サブディレクトリにインストールされたプロジェクトで、親プロジェクトとユーザーを共有したい場合に設定します。
+			"realpath_admin_user_dir" => __DIR__.'/_sys/ram/data/px2-clover/admin_users/'
 		) ),
 	];
 ```
@@ -74,6 +79,10 @@ $conf->allow_pxcommands = 1;
 
 
 ## 更新履歴 - Change log
+
+### pickles2/px2-clover v0.3.1 (リリース日未定)
+
+- プラグインオプション `realpath_admin_user_dir` を追加した。
 
 ### pickles2/px2-clover v0.3.0 (2023年9月24日)
 

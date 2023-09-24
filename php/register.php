@@ -34,6 +34,9 @@ class register{
 		if( !isset($options->protect_preview) ){
 			$options->protect_preview = false;
 		}
+		if( !is_string($options->realpath_admin_user_dir ?? null) || !strlen($options->realpath_admin_user_dir ?? '') ){
+			$options->realpath_admin_user_dir = null;
+		}
 
 		// NOTE: `app_mode` オプションは、 px2-clover v0.3.0 で廃止されました。
 		$options->app_mode = "web";

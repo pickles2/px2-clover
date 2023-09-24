@@ -21,7 +21,7 @@ class auth {
 	private $req;
 
 	/** 管理ユーザー定義ディレクトリ */
-	private $realpath_admin_users;
+	private $realpath_admin_user_dir;
 
 	/** アカウントロック情報格納ディレクトリ */
 	private $realpath_account_lock;
@@ -51,9 +51,12 @@ class auth {
 		$this->session_key_pw = 'ADMIN_USER_PW';
 
 		// 管理ユーザー定義ディレクトリ
-		$this->realpath_admin_users = $this->clover->realpath_private_data_dir('/admin_users/');
-		if( is_string($this->realpath_admin_users ?? null) && !is_dir($this->realpath_admin_users) ){
-			$this->fs->mkdir_r($this->realpath_admin_users);
+		$this->realpath_admin_user_dir = $this->clover->realpath_private_data_dir('/admin_users/');
+		if( $this->clover->get_options()->realpath_admin_user_dir ?? null ){
+			$this->realpath_admin_user_dir = $this->clover->get_options()->realpath_admin_user_dir;
+		}
+		if( is_string($this->realpath_admin_user_dir ?? null) && !is_dir($this->realpath_admin_user_dir) ){
+			$this->fs->mkdir_r($this->realpath_admin_user_dir);
 		}
 
 		// アカウントロック情報格納ディレクトリ
@@ -450,10 +453,10 @@ class auth {
 	 * 管理者ユーザーの一覧を取得する
 	 */
 	public function get_admin_user_list(){
-		if( !is_dir($this->realpath_admin_users) ){
+		if( !is_dir($this->realpath_admin_user_dir) ){
 			return array();
 		}
-		$filelist = $this->fs->ls($this->realpath_admin_users);
+		$filelist = $this->fs->ls($this->realpath_admin_user_dir);
 		$rtn = array();
 		foreach( $filelist as $basename ){
 			$user_id = preg_replace( '/\.json(?:\.php)?$/si', '', $basename );
@@ -499,7 +502,7 @@ class auth {
 		}
 
 		$user_info = null;
-		if( strlen($this->realpath_admin_users ?? '') && is_dir($this->realpath_admin_users) && $this->fs->ls($this->realpath_admin_users) ){
+		if( strlen($this->realpath_admin_user_dir ?? '') && is_dir($this->realpath_admin_user_dir) && $this->fs->ls($this->realpath_admin_user_dir) ){
 			if( $this->admin_user_data_exists( $user_id ) ){
 				$user_info = $this->read_admin_user_data( $user_id );
 				if( !isset($user_info->id) || $user_info->id != $user_id ){
@@ -851,7 +854,7 @@ class auth {
 	 * 管理ユーザーデータファイルの読み込み
 	 */
 	private function read_admin_user_data( $user_id ){
-		$realpath_json = $this->realpath_admin_users.urlencode($user_id).'.json';
+		$realpath_json = $this->realpath_admin_user_dir.urlencode($user_id).'.json';
 		$realpath_json_php = $realpath_json.'.php';
 		if( is_file($realpath_json_php) ){
 			$data = dataDotPhp::read_json($realpath_json_php);
@@ -868,7 +871,7 @@ class auth {
 	 * 管理ユーザーデータファイルが存在するか確認する
 	 */
 	private function admin_user_data_exists( $user_id ){
-		$realpath_json = $this->realpath_admin_users.urlencode($user_id).'.json';
+		$realpath_json = $this->realpath_admin_user_dir.urlencode($user_id).'.json';
 		$realpath_json_php = $realpath_json.'.php';
 		if( is_file( $realpath_json ) || is_file($realpath_json_php) ){
 			return true;
@@ -901,13 +904,13 @@ class auth {
 		$write_data->email = $new_profile->email ?? null;
 		$write_data->role = $new_profile->role ?? null;
 
-		$realpath_json = $this->realpath_admin_users.urlencode($user_id).'.json';
+		$realpath_json = $this->realpath_admin_user_dir.urlencode($user_id).'.json';
 		$realpath_json_php = $realpath_json.'.php';
 		$result = dataDotPhp::write_json($realpath_json_php, $write_data);
 		if( !$result ){
 			return false;
 		}
-		$this->fs->chmod_r($this->realpath_admin_users, 0700, 0700);
+		$this->fs->chmod_r($this->realpath_admin_user_dir, 0700, 0700);
 
 		if( is_file($realpath_json) ){
 			unlink($realpath_json); // 素のJSONがあったら削除する
@@ -919,10 +922,10 @@ class auth {
 	 * 管理ユーザーデータファイルを改名
 	 */
 	private function rename_admin_user_data( $user_id, $new_user_id ){
-		$realpath_json = $this->realpath_admin_users.urlencode($user_id).'.json';
+		$realpath_json = $this->realpath_admin_user_dir.urlencode($user_id).'.json';
 		$realpath_json_php = $realpath_json.'.php';
 
-		$realpath_new_json = $this->realpath_admin_users.urlencode($new_user_id).'.json';
+		$realpath_new_json = $this->realpath_admin_user_dir.urlencode($new_user_id).'.json';
 		$realpath_new_json_php = $realpath_new_json.'.php';
 
 		$result = true;
@@ -954,7 +957,7 @@ class auth {
 	 * 管理ユーザーデータファイルを削除
 	 */
 	private function remove_admin_user_data( $user_id ){
-		$realpath_json = $this->realpath_admin_users.urlencode($user_id).'.json';
+		$realpath_json = $this->realpath_admin_user_dir.urlencode($user_id).'.json';
 		$realpath_json_php = $realpath_json.'.php';
 		$result = true;
 		if( is_file($realpath_json) ){

@@ -15,6 +15,9 @@ class initializer{
 	/** 管理データ定義ディレクトリ */
 	private $realpath_private_data_dir;
 
+	/** 管理ユーザー格納ディレクトリ */
+	private $realpath_admin_user_dir;
+
 	/**
 	 * Constructor
 	 *
@@ -26,6 +29,10 @@ class initializer{
 
 		// 管理データ定義ディレクトリ
 		$this->realpath_private_data_dir = $this->clover->realpath_private_data_dir();
+		$this->realpath_admin_user_dir = $this->realpath_private_data_dir.'admin_users/';
+		if( $this->clover->get_options()->realpath_admin_user_dir ?? null ){
+			$this->realpath_admin_user_dir = $this->clover->get_options()->realpath_admin_user_dir;
+		}
 	}
 
 
@@ -38,11 +45,11 @@ class initializer{
 		}
 
 		// 管理ユーザーデータ
-		if( !is_dir($this->realpath_private_data_dir.'admin_users/') ){
-			$this->px->fs()->mkdir_r($this->realpath_private_data_dir.'admin_users/');
-			$this->px->fs()->chmod_r($this->realpath_private_data_dir.'admin_users/', 0700, 0700);
+		if( !is_dir($this->realpath_admin_user_dir) ){
+			$this->px->fs()->mkdir_r($this->realpath_admin_user_dir);
+			$this->px->fs()->chmod_r($this->realpath_admin_user_dir, 0700, 0700);
 		}
-		if( !is_dir($this->realpath_private_data_dir.'admin_users/') || !count( $this->px->fs()->ls($this->realpath_private_data_dir.'admin_users/') ) ){
+		if( !is_dir($this->realpath_admin_user_dir) || !count( $this->px->fs()->ls($this->realpath_admin_user_dir) ) ){
 			$this->initialize_admin_user_page();
 			exit;
 		}
@@ -70,7 +77,7 @@ class initializer{
 			);
 			$result = $this->clover->auth()->create_admin_user( $user_info, null ); // NOTE: 最初のユーザー作成時には、現在のパスワードを確認しない。
 			if( $result->result ){
-				$this->px->fs()->chmod_r($this->realpath_private_data_dir.'admin_users/', 0700, 0700);
+				$this->px->fs()->chmod_r($this->realpath_admin_user_dir, 0700, 0700);
 				header('Location:'.'?PX=admin');
 				exit;
 			}
