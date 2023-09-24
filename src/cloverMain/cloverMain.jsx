@@ -185,7 +185,11 @@ class Layout extends React.Component {
 		const link = (url) => {
 			url = (url=>{
 				const a = document.createElement('a');
-				a.href = (window.px2config.path_controot != '/' && url.match(/^\//) ? window.px2config.path_controot : '') + url;
+				if( window.px2config.path_controot != '/' && url.match(/^\//) ){
+					a.href = window.px2config.path_controot.replace(/\/$/, '') + '/' + url.replace(/^\//, '');
+				}else{
+					a.href = url;
+				}
 				return a.href;
 			})(url);
 			const newState = parseUrl(url);
