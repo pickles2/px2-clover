@@ -198,6 +198,13 @@ class register{
 							break;
 					}
 					break;
+
+				case 'serve':
+					// --------------------------------------
+					// 開発用ローカルサーバーを起動する
+					$app = new funcs\serve\serve($this->px);
+					$app->start();
+					break;
 			}
 
 			echo '{"title":"Pickles 2 Clover",'."\n";

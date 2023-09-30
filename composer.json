@@ -11,10 +11,10 @@
     ],
     "scripts":{
         "start": [
-            "@php ./tests/testdata/src_px2/.px_execute.php \"/?PX=serve&S=localhost:8090\""
+            "@php ./tests/testdata/src_px2/.px_execute.php \"/?PX=admin.serve&S=localhost:8090\""
         ],
         "start-subapp": [
-            "@php ./tests/testdata/src_px2/controot/.px_execute.php \"/?PX=serve&S=localhost:8091\""
+            "@php ./tests/testdata/src_px2/controot/.px_execute.php \"/?PX=admin.serve&S=localhost:8091\""
         ],
         "test": [
             "@php ./vendor/phpunit/phpunit/phpunit"
@@ -37,7 +37,6 @@
         "pickles2/px2-multitheme": "^2.0",
         "pickles2/px2-sitemapexcel": "~2.0",
         "pickles2/px2style": "~3.0",
-        "tomk79/px2-serve": "~0",
         "phpunit/phpunit": "~9.5",
         "tomk79/microtime-recorder": "~0.1.2"
     },

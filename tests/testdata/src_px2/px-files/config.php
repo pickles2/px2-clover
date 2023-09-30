@@ -125,9 +125,6 @@ return call_user_func( function(){
 
 		// sitemapExcel
 		'tomk79\pickles2\sitemap_excel\pickles_sitemap_excel::exec',
-
-		// px2-serve
-		tomk79\pickles2\px2serve\serve::register(),
 	];
 
 	// funcs: Before content
