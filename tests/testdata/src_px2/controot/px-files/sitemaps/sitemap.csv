@@ -1,8 +1,8 @@
-"* path","* content","* id","* title","* title_breadcrumb","* title_h1","* title_label","* title_full","* logical_path","* list_flg","* layout","* orderby","* keywords","* description","* category_top_flg","* role","* proc_type","* **delete_flg","* article_flg","* release_date","* update_date","* article_summary"
-"/index.html",,,"HOME",,,,,,"1","top",,,,,,,,,,,
-"/subpage_a/index.html",,,"サブページA",,,,,,"1",,,,,"1",,,,,,,
-"/subpage_a/a/index.html",,,"サブページA/A",,,,,"/subpage_a/index.html","1",,,,,,,,,,,,
-"/subpage_a/b/index.html",,,"サブページA/B",,,,,"/subpage_a/index.html","1",,,,,,,,,,,,
-"/subpage_a/c/index.html",,,"サブページA/C",,,,,"/subpage_a/index.html",,,,,,,,,,,,,
-"/subpage_a/d/{*}",,,"サブページA/D*",,,,,"/subpage_a/index.html","1",,,,,,,,,,,,
-"/subpage_a/e/{$test}.html",,,"サブページA/E$",,,,,"/subpage_a/index.html","1",,,,,,,,,,,,
+"* path","* content","* id","* title","* title_breadcrumb","* title_h1","* title_label","* title_full","* logical_path","* list_flg","* layout","* orderby","* keywords","* description","* category_top_flg","* role","* proc_type","* article_flg","* release_date","* update_date","* article_summary"
+"/index.html",,,"HOME",,,,,,"1","top",,,,,,,,,,
+"/subpage_a/index.html",,,"サブページA",,,,,,"1",,,,,"1",,,,,,
+"/subpage_a/a/index.html",,,"サブページA/A",,,,,"/subpage_a/index.html","1",,,,,,,,,,,
+"/subpage_a/b/index.html",,,"サブページA/B",,,,,"/subpage_a/index.html","1",,,,,,,,,,,
+"/subpage_a/c/index.html",,,"サブページA/C",,,,,"/subpage_a/index.html",,,,,,,,,,,,
+"/subpage_a/d/{*}","/subpage_a/d/index.html",,"サブページA/D*",,,,,"/subpage_a/index.html","1",,,,,,,,,,,
+"/subpage_a/e/{$test}.html","/subpage_a/e/test.html",,"サブページA/E$",,,,,"/subpage_a/index.html","1",,,,,,,,,,,

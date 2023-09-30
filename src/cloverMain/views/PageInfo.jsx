@@ -423,7 +423,7 @@ export default React.memo(function PageInfo(props){
 									px2style.closeModal();
 
 									main.cloverUtils.autoCommit();
-									main.link(main.px2utils.href(new_page_info.path) + '?PX=admin.page_info');
+									main.link(new_page_info.path + '?PX=admin.page_info');
 								},
 							]);
 
@@ -563,7 +563,7 @@ export default React.memo(function PageInfo(props){
 									px2style.closeModal();
 
 									main.cloverUtils.autoCommit();
-									main.link(main.px2utils.href(fields.path) + '?PX=admin.page_info');
+									main.link(fields.path + '?PX=admin.page_info');
 
 									it.next();
 								},

@@ -96,7 +96,7 @@ export default function BlogArticleList(props){
 								<li key={idx}>
 									<a href={main.px2utils.href(articleInfo.path + "?PX=admin.page_info")} onClick={(e)=>{
 										e.preventDefault();
-										main.link( main.px2utils.href(articleInfo.path + "?PX=admin.page_info") );
+										main.link( articleInfo.path + "?PX=admin.page_info" );
 										return false;
 									}}>
 										<div className="cont-blog-kit-article-list-item">

@@ -82,6 +82,7 @@ return call_user_func( function(){
 		// px2-clover
 		tomk79\pickles2\px2clover\register::clover(array(
 			"protect_preview" => false, // プレビューに認証を要求するか？
+			"realpath_admin_user_dir" => __DIR__.'/../../px-files/_sys/ram/data/px2-clover/admin_users/',
 		)),
 
 		// PX=clearcache

@@ -448,7 +448,7 @@ export default React.memo(function Blog(props){
 	// --------------------------------------
 	// 記事詳細画面へ
 	function gotoArticleInfo(path){
-		main.link(main.px2utils.href( path )+'?PX=admin.page_info');
+		main.link(path+'?PX=admin.page_info');
 		return;
 
 		// main.px2utils.px2cmd(
@@ -464,7 +464,7 @@ export default React.memo(function Blog(props){
 		// 			...localState,
 		// 			...newState,
 		// 		});
-		// 		main.link(main.px2utils.href( result.article_info.path )+'?PX=admin.blog.'+currentBlogId+'.article_info');
+		// 		main.link(result.article_info.path+'?PX=admin.blog.'+currentBlogId+'.article_info');
 		// 	}
 		// );
 		// return;
@@ -487,7 +487,7 @@ export default React.memo(function Blog(props){
 				...localState,
 				...newState,
 			});
-			main.link(main.px2utils.href('/')+'?PX=admin.blog.'+blog_id);
+			main.link('/'+'?PX=admin.blog.'+blog_id);
 		})();
 		return;
 	}
@@ -508,7 +508,7 @@ export default React.memo(function Blog(props){
 						"enableBlogKit": false,
 						"blogList": [],
 					});
-					main.link(main.px2utils.href('/')+'?PX=admin.blog');
+					main.link('/'+'?PX=admin.blog');
 					return;
 				}
 				update_localState({
@@ -519,7 +519,7 @@ export default React.memo(function Blog(props){
 					"enableBlogKit": true,
 					"blogList": result.blog_list,
 				});
-				main.link(main.px2utils.href('/')+'?PX=admin.blog');
+				main.link('/'+'?PX=admin.blog');
 			}
 		);
 		return;
