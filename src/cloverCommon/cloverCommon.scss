@@ -1,68 +1,68 @@
 @layer base{
-    html, body, #cont-app {
-        display: flex;
-        flex-direction: column;
-        padding: 0;
-        margin: 0;
-        height: 100%;
-        width: 100%;
+	html, body, #cont-app {
+		display: flex;
+		flex-direction: column;
+		padding: 0;
+		margin: 0;
+		height: 100%;
+		width: 100%;
 		color: var(--px2-text-color, #333);
 		background-color: var(--px2-background-color, #f9f7f5);
-    }
-    body,input,textarea,select,option,button{
-        font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif, system-ui;
-    }
-    a {
-        color: #00a0e6;
-        text-decoration: none;
-        &:hover {
-            color: #2a6496;
-            text-decoration: underline;
-        }
-    }
-    pre.code {
-        code {
-            display: block;
-            overflow: auto;
-            max-width: 100%;
-            padding: 10px 20px;
-            border: 1px solid #999;
-            border-radius: 5px;
-            background-color: #f6f6f6;
-        }
-    }
+	}
+	body,input,textarea,select,option,button{
+		font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif, system-ui;
+	}
+	a {
+		color: #00a0e6;
+		text-decoration: none;
+		&:hover {
+			color: #2a6496;
+			text-decoration: underline;
+		}
+	}
+	pre.code {
+		code {
+			display: block;
+			overflow: auto;
+			max-width: 100%;
+			padding: 10px 20px;
+			border: 1px solid #999;
+			border-radius: 5px;
+			background-color: #f6f6f6;
+		}
+	}
 }
 
 .auth-form {
-    &__unit {
-        margin: 3px -30px;
-        padding: 0.6em 30px;
-        &--error {
-            background-color: #fee;
-        }
-    }
-    &__label {
-        font-weight: bold;
-    }
-    &__buttons {
-        display: flex;
-        justify-content: center;
-        margin: 1em 0;
-    }
-    &__input {
-    }
-    &__backto {
-        margin: 2em 0 1em 0;
-        text-align: center;
-    }
+	&__unit {
+		margin: 3px -30px;
+		padding: 0.6em 30px;
+		&--error {
+			background-color: #fee;
+		}
+	}
+	&__label {
+		font-weight: bold;
+	}
+	&__buttons {
+		display: flex;
+		justify-content: center;
+		margin: 1em 0;
+	}
+	&__input {
+	}
+	&__backto {
+		margin: 2em 0 1em 0;
+		text-align: center;
+	}
 
-    .px2-note-list {
-        padding: 0;
-        margin: 0;
-        ul {
-            margin: 0;
-        }
-    }
+	.px2-note-list {
+		padding: 0;
+		margin: 0;
+		ul {
+			margin: 0;
+		}
+	}
 }
 
 // px2style のスタイリング合わせ

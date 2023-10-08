@@ -6,49 +6,49 @@
 @import "../../../vendor/pickles2/px2style/dist/themes/darkmode.css";
 
 @layer base{
-    pre.code {
-        code {
-            border: 1px solid #555;
-            background-color: #222;
-        }
-    }
+	pre.code {
+		code {
+			border: 1px solid #555;
+			background-color: #222;
+		}
+	}
 }
 
 .theme-frame {
-    background-color: #222;
+	background-color: #222;
 }
 .theme-title {
-    background-color: #222;
-    border-bottom: 1px solid #111;
+	background-color: #222;
+	border-bottom: 1px solid #111;
 }
 .theme-title h1 {
-    margin: 0;
-    font-size: 22px;
-    color: #fff;
+	margin: 0;
+	font-size: 22px;
+	color: #fff;
 }
 .theme-title__text-small {
-    display: block;
-    font-weight: normal;
-    font-size: 14px;
-    color: #999;
+	display: block;
+	font-weight: normal;
+	font-size: 14px;
+	color: #999;
 }
 .theme-layout{
-    &__header {
-        background-color: #111;
+	&__header {
+		background-color: #111;
 		a {
 			color: #aaa;
-        }
-    }
+		}
+	}
 	&__left-navbar {
 		a, button {
 			color: #ddd;
-        }
+		}
 		&__foot-menu {
 			li {
 				border-top: 1px solid #444;
 			}
 		}
-    }
+	}
 }
 
 [data-px="admin.page_info"] {
@@ -60,3 +60,6 @@
 [data-px="admin.publish"] {
 	@import "./../../cloverMain/views/Publish_files/darkmode.scss";
 }
+
+// Broccoli の darkmode
+@import "./../../../vendor/broccoli-html-editor/broccoli-html-editor/client/dist/themes/darkmode.css";
