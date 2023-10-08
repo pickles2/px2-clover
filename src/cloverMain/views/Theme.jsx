@@ -14,6 +14,7 @@ export default React.memo(function Theme(props){
 	function initialize( callback ){
 		callback = callback || function(){};
 		$('.cont-px2-clover__px2te-resources').remove();
+		var $darkmodeStyles = $('#px2-clover-darkmode-styles');
 		main.px2utils.px2cmd(
 			'/?PX=px2dthelper.px2te.client_resources',
 			{},
@@ -25,15 +26,24 @@ export default React.memo(function Theme(props){
 						'href': res.path_base + res.css[index],
 						'class': 'cont-px2-clover__px2te-resources',
 					});
-					$('head').append( $linkElement );
+					if( $darkmodeStyles.length ){
+						$darkmodeStyles.before( $linkElement );
+					}else{
+						$('head').append( $linkElement );
+					}
 				}
+
 				for(var index in res.js){
 					var $scriptElement = $('<script />');
 					$scriptElement.attr({
 						'src': res.path_base + res.js[index],
 						'class': 'cont-px2-clover__px2te-resources',
 					});
-					$('head').append( $scriptElement );
+					if( $darkmodeStyles.length ){
+						$darkmodeStyles.before( $scriptElement );
+					}else{
+						$('head').append( $scriptElement );
+					}
 				}
 
 				var pickles2ThemeEditor = new Pickles2ThemeEditor();

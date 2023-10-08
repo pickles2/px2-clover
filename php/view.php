@@ -67,12 +67,12 @@ class view{
 				break;
 
 			case "dark":
-				?><style><?= ( file_get_contents(__DIR__.'/../public/resources/cloverCommon/appearance/darkmode.css') ); ?></style><?php
+				?><style id="px2-clover-darkmode-styles"><?= ( file_get_contents(__DIR__.'/../public/resources/cloverCommon/appearance/darkmode.css') ); ?></style><?php
 				break;
 
 			case "":
 			default:
-				?><style>@media (prefers-color-scheme: dark) { <?= ( file_get_contents(__DIR__.'/../public/resources/cloverCommon/appearance/darkmode.css') ); ?> }</style><?php
+				?><style id="px2-clover-darkmode-styles">@media (prefers-color-scheme: dark) { <?= ( file_get_contents(__DIR__.'/../public/resources/cloverCommon/appearance/darkmode.css') ); ?> }</style><?php
 				break;
 		}
 ?>
