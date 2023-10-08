@@ -43,11 +43,20 @@
 		a, button {
 			color: #ddd;
 		}
+		.current {
+			span {
+				border-left-color: #fff;
+			}
+		}
+
 		&__foot-menu {
 			li {
 				border-top: 1px solid #444;
 			}
 		}
+	}
+	&__footer {
+		border-top-color: #666;
 	}
 }
 

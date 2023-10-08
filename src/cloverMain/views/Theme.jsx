@@ -27,7 +27,7 @@ export default React.memo(function Theme(props){
 						'class': 'cont-px2-clover__px2te-resources',
 					});
 					if( $darkmodeStyles.length ){
-						$darkmodeStyles.before( $linkElement );
+						$darkmodeStyles.before( $linkElement ); // NOTE: darkmode が負けてしまわないよう、darkmode の前に挿入されるようにする。
 					}else{
 						$('head').append( $linkElement );
 					}
@@ -40,7 +40,7 @@ export default React.memo(function Theme(props){
 						'class': 'cont-px2-clover__px2te-resources',
 					});
 					if( $darkmodeStyles.length ){
-						$darkmodeStyles.before( $scriptElement );
+						$darkmodeStyles.before( $scriptElement ); // NOTE: darkmode が負けてしまわないよう、darkmode の前に挿入されるようにする。
 					}else{
 						$('head').append( $scriptElement );
 					}
