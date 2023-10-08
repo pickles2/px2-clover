@@ -33,6 +33,17 @@ class view{
 
 		$cloverCommon = '';
 		ob_start(); ?>
+<style>
+:root {
+	--px2-main-color: #00a0e6;
+	--px2-text-color: #333;
+	--px2-background-color: #f9f7f5;
+}
+</style>
+<style>
+@layer base;
+@layer px2style;
+</style>
 <!-- jquery -->
 <script><?= ( file_get_contents(__DIR__.'/../public/resources/jquery-3.6.0.min.js') ); ?></script>
 <!-- px2style -->
@@ -42,6 +53,22 @@ class view{
 <!-- cloverCommon -->
 <style><?= ( file_get_contents(__DIR__.'/../public/resources/cloverCommon/cloverCommon.css') ); ?></style>
 <script><?= ( file_get_contents(__DIR__.'/../public/resources/cloverCommon/cloverCommon.js') ); ?></script>
+<!-- appearance -->
+<?php
+		switch( $this->clover->auth()->get_login_user_info()->appearance ?? '' ){
+			case "light":
+				break;
+
+			case "dark":
+				?><style><?= ( file_get_contents(__DIR__.'/../public/resources/cloverCommon/appearance/darkmode.css') ); ?></style><?php
+				break;
+
+			case "":
+			default:
+				?><style>@media (prefers-color-scheme: dark) { <?= ( file_get_contents(__DIR__.'/../public/resources/cloverCommon/appearance/darkmode.css') ); ?> }</style><?php
+				break;
+		}
+?>
 <?php
 		$cloverCommon .= ob_get_clean();
 		$cloverCommon = preg_replace('/\/\*\#\ sourceMappingURL\=.*?\*\//', '', $cloverCommon);

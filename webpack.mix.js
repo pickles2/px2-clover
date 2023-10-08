@@ -62,6 +62,7 @@ mix
 	// cloverCommon Script
 	.js('src/cloverCommon/cloverCommon.js', 'public/resources/cloverCommon/')
 	.sass('src/cloverCommon/cloverCommon.scss', 'public/resources/cloverCommon/')
+	.sass('src/cloverCommon/appearance/darkmode.scss', 'public/resources/cloverCommon/appearance/')
 
 	// --------------------------------------
 	// cloverMain Script
