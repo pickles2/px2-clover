@@ -53,6 +53,13 @@ class view{
 <!-- cloverCommon -->
 <style><?= ( file_get_contents(__DIR__.'/../public/resources/cloverCommon/cloverCommon.css') ); ?></style>
 <script><?= ( file_get_contents(__DIR__.'/../public/resources/cloverCommon/cloverCommon.js') ); ?></script>
+<?php
+		$cloverCommon .= ob_get_clean();
+		$cloverCommon = preg_replace('/\/\*\#\ sourceMappingURL\=.*?\*\//', '', $cloverCommon);
+		$cloverCommon = preg_replace('/\/\/\#\ sourceMappingURL\=.*?\.map/', '', $cloverCommon);
+
+		$appearance = '';
+		ob_start(); ?>
 <!-- appearance -->
 <?php
 		switch( $this->clover->auth()->get_login_user_info()->appearance ?? '' ){
@@ -70,13 +77,14 @@ class view{
 		}
 ?>
 <?php
-		$cloverCommon .= ob_get_clean();
-		$cloverCommon = preg_replace('/\/\*\#\ sourceMappingURL\=.*?\*\//', '', $cloverCommon);
-		$cloverCommon = preg_replace('/\/\/\#\ sourceMappingURL\=.*?\.map/', '', $cloverCommon);
+		$appearance .= ob_get_clean();
+		$appearance = preg_replace('/\/\*\#\ sourceMappingURL\=.*?\*\//', '', $appearance);
+		$appearance = preg_replace('/\/\/\#\ sourceMappingURL\=.*?\.map/', '', $appearance);
 
 		// 共通項目
 		$data['clover_config'] = $this->clover->conf();
 		$data['common_resources'] = $cloverCommon;
+		$data['appearance_resources'] = $appearance;
 		$data['px2config'] = $this->px->conf();
 		$data['plugin_options'] = $this->clover->get_options();
 		$data['path_client_resources'] = $this->clover->path_files();

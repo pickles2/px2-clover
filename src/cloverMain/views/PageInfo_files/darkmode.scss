@@ -1,0 +1,44 @@
+.cont-layout-breadcrumb {
+	ul {
+		li {
+			&::after {
+				border-top: 1px solid #fff;
+				border-right: 1px solid #fff;
+			}
+		}
+	}
+}
+
+.cont-pagenavi {
+	border: 1px solid #555;
+	background-color: #222;
+	a {
+		&:hover {
+			opacity: 0.8;
+		}
+	}
+	&__current > a {
+		font-weight: bold;
+	}
+	&__parent {
+		a {
+			background-color: #222;
+			&::before {
+				border-top: 1px solid #fff;
+				border-right: 1px solid #fff;
+			}
+		}
+	}
+	ul {
+		border-top: 1px dotted #666;
+		li {
+			border-bottom: 1px dotted #666;
+		}
+	}
+
+	&__add-new-page {
+		a {
+			color: #ccc;
+		}
+	}
+}

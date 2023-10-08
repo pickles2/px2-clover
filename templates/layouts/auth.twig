@@ -13,7 +13,6 @@
 	html, body {
 		margin: 0;
 		padding: 0;
-		background-color: #f6f6f6;
 	}
 	body,input,textarea,select,option,button{
 		font-family: "Hiragino Sans", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","Meiryo","メイリオ", "YuGothic", "Yu Gothic", "游ゴシック体", "游ゴシック", sans-serif, system-ui;
@@ -52,8 +51,11 @@
 	}
 	</style>
 
-	{% block head %}
-	{% endblock %}
+	{% block head %}{% endblock %}
+
+	{# Appearance Resources #}
+	{{ appearance_resources | raw }}
+
 </head>
 <body>
 	<div class="theme-frame">
