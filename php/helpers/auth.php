@@ -539,6 +539,7 @@ class auth {
 			'pw',
 			'pw_retype',
 			'email',
+			'appearance',
 			// 'role', // 自分のロールは変更できない
 		);
 		foreach( $new_profile as $key=>$val ){
@@ -637,6 +638,7 @@ class auth {
 			'lang',
 			'pw',
 			'email',
+			'appearance',
 			'role',
 		);
 		foreach( $profile_keys as $key ){
@@ -903,6 +905,7 @@ class auth {
 		$write_data->lang = $new_profile->lang ?? null;
 		$write_data->email = $new_profile->email ?? null;
 		$write_data->role = $new_profile->role ?? null;
+		$write_data->appearance = $new_profile->appearance ?? null;
 
 		$realpath_json = $this->realpath_admin_user_dir.urlencode($user_id).'.json';
 		$realpath_json_php = $realpath_json.'.php';

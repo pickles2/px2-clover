@@ -81,6 +81,21 @@
 					{% endif %}
 				</div>
 			</li>
+			<li class="px2-form-input-list__li{{ errors.appearance ? ' px2-form-input-list__li--error' : '' }}">
+				<div class="px2-form-input-list__label"><label for="input-appearance">{{ main.lb.get('ui_label.user_appearance') }}</label></div>
+				<div class="px2-form-input-list__input">
+					<select id="input-appearance" name="appearance" class="px2-input">
+						<option value=""{{ values.appearance == '' ? ' selected="selected"' : "" }}>Auto</option>
+						<option value="light"{{ values.appearance == 'light' ? ' selected="selected"' : "" }}>Light mode</option>
+						<option value="dark"{{ values.appearance == 'dark' ? ' selected="selected"' : "" }}>Dark mode</option>
+					</select>
+					{% if errors.appearance %}
+						{% for errorText in errors.appearance %}
+							<p  class="px2-error">{{ errorText|e }}</p>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</li>
 			<li class="px2-form-input-list__li{{ errors.role ? ' px2-form-input-list__li--error' : '' }}">
 				<div class="px2-form-input-list__label"><label for="input-role">{{ main.lb.get('ui_label.user_role') }}</label></div>
 				<div class="px2-form-input-list__input">

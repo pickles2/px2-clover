@@ -49,6 +49,7 @@ export default function ConfigProfile(props){
 					'name': $form.find('input[name=name]').val(),
 					'lang': $form.find('select[name=lang]').val(),
 					'email': $form.find('input[name=email]').val(),
+					'appearance': $form.find('select[name=appearance]').val(),
 				};
 				if( $form.find('input[name=pw]').val().length || $form.find('input[name=pw_retype]').val().length ){
 					newProfile.pw = $form.find('input[name=pw]').val();
@@ -214,6 +215,24 @@ export default function ConfigProfile(props){
 									{(hasValidationError('email'))
 										? <>
 											{validationErrors.email.map((errorText, index) => {
+												return <p key={index} className={"px2-error"}>{errorText}</p>;
+											})}
+										</>
+										: <>
+									</>}
+								</div>
+							</li>
+							<li className={"px2-form-input-list__li"+(hasValidationError('appearance') ? ' px2-form-input-list__li--error' : '')}>
+								<div className="px2-form-input-list__label"><label htmlFor="input-appearance">{main.lb.get('ui_label.user_appearance')}</label></div>
+								<div className="px2-form-input-list__input">
+									<select id="input-appearance" name="appearance" className={"px2-input"+(hasValidationError('appearance') ? ' px2-input--error' : '')} defaultValue={main.profile.appearance}>
+										<option value="">Auto</option>
+										<option value="light">Light mode</option>
+										<option value="dark">Dark mode</option>
+									</select>
+									{(hasValidationError('appearance'))
+										? <>
+											{validationErrors.appearance.map((errorText, index) => {
 												return <p key={index} className={"px2-error"}>{errorText}</p>;
 											})}
 										</>

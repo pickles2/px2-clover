@@ -281,6 +281,7 @@ class register{
 							'email' => $this->px->req()->get_param('email'),
 							'lang' => $this->px->req()->get_param('lang'),
 							'role' => $this->px->req()->get_param('role'),
+							'appearance' => $this->px->req()->get_param('appearance'),
 						);
 						$app = new funcs\api\members($this->clover);
 						$app->create_new( $params, $this->px->req()->get_param('current_pw') );
@@ -296,6 +297,7 @@ class register{
 							'email' => $this->px->req()->get_param('email'),
 							'lang' => $this->px->req()->get_param('lang'),
 							'role' => $this->px->req()->get_param('role'),
+							'appearance' => $this->px->req()->get_param('appearance'),
 						);
 						$app = new funcs\api\members($this->clover);
 						$app->update( $this->px->req()->get_param('target_id'), $params, $this->px->req()->get_param('current_pw') );

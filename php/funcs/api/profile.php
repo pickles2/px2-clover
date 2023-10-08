@@ -59,6 +59,7 @@ class profile{
 			'pw' => $this->px->req()->get_param('pw'),
 			'pw_retype' => $this->px->req()->get_param('pw_retype'),
 			'email' => $this->px->req()->get_param('email'),
+			'appearance' => $this->px->req()->get_param('appearance'),
 			'role' => $this->px->req()->get_param('role'),
 		);
 		$result = $this->clover->auth()->update_login_user_info($new_profile, $this->px->req()->get_param('current_pw'));

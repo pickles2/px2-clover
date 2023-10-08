@@ -128,6 +128,7 @@ export default function ConfigMembers(props){
 									newMemberInfo.email = modal.$modal.find('[name=email]').val();
 									newMemberInfo.lang = modal.$modal.find('select[name=lang]').val();
 									newMemberInfo.role = modal.$modal.find('select[name=role]').val();
+									newMemberInfo.appearance = modal.$modal.find('select[name=appearance]').val();
 
 									var params = {
 										'current_pw': newMemberInfo.current_pw,
@@ -136,6 +137,7 @@ export default function ConfigMembers(props){
 										'email': newMemberInfo.email,
 										'lang': newMemberInfo.lang,
 										'role': newMemberInfo.role,
+										'appearance': newMemberInfo.appearance,
 									};
 									if( targetId !== null ){
 										params.target_id = targetId;
