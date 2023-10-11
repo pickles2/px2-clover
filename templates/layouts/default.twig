@@ -1,60 +1,61 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8" />
-	<title>{% block title %}{% endblock %}</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<meta name="csrf-token" content="{{ csrf_token }}" />
+	<head>
+		<meta charset="utf-8" />
+		<title>{% block title %}Pickles 2{% endblock %}</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="csrf-token" content="{{ csrf_token }}" />
 
-	{# Common Resources #}
-	{{ common_resources | raw }}
+		<style>body{background-color:#ddd;} @media (prefers-color-scheme: dark) {body{background-color:#333;}}</style>
 
-	{# remote-finder #}
-	<link rel="stylesheet" href="{{ path_client_resources }}remote-finder/remote-finder.css" />
-	<script src="{{ path_client_resources }}remote-finder/remote-finder.js"></script>
+		{# Common Resources #}
+		{{ common_resources | raw }}
 
-	{# common-file-editor #}
-	<link rel="stylesheet" href="{{ path_client_resources }}common-file-editor/common-file-editor.css" />
-	<script src="{{ path_client_resources }}common-file-editor/common-file-editor.js"></script>
+		{# remote-finder #}
+		<link rel="stylesheet" href="{{ path_client_resources }}remote-finder/remote-finder.css" />
+		<script src="{{ path_client_resources }}remote-finder/remote-finder.js"></script>
 
-	{% block head %}{% endblock %}
+		{# common-file-editor #}
+		<link rel="stylesheet" href="{{ path_client_resources }}common-file-editor/common-file-editor.css" />
+		<script src="{{ path_client_resources }}common-file-editor/common-file-editor.js"></script>
 
-	{# Appearance Resources #}
-	{{ appearance_resources | raw }}
+		{% block head %}{% endblock %}
 
-</head>
-<body>
-	<p>Pickles 2 Clover</p>
-	<hr />
-	<div class="contents">
-		{% block content %}
+		{# Appearance Resources #}
+		{{ appearance_resources | raw }}
+	</head>
+	<body>
+		<p>Pickles 2 Clover</p>
+		<hr />
+		<div class="contents">
+			{% block content %}
+			{% endblock %}
+		</div>
+
+
+		{# -------------------------------------- #}
+		<script>
+		window.px2config = {
+			"name": "{{ px2config.name | e("js") }}",
+			"path_controot": "{{ px2config.path_controot | e("js") }}",
+			"default_directory_index": "{{ px2config.directory_index[0] | e("js") }}",
+		};
+		window.clover_config = {
+			"lang": "{{ clover_config.lang | e("js") }}",
+			"history": {
+				"auto_commit": "{{ clover_config.history.auto_commit | e("js") }}",
+			},
+			"paths": {
+				"path_client_resources": "{{ path_client_resources | e("js") }}",
+			},
+		};
+		window.plugin_options = {
+			"app_mode": "web",
+			"protect_preview": {{ plugin_options.protect_preview ? "true" : "false" }},
+		};
+		</script>
+
+		{% block foot %}
 		{% endblock %}
-	</div>
-
-
-	{# -------------------------------------- #}
-    <script>
-    window.px2config = {
-        "name": "{{ px2config.name | e("js") }}",
-        "path_controot": "{{ px2config.path_controot | e("js") }}",
-        "default_directory_index": "{{ px2config.directory_index[0] | e("js") }}",
-    };
-    window.clover_config = {
-        "lang": "{{ clover_config.lang | e("js") }}",
-        "history": {
-            "auto_commit": "{{ clover_config.history.auto_commit | e("js") }}",
-        },
-		"paths": {
-			"path_client_resources": "{{ path_client_resources | e("js") }}",
-		},
-    };
-    window.plugin_options = {
-        "app_mode": "web",
-        "protect_preview": {{ plugin_options.protect_preview ? "true" : "false" }},
-    };
-    </script>
-
-	{% block foot %}
-	{% endblock %}
-</body>
+	</body>
 </html>

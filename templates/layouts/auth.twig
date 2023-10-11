@@ -1,76 +1,77 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8" />
-	<title>{% block title %}{% endblock %}</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<meta name="csrf-token" content="{{ csrf_token }}" />
+	<head>
+		<meta charset="utf-8" />
+		<title>{% block title %}Pickles 2{% endblock %}</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="csrf-token" content="{{ csrf_token }}" />
 
-	{# Common Resources #}
-	{{ common_resources | raw }}
+		<style>body{background-color:#ddd;} @media (prefers-color-scheme: dark) {body{background-color:#333;}}</style>
 
-	<style>
-	html, body {
-		margin: 0;
-		padding: 0;
-	}
-	body,input,textarea,select,option,button{
-		font-family: "Hiragino Sans", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","Meiryo","メイリオ", "YuGothic", "Yu Gothic", "游ゴシック体", "游ゴシック", sans-serif, system-ui;
-	}
-	.theme-frame {
-		margin: 30px auto;
-		width: 450px;
-		max-width: calc(100% - 40px);
-		background-color: #fefefe;
-		box-shadow: 0px 5px 10px #9994;
-		padding: 30px;
-		box-sizing: border-box;
-		border-radius: 13px;
-		overflow: auto;
-	}
-	.theme-frame__inner {
-	}
+		{# Common Resources #}
+		{{ common_resources | raw }}
 
-	.theme-title {
-		text-align: center;
-		margin: -30px -30px 0 -30px;
-		padding: 30px;
-		background-color: #fff;
-		border-bottom: 1px solid #f6f6f6;
-	}
-	.theme-title h1 {
-		margin: 0;
-		font-size: 22px;
-		color: #000;
-	}
-	.theme-title__text-small {
-		display: block;
-		font-weight: normal;
-		font-size: 14px;
-		color: #999;
-	}
-	</style>
+		<style>
+		html, body {
+			margin: 0;
+			padding: 0;
+		}
+		body,input,textarea,select,option,button{
+			font-family: "Hiragino Sans", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","Meiryo","メイリオ", "YuGothic", "Yu Gothic", "游ゴシック体", "游ゴシック", sans-serif, system-ui;
+		}
+		.theme-frame {
+			margin: 30px auto;
+			width: 450px;
+			max-width: calc(100% - 40px);
+			background-color: #fefefe;
+			box-shadow: 0px 5px 10px #9994;
+			padding: 30px;
+			box-sizing: border-box;
+			border-radius: 13px;
+			overflow: auto;
+		}
+		.theme-frame__inner {
+		}
 
-	{% block head %}{% endblock %}
+		.theme-title {
+			text-align: center;
+			margin: -30px -30px 0 -30px;
+			padding: 30px;
+			background-color: #fff;
+			border-bottom: 1px solid #f6f6f6;
+		}
+		.theme-title h1 {
+			margin: 0;
+			font-size: 22px;
+			color: #000;
+		}
+		.theme-title__text-small {
+			display: block;
+			font-weight: normal;
+			font-size: 14px;
+			color: #999;
+		}
+		</style>
 
-	{# Appearance Resources #}
-	{{ appearance_resources | raw }}
+		{% block head %}{% endblock %}
 
-</head>
-<body>
-	<div class="theme-frame">
-		<div class="theme-frame__inner">
-			<div class="theme-title">
-				<h1>{{ px2config.name }} <span class="theme-title__text-small">Admin Console</span></h1>
-			</div>
-			<div class="contents">
-				{% block content %}
-				{% endblock %}
+		{# Appearance Resources #}
+		{{ appearance_resources | raw }}
+	</head>
+	<body>
+		<div class="theme-frame">
+			<div class="theme-frame__inner">
+				<div class="theme-title">
+					<h1>{{ px2config.name }} <span class="theme-title__text-small">Admin Console</span></h1>
+				</div>
+				<div class="contents">
+					{% block content %}
+					{% endblock %}
+				</div>
 			</div>
 		</div>
-	</div>
 
-	{% block foot %}
-	{% endblock %}
-</body>
+		{% block foot %}
+		{% endblock %}
+	</body>
 </html>
