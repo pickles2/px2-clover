@@ -1,6 +1,6 @@
-<link rel="stylesheet" href="{{ path_client_resources }}previewFooter/previewFooter.css" />
-<script src="{{ path_client_resources }}previewFooter/previewFooter.js"></script>
-<div class="px2-clover-footer-menubar">
+<link rel="stylesheet" href="{{ path_client_resources }}previewFooter/previewFooter.css?t={{ 'now'|date('U') }}" data-px2-clover-preview-widget="assets" />
+<script src="{{ path_client_resources }}previewFooter/previewFooter.js?t={{ 'now'|date('U') }}" data-px2-clover-preview-widget="assets"></script>
+<div class="px2-clover-preview-widget px2-clover-preview-widget--menubar" data-px2-clover-preview-widget="menubar">
 {% if px2config.allow_pxcommands %}
 {% if current_page_info.id|length <= 0 %}
 <a href="?PX=admin" class="px2-btn">ダッシュボード</a>

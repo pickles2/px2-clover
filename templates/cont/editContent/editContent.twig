@@ -5,40 +5,40 @@
 	{{ parent() }}
 
 	{# Ace Editor #}
-	<script src="{{ path_client_resources }}ace/ace.js"></script>
+	<script src="{{ path_client_resources }}ace/ace.js?t={{ 'now'|date('U') }}"></script>
 
 	{# CodeMirror #}
-	<link rel=stylesheet href="{{ path_client_resources }}codemirror/lib/codemirror.css" />
-	<link rel=stylesheet href="{{ path_client_resources }}codemirror/theme/ambiance.css" />
-	<link rel=stylesheet href="{{ path_client_resources }}codemirror/theme/mdn-like.css" />
-	<link rel=stylesheet href="{{ path_client_resources }}codemirror/theme/monokai.css" />
-	<link rel=stylesheet href="{{ path_client_resources }}codemirror/theme/eclipse.css" />
-	<link rel=stylesheet href="{{ path_client_resources }}codemirror/theme/elegant.css" />
-	<script src="{{ path_client_resources }}codemirror/lib/codemirror.js"></script>
-	<script src="{{ path_client_resources }}codemirror/mode/xml/xml.js"></script>
-	<script src="{{ path_client_resources }}codemirror/mode/javascript/javascript.js"></script>
-	<script src="{{ path_client_resources }}codemirror/mode/css/css.js"></script>
-	<script src="{{ path_client_resources }}codemirror/mode/sass/sass.js"></script>
-	<script src="{{ path_client_resources }}codemirror/mode/markdown/markdown.js"></script>
-	<script src="{{ path_client_resources }}codemirror/mode/php/php.js"></script>
-	<script src="{{ path_client_resources }}codemirror/mode/htmlmixed/htmlmixed.js"></script>
+	<link rel="stylesheet" href="{{ path_client_resources }}codemirror/lib/codemirror.css?t={{ 'now'|date('U') }}" />
+	<link rel="stylesheet" href="{{ path_client_resources }}codemirror/theme/ambiance.css?t={{ 'now'|date('U') }}" />
+	<link rel="stylesheet" href="{{ path_client_resources }}codemirror/theme/mdn-like.css?t={{ 'now'|date('U') }}" />
+	<link rel="stylesheet" href="{{ path_client_resources }}codemirror/theme/monokai.css?t={{ 'now'|date('U') }}" />
+	<link rel="stylesheet" href="{{ path_client_resources }}codemirror/theme/eclipse.css?t={{ 'now'|date('U') }}" />
+	<link rel="stylesheet" href="{{ path_client_resources }}codemirror/theme/elegant.css?t={{ 'now'|date('U') }}" />
+	<script src="{{ path_client_resources }}codemirror/lib/codemirror.js?t={{ 'now'|date('U') }}"></script>
+	<script src="{{ path_client_resources }}codemirror/mode/xml/xml.js?t={{ 'now'|date('U') }}"></script>
+	<script src="{{ path_client_resources }}codemirror/mode/javascript/javascript.js?t={{ 'now'|date('U') }}"></script>
+	<script src="{{ path_client_resources }}codemirror/mode/css/css.js?t={{ 'now'|date('U') }}"></script>
+	<script src="{{ path_client_resources }}codemirror/mode/sass/sass.js?t={{ 'now'|date('U') }}"></script>
+	<script src="{{ path_client_resources }}codemirror/mode/markdown/markdown.js?t={{ 'now'|date('U') }}"></script>
+	<script src="{{ path_client_resources }}codemirror/mode/php/php.js?t={{ 'now'|date('U') }}"></script>
+	<script src="{{ path_client_resources }}codemirror/mode/htmlmixed/htmlmixed.js?t={{ 'now'|date('U') }}"></script>
 
 	{# Keypress #}
-	<script src="{{ path_client_resources }}dmauro-Keypress/keypress-2.1.5.min.js"></script>
+	<script src="{{ path_client_resources }}dmauro-Keypress/keypress-2.1.5.min.js?t={{ 'now'|date('U') }}"></script>
 
 	{# remote-finder #}
-	<link rel="stylesheet" href="{{ path_client_resources }}remote-finder/remote-finder.css" />
-	<script src="{{ path_client_resources }}remote-finder/remote-finder.js"></script>
+	<link rel="stylesheet" href="{{ path_client_resources }}remote-finder/remote-finder.css?t={{ 'now'|date('U') }}" />
+	<script src="{{ path_client_resources }}remote-finder/remote-finder.js?t={{ 'now'|date('U') }}"></script>
 
 	{# common-file-editor #}
-	<link rel="stylesheet" href="{{ path_client_resources }}common-file-editor/common-file-editor.css" />
-	<script src="{{ path_client_resources }}common-file-editor/common-file-editor.js"></script>
+	<link rel="stylesheet" href="{{ path_client_resources }}common-file-editor/common-file-editor.css?t={{ 'now'|date('U') }}" />
+	<script src="{{ path_client_resources }}common-file-editor/common-file-editor.js?t={{ 'now'|date('U') }}"></script>
 
 	{% for path_px2ce_css in px2ce_res.css %}
-	<link rel="stylesheet" href="{{ path_client_resources }}edit-content/{{ path_px2ce_css }}" />
+	<link rel="stylesheet" href="{{ path_client_resources }}edit-content/{{ path_px2ce_css }}?t={{ 'now'|date('U') }}" />
 	{% endfor %}
 	{% for path_px2ce_js in px2ce_res.js %}
-	<script src="{{ path_client_resources }}edit-content/{{ path_px2ce_js }}"></script>
+	<script src="{{ path_client_resources }}edit-content/{{ path_px2ce_js }}?t={{ 'now'|date('U') }}"></script>
 	{% endfor %}
 
 	<style>

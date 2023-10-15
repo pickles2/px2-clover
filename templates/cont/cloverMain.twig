@@ -2,8 +2,8 @@
 
 {% block title %}Pickles 2 Admin Console{% endblock %}
 {% block head %}
-    <link rel="stylesheet" href="{{ path_client_resources }}gitui79/gitui79.css" />
-    <link rel="stylesheet" href="{{ path_client_resources }}cloverMain/cloverMain.css" />
+    <link rel="stylesheet" href="{{ path_client_resources }}gitui79/gitui79.css?t={{ 'now'|date('U') }}" />
+    <link rel="stylesheet" href="{{ path_client_resources }}cloverMain/cloverMain.css?t={{ 'now'|date('U') }}" />
 {% endblock %}
 {% block content %}
 
@@ -11,6 +11,6 @@
 
 {% endblock %}
 {% block foot %}
-    <script src="{{ path_client_resources }}gitui79/gitui79.js"></script>
-    <script src="{{ path_client_resources }}cloverMain/cloverMain.js"></script>
+    <script src="{{ path_client_resources }}gitui79/gitui79.js?t={{ 'now'|date('U') }}"></script>
+    <script src="{{ path_client_resources }}cloverMain/cloverMain.js?t={{ 'now'|date('U') }}"></script>
 {% endblock %}

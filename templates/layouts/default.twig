@@ -12,12 +12,12 @@
 		{{ common_resources | raw }}
 
 		{# remote-finder #}
-		<link rel="stylesheet" href="{{ path_client_resources }}remote-finder/remote-finder.css" />
-		<script src="{{ path_client_resources }}remote-finder/remote-finder.js"></script>
+		<link rel="stylesheet" href="{{ path_client_resources }}remote-finder/remote-finder.css?t={{ 'now'|date('U') }}" />
+		<script src="{{ path_client_resources }}remote-finder/remote-finder.js?t={{ 'now'|date('U') }}"></script>
 
 		{# common-file-editor #}
-		<link rel="stylesheet" href="{{ path_client_resources }}common-file-editor/common-file-editor.css" />
-		<script src="{{ path_client_resources }}common-file-editor/common-file-editor.js"></script>
+		<link rel="stylesheet" href="{{ path_client_resources }}common-file-editor/common-file-editor.css?t={{ 'now'|date('U') }}" />
+		<script src="{{ path_client_resources }}common-file-editor/common-file-editor.js?t={{ 'now'|date('U') }}"></script>
 
 		{% block head %}{% endblock %}
 
