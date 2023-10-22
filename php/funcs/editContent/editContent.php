@@ -51,7 +51,7 @@ class editContent {
 		$client_resources_dist = $this->clover->realpath_files('/');
 		$this->px->fs()->mkdir_r($client_resources_dist.'edit-content/'); // ディレクトリが予め存在していないとファイル生成は失敗する。
 
-		$appearance = $this->clover->auth()->get_login_user_info()->appearance;
+		$appearance = $this->clover->auth()->get_login_user_info()->appearance ?? '';
 		switch($appearance){
 			case "auto":
 			case "light":
