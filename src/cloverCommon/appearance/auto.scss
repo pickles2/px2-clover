@@ -1,3 +1,4 @@
+@media (prefers-color-scheme: dark) { 
 :root {
 	--px2-text-color: #ddd;
 	--px2-background-color: #333;
@@ -81,3 +82,5 @@
 
 // common-file-editor の darkmode
 @import "./../../../node_modules/@tomk79/common-file-editor/dist/themes/darkmode";
+
+}

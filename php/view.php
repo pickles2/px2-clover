@@ -64,15 +64,16 @@ class view{
 <?php
 		switch( $this->clover->auth()->get_login_user_info()->appearance ?? '' ){
 			case "light":
+				?><style id="px2-clover-appearance-styles"><?= ( file_get_contents(__DIR__.'/../public/resources/cloverCommon/appearance/lightmode.css') ); ?></style><?php
 				break;
 
 			case "dark":
-				?><style id="px2-clover-darkmode-styles"><?= ( file_get_contents(__DIR__.'/../public/resources/cloverCommon/appearance/darkmode.css') ); ?></style><?php
+				?><style id="px2-clover-appearance-styles"><?= ( file_get_contents(__DIR__.'/../public/resources/cloverCommon/appearance/darkmode.css') ); ?></style><?php
 				break;
 
 			case "":
 			default:
-				?><style id="px2-clover-darkmode-styles">@media (prefers-color-scheme: dark) { <?= ( file_get_contents(__DIR__.'/../public/resources/cloverCommon/appearance/darkmode.css') ); ?> }</style><?php
+				?><style id="px2-clover-appearance-styles"><?= ( file_get_contents(__DIR__.'/../public/resources/cloverCommon/appearance/auto.css') ); ?></style><?php
 				break;
 		}
 ?>
@@ -83,6 +84,7 @@ class view{
 
 		// 共通項目
 		$data['clover_config'] = $this->clover->conf();
+		$data['user_info'] = $this->clover->auth()->get_login_user_info();
 		$data['common_resources'] = $cloverCommon;
 		$data['appearance_resources'] = $appearance;
 		$data['px2config'] = $this->px->conf();

@@ -14,7 +14,7 @@ export default React.memo(function Theme(props){
 	function initialize( callback ){
 		callback = callback || function(){};
 		$('.cont-px2-clover__px2te-resources').remove();
-		var $darkmodeStyles = $('#px2-clover-darkmode-styles');
+		var $darkmodeStyles = $('#px2-clover-appearance-styles');
 		main.px2utils.px2cmd(
 			'/?PX=px2dthelper.px2te.client_resources',
 			{},

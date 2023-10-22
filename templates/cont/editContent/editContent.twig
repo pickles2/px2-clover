@@ -105,6 +105,7 @@
 						'origin': preview_url// プレビュー用サーバーの情報を設定します。
 					},
 					'lang': (window.clover_config.lang ? window.clover_config.lang : 'ja'), // language
+					'appearance': window.clover_config.appearance || "auto",
 					'gpiBridge': function(input, callback){
 						base64_encode( JSON.stringify(input) )
 							.then((encodedInput) => {

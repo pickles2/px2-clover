@@ -42,6 +42,7 @@
 		};
 		window.clover_config = {
 			"lang": "{{ clover_config.lang | e("js") }}",
+			"appearance": "{{ user_info.appearance | e("js") }}",
 			"history": {
 				"auto_commit": "{{ clover_config.history.auto_commit | e("js") }}",
 			},
