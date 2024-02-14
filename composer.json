@@ -29,7 +29,7 @@
         "pickles2/px-fw-2.x": "~2.1",
         "pickles2/px2-px2dthelper": "~2.2",
         "tomk79/langbank": "~0.2",
-        "twig/twig": ">=3",
+        "twig/twig": "~3.8",
         "tomk79/remote-finder": "~0.2"
     },
     "require-dev": {
