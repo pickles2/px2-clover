@@ -83,6 +83,7 @@ $conf->allow_pxcommands = 1;
 ### pickles2/px2-clover v0.3.2 (リリース日未定)
 
 - 依存パッケージのバージョンを調整した。
+- 編集履歴UIの改善。
 
 ### pickles2/px2-clover v0.3.1 (2023年11月13日)
 
