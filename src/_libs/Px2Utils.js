@@ -37,12 +37,14 @@ export default function Px2Utils(){
 			"method": "post",
 			"data": params,
 			"cache": false,
-			"timeout": 30000, // デフォルトは30秒でタイムアウトさせる
+			"timeout": 30*1000, // デフォルトは30秒でタイムアウトさせる
 			"xhrFields": {},
 		};
 
 		if( options && options.timeout ){
 			ajaxOptions.timeout = options.timeout;
+		}else if( options && options.timeout === 0 ){
+			delete(ajaxOptions.timeout);
 		}
 		if( options && options.progress ){
 			ajaxOptions.xhrFields.onprogress = function(oEvent){

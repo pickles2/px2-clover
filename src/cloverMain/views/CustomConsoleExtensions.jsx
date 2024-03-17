@@ -112,7 +112,7 @@ export default function CustomConsoleExtensions(props){
 							'/?PX=px2dthelper.custom_console_extensions.'+currentCceId+'.gpi'
 								+'&request='+encodeURIComponent( JSON.stringify(input) ),
 							{
-								timeout: 24 * 60 * 60 * 1000,
+								timeout: 0,
 							},
 							function( rtn ){
 								callback( rtn );
