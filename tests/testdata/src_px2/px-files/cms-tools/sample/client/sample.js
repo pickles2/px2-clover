@@ -39,5 +39,19 @@ window.tomk79CmsToolsSample = function(cceAgent){
 				})
 			)
 		)
+		.append($('<p>')
+			.append($('<button class="px2-btn">')
+				.text('遅いGPIを呼び出すテスト')
+				.on('click', function(){
+					alert('呼び出します。');
+					cceAgent.gpi({
+						'command': 'late-api-test'
+					}, function(res){
+						console.log('---- res:', res);
+						alert(res);
+					});
+				})
+			)
+		)
 	;
 }

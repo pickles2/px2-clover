@@ -61,6 +61,10 @@ class main{
 				));
 				return ($result ? 'Test Async Call Successful.' : '[ERROR] Test Async Call Failed.');
 				break;
+			case 'late-api-test':
+				sleep(60);
+				return 'GPI Call Successful.';
+				break;
 		}
 		return false;
 	}
