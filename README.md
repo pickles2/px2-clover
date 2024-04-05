@@ -80,6 +80,10 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
+### pickles2/px2-clover v0.3.3 (リリース日未定)
+
+- その他、細かい修正など。
+
 ### pickles2/px2-clover v0.3.3 (2024年3月20日)
 
 - 管理画面への予期せぬドロップ操作をキャンセルするようになった。
