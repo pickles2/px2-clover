@@ -82,6 +82,7 @@ $conf->allow_pxcommands = 1;
 
 ### pickles2/px2-clover v0.3.3 (リリース日未定)
 
+- ダークモードスタイルに関する修正。
 - その他、細かい修正など。
 
 ### pickles2/px2-clover v0.3.3 (2024年3月20日)
