@@ -80,7 +80,7 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
-### pickles2/px2-clover v0.3.5 (リリース日未定)
+### pickles2/px2-clover v0.3.5 (2024年5月17日)
 
 - Broccoliで、loopモジュールの座標が正しく取得できない場合がある不具合を修正。
 
