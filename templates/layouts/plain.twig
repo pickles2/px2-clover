@@ -3,7 +3,9 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>{% block title %}Pickles 2{% endblock %}</title>
+		{% block viewport %}
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		{% endblock %}
 		<meta name="csrf-token" content="{{ csrf_token }}" />
 
 		<style>body{background-color:#ddd;} @media (prefers-color-scheme: dark) {body{background-color:#333;}}</style>
