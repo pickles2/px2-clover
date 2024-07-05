@@ -41,25 +41,33 @@ export default function UpdateGuiContents(props){
 	}
 
 	/**
-	 * 未アサインコンテンツを削除する
+	 * GUIコンテンツを再構成する
 	 */
-	function deleteContent( target_path ){
-		if(!confirm('このコンテンツ '+target_path+' を削除しますか？')){
-			return;
-		}
+	function rebuildContent( target_path ){
+		alert('underconstruction');
+		// if(!confirm('このコンテンツ '+target_path+' を削除しますか？')){
+		// 	return;
+		// }
 
-		main.px2utils.px2cmd(
-			target_path + '?PX=px2dthelper.content.delete',
-			{},
-			function( res ){
-				if( !res.result ){
-					alert( 'Error: ' + res.message );
-					console.error('Error:', res);
-					return;
-				}
-				getGuiEditorContentList();
-			}
-		);
+		// main.px2utils.px2cmd(
+		// 	target_path + '?PX=px2dthelper.content.delete',
+		// 	{},
+		// 	function( res ){
+		// 		if( !res.result ){
+		// 			alert( 'Error: ' + res.message );
+		// 			console.error('Error:', res);
+		// 			return;
+		// 		}
+		// 		getGuiEditorContentList();
+		// 	}
+		// );
+	}
+
+	/**
+	 * GUIコンテンツをすべて再構成する
+	 */
+	function rebuildAllContents(){
+		alert('underconstruction');
 	}
 
 	return (
@@ -70,7 +78,17 @@ export default function UpdateGuiContents(props){
 					getGuiEditorContentList(function(){
 						$(e.target).removeAttr('disabled');
 					});
-				}}>GUI編集コンテンツを検索する</button>
+				}}>ブロックエディタコンテンツを検索する</button>
+				{(guiEditorContentsList!==null
+					?
+					<>
+						<button className="px2-btn px2-btn--primary" onClick={(e)=>{
+							rebuildAllContents();
+						}}>すべて再構成</button>
+					</>
+					:
+					<></>
+				)}
 			</div>
 			{(guiEditorContentsList!==null
 				?
@@ -80,15 +98,15 @@ export default function UpdateGuiContents(props){
 						<>
 							<table className="px2-table" style={{widht:"100%"}}>
 								<tbody>
-								{(guiEditorContentsList.map((unassignedContent, idx)=>{
+								{(guiEditorContentsList.map((guiEditorContent, idx)=>{
 									return (
 										<tr key={idx}>
-											<th>{unassignedContent}</th>
-											<td><button type="button" data-target-content={unassignedContent} onClick={(e)=>{
+											<th>{guiEditorContent}</th>
+											<td><button type="button" data-target-content={guiEditorContent} onClick={(e)=>{
 												var target_path = $(e.target).attr('data-target-content');
 												target_path = target_path.replace(/(\.html?)(\.[a-zA-Z0-9]+)?$/, '$1');
-												deleteContent(target_path);
-											}} className="px2-btn px2-btn--danger">remove</button></td>
+												rebuildContent(target_path);
+											}} className="px2-btn">rebuild</button></td>
 										</tr>
 									);
 								}))}
@@ -97,7 +115,7 @@ export default function UpdateGuiContents(props){
 						</>
 						:
 						<>
-							<p>GUI編集コンテンツは検出されませんでした。</p>
+							<p>ブロックエディタコンテンツは検出されませんでした。</p>
 						</>
 					)}
 				</>
