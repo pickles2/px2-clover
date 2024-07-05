@@ -82,6 +82,7 @@ $conf->allow_pxcommands = 1;
 
 ### pickles2/px2-clover v0.3.6 (リリース日未定)
 
+- GUI編集コンテンツを一括再構成機能を追加。
 - スマートフォンで記事編集画面がズームされないようになった。
 
 ### pickles2/px2-clover v0.3.5 (2024年5月17日)

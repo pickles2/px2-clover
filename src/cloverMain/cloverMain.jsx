@@ -19,6 +19,7 @@ import Publish from './views/Publish';
 import History from './views/History';
 import FilesAndFolders from './views/FilesAndFolders';
 import FindUnassignedContents from './views/FindUnassignedContents';
+import UpdateGuiContents from './views/UpdateGuiContents';
 import CustomConsoleExtensions from './views/CustomConsoleExtensions';
 import iterate79 from 'iterate79';
 import LangBank from 'langbank';
@@ -273,6 +274,12 @@ class Layout extends React.Component {
 				"langKey": "page_title.config_find_unassigned_contents",
 				"parent": "admin.config",
 				"content": <FindUnassignedContents />,
+			},
+			'admin.config.update_gui_contents': {
+				"title": "GUI編集コンテンツを一括再構成",
+				"langKey": "page_title.config_update_gui_contents",
+				"parent": "admin.config",
+				"content": <UpdateGuiContents />,
 			},
 			'admin.sitemap': {
 				"title": "サイトマップ",
