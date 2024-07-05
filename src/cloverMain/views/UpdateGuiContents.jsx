@@ -6,20 +6,19 @@ import Link from '../components/Link';
 export default function UpdateGuiContents(props){
 
 	const main = useContext(MainContext);
-	const [unassignedContentsList, setUnassignedContentsList] = useState(null);
+	const [guiEditorContentsList, setGuiEditorContentsList] = useState(null);
 
 	/**
 	 * 未アサインコンテンツの検索結果を取得する
 	 */
-	function getUnassignedContentList(callback){
+	function getGuiEditorContentList(callback){
 		callback = callback || function(){};
 		px2style.loading();
 		main.px2utils.px2cmd(
-			"?PX=px2dthelper.get.list_unassigned_contents",
+			"?PX=px2dthelper.get.list_gui_editor_contents",
 			{},
 			{},
 			function(data, error){
-				console.log('------ px2dthelper.get.list_unassigned_contents Response:', data, error);
 				if( error ){
 					px2style.modal({
 						'title': 'エラー',
@@ -34,7 +33,7 @@ export default function UpdateGuiContents(props){
 
 				px2style.closeLoading();
 
-				setUnassignedContentsList(data.unassigned_contents);
+				setGuiEditorContentsList(data.gui_editor_contents);
 
 				callback();
 			}
@@ -53,13 +52,12 @@ export default function UpdateGuiContents(props){
 			target_path + '?PX=px2dthelper.content.delete',
 			{},
 			function( res ){
-				console.log(res);
 				if( !res.result ){
 					alert( 'Error: ' + res.message );
 					console.error('Error:', res);
 					return;
 				}
-				getUnassignedContentList();
+				getGuiEditorContentList();
 			}
 		);
 	}
@@ -69,35 +67,37 @@ export default function UpdateGuiContents(props){
 			<div className="px2-p">
 				<button className="px2-btn px2-btn--primary" onClick={(e)=>{
 					$(e.target).attr({'disabled':'disabled'});
-					getUnassignedContentList(function(){
+					getGuiEditorContentList(function(){
 						$(e.target).removeAttr('disabled');
 					});
-				}}>未アサインコンテンツを検索する</button>
+				}}>GUI編集コンテンツを検索する</button>
 			</div>
-			{(unassignedContentsList!==null
+			{(guiEditorContentsList!==null
 				?
 				<>
-					{(unassignedContentsList.length
+					{(guiEditorContentsList.length
 						?
 						<>
 							<table className="px2-table" style={{widht:"100%"}}>
-							{(unassignedContentsList.map((unassignedContent, idx)=>{
-								return (
-									<tr key={idx}>
-										<th>{unassignedContent}</th>
-										<td><button type="button" data-target-content={unassignedContent} onClick={(e)=>{
-											var target_path = $(e.target).attr('data-target-content');
-											target_path = target_path.replace(/(\.html?)(\.[a-zA-Z0-9]+)?$/, '$1');
-											deleteContent(target_path);
-										}} className="px2-btn px2-btn--danger">remove</button></td>
-									</tr>
-								);
-							}))}
+								<tbody>
+								{(guiEditorContentsList.map((unassignedContent, idx)=>{
+									return (
+										<tr key={idx}>
+											<th>{unassignedContent}</th>
+											<td><button type="button" data-target-content={unassignedContent} onClick={(e)=>{
+												var target_path = $(e.target).attr('data-target-content');
+												target_path = target_path.replace(/(\.html?)(\.[a-zA-Z0-9]+)?$/, '$1');
+												deleteContent(target_path);
+											}} className="px2-btn px2-btn--danger">remove</button></td>
+										</tr>
+									);
+								}))}
+								</tbody>
 							</table>
 						</>
 						:
 						<>
-							<p>未アサインコンテンツは検出されませんでした。</p>
+							<p>GUI編集コンテンツは検出されませんでした。</p>
 						</>
 					)}
 				</>

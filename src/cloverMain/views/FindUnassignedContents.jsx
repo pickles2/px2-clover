@@ -19,7 +19,6 @@ export default function FindUnassignedContents(props){
 			{},
 			{},
 			function(data, error){
-				console.log('------ px2dthelper.get.list_unassigned_contents Response:', data, error);
 				if( error ){
 					px2style.modal({
 						'title': 'エラー',
@@ -53,7 +52,6 @@ export default function FindUnassignedContents(props){
 			target_path + '?PX=px2dthelper.content.delete',
 			{},
 			function( res ){
-				console.log(res);
 				if( !res.result ){
 					alert( 'Error: ' + res.message );
 					console.error('Error:', res);
@@ -81,18 +79,20 @@ export default function FindUnassignedContents(props){
 						?
 						<>
 							<table className="px2-table" style={{widht:"100%"}}>
-							{(unassignedContentsList.map((unassignedContent, idx)=>{
-								return (
-									<tr key={idx}>
-										<th>{unassignedContent}</th>
-										<td><button type="button" data-target-content={unassignedContent} onClick={(e)=>{
-											var target_path = $(e.target).attr('data-target-content');
-											target_path = target_path.replace(/(\.html?)(\.[a-zA-Z0-9]+)?$/, '$1');
-											deleteContent(target_path);
-										}} className="px2-btn px2-btn--danger">remove</button></td>
-									</tr>
-								);
-							}))}
+								<tbody>
+								{(unassignedContentsList.map((unassignedContent, idx)=>{
+									return (
+										<tr key={idx}>
+											<th>{unassignedContent}</th>
+											<td><button type="button" data-target-content={unassignedContent} onClick={(e)=>{
+												var target_path = $(e.target).attr('data-target-content');
+												target_path = target_path.replace(/(\.html?)(\.[a-zA-Z0-9]+)?$/, '$1');
+												deleteContent(target_path);
+											}} className="px2-btn px2-btn--danger">remove</button></td>
+										</tr>
+									);
+								}))}
+								</tbody>
 							</table>
 						</>
 						:
