@@ -43,31 +43,57 @@ export default function UpdateGuiContents(props){
 	/**
 	 * GUIコンテンツを再構成する
 	 */
-	function rebuildContent( target_path ){
-		alert('underconstruction');
-		// if(!confirm('このコンテンツ '+target_path+' を削除しますか？')){
-		// 	return;
-		// }
+	async function rebuildBroccoliContent( target_path ){
+		return new Promise((resolve, reject)=>{
+			px2style.loading();
 
-		// main.px2utils.px2cmd(
-		// 	target_path + '?PX=px2dthelper.content.delete',
-		// 	{},
-		// 	function( res ){
-		// 		if( !res.result ){
-		// 			alert( 'Error: ' + res.message );
-		// 			console.error('Error:', res);
-		// 			return;
-		// 		}
-		// 		getGuiEditorContentList();
-		// 	}
-		// );
+			var options = {
+				'api': 'broccoliBridge',
+				'forBroccoli': {
+					'api': 'updateContents',
+					'options': {
+						'lang': 'ja',
+					},
+				},
+				'page_path': target_path,
+			};
+
+			function pathToRequestPath(path){
+				const pattern = /\{(?:\*|\$)([a-zA-Z0-9\_\-]*)\}/;
+				while( pattern.test(path) ){
+					path = path.replace(pattern, '$1');
+				}
+				return path;
+			}
+
+			main.px2utils.base64_encode_async(JSON.stringify(options)).then(function(optionsBase64){
+				main.px2utils.px2cmd(
+					pathToRequestPath(target_path) + '?PX=px2dthelper.px2ce.gpi',
+					{
+						"appMode": "web",
+						"data": optionsBase64,
+					},
+					function( res ){
+						px2style.closeLoading();
+
+						if( res !== true && !res.result ){
+							console.error('Error:', res);
+							alert("Error: " + res.message);
+							reject();
+							return;
+						}
+						resolve();
+					}
+				);
+			});
+		});
 	}
 
 	/**
 	 * GUIコンテンツをすべて再構成する
 	 */
-	function rebuildAllContents(){
-		alert('underconstruction');
+	function rebuildAllBroccoliContent(){
+		$('button[data-target-content]').trigger('click');
 	}
 
 	return (
@@ -78,12 +104,12 @@ export default function UpdateGuiContents(props){
 					getGuiEditorContentList(function(){
 						$(e.target).removeAttr('disabled');
 					});
-				}}>ブロックエディタコンテンツを検索する</button>
+				}}>ブロックエディタのコンテンツを検索する</button>
 				{(guiEditorContentsList!==null
 					?
 					<>
 						<button className="px2-btn px2-btn--primary" onClick={(e)=>{
-							rebuildAllContents();
+							rebuildAllBroccoliContent();
 						}}>すべて再構成</button>
 					</>
 					:
@@ -103,9 +129,21 @@ export default function UpdateGuiContents(props){
 										<tr key={idx}>
 											<th>{guiEditorContent}</th>
 											<td><button type="button" data-target-content={guiEditorContent} onClick={(e)=>{
+												e.preventDefault();
+												e.target.disabled = true;
 												var target_path = $(e.target).attr('data-target-content');
 												target_path = target_path.replace(/(\.html?)(\.[a-zA-Z0-9]+)?$/, '$1');
-												rebuildContent(target_path);
+
+												rebuildBroccoliContent(target_path)
+													.then(()=>{
+														e.target.disabled = false;
+														$(e.target).addClass('px2-btn--primary');
+													})
+													.catch(()=>{
+														alert('errored.');
+														e.target.disabled = false;
+														$(e.target).addClass('px2-btn--danger');
+													});
 											}} className="px2-btn">rebuild</button></td>
 										</tr>
 									);
@@ -115,7 +153,7 @@ export default function UpdateGuiContents(props){
 						</>
 						:
 						<>
-							<p>ブロックエディタコンテンツは検出されませんでした。</p>
+							<p>ブロックエディタのコンテンツは検出されませんでした。</p>
 						</>
 					)}
 				</>
