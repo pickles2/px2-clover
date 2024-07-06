@@ -58,17 +58,9 @@ export default function UpdateGuiContents(props){
 				'page_path': target_path,
 			};
 
-			function pathToRequestPath(path){
-				const pattern = /\{(?:\*|\$)([a-zA-Z0-9\_\-]*)\}/;
-				while( pattern.test(path) ){
-					path = path.replace(pattern, '$1');
-				}
-				return path;
-			}
-
 			main.px2utils.base64_encode_async(JSON.stringify(options)).then(function(optionsBase64){
 				main.px2utils.px2cmd(
-					pathToRequestPath(target_path) + '?PX=px2dthelper.px2ce.gpi',
+					main.px2utils.pagePathToRequestablePath(target_path) + '?PX=px2dthelper.px2ce.gpi',
 					{
 						"appMode": "web",
 						"data": optionsBase64,

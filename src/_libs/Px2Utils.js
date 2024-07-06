@@ -138,6 +138,21 @@ export default function Px2Utils(){
 	}
 
 	/**
+	 * ページのpathをリクエスト可能な形に変換する
+	 * pathに含まれるパスパラメータを保管し、リクエスト可能な形にします。
+	 * @param {*} page_path 
+	 * @returns requestable path
+	 */
+	this.pagePathToRequestablePath = function(page_path){
+		const pattern = /\{(?:\*|\$)([a-zA-Z0-9\_\-]*)\}/;
+		while( pattern.test(page_path) ){
+			page_path = page_path.replace(pattern, '$1');
+		}
+		return page_path;
+	}
+
+
+	/**
 	 * 先頭から controot を削除する
 	 * @param {*} path 
 	 * @returns 
