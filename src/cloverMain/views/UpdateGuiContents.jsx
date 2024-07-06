@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import React, { useContext, useState, useEffect } from "react";
 import {MainContext} from '../context/MainContext';
+import iterate79 from 'iterate79';
 import Link from '../components/Link';
 
 export default function UpdateGuiContents(props){
@@ -85,7 +86,19 @@ export default function UpdateGuiContents(props){
 	 * GUIコンテンツをすべて再構成する
 	 */
 	function rebuildAllBroccoliContent(){
-		$('button[data-target-content]').trigger('click');
+		// $('button[data-target-content]').trigger('click');
+		iterate79.ary(
+			guiEditorContentsList,
+			function(it, page_path, index){
+				console.info(index, page_path);
+				rebuildBroccoliContent(page_path).then(()=>{
+					it.next();
+				});
+			},
+			function(){
+				alert('Completed.');
+			}
+		);
 	}
 
 	return (
