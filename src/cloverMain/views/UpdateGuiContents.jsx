@@ -7,7 +7,10 @@ import Link from '../components/Link';
 export default function UpdateGuiContents(props){
 
 	const main = useContext(MainContext);
-	const [guiEditorContentsList, setGuiEditorContentsList] = useState(null);
+	const [status, setStatus] = useState({
+		GuiEditorContentsList: null,
+		ContentsRebuildStatus: {},
+	});
 
 	/**
 	 * 未アサインコンテンツの検索結果を取得する
@@ -34,7 +37,10 @@ export default function UpdateGuiContents(props){
 
 				px2style.closeLoading();
 
-				setGuiEditorContentsList(data.gui_editor_contents);
+				setStatus({
+					...status,
+					GuiEditorContentsList: data.gui_editor_contents,
+				});
 
 				callback();
 			}
@@ -45,6 +51,11 @@ export default function UpdateGuiContents(props){
 	 * GUIコンテンツを再構成する
 	 */
 	async function rebuildBroccoliContent( target_path ){
+		status.ContentsRebuildStatus[target_path] = null;
+		setStatus({
+			...status,
+		});
+
 		return new Promise((resolve, reject)=>{
 			px2style.loading();
 
@@ -59,26 +70,35 @@ export default function UpdateGuiContents(props){
 				'page_path': target_path,
 			};
 
-			main.px2utils.base64_encode_async(JSON.stringify(options)).then(function(optionsBase64){
-				main.px2utils.px2cmd(
-					main.px2utils.pagePathToRequestablePath(target_path) + '?PX=px2dthelper.px2ce.gpi',
-					{
-						"appMode": "web",
-						"data": optionsBase64,
-					},
-					function( res ){
-						px2style.closeLoading();
+			main.px2utils.base64_encode_async(JSON.stringify(options))
+				.then(function(optionsBase64){
+					main.px2utils.px2cmd(
+						main.px2utils.pagePathToRequestablePath(target_path) + '?PX=px2dthelper.px2ce.gpi',
+						{
+							"appMode": "web",
+							"data": optionsBase64,
+						},
+						function( res ){
+							px2style.closeLoading();
 
-						if( res !== true && !res.result ){
-							console.error('Error:', res);
-							alert("Error: " + res.message);
-							reject();
-							return;
+							if( res !== true && !res.result ){
+								console.error('Error:', res);
+								// alert("Error: " + res.message);
+								status.ContentsRebuildStatus[target_path] = false;
+								setStatus({
+									...status,
+								});
+								reject();
+								return;
+							}
+							status.ContentsRebuildStatus[target_path] = true;
+							setStatus({
+								...status,
+							});
+							resolve();
 						}
-						resolve();
-					}
-				);
-			});
+					);
+				});
 		});
 	}
 
@@ -88,12 +108,16 @@ export default function UpdateGuiContents(props){
 	function rebuildAllBroccoliContent(){
 		// $('button[data-target-content]').trigger('click');
 		iterate79.ary(
-			guiEditorContentsList,
+			status.GuiEditorContentsList,
 			function(it, page_path, index){
 				console.info(index, page_path);
-				rebuildBroccoliContent(page_path).then(()=>{
-					it.next();
-				});
+				rebuildBroccoliContent(page_path)
+					.finally(()=>{
+console.log(status.ContentsRebuildStatus);
+						setTimeout(()=>{
+							it.next();
+						}, 200);
+					});
 			},
 			function(){
 				alert('Completed.');
@@ -104,52 +128,47 @@ export default function UpdateGuiContents(props){
 	return (
 		<>
 			<div className="px2-p">
-				<button className="px2-btn px2-btn--primary" onClick={(e)=>{
-					$(e.target).attr({'disabled':'disabled'});
-					getGuiEditorContentList(function(){
-						$(e.target).removeAttr('disabled');
-					});
-				}}>ブロックエディタのコンテンツを検索する</button>
-				{(guiEditorContentsList!==null
+				<ul className="px2-horizontal-list">
+					<li><button className={status.GuiEditorContentsList===null ? "px2-btn px2-btn--primary" : "px2-btn"} onClick={(e)=>{
+						$(e.target).attr({'disabled':'disabled'});
+						getGuiEditorContentList(function(){
+							$(e.target).removeAttr('disabled');
+						});
+					}}>ブロックエディタのコンテンツを検索する</button></li>
+				{(status.GuiEditorContentsList!==null
 					?
-					<>
-						<button className="px2-btn px2-btn--primary" onClick={(e)=>{
-							rebuildAllBroccoliContent();
-						}}>すべて再構成</button>
-					</>
+					<li><button className="px2-btn px2-btn--primary" onClick={(e)=>{
+						rebuildAllBroccoliContent();
+					}}>すべて再構成</button></li>
 					:
 					<></>
 				)}
+				</ul>
 			</div>
-			{(guiEditorContentsList!==null
+			{(status.GuiEditorContentsList!==null
 				?
 				<>
-					{(guiEditorContentsList.length
+					{(status.GuiEditorContentsList.length
 						?
 						<>
-							<table className="px2-table" style={{widht:"100%"}}>
+							<table className="px2-table cont-content-list" style={{widht:"100%"}}>
+								<colgroup>
+									<col />
+									<col />
+									<col />
+								</colgroup>
 								<tbody>
-								{(guiEditorContentsList.map((guiEditorContent, idx)=>{
+								{(status.GuiEditorContentsList.map((guiEditorContent, idx)=>{
 									return (
 										<tr key={idx}>
 											<th>{guiEditorContent}</th>
-											<td><button type="button" data-target-content={guiEditorContent} onClick={(e)=>{
+											<td>{status.ContentsRebuildStatus[guiEditorContent] === undefined ? '' : status.ContentsRebuildStatus[guiEditorContent] === null ? 'progress...' : status.ContentsRebuildStatus[guiEditorContent] ? 'OK' : 'NG'}</td>
+											<td class="cont-content-list__btn-rebuild"><button type="button" data-target-content={guiEditorContent} onClick={(e)=>{
 												e.preventDefault();
-												e.target.disabled = true;
 												var target_path = $(e.target).attr('data-target-content');
-												target_path = target_path.replace(/(\.html?)(\.[a-zA-Z0-9]+)?$/, '$1');
 
-												rebuildBroccoliContent(target_path)
-													.then(()=>{
-														e.target.disabled = false;
-														$(e.target).addClass('px2-btn--primary');
-													})
-													.catch(()=>{
-														alert('errored.');
-														e.target.disabled = false;
-														$(e.target).addClass('px2-btn--danger');
-													});
-											}} className="px2-btn">rebuild</button></td>
+												rebuildBroccoliContent(target_path);
+											}} className={status.ContentsRebuildStatus[guiEditorContent] === true ? "px2-btn px2-btn--primary" : status.ContentsRebuildStatus[guiEditorContent] === false ? "px2-btn px2-btn--danger" : "px2-btn"} disabled={status.ContentsRebuildStatus[guiEditorContent]===null ? true : false}>rebuild</button></td>
 										</tr>
 									);
 								}))}

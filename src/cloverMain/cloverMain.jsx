@@ -276,7 +276,7 @@ class Layout extends React.Component {
 				"content": <FindUnassignedContents />,
 			},
 			'admin.config.update_gui_contents': {
-				"title": "GUI編集コンテンツを一括再構成",
+				"title": "ブロックエディタのコンテンツを一括再構成",
 				"langKey": "page_title.config_update_gui_contents",
 				"parent": "admin.config",
 				"content": <UpdateGuiContents />,

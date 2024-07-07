@@ -1,0 +1,16 @@
+.cont-content-list {
+    colgroup {
+        col:nth-child(1) {
+            width: calc(50%);
+        }
+        col:nth-child(2) {
+            width: calc(50% - 120px);
+        }
+        col:nth-child(3) {
+            width: 120px;
+        }
+    }
+    &__btn-rebuild {
+        text-align: center;
+    }
+}
