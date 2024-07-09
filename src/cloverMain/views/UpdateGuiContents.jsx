@@ -110,10 +110,8 @@ export default function UpdateGuiContents(props){
 		iterate79.ary(
 			status.GuiEditorContentsList,
 			function(it, page_path, index){
-				console.info(index, page_path);
 				rebuildBroccoliContent(page_path)
 					.finally(()=>{
-console.log(status.ContentsRebuildStatus);
 						setTimeout(()=>{
 							it.next();
 						}, 200);
