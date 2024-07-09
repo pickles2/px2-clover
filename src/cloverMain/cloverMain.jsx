@@ -19,6 +19,7 @@ import Publish from './views/Publish';
 import History from './views/History';
 import FilesAndFolders from './views/FilesAndFolders';
 import FindUnassignedContents from './views/FindUnassignedContents';
+import ContentsProcessor from './views/ContentsProcessor';
 import UpdateGuiContents from './views/UpdateGuiContents';
 import CustomConsoleExtensions from './views/CustomConsoleExtensions';
 import iterate79 from 'iterate79';
@@ -274,6 +275,12 @@ class Layout extends React.Component {
 				"langKey": "page_title.config_find_unassigned_contents",
 				"parent": "admin.config",
 				"content": <FindUnassignedContents />,
+			},
+			'admin.config.contents_processor': {
+				"title": "コンテンツを一括加工",
+				"langKey": "page_title.config_contents_processor",
+				"parent": "admin.config",
+				"content": <ContentsProcessor />,
 			},
 			'admin.config.update_gui_contents': {
 				"title": "ブロックエディタのコンテンツを一括再構成",

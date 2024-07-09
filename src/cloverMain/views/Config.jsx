@@ -29,6 +29,7 @@ export default function Config(props){
 					<li><Link href="?PX=admin.sitemap">{main.lb.get('page_title.sitemap')}</Link></li>
 					<li><Link href="?PX=admin.modules">{main.lb.get('page_title.modules')}</Link></li>
 					<li><Link href="?PX=admin.config.find_unassigned_contents">{main.lb.get('page_title.config_find_unassigned_contents')}</Link></li>
+					<li><Link href="?PX=admin.config.contents_processor">{main.lb.get('page_title.config_contents_processor')}</Link></li>
 					<li><Link href="?PX=admin.config.update_gui_contents">{main.lb.get('page_title.config_update_gui_contents')}</Link></li>
 					<li><Link href="?PX=admin.config.files_and_folders">{main.lb.get('page_title.config_files_and_folders')}</Link></li>
 					<li><Link href="?PX=admin.clearcache">{main.lb.get('page_title.clearcache')}</Link></li>
