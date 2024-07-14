@@ -36,7 +36,7 @@ export default React.memo(function PageInfo(props){
 		// TODO: HTML中に動的コードを含まないコンテンツならば、'server_side_scripting' 権限は要らないかもしれない。
 
 	useEffect(() => {
-		main.px2utils.px2cmd(
+		main.px2utils.pxCmd(
 			'/?PX=api.get.sitemap_definition',
 			{},
 			function( res ){
@@ -133,7 +133,7 @@ export default React.memo(function PageInfo(props){
 					return;
 				}
 
-				main.px2utils.px2cmd(
+				main.px2utils.pxCmd(
 					basePageInfo.path + '?PX=admin.api.get_page_info',
 					{},
 					function( res ){
@@ -148,7 +148,7 @@ export default React.memo(function PageInfo(props){
 				);
 			},
 			(it1) => {
-				main.px2utils.px2cmd(
+				main.px2utils.pxCmd(
 					'/?PX=px2dthelper.page.get_page_info_raw',
 					{
 						'filefullname': originatedCsv.basename,
@@ -234,7 +234,7 @@ export default React.memo(function PageInfo(props){
 								}
 							});
 
-							main.px2utils.px2cmd(
+							main.px2utils.pxCmd(
 								'/?PX=px2dthelper.page.add_page_info_raw',
 								{
 									'filefullname': originatedCsv.basename,
@@ -284,7 +284,7 @@ export default React.memo(function PageInfo(props){
 		var fixedSitemapDefinition;
 		iterate79.fnc({}, [
 			(it1) => {
-				main.px2utils.px2cmd(
+				main.px2utils.pxCmd(
 					'/?PX=px2dthelper.page.get_page_info_raw',
 					{
 						'filefullname': originatedCsv.basename,
@@ -362,7 +362,7 @@ export default React.memo(function PageInfo(props){
 									it2.next();
 								},
 								(it2) => {
-									main.px2utils.px2cmd(
+									main.px2utils.pxCmd(
 										'/?PX=px2dthelper.page.update_page_info_raw',
 										{
 											'filefullname': originatedCsv.basename,
@@ -400,7 +400,7 @@ export default React.memo(function PageInfo(props){
 										return;
 									}
 
-									main.px2utils.px2cmd(
+									main.px2utils.pxCmd(
 										'/?PX=px2dthelper.content.move',
 										{
 											'from': contentBefore,
@@ -445,7 +445,7 @@ export default React.memo(function PageInfo(props){
 		let article_info;
 		iterate79.fnc({}, [
 			function(it){
-				main.px2utils.px2cmd(
+				main.px2utils.pxCmd(
 					`?PX=admin.api.blogkit.get_sitemap_definition`,
 					{},
 					function( res ){
@@ -455,7 +455,7 @@ export default React.memo(function PageInfo(props){
 				);
 			},
 			function(it){
-				main.px2utils.px2cmd(
+				main.px2utils.pxCmd(
 					`?PX=admin.api.blogkit.get_blogmap_definition`,
 					{
 						blog_id: blog_id,
@@ -467,7 +467,7 @@ export default React.memo(function PageInfo(props){
 				);
 			},
 			function(it){
-				main.px2utils.px2cmd(
+				main.px2utils.pxCmd(
 					`?PX=admin.api.blogkit.get_article_info`,
 					{
 						path: path,
@@ -509,7 +509,7 @@ export default React.memo(function PageInfo(props){
 							}
 							iterate79.fnc({}, [
 								(it) => {
-									main.px2utils.px2cmd(
+									main.px2utils.pxCmd(
 										`?PX=admin.api.blogkit.update_article`,
 										{
 											blog_id: blog_id,
@@ -540,7 +540,7 @@ export default React.memo(function PageInfo(props){
 										return;
 									}
 
-									main.px2utils.px2cmd(
+									main.px2utils.pxCmd(
 										'/?PX=px2dthelper.content.move',
 										{
 											'from': contentBefore,
@@ -641,10 +641,10 @@ export default React.memo(function PageInfo(props){
 								return;
 							}
 
-							main.px2utils.px2cmd("?PX=api.get.page_originated_csv", {
+							main.px2utils.pxCmd("?PX=api.get.page_originated_csv", {
 								"path": selectedPagePath,
 							}, function(originatedCsvInfo){
-								main.px2utils.px2cmd(
+								main.px2utils.pxCmd(
 									'/?PX=px2dthelper.page.move_page_info_raw',
 									{
 										"from_filefullname": originatedCsv.basename,
@@ -686,7 +686,7 @@ export default React.memo(function PageInfo(props){
 		let originatedCsv = main.pageInfo.originated_csv;
 		iterate79.fnc({}, [
 			(it1) => {
-				main.px2utils.px2cmd(
+				main.px2utils.pxCmd(
 					'/?PX=px2dthelper.page.get_page_info_raw',
 					{
 						'filefullname': originatedCsv.basename,
@@ -739,7 +739,7 @@ export default React.memo(function PageInfo(props){
 										it2.next();
 										return;
 									}
-									main.px2utils.px2cmd(
+									main.px2utils.pxCmd(
 										'?PX=px2dthelper.content.delete',
 										{},
 										function( res ){
@@ -754,7 +754,7 @@ export default React.memo(function PageInfo(props){
 									);
 								},
 								(it2) => {
-									main.px2utils.px2cmd(
+									main.px2utils.pxCmd(
 										'/?PX=px2dthelper.page.delete_page_info_raw',
 										{
 											'filefullname': originatedCsv.basename,
@@ -818,7 +818,7 @@ export default React.memo(function PageInfo(props){
 								it.next();
 								return;
 							}
-							main.px2utils.px2cmd(
+							main.px2utils.pxCmd(
 								'?PX=px2dthelper.content.delete',
 								{},
 								function( res ){
@@ -833,7 +833,7 @@ export default React.memo(function PageInfo(props){
 							);
 						},
 						(it) => {
-							main.px2utils.px2cmd(
+							main.px2utils.pxCmd(
 								`?PX=admin.api.blogkit.delete_article`,
 								{
 									blog_id: blog_id,
@@ -889,7 +889,7 @@ export default React.memo(function PageInfo(props){
 
 						px2style.loading();
 
-						main.px2utils.px2cmd(
+						main.px2utils.pxCmd(
 							`?PX=px2dthelper.change_content_editor_mode&editor_mode=${editorModeTo}`,
 							{},
 							function( result, error ){
@@ -931,7 +931,7 @@ export default React.memo(function PageInfo(props){
 
 		px2style.loading();
 
-		main.px2utils.px2cmd(
+		main.px2utils.pxCmd(
 			'?PX=px2dthelper.publish_single_page',
 			{},
 			function( res ){
@@ -972,7 +972,7 @@ export default React.memo(function PageInfo(props){
 		};
 
 		main.px2utils.base64_encode_async(JSON.stringify(options)).then(function(optionsBase64){
-			main.px2utils.px2cmd(
+			main.px2utils.pxCmd(
 				'?PX=px2dthelper.px2ce.gpi',
 				{
 					"appMode": "web",

@@ -22,7 +22,7 @@ export default React.memo(function History(props){
 			$contGit,
 			function(cmdAry, callback){
 				px2style.loading();
-				main.px2utils.px2cmd("?PX=admin.api.git", {
+				main.px2utils.pxCmd("?PX=admin.api.git", {
 					'git': JSON.stringify(cmdAry),
 				}, (data)=>{
 					callback(data.exitcode, (data.stdout?data.stdout:'')+(data.stderr?data.stderr:''));

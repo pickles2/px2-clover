@@ -16,7 +16,7 @@ export default function BlogArticleList(props){
 
 	useEffect(() => {
 		px2style.loading();
-		main.px2utils.px2cmd(
+		main.px2utils.pxCmd(
 			`?PX=admin.api.blogkit.get_article_list`,
 			{
 				blog_id: props.blog_id,
@@ -53,7 +53,7 @@ export default function BlogArticleList(props){
 			page = localState.pageCount;
 		}
 		px2style.loading();
-		main.px2utils.px2cmd(
+		main.px2utils.pxCmd(
 			`?PX=admin.api.blogkit.get_article_list`,
 			{
 				blog_id: props.blog_id,

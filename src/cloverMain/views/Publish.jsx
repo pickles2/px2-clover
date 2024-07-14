@@ -18,7 +18,7 @@ export default React.memo(function Publish(props){
 
 	const pollingUpdateStatus = (callback) => {
 		callback = callback || function(){};
-		main.px2utils.px2cmd(
+		main.px2utils.pxCmd(
 			'/?PX=admin.api.health_check',
 			{},
 			function( res ){
@@ -143,7 +143,7 @@ export default React.memo(function Publish(props){
 			// スケジューラが利用可能な場合
 			// キューを発行する
 			px2style.loading();
-			main.px2utils.px2cmd(
+			main.px2utils.pxCmd(
 				"/?PX=admin.api.scheduler_add_queue",
 				{
 					"service": "publish",
@@ -197,7 +197,7 @@ export default React.memo(function Publish(props){
 				getParams += `&keep_cache=1`;
 			}
 
-			main.px2utils.px2cmd(
+			main.px2utils.pxCmd(
 				`?PX=publish.run${getParams}`,
 				{},
 				{
@@ -243,7 +243,7 @@ export default React.memo(function Publish(props){
 			return;
 		}
 		px2style.loading();
-		main.px2utils.px2cmd("?PX=admin.api.publish_stop", {}, function(data, error){
+		main.px2utils.pxCmd("?PX=admin.api.publish_stop", {}, function(data, error){
 			console.log('------ publish_stop Response:', data, error);
 			px2style.modal({
 				'title': 'パブリッシュ 中断',

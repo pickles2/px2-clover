@@ -8,14 +8,14 @@ export default function Px2Utils(){
 	 * @returns 
 	 */
 	this.getCurrentPageInfo = function( callback ){
-		this.px2cmd("?PX=admin.api.get_page_info", {}, callback);
+		this.pxCmd("?PX=admin.api.get_page_info", {}, callback);
 		return;
 	}
 
 	/**
 	 * PX Command を実行する
 	 */
-	this.px2cmd = function( path, params, ...args ){
+	this.pxCmd = function( path, params, ...args ){
 		let options = {};
 		if( args.length >=2 ){
 			options = args[0];

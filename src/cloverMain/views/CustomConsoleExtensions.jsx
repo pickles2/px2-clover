@@ -10,7 +10,7 @@ export default function CustomConsoleExtensions(props){
 	const [customConsoleExtensionsList, setCustomConsoleExtensionsList] = useState(null);
 
 	useEffect(() => {
-		main.px2utils.px2cmd(
+		main.px2utils.pxCmd(
 			'/?PX=px2dthelper.custom_console_extensions',
 			{},
 			function( res ){
@@ -58,7 +58,7 @@ export default function CustomConsoleExtensions(props){
 				it1.next();
 			},
 			function(it1){
-				main.px2utils.px2cmd(
+				main.px2utils.pxCmd(
 					`/?PX=px2dthelper.custom_console_extensions.${currentCceId}.client_resources`,
 					{},
 					function( res ){
@@ -108,7 +108,7 @@ export default function CustomConsoleExtensions(props){
 					'gpiBridge': function(input, callback){
 						// GPI(General Purpose Interface) Bridge
 
-						main.px2utils.px2cmd(
+						main.px2utils.pxCmd(
 							'/?PX=px2dthelper.custom_console_extensions.'+currentCceId+'.gpi'
 								+'&request='+encodeURIComponent( JSON.stringify(input) ),
 							{},
