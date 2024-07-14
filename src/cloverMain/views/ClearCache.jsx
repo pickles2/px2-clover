@@ -11,7 +11,7 @@ export default React.memo(function ClearCache(props){
 	 */
 	function clearcache(){
 		px2style.loading();
-		main.px2utils.px2cmd(
+		main.px2utils.pxCmd(
 			"?PX=clearcache",
 			{},
 			{

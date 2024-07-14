@@ -14,7 +14,7 @@ export default function FindUnassignedContents(props){
 	function getUnassignedContentList(callback){
 		callback = callback || function(){};
 		px2style.loading();
-		main.px2utils.px2cmd(
+		main.px2utils.pxCmd(
 			"?PX=px2dthelper.get.list_unassigned_contents",
 			{},
 			{},
@@ -48,7 +48,7 @@ export default function FindUnassignedContents(props){
 			return;
 		}
 
-		main.px2utils.px2cmd(
+		main.px2utils.pxCmd(
 			target_path + '?PX=px2dthelper.content.delete',
 			{},
 			function( res ){

@@ -16,7 +16,7 @@ export default function ConfigMembers(props){
 	}, []);
 
 	function reloadMemberList(){
-		main.px2utils.px2cmd(
+		main.px2utils.pxCmd(
 			'/?PX=admin.api.get_members',
 			{},
 			function( res, error ){
@@ -147,7 +147,7 @@ export default function ConfigMembers(props){
 										params.pw_retype = modal.$modal.find('[name=pw_retype]').val();
 									}
 
-									main.px2utils.px2cmd(
+									main.px2utils.pxCmd(
 										'/?PX=' + options.PxCmd,
 										params,
 										function( res, error ){
@@ -233,7 +233,7 @@ export default function ConfigMembers(props){
 								'current_pw': modal.$modal.find('[name=current_pw]').val(),
 							};
 
-							main.px2utils.px2cmd(
+							main.px2utils.pxCmd(
 								'/?PX=admin.api.delete_member',
 								params,
 								function( res, error ){

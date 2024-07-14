@@ -125,7 +125,7 @@ class Layout extends React.Component {
 						it1.next();
 						return;
 					}
-					window.px2utils.px2cmd(
+					window.px2utils.pxCmd(
 						'/?PX=api.get.config',
 						{},
 						function( res ){

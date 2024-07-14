@@ -180,7 +180,7 @@ export default function CloverUtils(){
 			$finderContainer,
 			{
 				"gpiBridge": function(input, callback){ // required
-					window.px2utils.px2cmd(
+					window.px2utils.pxCmd(
 						'/?PX=admin.api.remote_finder',
 						{
 							'mode': rootDirectory,
@@ -236,7 +236,7 @@ export default function CloverUtils(){
 			{
 				"lang": this.lang,
 				"read": function(filename, callback){ // required
-					window.px2utils.px2cmd(
+					window.px2utils.pxCmd(
 						'/?PX=admin.api.common_file_editor',
 						{
 							'mode': rootDirectory,
@@ -257,7 +257,7 @@ export default function CloverUtils(){
 					);
 				},
 				"write": function(filename, base64, callback){ // required
-					window.px2utils.px2cmd(
+					window.px2utils.pxCmd(
 						'/?PX=admin.api.common_file_editor',
 						{
 							'mode': rootDirectory,

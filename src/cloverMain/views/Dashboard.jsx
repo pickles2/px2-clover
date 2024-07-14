@@ -18,7 +18,7 @@ export default function Dashboard(props){
 
 		iterate79.fnc({}, [
 			function(it1){
-				window.px2utils.px2cmd(
+				window.px2utils.pxCmd(
 					'/?PX=px2dthelper.config.parse',
 					{},
 					function( res ){
@@ -49,7 +49,7 @@ export default function Dashboard(props){
 								},
 							};
 
-							window.px2utils.px2cmd(
+							window.px2utils.pxCmd(
 								'/?PX=px2dthelper.config.update',
 								{
 									"json": JSON.stringify(params),
@@ -98,7 +98,7 @@ export default function Dashboard(props){
 		px2style.loading();
 		iterate79.fnc({}, [
 			function(it1){
-				window.px2utils.px2cmd(
+				window.px2utils.pxCmd(
 					'/?PX=admin.api.git_init',
 					{},
 					function( res ){

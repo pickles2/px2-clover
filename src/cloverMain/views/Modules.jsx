@@ -16,7 +16,7 @@ export default React.memo(function Modules(props){
 	function initialize( callback ){
 		callback = callback || function(){};
 		$('.cont-px2-clover__px2me-resources').remove();
-		main.px2utils.px2cmd(
+		main.px2utils.pxCmd(
 			'/?PX=px2dthelper.px2me.client_resources',
 			{},
 			function( res ){
@@ -48,7 +48,7 @@ export default React.memo(function Modules(props){
 						},
 						'gpiBridge': function(input, callback){
 							var data = utils79.base64_encode(JSON.stringify(input));
-							main.px2utils.px2cmd(
+							main.px2utils.pxCmd(
 								'/?PX=px2dthelper.px2me.gpi',
 								{
 									"data": data,

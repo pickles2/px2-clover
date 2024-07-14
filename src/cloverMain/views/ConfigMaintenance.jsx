@@ -11,7 +11,7 @@ export default function ConfigMaintenance(props){
 	const isMaintenanceModeAuthorized = (main.bootupInfoLoaded && main.bootupInfo.authorization.config);
 
 	function updateStatus(){
-		main.px2utils.px2cmd(
+		main.px2utils.pxCmd(
 			'/?PX=admin.api.maintenance_mode_status',
 			{},
 			function( res ){
@@ -26,7 +26,7 @@ export default function ConfigMaintenance(props){
 	const startMaintenanceMode = (e) => {
 		e.preventDefault();
 
-		main.px2utils.px2cmd(
+		main.px2utils.pxCmd(
 			'/?PX=admin.api.start_maintenance_mode',
 			{},
 			function( res ){
@@ -44,7 +44,7 @@ export default function ConfigMaintenance(props){
 	const exitMaintenanceMode = (e) => {
 		e.preventDefault();
 
-		main.px2utils.px2cmd(
+		main.px2utils.pxCmd(
 			'/?PX=admin.api.exit_maintenance_mode',
 			{},
 			function( res ){

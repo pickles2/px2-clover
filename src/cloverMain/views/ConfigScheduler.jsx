@@ -13,7 +13,7 @@ export default function ConfigScheduler(props){
 	const isModuleEditorAuthorized = (main.bootupInfoLoaded && main.bootupInfo.authorization.server_side_scripting);
 
 	const pollingUpdateStatus = () => {
-		main.px2utils.px2cmd(
+		main.px2utils.pxCmd(
 			'/?PX=admin.api.health_check',
 			{},
 			function( res ){
@@ -38,7 +38,7 @@ export default function ConfigScheduler(props){
 	}, []);
 
 	useEffect(() => {
-		main.px2utils.px2cmd(
+		main.px2utils.pxCmd(
 			'/?PX=admin.api.scheduler_setting_hint',
 			{},
 			function( res ){

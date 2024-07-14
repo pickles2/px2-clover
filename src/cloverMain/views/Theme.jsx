@@ -15,7 +15,7 @@ export default React.memo(function Theme(props){
 		callback = callback || function(){};
 		$('.cont-px2-clover__px2te-resources').remove();
 		var $darkmodeStyles = $('#px2-clover-appearance-styles');
-		main.px2utils.px2cmd(
+		main.px2utils.pxCmd(
 			'/?PX=px2dthelper.px2te.client_resources',
 			{},
 			function( res ){
@@ -54,7 +54,7 @@ export default React.memo(function Theme(props){
 						'lang': (window.clover_config.lang ? window.clover_config.lang : 'ja'),
 						'gpiBridge': function(input, callback){
 							var data = utils79.base64_encode(JSON.stringify(input));
-							main.px2utils.px2cmd(
+							main.px2utils.pxCmd(
 								'/?PX=px2dthelper.px2te.gpi',
 								{
 									"data": data,
