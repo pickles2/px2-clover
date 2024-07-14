@@ -3,15 +3,49 @@ import React, { useContext, useState, useEffect } from "react";
 import {MainContext} from '../context/MainContext';
 import iterate79 from 'iterate79';
 import Link from '../components/Link';
+import ExcecuteContentsProcessor from './ContentsProcessor_files/js/ExcecuteContentsProcessor.js';
 
 export default function ContentsProcessor(props){
 
 	const main = useContext(MainContext);
 	const [status, setStatus] = useState({});
 
+	function executeContentsProcessor(event){
+		const $form = $(event.target);
+		const inputTargetPath = $form.find('[name=target_path]').val();
+		const inputScriptSourceProcessor = $form.find('[name=script_source_processor]').val();
+		const inputScriptInstanceProcessor = $form.find('[name=script_instance_processor]').val();
+		const inputIsDryrun = $form.find('[name=is_dryrun]').prop('checked');
+
+		main.px2utils.pxCmd(
+			`/?PX=px2dthelper.get.list_all_contents`,
+			{},
+			function( response ){
+				if( !response.result ){
+					alert('Errored.');
+					return;
+				}
+
+				iterate79.ary(
+					response.all_contents,
+					async function(it, contentsDetail, contentsPath){
+						const excecuteContentsProcessor = new ExcecuteContentsProcessor(contentsPath, contentsDetail);
+						const result = await excecuteContentsProcessor.execute(inputTargetPath, inputScriptSourceProcessor, inputScriptInstanceProcessor, inputIsDryrun);
+						console.log('-- result:', result);
+						it.next();
+					},
+					async function(){
+						console.log('------- Completed!');
+						alert('Completed!');
+					}
+				);
+			}
+		);
+	}
+
 	return (
 		<>
-			<form onSubmit={function(event){event.preventDefault();}}>
+			<form onSubmit={function(event){event.preventDefault();executeContentsProcessor(event);}}>
 				<div className="px2-p">
 					<ul>
 						<li>この処理は、たくさんのファイルに一度に変更を加えます。</li>
@@ -21,7 +55,7 @@ export default function ContentsProcessor(props){
 				</div>
 
 				<h2>パス</h2>
-				<p><input type="text" name="target_path" value="/*" className="px2-input" onChange={()=>{}} /></p>
+				<p><input type="text" name="target_path" value="/*" className="px2-input px2-input--block" onChange={()=>{}} /></p>
 
 				<h2>ソース加工スクリプト</h2>
 				<p><select name="snippet_for_script_source_processor" className="px2-input" onChange={()=>{}}>
@@ -45,7 +79,9 @@ next(src);" onChange={()=>{}}></textarea>{"}"}</code></pre>
 editor.done();" onChange={()=>{}}></textarea>{"}"}</code></pre>
 
 				<p><label><input type="checkbox" name="is_dryrun" value="dryrun" onChange={()=>{}} /> Dry Run</label></p>
-				<p><button className="px2-btn px2-btn--primary px2-btn--block">すべてのコンテンツを一括加工する</button></p>
+				<p className="px2-text-align-center">
+					<button className="px2-btn px2-btn--primary">すべてのコンテンツを一括加工する</button>
+				</p>
 			</form>
 
 		</>

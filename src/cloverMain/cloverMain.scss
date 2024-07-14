@@ -341,7 +341,7 @@
 	@import "./views/FindUnassignedContents_files/cont.scss";
 }
 [data-px="admin.config.contents_processor"] {
-	@import "./views/ContentsProcessor_files/includes/cont.scss";
+	@import "./views/ContentsProcessor_files/scss/cont.scss";
 }
 [data-px="admin.config.update_gui_contents"] {
 	@import "./views/UpdateGuiContents_files/scss/cont.scss";
