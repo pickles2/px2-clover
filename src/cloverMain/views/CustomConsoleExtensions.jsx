@@ -121,6 +121,7 @@ export default function CustomConsoleExtensions(props){
 						);
 						return;
 					},
+					'onPxCmd': main.px2utils.pxCmd,
 					'onEditContent': function(target){
 						window.open(target+'?PX=admin.edit_content&backto=close');
 					},

@@ -84,6 +84,7 @@ $conf->allow_pxcommands = 1;
 
 - ブロックエディタコンテンツを一括再構成機能を追加。
 - スマートフォンで記事編集画面がズームされないようになった。
+- Custom Console Extension: `cceAgent.pxCmd()` に対応した。
 
 ### pickles2/px2-clover v0.3.5 (2024年5月17日)
 
