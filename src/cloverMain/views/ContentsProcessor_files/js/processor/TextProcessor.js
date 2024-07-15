@@ -7,14 +7,19 @@ export default function TextProcessor(main, contentsPath, contentsDetail, input)
 	 * コードを加工して保存する
 	 */
 	this.execute = async function(){
-		// コードを取得する
-		const response = await getContentsCodes();
+		return new Promise(async (resolve, reject)=>{
 
-		// コードを加工する
-		const codes = await srcProcessor(response, contentsDetail.editor_mode);
+			// コードを取得する
+			const response = await getContentsCodes();
 
-		// 加工後のコードを保存する
-		const result = await saveContentsCodes(codes);
+			// コードを加工する
+			const codes = await srcProcessor(response, contentsDetail.editor_mode);
+
+			// 加工後のコードを保存する
+			const result = await saveContentsCodes(codes);
+
+			resolve(result);
+		});
 	}
 
 
@@ -30,7 +35,6 @@ export default function TextProcessor(main, contentsPath, contentsDetail, input)
 				contentsPath+`?PX=px2dthelper.px2ce.gpi&data=`+encodeURIComponent(await main.px2utils.base64_encode_async(JSON.stringify(px2ce_param))),
 				{},
 				function( response ){
-					// console.log('gpi response:', response);
 					resolve(response);
 				}
 			);
@@ -55,7 +59,6 @@ export default function TextProcessor(main, contentsPath, contentsDetail, input)
 				contentsPath+`?PX=px2dthelper.px2ce.gpi&data=`+encodeURIComponent(await main.px2utils.base64_encode_async(JSON.stringify(px2ce_param))),
 				{},
 				function( response ){
-					// console.log('gpi response:', response);
 					resolve(response);
 				}
 			);

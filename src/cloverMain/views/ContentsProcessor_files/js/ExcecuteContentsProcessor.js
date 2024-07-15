@@ -19,7 +19,9 @@ export default function ExcecuteContentsProcessor(main, contentsPath, contentsDe
 					break;
 
 				case "html.gui":
-					console.log('----- TODO: Broccoli processor: under construction');
+					// コードを加工して保存する
+					const broccoliProcessor = new BroccoliProcessor(main, contentsPath, contentsDetail, input);
+					const broccoliResult = await broccoliProcessor.execute();
 					break;
 
 				case "html":
@@ -27,7 +29,7 @@ export default function ExcecuteContentsProcessor(main, contentsPath, contentsDe
 				default:
 					// コードを加工して保存する
 					const textProcessor = new TextProcessor(main, contentsPath, contentsDetail, input);
-					const result = await textProcessor.execute();
+					const textResult = await textProcessor.execute();
 					break;
 			}
 

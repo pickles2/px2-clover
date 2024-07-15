@@ -72,17 +72,17 @@ export default function ContentsProcessor(props){
 				<p><input type="text" name="target_path" value="/*" className="px2-input px2-input--block" onChange={()=>{}} /></p>
 
 				<h2>ソース加工スクリプト</h2>
-				<p><select name="snippet_for_script_source_processor" className="px2-input" onChange={()=>{}}>
+				{/* <p><select name="snippet_for_script_source_processor" className="px2-input" onChange={()=>{}}>
 					<option value="">サンプルコードを選択してください (注意! - 現在のコードは消去されます)</option>
-				</select></p>
-				<pre className="cont-code"><code>function srcProcessor( codes, type, next ){"{"}
+				</select></p> */}
+				<pre className="cont-code"><code>function( codes, type, next ){"{"}
 <textarea name="script_source_processor" className="px2-input px2-input--block" rows="12" defaultValue="// next() に加工後の `codes` を渡して、次の処理へ進む。
 next(codes);" onChange={()=>{}}></textarea>{"}"}</code></pre>
 
 				<h2>インスタンス加工スクリプト</h2>
-				<p><select name="snippet_for_script_instance_processor" className="px2-input" onChange={()=>{}}>
+				{/* <p><select name="snippet_for_script_instance_processor" className="px2-input" onChange={()=>{}}>
 					<option value="">サンプルコードを選択してください (注意! - 現在のコードは消去されます)</option>
-				</select></p>
+				</select></p> */}
 				<pre className="cont-code"><code>function( editor ){"{"}
 <textarea name="script_instance_processor" className="px2-input px2-input--block" rows="12" defaultValue="// editor.done() を呼び出して、次の処理へ進む。
 editor.done();" onChange={()=>{}}></textarea>{"}"}</code></pre>
