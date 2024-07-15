@@ -10,6 +10,10 @@ export default function ContentsProcessor(props){
 	const main = useContext(MainContext);
 	const [status, setStatus] = useState({});
 
+	const isAuthorized = (main.bootupInfoLoaded
+		&& main.bootupInfo.authorization.write_file_directly
+		&& main.bootupInfo.authorization.server_side_scripting);
+
 	function executeContentsProcessor(event){
 		const $form = $(event.target);
 		const input = {
@@ -42,6 +46,14 @@ export default function ContentsProcessor(props){
 					}
 				);
 			}
+		);
+	}
+
+	if( !isAuthorized ){
+		return (
+			<>
+				<p>Not Authorized.</p>
+			</>
 		);
 	}
 
