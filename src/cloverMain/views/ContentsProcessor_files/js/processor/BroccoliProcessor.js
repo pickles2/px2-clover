@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import iterate79 from 'iterate79';
+import BroccoliEditor from './BroccoliEditor/BroccoliEditor.js';
 import TextProcessor from './TextProcessor.js';
 
 export default function BroccoliProcessor(main, contentsPath, contentsDetail, input){
@@ -13,7 +14,21 @@ export default function BroccoliProcessor(main, contentsPath, contentsDetail, in
 
 			// コードを取得する
 			const response = await getContentsCodes();
-console.log('=-=-=-=-=-= Broccoli coces:', response);
+
+			// コードを加工する
+			console.log('=-=-=-=-=-= Broccoli codes:', response);
+			const broccoliEditor = new BroccoliEditor(response.contentsDataJson);
+			broccoliEditor.each(function( editor ){
+				try {
+					eval(input.scriptInstanceProcessor.toString());
+				} catch (e) {
+					console.error('eval ERROR', e);
+					log('eval ERROR');
+					editor.done();
+				}
+			});
+			const logAll = await broccoliEditor.run();
+			console.log('--- logAll', logAll);
 
 			// 加工後のコードを保存する
 			const result = await saveContentsCodes(response.contentsDataJson);

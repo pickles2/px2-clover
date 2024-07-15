@@ -9,8 +9,6 @@ export default function ExcecuteContentsProcessor(main, contentsPath, contentsDe
 	 * コンテンツの加工処理を実行する
 	 */
 	this.execute = async function(){
-		console.log('----- TODO: under construction');
-
 		return new Promise(async (resolve, reject)=>{
 
 			switch(contentsDetail.editor_mode){
