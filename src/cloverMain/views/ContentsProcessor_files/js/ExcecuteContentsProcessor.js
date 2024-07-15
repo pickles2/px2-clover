@@ -4,7 +4,6 @@ import TextProcessor from './processor/TextProcessor.js';
 import BroccoliProcessor from './processor/BroccoliProcessor.js';
 
 export default function ExcecuteContentsProcessor(main, contentsPath, contentsDetail, input){
-	console.log(contentsPath, contentsDetail, input);
 
 	/**
 	 * コンテンツの加工処理を実行する
@@ -29,10 +28,11 @@ export default function ExcecuteContentsProcessor(main, contentsPath, contentsDe
 					// コードを取得する
 					const response = await getContentsCodes();
 
-					console.log('----- TODO: Text processor: under construction');
+					// コードを加工する
+					const codes = await srcProcessor(response, contentsDetail.editor_mode);
 
 					// 加工後のコードを保存する
-					const result = await saveContentsCodes(response);
+					const result = await saveContentsCodes(codes);
 					break;
 			}
 
@@ -86,4 +86,20 @@ export default function ExcecuteContentsProcessor(main, contentsPath, contentsDe
 			);
 		});
 	}
+
+	// HTMLソース加工
+	async function srcProcessor( codes, type, next ){
+		return new Promise(async (resolve, reject)=>{
+			const next = (codes)=> {
+				resolve(codes);
+			};
+			try {
+				eval(input.scriptSourceProcessor.toString());
+			} catch (e) {
+				console.error('eval ERROR:', input.scriptSourceProcessor);
+				next(codes);
+			}
+		});
+	}
+
 }

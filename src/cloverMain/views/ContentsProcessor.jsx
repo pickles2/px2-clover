@@ -63,14 +63,9 @@ export default function ContentsProcessor(props){
 				<p><select name="snippet_for_script_source_processor" className="px2-input" onChange={()=>{}}>
 					<option value="">サンプルコードを選択してください (注意! - 現在のコードは消去されます)</option>
 				</select></p>
-				<pre className="cont-code"><code>function srcProcessor( src, type, next ){"{"}
-var supply = {"{"}
-	// supplying libs
-	'cheerio': require('cheerio'),
-	'iterate79': require('iterate79')
-{"}"};
-<textarea name="script_source_processor" className="px2-input px2-input--block" rows="12" defaultValue="// next() に加工後の src を渡して、次の処理へ進む。
-next(src);" onChange={()=>{}}></textarea>{"}"}</code></pre>
+				<pre className="cont-code"><code>function srcProcessor( codes, type, next ){"{"}
+<textarea name="script_source_processor" className="px2-input px2-input--block" rows="12" defaultValue="// next() に加工後の `codes` を渡して、次の処理へ進む。
+next(codes);" onChange={()=>{}}></textarea>{"}"}</code></pre>
 
 				<h2>インスタンス加工スクリプト</h2>
 				<p><select name="snippet_for_script_instance_processor" className="px2-input" onChange={()=>{}}>
