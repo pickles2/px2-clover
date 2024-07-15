@@ -12,10 +12,12 @@ export default function ContentsProcessor(props){
 
 	function executeContentsProcessor(event){
 		const $form = $(event.target);
-		const inputTargetPath = $form.find('[name=target_path]').val();
-		const inputScriptSourceProcessor = $form.find('[name=script_source_processor]').val();
-		const inputScriptInstanceProcessor = $form.find('[name=script_instance_processor]').val();
-		const inputIsDryrun = $form.find('[name=is_dryrun]').prop('checked');
+		const input = {
+			targetPath: $form.find('[name=target_path]').val(),
+			scriptSourceProcessor: $form.find('[name=script_source_processor]').val(),
+			scriptInstanceProcessor: $form.find('[name=script_instance_processor]').val(),
+			isDryrun: $form.find('[name=is_dryrun]').prop('checked'),
+		};
 
 		main.px2utils.pxCmd(
 			`/?PX=px2dthelper.get.list_all_contents`,
@@ -29,8 +31,8 @@ export default function ContentsProcessor(props){
 				iterate79.ary(
 					response.all_contents,
 					async function(it, contentsDetail, contentsPath){
-						const excecuteContentsProcessor = new ExcecuteContentsProcessor(contentsPath, contentsDetail);
-						const result = await excecuteContentsProcessor.execute(inputTargetPath, inputScriptSourceProcessor, inputScriptInstanceProcessor, inputIsDryrun);
+						const excecuteContentsProcessor = new ExcecuteContentsProcessor(main, contentsPath, contentsDetail, input);
+						const result = await excecuteContentsProcessor.execute();
 						console.log('-- result:', result);
 						it.next();
 					},

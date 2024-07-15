@@ -167,7 +167,7 @@ export default function Px2Utils(){
 	/**
 	 * Base64 変換
 	 */
-	this.base64_encode_async = function(orig) { return new Promise(function(rlv){
+	this.base64_encode_async = async function(orig) { return new Promise(function(rlv, rjc){
 		var r = new FileReader();
 		r.onload = function(){
 			var offset = r.result.indexOf(",");
