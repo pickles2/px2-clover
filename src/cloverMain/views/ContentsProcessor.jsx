@@ -14,6 +14,9 @@ export default function ContentsProcessor(props){
 		&& main.bootupInfo.authorization.write_file_directly
 		&& main.bootupInfo.authorization.server_side_scripting);
 
+	/**
+	 * コンテンツの一括加工を実行する
+	 */
 	function executeContentsProcessor(event){
 		const $form = $(event.target);
 		const input = {
@@ -23,30 +26,59 @@ export default function ContentsProcessor(props){
 			isDryrun: $form.find('[name=is_dryrun]').prop('checked'),
 		};
 
-		main.px2utils.pxCmd(
-			`/?PX=px2dthelper.get.list_all_contents`,
-			{},
-			function( response ){
-				if( !response.result ){
-					alert('Errored.');
-					return;
-				}
-
-				iterate79.ary(
-					response.all_contents,
-					async function(it, contentsDetail, contentsPath){
-						const excecuteContentsProcessor = new ExcecuteContentsProcessor(main, contentsPath, contentsDetail, input);
-						const result = await excecuteContentsProcessor.execute();
-						console.log('-- result:', result);
-						it.next();
-					},
-					async function(){
-						console.log('------- Completed!');
-						alert('Completed!');
-					}
-				);
+		const $body = $( main.cloverUtils.bindTwig(
+			require('-!text-loader!./ContentsProcessor_files/templates/modal_start.twig'),
+			{
+				"lockedField": {
+					"logical_path": "lock",
+				},
 			}
-		);
+		) );
+
+		const $executeModal = px2style.modal({
+			"title": "コンテンツの一括加工",
+			"body": $body,
+			"width": 800,
+		}, function(){
+			main.px2utils.pxCmd(
+				`/?PX=px2dthelper.get.list_all_contents`,
+				{},
+				function( response ){
+					if( !response.result ){
+						alert('Errored.');
+						return;
+					}
+
+					$body.html( main.cloverUtils.bindTwig(
+						require('-!text-loader!./ContentsProcessor_files/templates/modal_base.twig'),
+						{
+							"contentsList": response.all_contents,
+						}
+					) );
+
+					iterate79.ary(
+						response.all_contents,
+						async function(it, contentsDetail, contentsPath){
+							const $progress = $body.find(`tr[data-path-content="${contentsPath}"] .cont-progress`);
+							$progress.text('progress...');
+
+							const excecuteContentsProcessor = new ExcecuteContentsProcessor(main, contentsPath, contentsDetail, input);
+							const result = await excecuteContentsProcessor.execute();
+							console.log('-- result:', result);
+
+							$progress.text('done');
+							it.next();
+						},
+						async function(){
+							console.log('------- Completed!');
+							setTimeout(()=>{
+								alert('Completed!');
+							}, 100);
+						}
+					);
+				}
+			);
+		});
 	}
 
 	if( !isAuthorized ){
@@ -87,7 +119,7 @@ next(codes);" onChange={()=>{}}></textarea>{"}"}</code></pre>
 <textarea name="script_instance_processor" className="px2-input px2-input--block" rows="12" defaultValue="// editor.done() を呼び出して、次の処理へ進む。
 editor.done();" onChange={()=>{}}></textarea>{"}"}</code></pre>
 
-				<p><label><input type="checkbox" name="is_dryrun" value="dryrun" onChange={()=>{}} /> Dry Run</label></p>
+				<p><label><input type="checkbox" name="is_dryrun" value="dryrun" checked="checked" onChange={()=>{}} /> Dry Run</label></p>
 				<p className="px2-text-align-center">
 					<button className="px2-btn px2-btn--primary">すべてのコンテンツを一括加工する</button>
 				</p>
