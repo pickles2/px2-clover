@@ -1,70 +1,60 @@
-import InstanceEditor from './InstanceEditor.js';
-import Logger from './Logger.js';
 import it79 from 'iterate79';
 
 /**
  * broccoli-processor
  */
-export default function BroccoliEditor(dataJson){
-	var broccoliProcessor = this;
-	var logger = new Logger();
+export default function BroccoliEditor(dataJson, logger){
+	const broccoliProcessor = this;
 
 	var commands = [];
 
 	/**
 	 * 再帰処理
 	 */
-	function instanceProcessRecursive( instancePath, each, row, idx, callback ){
+	function instanceProcessRecursive( instancePath, each, instance, idx, callback ){
 		callback = callback || function(){console.error('callback was not given.');};
 
-		var modId = row.modId;
-		var subModName = row.subModName;
+		var modId = instance.modId;
+		var subModName = instance.subModName;
 
-		var instanceEditor = new InstanceEditor(
-			instancePath,
-			logger,
-			function(){
-				row = instanceEditor.getInstance();
-
-				it79.ary(
-					row.fields,
-					function( it1, childFields, childsIdx ){
-						it79.ary(
-							childFields,
-							function( it2, childField, childIdx ){
-								if( childField.modId !== undefined && childField.fields !== undefined ){
-									instanceProcessRecursive(
-										instancePath+'/fields.'+childsIdx+'@'+childIdx,
-										each,
-										childField, childIdx,
-										function(result){
-											childField = result;
-											it2.next();
-										}
-									);
-									return;
-								}
-								it2.next();
-							},
-							function(){
-								it1.next();
+		const next = function(instance){
+			it79.ary(
+				instance.fields,
+				function( it1, childFields, childsIdx ){
+					it79.ary(
+						childFields,
+						function( it2, childField, childIdx ){
+							if( childField.modId !== undefined && childField.fields !== undefined ){
+								instanceProcessRecursive(
+									instancePath+'/fields.'+childsIdx+'@'+childIdx,
+									each,
+									childField, childIdx,
+									function(result){
+										childField = result;
+										it2.next();
+									}
+								);
+								return;
 							}
-						);
-					},
-					function(){
-						callback(row);
-					}
-				);
-			}
-		);
-		instanceEditor.setInstance(row);
+							it2.next();
+						},
+						function(){
+							it1.next();
+						}
+					);
+				},
+				function(){
+					callback(instance);
+				}
+			);
+		};
 
-		each(instanceEditor);
+		each(instancePath, instance, logger, next);
 		return;
 	}
 
 	/**
-	 * すべてのインスタンスを再帰的に処理する
+	 * すべてのインスタンスを再帰的に処理するコールバック関数を登録する
 	 */
 	this.each = function(each){
 		commands.push({
@@ -133,9 +123,8 @@ export default function BroccoliEditor(dataJson){
 		callback = callback || function(){};
 		return new Promise((resolve, reject)=>{
 			executeAll(function(){
-				const logAll = logger.getAll();
-				callback( logAll );
-				resolve(logAll);
+				callback();
+				resolve();
 			});
 		});
 	}

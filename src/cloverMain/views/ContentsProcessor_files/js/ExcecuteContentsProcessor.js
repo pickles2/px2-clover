@@ -3,7 +3,7 @@ import iterate79 from 'iterate79';
 import TextProcessor from './processor/TextProcessor.js';
 import BroccoliProcessor from './processor/BroccoliProcessor.js';
 
-export default function ExcecuteContentsProcessor(main, contentsPath, contentsDetail, input){
+export default function ExcecuteContentsProcessor(main, logger, contentsPath, contentsDetail, input){
 
 	/**
 	 * コンテンツの加工処理を実行する
@@ -18,7 +18,7 @@ export default function ExcecuteContentsProcessor(main, contentsPath, contentsDe
 
 				case "html.gui":
 					// コードを加工して保存する
-					const broccoliProcessor = new BroccoliProcessor(main, contentsPath, contentsDetail, input);
+					const broccoliProcessor = new BroccoliProcessor(main, logger, contentsPath, contentsDetail, input);
 					const broccoliResult = await broccoliProcessor.execute();
 					break;
 
@@ -26,7 +26,7 @@ export default function ExcecuteContentsProcessor(main, contentsPath, contentsDe
 				case "md":
 				default:
 					// コードを加工して保存する
-					const textProcessor = new TextProcessor(main, contentsPath, contentsDetail, input);
+					const textProcessor = new TextProcessor(main, logger, contentsPath, contentsDetail, input);
 					const textResult = await textProcessor.execute();
 					break;
 			}

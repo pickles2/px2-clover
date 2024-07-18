@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import iterate79 from 'iterate79';
 
-export default function TextProcessor(main, contentsPath, contentsDetail, input){
+export default function TextProcessor(main, logger, contentsPath, contentsDetail, input){
 
 	/**
 	 * コードを加工して保存する
@@ -10,13 +10,13 @@ export default function TextProcessor(main, contentsPath, contentsDetail, input)
 		return new Promise(async (resolve, reject)=>{
 
 			// コードを取得する
-			const response = await getContentsCodes();
+			const codes = await getContentsCodes();
 
 			// コードを加工する
-			const codes = await srcProcessor(response, contentsDetail.editor_mode);
+			const newCodes = await srcProcessor(contentsPath, codes, contentsDetail.editor_mode, logger);
 
 			// 加工後のコードを保存する
-			const result = await saveContentsCodes(codes);
+			const result = await saveContentsCodes(newCodes);
 
 			resolve(result);
 		});
@@ -68,7 +68,7 @@ export default function TextProcessor(main, contentsPath, contentsDetail, input)
 	/**
 	 * HTMLソース加工
 	 */
-	async function srcProcessor( codes, type, next ){
+	async function srcProcessor( contentsPath, codes, type, logger ){
 		return new Promise(async (resolve, reject)=>{
 			const next = (codes)=> {
 				resolve(codes);

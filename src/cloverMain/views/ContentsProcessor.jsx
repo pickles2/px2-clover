@@ -4,6 +4,7 @@ import {MainContext} from '../context/MainContext';
 import iterate79 from 'iterate79';
 import Link from '../components/Link';
 import ExcecuteContentsProcessor from './ContentsProcessor_files/js/ExcecuteContentsProcessor.js';
+import Logger from './ContentsProcessor_files/js/Logger.js';
 
 export default function ContentsProcessor(props){
 
@@ -49,6 +50,8 @@ export default function ContentsProcessor(props){
 						return;
 					}
 
+					const logger = new Logger();
+
 					$body.html( main.cloverUtils.bindTwig(
 						require('-!text-loader!./ContentsProcessor_files/templates/modal_base.twig'),
 						{
@@ -59,10 +62,11 @@ export default function ContentsProcessor(props){
 					iterate79.ary(
 						response.all_contents,
 						async function(it, contentsDetail, contentsPath){
+							logger.setCurrentContentsPath(contentsPath);
 							const $progress = $body.find(`tr[data-path-content="${contentsPath}"] .cont-progress`);
 							$progress.text('progress...');
 
-							const excecuteContentsProcessor = new ExcecuteContentsProcessor(main, contentsPath, contentsDetail, input);
+							const excecuteContentsProcessor = new ExcecuteContentsProcessor(main, logger, contentsPath, contentsDetail, input);
 							const result = await excecuteContentsProcessor.execute();
 							console.log('-- result:', result);
 
@@ -70,7 +74,7 @@ export default function ContentsProcessor(props){
 							it.next();
 						},
 						async function(){
-							console.log('------- Completed!');
+							console.log('------- Completed!', logger.getAll());
 							setTimeout(()=>{
 								alert('Completed!');
 							}, 100);
@@ -107,7 +111,7 @@ export default function ContentsProcessor(props){
 				{/* <p><select name="snippet_for_script_source_processor" className="px2-input" onChange={()=>{}}>
 					<option value="">サンプルコードを選択してください (注意! - 現在のコードは消去されます)</option>
 				</select></p> */}
-				<pre className="cont-code"><code>function( codes, type, next ){"{"}
+				<pre className="cont-code"><code>function( contentsPath, codes, type, logger, next ){"{"}
 <textarea name="script_source_processor" className="px2-input px2-input--block" rows="12" defaultValue="// next() に加工後の `codes` を渡して、次の処理へ進む。
 next(codes);" onChange={()=>{}}></textarea>{"}"}</code></pre>
 
@@ -115,11 +119,11 @@ next(codes);" onChange={()=>{}}></textarea>{"}"}</code></pre>
 				{/* <p><select name="snippet_for_script_instance_processor" className="px2-input" onChange={()=>{}}>
 					<option value="">サンプルコードを選択してください (注意! - 現在のコードは消去されます)</option>
 				</select></p> */}
-				<pre className="cont-code"><code>function( editor ){"{"}
-<textarea name="script_instance_processor" className="px2-input px2-input--block" rows="12" defaultValue="// editor.done() を呼び出して、次の処理へ進む。
-editor.done();" onChange={()=>{}}></textarea>{"}"}</code></pre>
+				<pre className="cont-code"><code>function( contentsPath, instancePath, instance, logger, next ){"{"}
+<textarea name="script_instance_processor" className="px2-input px2-input--block" rows="12" defaultValue="// next() に加工後のインスタンスを渡して、次の処理へ進む。
+next(instance);" onChange={()=>{}}></textarea>{"}"}</code></pre>
 
-				<p><label><input type="checkbox" name="is_dryrun" value="dryrun" checked="checked" onChange={()=>{}} /> Dry Run</label></p>
+				<p><label><input type="checkbox" name="is_dryrun" value="dryrun" defaultChecked={true} onChange={()=>{}} /> 実行結果を保存しない (Dry run)</label></p>
 				<p className="px2-text-align-center">
 					<button className="px2-btn px2-btn--primary">すべてのコンテンツを一括加工する</button>
 				</p>

@@ -3,32 +3,29 @@ import iterate79 from 'iterate79';
 import BroccoliEditor from './BroccoliEditor/BroccoliEditor.js';
 import TextProcessor from './TextProcessor.js';
 
-export default function BroccoliProcessor(main, contentsPath, contentsDetail, input){
+export default function BroccoliProcessor(main, logger, contentsPath, contentsDetail, input){
 
 	/**
 	 * コードを加工して保存する
 	 */
 	this.execute = async function(){
-		console.log('----- TODO: Broccoli processor: under construction');
 		return new Promise(async (resolve, reject)=>{
 
 			// コードを取得する
 			const response = await getContentsCodes();
 
 			// コードを加工する
-			console.log('=-=-=-=-=-= Broccoli codes:', response);
-			const broccoliEditor = new BroccoliEditor(response.contentsDataJson);
-			broccoliEditor.each(function( editor ){
+			const broccoliEditor = new BroccoliEditor(response.contentsDataJson, logger);
+			broccoliEditor.each(function( instancePath, instance, logger, next ){
 				try {
 					eval(input.scriptInstanceProcessor.toString());
 				} catch (e) {
 					console.error('eval ERROR', e);
-					log('eval ERROR');
-					editor.done();
+					logger.log('eval ERROR');
+					next(instance);
 				}
 			});
-			const logAll = await broccoliEditor.run();
-			console.log('--- logAll', logAll);
+			await broccoliEditor.run();
 
 			// 加工後のコードを保存する
 			const result = await saveContentsCodes(response.contentsDataJson);
