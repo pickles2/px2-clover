@@ -13,7 +13,7 @@ export default function TextProcessor(main, logger, contentsPath, contentsDetail
 			const codes = await getContentsCodes();
 
 			// コードを加工する
-			const newCodes = await srcProcessor(contentsPath, codes, contentsDetail.editor_mode, logger);
+			const newCodes = await srcProcessor(codes, {contentsPath: contentsPath, editorType: contentsDetail.editor_mode}, logger);
 
 			// 加工後のコードを保存する
 			const result = await saveContentsCodes(newCodes);
@@ -68,7 +68,7 @@ export default function TextProcessor(main, logger, contentsPath, contentsDetail
 	/**
 	 * HTMLソース加工
 	 */
-	async function srcProcessor( contentsPath, codes, type, logger ){
+	async function srcProcessor( codes, info, logger ){
 		return new Promise(async (resolve, reject)=>{
 			const next = (codes)=> {
 				resolve(codes);

@@ -3,7 +3,7 @@ import it79 from 'iterate79';
 /**
  * broccoli-processor
  */
-export default function BroccoliEditor(dataJson, logger){
+export default function BroccoliEditor(contentsPath, dataJson, logger){
 	const broccoliProcessor = this;
 
 	var commands = [];
@@ -49,7 +49,7 @@ export default function BroccoliEditor(dataJson, logger){
 			);
 		};
 
-		each(instancePath, instance, logger, next);
+		each(instance, {contentsPath: contentsPath, editorType: "html.gui", instancePath: instancePath,}, logger, next);
 		return;
 	}
 

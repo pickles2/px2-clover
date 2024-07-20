@@ -11,6 +11,7 @@ export default function Logger(){
 
 	/** メッセージを記録する */
 	this.log = function( message ){
+		console.log(`--- ${contentsPath}:`, message);
 		if( !logs[contentsPath] ){
 			logs[contentsPath] = [];
 		}

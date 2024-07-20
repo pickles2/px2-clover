@@ -15,8 +15,8 @@ export default function BroccoliProcessor(main, logger, contentsPath, contentsDe
 			const response = await getContentsCodes();
 
 			// コードを加工する
-			const broccoliEditor = new BroccoliEditor(response.contentsDataJson, logger);
-			broccoliEditor.each(function( instancePath, instance, logger, next ){
+			const broccoliEditor = new BroccoliEditor(contentsPath, response.contentsDataJson, logger);
+			broccoliEditor.each(function( instance, info, logger, next ){
 				try {
 					eval(input.scriptInstanceProcessor.toString());
 				} catch (e) {
