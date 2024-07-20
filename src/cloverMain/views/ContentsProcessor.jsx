@@ -2,6 +2,7 @@ import $ from 'jquery';
 import React, { useContext, useState, useEffect } from "react";
 import {MainContext} from '../context/MainContext';
 import iterate79 from 'iterate79';
+import utils79 from 'utils79';
 import Link from '../components/Link';
 import ExcecuteContentsProcessor from './ContentsProcessor_files/js/ExcecuteContentsProcessor.js';
 import Logger from './ContentsProcessor_files/js/Logger.js';
@@ -66,6 +67,17 @@ export default function ContentsProcessor(props){
 					iterate79.ary(
 						response.all_contents,
 						async function(it, contentsDetail, contentsPath){
+
+							if( (()=>{
+								let regx = utils79.regexp_quote(input.targetPath);
+								regx = regx.split('\\*').join('([\\s\\S]*)');
+								regx = '^'+regx+'$';
+								return !RegExp(regx).test(contentsPath);
+							})() ){
+								it.next();
+								return;
+							}
+
 							logger.setCurrentContentsPath(contentsPath);
 							const $progress = $body.find(`tr[data-path-content="${contentsPath}"] .cont-progress`);
 							$progress.text('progress...');
@@ -112,7 +124,7 @@ export default function ContentsProcessor(props){
 				</div>
 
 				<h2>パス</h2>
-				<p><input type="text" name="target_path" value="/*" className="px2-input px2-input--block" onChange={()=>{}} /></p>
+				<p><input type="text" name="target_path" defaultValue="/*" className="px2-input px2-input--block" onChange={()=>{}} /></p>
 
 				<h2>ソース加工スクリプト</h2>
 				{/* <p><select name="snippet_for_script_source_processor" className="px2-input" onChange={()=>{}}>
