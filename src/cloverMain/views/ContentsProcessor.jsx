@@ -122,14 +122,20 @@ export default function ContentsProcessor(props){
 					</ul>
 				</div>
 
-				<h2>パス</h2>
-				<p><input type="text" name="target_path" defaultValue="/*" className="px2-input px2-input--block" onChange={()=>{}} /></p>
-
-				<h2>ソース加工スクリプト</h2>
-				{/* <p><select name="snippet_for_script_source_processor" className="px2-input" onChange={()=>{}}>
-					<option value="">サンプルコードを選択してください (注意! - 現在のコードは消去されます)</option>
-				</select></p> */}
-				<pre className="cont-code"><code>function( codes, info, logger, next ){"{"}
+				<div className="px2-p">
+					<table className="px2-table px2-table--dl">
+						<tbody>
+							<tr>
+								<th>パス</th>
+								<td><input type="text" name="target_path" defaultValue="/*" className="px2-input px2-input--block" onChange={()=>{}} /></td>
+							</tr>
+							<tr>
+								<th>ソース加工スクリプト</th>
+								<td>
+									{/* <p><select name="snippet_for_script_source_processor" className="px2-input" onChange={()=>{}}>
+										<option value="">サンプルコードを選択してください (注意! - 現在のコードは消去されます)</option>
+									</select></p> */}
+									<pre className="code cont-code"><code>function( codes, info, logger, next ){"{"}
 <textarea name="script_source_processor" className="px2-input px2-input--block" rows="12"
 defaultValue="/*
 * codes Object
@@ -148,12 +154,15 @@ defaultValue="/*
 */
 // next() に加工後の `codes` を渡して、次の処理へ進む。
 next(codes);" onChange={()=>{}}></textarea>{"}"}</code></pre>
-
-				<h2>インスタンス加工スクリプト</h2>
-				{/* <p><select name="snippet_for_script_instance_processor" className="px2-input" onChange={()=>{}}>
-					<option value="">サンプルコードを選択してください (注意! - 現在のコードは消去されます)</option>
-				</select></p> */}
-				<pre className="cont-code"><code>function( instance, info, logger, next ){"{"}
+								</td>
+							</tr>
+							<tr>
+								<th>インスタンス加工スクリプト</th>
+								<td>
+									{/* <p><select name="snippet_for_script_instance_processor" className="px2-input" onChange={()=>{}}>
+										<option value="">サンプルコードを選択してください (注意! - 現在のコードは消去されます)</option>
+									</select></p> */}
+									<pre className="code cont-code"><code>function( instance, info, logger, next ){"{"}
 <textarea name="script_instance_processor" className="px2-input px2-input--block" rows="12"
 defaultValue="/*
 * instance Object
@@ -172,6 +181,11 @@ defaultValue="/*
 */
 // next() に加工後のインスタンスを渡して、次の処理へ進む。
 next(instance);" onChange={()=>{}}></textarea>{"}"}</code></pre>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 
 				<p><label><input type="checkbox" name="is_dryrun" value="dryrun" defaultChecked={true} onChange={()=>{}} /> 実行結果を保存しない (Dry run)</label></p>
 				<p className="px2-text-align-center">
