@@ -19,6 +19,8 @@ export default function ContentsProcessor(props){
 	 * コンテンツの一括加工を実行する
 	 */
 	function executeContentsProcessor(event){
+		console.log('====== Start processing...');
+
 		const $form = $(event.target);
 		const input = {
 			targetPath: $form.find('[name=target_path]').val(),
@@ -69,8 +71,7 @@ export default function ContentsProcessor(props){
 							$progress.text('progress...');
 
 							const excecuteContentsProcessor = new ExcecuteContentsProcessor(main, logger, contentsPath, contentsDetail, input);
-							const result = await excecuteContentsProcessor.execute();
-							console.log('-- result:', result);
+							await excecuteContentsProcessor.execute();
 
 							$progress.text('done');
 
@@ -79,7 +80,7 @@ export default function ContentsProcessor(props){
 							it.next();
 						},
 						async function(){
-							console.log('------- Completed!', logger.getAll());
+							console.log('------ Completed!');
 							$result.val(JSON.stringify(logger.getAll(), null, 2));
 							setTimeout(()=>{
 								alert('Completed!');
@@ -128,6 +129,11 @@ defaultValue="/*
 * info Object
 * - info.contentsPath = コンテンツのパス
 * - info.editorType = エディタの種類
+*
+* logger Object
+* - logger.log(string) = ログを出力する
+* - logger.count(key) = key の出現回数をカウントする
+* - logger.countInFile(key) = ファイルごとの key の出現回数をカウントする
 */
 // next() に加工後の `codes` を渡して、次の処理へ進む。
 next(codes);" onChange={()=>{}}></textarea>{"}"}</code></pre>
@@ -150,6 +156,8 @@ defaultValue="/*
 *
 * logger Object
 * - logger.log(string) = ログを出力する
+* - logger.count(key) = key の出現回数をカウントする
+* - logger.countInFile(key) = ファイルごとの key の出現回数をカウントする
 */
 // next() に加工後のインスタンスを渡して、次の処理へ進む。
 next(instance);" onChange={()=>{}}></textarea>{"}"}</code></pre>
