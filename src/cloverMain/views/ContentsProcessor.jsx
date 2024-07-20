@@ -119,7 +119,6 @@ export default function ContentsProcessor(props){
 					<ul>
 						<li>この処理は、たくさんのファイルに一度に変更を加えます。</li>
 						<li>すべてのファイルを 実行の前に状態をコミットし、実行後にもコミットすることを強くお勧めします。</li>
-						<li><code>console.log()</code> に送った情報は、 デベロッパーツール 上で確認することができます。</li>
 					</ul>
 				</div>
 
