@@ -80,7 +80,7 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
-### pickles2/px2-clover v0.3.6 (リリース日未定)
+### pickles2/px2-clover v0.3.6 (2024年7月21日)
 
 - ブロックエディタコンテンツを一括再構成機能を追加。
 - コンテンツを一括加工機能を追加。
