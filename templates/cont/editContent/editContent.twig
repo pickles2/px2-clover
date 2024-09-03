@@ -243,12 +243,18 @@
 			);
 
 			$(window).on('resize', function(){
-				clearTimeout(resizeTimer);
-				resizeTimer = setTimeout(function(){
-					if(pickles2ContentsEditor.redraw){
-						pickles2ContentsEditor.redraw();
-					}
-				}, 500);
+				if(pickles2ContentsEditor.adjust){
+					// NOTE: adjust() は、Broccoli v1.2.0 から導入されたメソッドで、位置合わせのみを行います。
+					pickles2ContentsEditor.adjust();
+				}else{
+					// NOTE: adjust() が使えない場合は、従来どおりの redraw() を実行します。
+					clearTimeout(resizeTimer);
+					resizeTimer = setTimeout(function(){
+						if(pickles2ContentsEditor.redraw){
+							pickles2ContentsEditor.redraw();
+						}
+					}, 500);
+				}
 				return;
 			});
 		})();
