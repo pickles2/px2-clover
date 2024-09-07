@@ -26,6 +26,7 @@ ui_label.save,Save,保存する,保存,保存
 ui_label.cancel,Cancel,キャンセル,取消,取消
 ui_label.close,Close,閉じる,关闭,關閉
 ui_label.create,Create,作成する,,
+ui_label.edit,"Edit","編集する",,
 ui_label.finished,Finished,完了,,
 ui_label.anchor,Anchor,アンカー,,
 ui_label.search,Search,検索,,
@@ -52,9 +53,17 @@ ui_label.user_lang,Language,,,
 ui_label.user_role,Role,ロール,,
 ui_label.user_appearance,"Appearance mode","外観モード",,
 ui_label.current_pw,Current Password,現在のパスワード,,
+ui_label.site_profile,"Site Profile","サイト情報",,
+ui_label.site_name,"Site name","サイト名",,
+ui_label.tag_line,"Tag line","キャッチフレーズ",,
+ui_label.domain,"Domain","ドメイン",,
+ui_label.copyright,"Copyright","著作権表示",,
+ui_label.initialize_a_git_repository,"Initialize a Git repository","Gitリポジトリを初期化する",,
 role.admin,Administrator,管理者,,
 role.member,Member,メンバー,,
+ui_message.welcome,"Welcome to the Pickles 2 Clover CMS!","ようこそ、Pickles 2 Clover CMS へ！",,
 ui_message.first_register_an_administrator_account,"First, register an administrator account.","はじめに、管理者アカウントを登録してください。",,
+ui_message.initialize_a_git_repository_and_start_managing_our_edit_history,"Initialize a Git repository and start managing our edit history.","Gitリポジトリを初期化して、編集履歴の管理を開始しましょう。",,
 ui_message.user_id_enable_char,"Single-byte alphanumeric characters, hyphens, and underscores can be used.","半角英数字、ハイフン、アンダースコア が使えます。",,
 ui_message.this_module_has_no_options,"This module has no options.","このモジュールにはオプションが定義されていません。",,
 ui_message.sending_data,"Sending data...","データを送信しています...",,
@@ -68,6 +77,8 @@ login_error.user_id_is_required,"User ID is required.","ユーザーIDを入力�
 login_error.invalid_user_id,"Invalid User ID.","ユーザーIDの形式が不正です。"
 login_error.failed,"Failed to login. Incorrect credentials.","ログインに失敗しました。 認証情報が正しくありません。"
 login_error.account_locked,"Account is locked. Please try again after a while.","アカウントがロックされています。しばらく時間をおいてお試しください。"
+error_message.the_php_command_is_not_installed_or_is_not_in_the_path,"The PHP command is not installed or is not in the path.","PHPコマンドがインストールされていないか、パスが通っていません。",,
+error_message.the_git_command_is_not_installed_or_is_not_in_the_path,"The Git command is not installed or is not in the path.","Gitコマンドがインストールされていないか、パスが通っていません。",,
 error_message.invalid,"There is a problem with the input content.","入力内容に不備があります。",,
 error_message.invalid_user_id,"Malformed User ID.","不正な形式のユーザーIDです。",,
 error_message.invalid_email,"Malformed E-mail address.","不正な形式のメールアドレスです。",,

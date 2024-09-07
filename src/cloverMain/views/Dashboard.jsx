@@ -72,11 +72,11 @@ export default function Dashboard(props){
 					},
 					'buttons':[
 						$('<button type="submit" class="px2-btn px2-btn--primary">')
-							.text('保存する')
+							.text(main.lb.get('ui_label.save'))
 					],
 					'buttonsSecondary': [
 						$('<button type="button" class="px2-btn">')
-							.text('キャンセル')
+							.text(main.lb.get('ui_label.cancel'))
 							.on('click', function(){
 								px2style.closeModal();
 							}),
@@ -138,13 +138,13 @@ export default function Dashboard(props){
 
 	return (
 		<div>
-			<p>ようこそ、Pickles 2 Clover CMS へ！</p>
+			<p>{main.lb.get('ui_message.welcome')}</p>
 			{(main.bootupInfo && main.bootupInfo.cmd_version)
 				?<>
 					{(!main.bootupInfo.cmd_version.php)
 						?<>
 							<div className="px2-notice px2-notice--warning">
-								<p>PHPコマンドがインストールされていないか、パスが通っていません。</p>
+								<p>{main.lb.get('error_message.the_php_command_is_not_installed_or_is_not_in_the_path')}</p>
 							</div>
 						</>
 						:<>
@@ -153,7 +153,7 @@ export default function Dashboard(props){
 					{(!main.bootupInfo.cmd_version.git)
 						?<>
 							<div className="px2-notice px2-notice--warning">
-								<p>Gitコマンドがインストールされていないか、パスが通っていません。</p>
+								<p>{main.lb.get('error_message.the_git_command_is_not_installed_or_is_not_in_the_path')}</p>
 							</div>
 						</>
 						:<>
@@ -162,8 +162,8 @@ export default function Dashboard(props){
 					{(main.bootupInfo.cmd_version.git && !main.bootupInfo.git.is_init)
 						?<>
 							<div className="px2-notice">
-								<p>Gitリポジトリを初期化して、編集履歴の管理を開始しましょう。</p>
-								<p><button type="button" className="px2-btn px2-btn--primary" onClick={gitInit}>Gitリポジトリを初期化する</button></p>
+								<p>{main.lb.get('ui_message.initialize_a_git_repository_and_start_managing_our_edit_history')}</p>
+								<p><button type="button" className="px2-btn px2-btn--primary" onClick={gitInit}>{main.lb.get('ui_label.initialize_a_git_repository')}</button></p>
 							</div>
 						</>
 						:<>
@@ -177,24 +177,24 @@ export default function Dashboard(props){
 				?<>
 				</>
 				:<>
-					<h2>Site Profile</h2>
+					<h2>{main.lb.get('ui_label.site_profile')}</h2>
 					<div className="px2-p">
 						<table className="px2-table px2-table--dl">
 							<tbody>
 							<tr>
-								<th>Site name</th>
+								<th>{main.lb.get('ui_label.site_name')}</th>
 								<td>{main.pxConfig.name || '---'}</td>
 							</tr>
 							<tr>
-								<th>Tag line</th>
+								<th>{main.lb.get('ui_label.tag_line')}</th>
 								<td>{main.pxConfig.tagline || '---'}</td>
 							</tr>
 							<tr>
-								<th>Domain</th>
+								<th>{main.lb.get('ui_label.domain')}</th>
 								<td>{main.pxConfig.domain || '---'}</td>
 							</tr>
 							<tr>
-								<th>Copyright</th>
+								<th>{main.lb.get('ui_label.copyright')}</th>
 								<td>{main.pxConfig.copyright ? <>&copy;{main.pxConfig.copyright}, All rights reserved.</> : '---'}</td>
 							</tr>
 							</tbody>
@@ -202,7 +202,7 @@ export default function Dashboard(props){
 						{main.bootupInfoLoaded && main.bootupInfo.authorization.config
 							?<>
 						<p className="px2-text-align-right">
-							<button type="button" className="px2-btn px2-btn--primary" onClick={editSiteProfile}>編集する</button>
+							<button type="button" className="px2-btn px2-btn--primary" onClick={editSiteProfile}>{main.lb.get('ui_label.edit')}</button>
 						</p>
 							</>
 							:<>
