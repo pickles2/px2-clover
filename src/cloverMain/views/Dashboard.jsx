@@ -29,11 +29,12 @@ export default function Dashboard(props){
 			},
 			function(it1){
 				const $body = $(templates.editSiteProfile({
+					"main": main,
 					"parsedConfig": parsedConfig,
 					"pxConfig": main.pxConfig,
 				}));
 				const modalObj = px2style.modal({
-					"title": "Edit Site Profile",
+					"title": main.lb.get('ui_label.edit_site_profile'),
 					"body": $body,
 					"form": {
 						"action": "javascript:void(0);",
