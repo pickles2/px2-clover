@@ -3,12 +3,12 @@
 <div class="px2-clover-preview-widget px2-clover-preview-widget--menubar" data-px2-clover-preview-widget="menubar">
 {% if px2config.allow_pxcommands %}
 {% if current_page_info.id|length <= 0 %}
-<a href="?PX=admin" class="px2-btn">ダッシュボード</a>
+<a href="?PX=admin" class="px2-btn">{{ lb.get('ui_label.dashboard') }}</a>
 {% else %}
-<a href="?PX=admin.page_info" class="px2-btn">ページ情報</a>
+<a href="?PX=admin.page_info" class="px2-btn">{{ lb.get('ui_label.page_info') }}</a>
 {% endif %}
-<a href="?PX=admin.edit_content&amp;backto=preview" class="px2-btn">記事編集</a>
+<a href="?PX=admin.edit_content&amp;backto=preview" class="px2-btn">{{ lb.get('ui_label.edit_article') }}</a>
 {% else %}
-<p>Pickles 2 Clover を利用するには、<code>$conf-&gt;allow_pxcommands</code>フラグを <code>1</code> に設定してください。</p>
+<p>{{ lb.get('error_message.set_allow_pxcommands_flag_to_1') | raw }}</p>
 {% endif %}
 </div>

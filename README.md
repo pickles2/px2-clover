@@ -83,6 +83,7 @@ $conf->allow_pxcommands = 1;
 ### pickles2/px2-clover v0.3.7 (リリース日未定)
 
 - ブロックエディタで、ウィンドウサイズ変更時の負担を低減した。
+- 一部UIの英語化に対応。
 
 ### pickles2/px2-clover v0.3.6 (2024年7月21日)
 
