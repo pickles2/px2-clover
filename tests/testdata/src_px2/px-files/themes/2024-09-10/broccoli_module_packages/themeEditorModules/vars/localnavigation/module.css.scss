@@ -1,0 +1,52 @@
+/**
+ * ナビゲーション
+ */
+.theme-common-navi {
+	margin-bottom: 0.7em;
+	overflow: hidden;
+	border-radius: 13px;
+	border: 1px solid #444;
+
+	a {
+		display: block;
+		padding: 10px;
+		background-color: #222;
+		border-bottom: 1px solid #444;
+		&:hover {
+			opacity: 0.7;
+			background-color: #292929;
+		}
+	}
+	p {
+		text-align: center;
+		margin: 1px 0;
+		padding: 0;
+		a {
+			background-color: #111;
+			&:hover {
+				background-color: #181818;
+			}
+		}
+	}
+	ul {
+		display: block;
+		margin: 0;
+		padding: 0;
+	}
+	ul li {
+		display: block;
+		margin: 1px 0;
+		padding: 0;
+		list-style-type: none;
+	}
+	ul ul a {
+		padding-left: 25px;
+		background-color: #252525;
+		font-size: small;
+	}
+	ul ul ul a {
+		padding-left: 40px;
+		background-color: #252525;
+		font-size: small;
+	}
+}

@@ -1,0 +1,8 @@
+<div class="px2-image-slider{% if (_context["is-loop"]) %} px2-image-slider--is-loop{% endif %}{% if (_context["show-prevnext"]) %} px2-image-slider--show-prevnext{% endif %}{% if (_context["show-slide-numbers"]) %} px2-image-slider--show-slide-numbers{% endif %}"{% if _ENV.mode == 'canvas' %} style="padding-top: 12px;"{% endif %}>
+	<div class="px2-image-slider__contents">
+		<ul rel="container" class="px2-image-slider__container">{{ _context["image-list"] }}</ul>
+		<div class="px2-image-slider__ctrls-btn-prev"><button type="button" class="px2-image-slider__btn-prev"></button></div>
+		<div class="px2-image-slider__ctrls-btn-next"><button type="button" class="px2-image-slider__btn-next"></button></div>
+	</div>
+	<div class="px2-image-slider__slide-number">xx / xx</div>
+</div>

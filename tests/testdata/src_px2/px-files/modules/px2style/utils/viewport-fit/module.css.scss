@@ -6,9 +6,9 @@
 
 	&__inner {
 		box-sizing: border-box;
-		width: calc(100vw - 50px);
+		width: calc(100vw);
 		position: relative;
-		left: calc(-50vw + 25px);
+		left: calc(-50vw);
 	}
 	&__contents {
 		margin: 0 auto;

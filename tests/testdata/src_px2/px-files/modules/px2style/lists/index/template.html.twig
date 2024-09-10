@@ -1,20 +1,22 @@
 {% if _ENV.mode == 'canvas' %}
 
+<div>
 <!-- == autoindex == -->
-<div style="margin:2em 5%; border:1px solid #bbb; padding:1em; background:rgba(124, 124, 124, 0.05); border-radius:5px;">
-	<div style="margin:0; padding:0; text-align:center; font-weight:bold;">INDEX</div>
-	<ul style="margin:0; padding:0 0 0 2em;">
-		<li style="list-style-type:disc; display:list-item;"><a href="javascript:;">ページ内リンク</a></li>
-		<li style="list-style-type:disc; display:list-item;"><a href="javascript:;">ページ内リンク</a>
-		<ul style="margin:0; padding:0 0 0 2em;">
-			<li style="list-style-type:disc; display:list-item;"><a href="javascript:;">ページ内リンク</a></li>
-			<li style="list-style-type:disc; display:list-item;"><a href="javascript:;">ページ内リンク</a></li>
+<div class="px2-index-list">
+	<div class="px2-index-list__title">INDEX</div>
+	<ul>
+		<li><a href="javascript:;">ページ内リンク</a></li>
+		<li><a href="javascript:;">ページ内リンク</a>
+		<ul>
+			<li><a href="javascript:;">ページ内リンク</a></li>
+			<li><a href="javascript:;">ページ内リンク</a></li>
 		</ul>
 		</li>
-		<li style="list-style-type:disc; display:list-item;"><a href="javascript:;">ページ内リンク</a></li>
+		<li><a href="javascript:;">ページ内リンク</a></li>
 	</ul>
 </div>
 <!-- / == autoindex == -->
+</div>
 
 {% else %}
 

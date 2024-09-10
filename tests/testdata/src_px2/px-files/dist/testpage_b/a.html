@@ -14,19 +14,24 @@
 <link rel="stylesheet" href="/common/styles/contents.css" type="text/css" />
 <script src="/common/scripts/contents.js"></script>
 
-		<link rel="stylesheet" href="/caches/p/theme/clover/modules.css" />
-		<link rel="stylesheet" href="/caches/p/theme/clover/styles/theme.css">
+		<link rel="stylesheet" href="/caches/p/theme/2024-09-10/modules.css" />
+		<link rel="stylesheet" href="/caches/p/theme/2024-09-10/styles/px2style_themes/darkmode.css">
+		<link rel="stylesheet" href="/caches/p/theme/2024-09-10/styles/theme.css">
 
 	</head>
 	<body id="pagetop">
 <header class="theme-header">
 	<div class="theme-header__inner">
 		<div class="theme-header__si">
-			<a href="/">px2-clover</a>		</div>
-		<div class="theme-header__shouldernavi"><ul></ul></div>
+			<a href="/">px2-clover</a>			<div class="theme-header__si-tagline">A brand new CMS on Pickles 2</div>		</div>
+		<div class="theme-header__shouldernavi"></div>
 
-		<div class="theme-header__globalnavi"><ul><li><a href="/testpage_a/">Test Page A</a></li><li><a href="/testpage_b/" class="current">Test Page B</a></li><li><a href="/blogtest/">Blog Test</a></li></ul></div>
-
+		<div class="theme-header__globalnavi"><ul>
+<li><a href="/testpage_a/">Test Page A</a></li>
+<li><a href="/testpage_b/" class="current">Test Page B</a></li>
+<li><a href="/blogtest/">Blog Test</a></li>
+</ul>
+</div>
 	</div>
 </header>
 <div class="theme-layouts theme-layouts--rnavi">
@@ -37,18 +42,30 @@
 
 <div class="contents" data-contents-area="">
 <p>404 - File not found.</p></div>
-<div class="theme-back-to-pagetop">
-	<p><a href="#pagetop">このページの先頭へ戻る</a></p>
-</div>
-<div class="theme-breadcrumb"><ul><li><a href="/">HOME</a></li><li><a href="/testpage_b/">Test Page B</a></li><li><span>Test Page B/A</span></li></ul></div>
 		</div>
 		<div class="theme-layouts__rnavi">
+			<div class="theme-layouts__rnavi-inner">
 <nav class="theme-common-navi">
 	<p><a href="/testpage_b/">Test Page B</a></p>
 <ul>
 <li><a href="/testpage_b/a.html" class="current">Test Page B/A</a></li>
 </ul>
 </nav>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="theme-layouts theme-layouts--rnavi">
+	<div class="theme-layouts__body">
+		<div class="theme-layouts__content">
+<div class="theme-back-to-pagetop">
+	<p><a href="#pagetop">このページの先頭へ戻る</a></p>
+</div>
+<div class="theme-breadcrumb"><ul><li><a href="/">HOME</a></li><li><a href="/testpage_b/">Test Page B</a></li><li><span>Test Page B/A</span></li></ul></div>
+		</div>
+		<div class="theme-layouts__rnavi">
+			<div class="theme-layouts__rnavi-inner">
+			</div>
 		</div>
 	</div>
 </div>
@@ -73,14 +90,71 @@
 		</nav>
 
 		<div class="theme-footer__shouldernavi">
-<ul><li><a href="/">HOME</a></li></ul>		</div>
+		</div>
 <p style="text-align:center;">&copy;Pickles Project.</p>
 
 	</div>
 </footer>
+<div class="theme-hamburger-menu">
+	<div class="theme-hamburger-menu__open">
+		<button class="theme-hamburger-menu__open-btn">
+			<span class="theme-hamburger-menu__open-btn-inner">
+				<span class="theme-hamburger-menu__open-btn-decoration-a">メニュー</span>
+			</span>
+		</button>
+	</div>
+	<div class="theme-hamburger-menu__body">
+		<div class="theme-hamburger-menu__body-inner">
+			<div class="theme-hamburger-menu__title">
+				<p><a href="/">px2-clover</a></p>
+			</div>
+			<div class="theme-hamburger-menu__mega-menu">
+<ul>
+<li><a href="/testpage_a/">Test Page A</a><ul>
+<li><a href="/testpage_a/a.html">Test Page A/A</a></li>
+<li><a href="/testpage_a/b.html">Test Page A/B</a></li>
+<li><a href="/testpage_a/c.html">Test Page A/C</a></li>
+<li><a href="/testpage_a/d/">Test Page A/D*</a></li>
+<li><a href="/testpage_a/e/test.html">Test Page A/E$</a></li>
+</ul>
+</li>
+<li><a href="/testpage_b/" class="current">Test Page B</a><ul>
+<li><a href="/testpage_b/a.html" class="current">Test Page B/A</a></li>
+</ul>
+</li>
+<li><a href="/blogtest/">Blog Test</a></li>
+</ul>
+			</div>
+			<div class="theme-hamburger-menu__shoulder-menu">
+<ul><li><a href="/">HOME</a></li></ul>			</div>
+		</div>
+	</div>
+</div>
+<div class="theme-back-to-pagetop-float">
+	<div class="theme-back-to-pagetop-float__inner">
+		<a href="#pagetop" class="theme-back-to-pagetop-float__back-to-top">
+			<span class="theme-back-to-pagetop-float__back-to-top-inner">
+				<span class="theme-back-to-pagetop-float__back-to-top-decoration-a">このページの先頭へ戻る</span>
+			</span>
+		</a>
+	</div>
+</div>
 
 
-		<script src="/caches/p/theme/clover/modules.js"></script>
+		<script src="/caches/p/theme/2024-09-10/modules.js"></script>
 
+		<script src="/caches/p/theme/2024-09-10/scripts/sidebarFix.js"></script>
+		<script>
+			window.addEventListener('load', function(){
+				// .sidebar-fix を固定します
+				if( $('.theme-layouts__rnavi-inner').length ){
+					sidebarFix('.theme-layouts__rnavi-inner', {
+						frame: $('.theme-layouts__rnavi'),
+						topBuffer: 10,
+						force: true
+					});
+				}
+			});
+		</script>
 	</body>
 </html>

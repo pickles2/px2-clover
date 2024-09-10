@@ -1,5 +1,3 @@
-このモジュールは、テキストを回り込むメディア表示領域を作成します。
+Insert a free-standing general section of the document.
 
-回り込む方向を右か左のいずれかで選択します。 メディアの大きさは、幅 1/2、1/3、1/4 のサイズから選択することができます。
-
-また、テキスト領域を回り込むか、矩形とするかを選択することもできます。
+A normal section does not have an easy-to-understand representation, but displaying a frame makes it possible to clearly indicate the scope of the section.

@@ -39,5 +39,6 @@
                 }
             }
         }
-    }
+    },
+    "deprecated": true
 }

@@ -1,0 +1,63 @@
+{
+    "id": ":interactives/image-slider",
+    "name": "イメージスライダー - Image Slider",
+    "interface": {
+        "fields": {
+            "image-list": {
+                "fieldType": "input",
+                "type": "px2style__image-list",
+                "label": "画像スライダー"
+            },
+            "is-loop": {
+                "fieldType": "input",
+                "type": "select",
+                "label": "ループしますか？",
+                "display": "radio",
+                "options": [
+                    {
+                        "label": "無効",
+                        "value": ""
+                    },
+                    {
+                        "label": "有効",
+                        "value": "1"
+                    }
+                ]
+            },
+            "show-prevnext": {
+                "fieldType": "input",
+                "type": "select",
+                "label": "前と次のスライドを少しだけ見せますか？",
+                "display": "radio",
+                "options": [
+                    {
+                        "label": "無効",
+                        "value": ""
+                    },
+                    {
+                        "label": "有効",
+                        "value": "1"
+                    }
+                ]
+            },
+            "show-slide-numbers": {
+                "fieldType": "input",
+                "type": "select",
+                "label": "スライド番号を表示しますか？",
+                "display": "radio",
+                "options": [
+                    {
+                        "label": "表示しない",
+                        "value": ""
+                    },
+                    {
+                        "label": "表示する",
+                        "value": "1"
+                    }
+                ]
+            }
+        },
+        "subModule": {
+        }
+    }
+}

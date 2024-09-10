@@ -23,6 +23,59 @@
                         },
                         "anchor": "",
                         "dec": ""
+                    },
+                    {
+                        "modId": "px2style:interactives/image-slider",
+                        "fields": {
+                            "image-list": {
+                                "slides": [
+                                    {
+                                        "path": "./a_files/resources/zsw8h7wma6muezc1-93761c402e98326b0d788990d20254b7.webp",
+                                        "resKey": "44b4d459a980bd70a27289a774095a5c",
+                                        "resType": "",
+                                        "webUrl": "",
+                                        "href": "",
+                                        "captionTitle": "",
+                                        "captionBody": ""
+                                    },
+                                    {
+                                        "path": "./a_files/resources/qtnr4qkb7g34kaaq-69aeb3394e119853172e57d032063bce.webp",
+                                        "resKey": "6d7d10306793a7d20efc338180236404",
+                                        "resType": "",
+                                        "webUrl": "",
+                                        "href": "",
+                                        "captionTitle": "",
+                                        "captionBody": ""
+                                    },
+                                    {
+                                        "path": "./a_files/resources/wcyxs2zhqjief6zq-8901da97dada777e2093a43ab9d1dfa1.webp",
+                                        "resKey": "1fee5236a1f152734cef6e9926a9a759",
+                                        "resType": "",
+                                        "webUrl": "",
+                                        "href": "",
+                                        "captionTitle": "",
+                                        "captionBody": ""
+                                    }
+                                ]
+                            },
+                            "is-loop": {
+                                "src": "1"
+                            },
+                            "show-prevnext": {
+                                "src": "1"
+                            },
+                            "show-slide-numbers": {
+                                "src": "1"
+                            }
+                        },
+                        "anchor": "",
+                        "dec": "",
+                        "locked": {
+                            "contents": false,
+                            "children": false,
+                            "move": false,
+                            "delete": false
+                        }
                     }
                 ]
             }
