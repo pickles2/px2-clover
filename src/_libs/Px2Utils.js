@@ -23,6 +23,8 @@ export default function Px2Utils(){
 		const callback = args[args.length - 1];
 
 		params.ADMIN_USER_CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+		params.lang = params.lang || window.cloverUtils.lang;
+
 		let pxCmdStdOut;
 		let error;
 

@@ -80,6 +80,10 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
+### pickles2/px2-clover v0.3.8 (リリース日未定)
+
+- PX Command のパラメータに `lang` を追加した。
+
 ### pickles2/px2-clover v0.3.7 (2024年9月10日)
 
 - ブロックエディタで、ウィンドウサイズ変更時の負担を低減した。
