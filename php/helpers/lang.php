@@ -45,4 +45,11 @@ class lang {
 		return $this->lb->get($key);
 	}
 
+	/**
+	 * get language
+	 */
+	public function getLang(){
+		return $this->lb->getLang();
+	}
+
 }

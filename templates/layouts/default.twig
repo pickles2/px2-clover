@@ -41,7 +41,7 @@
 			"default_directory_index": "{{ px2config.directory_index[0] | e("js") }}",
 		};
 		window.clover_config = {
-			"lang": "{{ clover_config.lang | e("js") }}",
+			"lang": "{{ user_info.lang | e("js") }}",
 			"appearance": "{{ user_info.appearance | e("js") }}",
 			"history": {
 				"auto_commit": "{{ clover_config.history.auto_commit | e("js") }}",
