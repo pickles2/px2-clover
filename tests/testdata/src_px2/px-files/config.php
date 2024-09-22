@@ -249,6 +249,9 @@ return call_user_func( function(){
 		),
 	);
 
+	/** コンテンツテンプレートの格納ディレクトリ */
+	$conf->plugins->px2dt->path_contents_templates_dir = __DIR__."/cont_tpls/";
+
 	/**
 	 * メインメニューの一覧
 	 */
