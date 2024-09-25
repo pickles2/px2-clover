@@ -84,6 +84,8 @@ $conf->allow_pxcommands = 1;
 
 - PX Command のパラメータに `lang` を追加した。
 - 選択した言語が正しく反映されないことがある不具合を修正した。
+- コンテンツ編集時、`$px->path_files()` によるリソースの参照は、`server_side_scripting` 権限がないユーザーにも認められるようになった。
+
 
 ### pickles2/px2-clover v0.3.7 (2024年9月10日)
 
