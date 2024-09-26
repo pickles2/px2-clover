@@ -45,7 +45,7 @@ class authorizeHelper {
 		$src_check = $src;
 
 		// NOTE: server_side_scripting 権限がなくても許容する記述を除外する
-		$src_check = preg_replace('/\<(\?\= \$px\-\>h\(\$px\-\>path_files\(\"[a-zA-Z0-9\/\-\.]+\"\)\) \?)\>/', '<!-- $1 -->', $src_check);
+		$src_check = preg_replace('/\<(\?\= \$px\-\>h\(\$px\-\>path_files\(\"[a-zA-Z0-9\/\-\_\.]+\"\)\) \?)\>/', '<!-- $1 -->', $src_check);
 
 		// サニタイズパターン
 		$patterns = array(
