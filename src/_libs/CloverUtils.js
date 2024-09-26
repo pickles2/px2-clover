@@ -298,6 +298,7 @@ export default function CloverUtils(){
 	this.bindTwig = function( templateSrc, bindData ){
 		var template = Twig.twig({
 			data: templateSrc,
+			autoescape: true,
 		});
 		return template.render(bindData);
 	}

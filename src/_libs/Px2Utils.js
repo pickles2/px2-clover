@@ -68,7 +68,7 @@ export default function Px2Utils(){
 			})
 			.fail(function(jqXHR, textStatus, errorMsg){
 				if( jqXHR.status == 403 ){
-					// alert('You logged out.');
+					// logged out.
 					window.location.reload();
 				}
 				console.error('PX Command Error:', jqXHR, textStatus, errorMsg);
