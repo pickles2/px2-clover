@@ -97,6 +97,9 @@ class git {
 		$rtn = array();
 		$rtn['result'] = true;
 		$rtn['message'] = 'OK';
+		$rtn['exitcode'] = null;
+		$rtn['stdout'] = null;
+		$rtn['stderr'] = null;
 
 		if( !is_array( $git_command_array ) || !count( $git_command_array ) ){
 			return array(
@@ -124,10 +127,8 @@ class git {
 		$this->clear_remote_origin();
 
 		if( !$res_cmd['result'] ){
-			return array(
-				'result' => false,
-				'message' => $this->conceal_confidentials($res_cmd['stdout']).$this->conceal_confidentials($res_cmd['stderr']),
-			);
+			$rtn['result'] = false;
+			$rtn['message'] = 'Command failed.';
 		}
 
 		$rtn['exitcode'] = $res_cmd['exitcode'];
@@ -145,17 +146,22 @@ class git {
 		$rtn = array();
 		$rtn['result'] = true;
 		$rtn['message'] = 'OK';
+		$rtn['exitcode'] = null;
+		$rtn['stdout'] = null;
+		$rtn['stderr'] = null;
 
 		$res_cmd = $this->exec_git_command(array(
 			'add',
 			'--all',
 			'.',
 		));
+		$rtn['exitcode'] = $res_cmd['exitcode'];
+		$rtn['stdout'] = $res_cmd['stdout'];
+		$rtn['stderr'] = $res_cmd['stderr'];
 		if( !$res_cmd['result'] ){
-			return array(
-				'result' => false,
-				'message' => $this->conceal_confidentials($res_cmd['stdout']).$this->conceal_confidentials($res_cmd['stderr']),
-			);
+			$rtn['result'] = false;
+			$rtn['message'] = $this->conceal_confidentials($res_cmd['stdout']).$this->conceal_confidentials($res_cmd['stderr']);
+			return $rtn;
 		}
 
 		$res_cmd = $this->exec_git_command(array(
@@ -163,11 +169,13 @@ class git {
 			'-m',
 			'clover commit',
 		));
+		$rtn['exitcode'] .= $res_cmd['exitcode'];
+		$rtn['stdout'] .= $res_cmd['stdout'];
+		$rtn['stderr'] .= $res_cmd['stderr'];
 		if( !$res_cmd['result'] ){
-			return array(
-				'result' => false,
-				'message' => $this->conceal_confidentials($res_cmd['stdout']).$this->conceal_confidentials($res_cmd['stderr']),
-			);
+			$rtn['result'] = false;
+			$rtn['message'] = $this->conceal_confidentials($res_cmd['stdout']).$this->conceal_confidentials($res_cmd['stderr']);
+			return $rtn;
 		}
 
 		return $rtn;
