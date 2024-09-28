@@ -287,6 +287,7 @@ class git {
 			'result' => null,
 			'stdout' => null,
 			'stderr' => null,
+			'exitcode' => null,
 		);
 		$realpath_git_root = $this->realpath_git_root();
 		if( !$realpath_git_root ){
@@ -294,6 +295,7 @@ class git {
 				'result' => false,
 				'stdout' => null,
 				'stderr' => '.git is not found.',
+				'exitcode' => 1,
 			);
 		}
 
