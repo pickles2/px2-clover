@@ -369,9 +369,9 @@ class git {
 
 		$rtn['result'] = true;
 		$rtn['exitcode'] = $stat['exitcode'];
-		$rtn['stdout'] = $io[1]; // stdout
-		if( isset($io[2]) && strlen( $io[2] ) ){
-			$rtn['stderr'] = $io[2]; // stderr
+		$rtn['stdout'] = $io[1];
+		if( strlen( $io[2] ?? '' ) ){
+			$rtn['stderr'] = $io[2];
 		}
 		if( $rtn['exitcode'] ){
 			$rtn['result'] = false;

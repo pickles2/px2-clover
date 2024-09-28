@@ -25,7 +25,7 @@ export default React.memo(function History(props){
 				main.px2utils.pxCmd("?PX=admin.api.git", {
 					'git': JSON.stringify(cmdAry),
 				}, (data)=>{
-					callback(data.exitcode, (data.stdout?data.stdout:'')+(data.stderr?data.stderr:''));
+					callback(data.exitcode, data.stdout, data.stderr);
 					px2style.closeLoading();
 				});
 			},
