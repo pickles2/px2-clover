@@ -109,9 +109,10 @@ export default function CustomConsoleExtensions(props){
 						// GPI(General Purpose Interface) Bridge
 
 						main.px2utils.pxCmd(
-							'/?PX=px2dthelper.custom_console_extensions.'+currentCceId+'.gpi'
-								+'&request='+encodeURIComponent( JSON.stringify(input) ),
-							{},
+							'/?PX=px2dthelper.custom_console_extensions.'+currentCceId+'.gpi',
+							{
+								request: JSON.stringify(input),
+							},
 							{
 								timeout: 12 * 60 * 60 * 1000,
 							},
