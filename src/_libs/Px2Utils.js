@@ -104,7 +104,7 @@ export default function Px2Utils(){
 		let tmpStr = pathname;
 		pathname = '';
 		while(1){
-			if(tmpStr.match(/^([\s\S]*?)\{\$([\s\S]+)\}([\s\S]*)$/)){
+			if(tmpStr.match(/^([\s\S]*?)\{\$([\s\S]+?)\}([\s\S]*)$/)){
 				pathname += RegExp.$1;
 				pathname += RegExp.$2;
 				tmpStr = RegExp.$3;
@@ -118,7 +118,7 @@ export default function Px2Utils(){
 		tmpStr = pathname;
 		pathname = '';
 		while(1){
-			if(tmpStr.match(/^([\s\S]*?)\{\*([\s\S]*)\}([\s\S]*)$/)){
+			if(tmpStr.match(/^([\s\S]*?)\{\*([\s\S]*?)\}([\s\S]*)$/)){
 				pathname += RegExp.$1;
 				pathname += RegExp.$2;
 				tmpStr = RegExp.$3;
@@ -136,6 +136,13 @@ export default function Px2Utils(){
 		// controot を補完する
 		pathname = pathname.replace(/^\//, window.px2config.path_controot);
 
+		// 末尾にスラッシュを追加する
+		pathname = pathname.replace(/\/*$/, '/');
+		pathname = pathname.replace(/(\.html?)\/$/i, '$1');
+
+		// 重複するスラッシュを統合する
+		pathname = pathname.replace(/\/+/g, '/');
+
 		var rtn = pathname + (typeof(query)==typeof('') ? '?'+query : '');
 		return rtn;
 	}
@@ -147,7 +154,7 @@ export default function Px2Utils(){
 	 * @returns requestable path
 	 */
 	this.pagePathToRequestablePath = function(page_path){
-		const pattern = /\{(?:\*|\$)([a-zA-Z0-9\_\-]*)\}/;
+		const pattern = /\{(?:\*|\$)([a-zA-Z0-9\_\-]*?)\}/;
 		while( pattern.test(page_path) ){
 			page_path = page_path.replace(pattern, '$1');
 		}
