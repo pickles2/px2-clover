@@ -2,6 +2,8 @@
 	margin-top: 1em;
 	margin-bottom: 1em;
 	clear: both;
+	container-type: inline-size;
+
 	&::after{
 		content: " ";
 		display: block;
@@ -191,7 +193,7 @@
 		}
 	}
 
-	@media all and (max-width: 768px) {
+	@container (max-width: 768px) {
 		// "sm" on Bootstrap 4
 		&__heading-r1of3 ,
 		&__heading-c1of3 ,
@@ -212,7 +214,7 @@
 		}
 	}
 
-	@media all and (max-width: 544px) {
+	@container (max-width: 544px) {
 		// "xs" on Bootstrap 4
 		&__heading-r2of3 ,
 		&__heading-c2of3 ,
@@ -229,7 +231,7 @@
 		}
 	}
 
-	@media all and (max-width: 440px) {
+	@container (max-width: 440px) {
 		&__heading-l1of1 ,
 		&__heading-l2of3 ,
 		&__heading-l1of2 ,

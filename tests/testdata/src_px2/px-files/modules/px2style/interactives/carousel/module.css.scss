@@ -1,6 +1,8 @@
 .px2-carousel{
     margin-top: 1em;
     margin-bottom: 1em;
+	container-type: inline-size;
+
     &__contents{
         display: flex;
         align-items: stretch;

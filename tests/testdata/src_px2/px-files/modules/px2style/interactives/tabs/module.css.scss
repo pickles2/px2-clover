@@ -3,6 +3,7 @@
 	margin-bottom: 1em;
 	display: flex;
 	flex-direction: column;
+	container-type: inline-size;
 
 	&__tabs {
 		text-align: left;

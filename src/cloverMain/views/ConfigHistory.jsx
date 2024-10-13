@@ -75,12 +75,14 @@ export default function ConfigHistory(props){
 					</div>
 				</div>
 				<div className="px2-form-submit-area">
-					<ul className="px2-form-submit-area__btns">
-						<li><button type="submit" className="px2-btn px2-btn--primary">{ main.lb.get('ui_label.save') }</button></li>
-					</ul>
-					<ul className="px2-form-submit-area__backward-btns">
-						<li><Link href="?PX=admin.config">{ main.lb.get('ui_label.cancel') }</Link></li>
-					</ul>
+					<div className="px2-form-submit-area__inner">
+						<ul className="px2-form-submit-area__btns">
+							<li><button type="submit" className="px2-btn px2-btn--primary">{ main.lb.get('ui_label.save') }</button></li>
+						</ul>
+						<ul className="px2-form-submit-area__backward-btns">
+							<li><Link href="?PX=admin.config">{ main.lb.get('ui_label.cancel') }</Link></li>
+						</ul>
+					</div>
 				</div>
 			</form>
 		</>

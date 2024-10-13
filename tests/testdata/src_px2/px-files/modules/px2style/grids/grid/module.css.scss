@@ -9,6 +9,7 @@
     gap: 0rem;
     margin: 0 -0.5rem 0 -0.5rem;
     box-sizing: border-box;
+	container-type: inline-size;
 
     &__col-1of1 {
         @include px2-grid__col();
@@ -59,7 +60,7 @@
         width: calc( 83.33% - 1rem );
     }
 
-    @media all and (max-width: 768px) {
+    @container (max-width: 768px) {
         // "sm" on Bootstrap 4
         &__col-1of5,
         &__col-2of5,
@@ -71,7 +72,7 @@
         }
     }
 
-    @media all and (max-width: 660px) {
+    @container (max-width: 660px) {
         &__col-1of4,
         &__col-3of4,
         &__col-1of5,
@@ -84,7 +85,7 @@
         }
     }
 
-    @media all and (max-width: 544px) {
+    @container (max-width: 544px) {
         // "xs" on Bootstrap 4
         &__col-1of3,
         &__col-2of3,
@@ -100,7 +101,7 @@
         }
     }
 
-    @media all and (max-width: 440px) {
+    @container (max-width: 440px) {
         &__col-1of2,
         &__col-1of3,
         &__col-2of3,
@@ -118,7 +119,7 @@
 
 
     // 大きい画面(PCサイズ)
-    @media all and (min-width: 993px) {
+    @container (min-width: 993px) {
         &__col-lg-1of1 {
             @include px2-grid__col();
             width: calc( 100% - 1rem );
@@ -170,7 +171,7 @@
     }
 
     // 中サイズの画面(タブレットサイズ)
-    @media all and (min-width: 769px) and (max-width: 992px) {
+    @container (min-width: 769px) and (max-width: 992px) {
         &__col-md-1of1 {
             @include px2-grid__col();
             width: calc( 100% - 1rem );
@@ -222,7 +223,7 @@
     }
 
     // 小さい画面(スマートフォンサイズ)
-    @media all and (max-width: 768px) {
+    @container (max-width: 768px) {
         &__col-sm-1of1 {
             @include px2-grid__col();
             width: calc( 100% - 1rem );

@@ -1,4 +1,6 @@
 .px2-image-banner-link {
+	container-type: inline-size;
+
 	img {
 		width: 100%;
 		max-width: 100%;
@@ -18,11 +20,11 @@
 	&--width-1of2 &__img { width: 50%; }
 
     // 大きい画面(PCサイズ)
-    @media all and (min-width: 993px) {
+    @container (min-width: 993px) {
 	}
 
     // 小さい画面(スマートフォンサイズ)
-    @media all and (max-width: 768px) {
+    @container (max-width: 768px) {
 		&--width-1of1 &__img { width: 100%; }
 		&--width-3of4 &__img { width: 75%; }
 		&--width-2of3 &__img { width: 75%; }
@@ -30,7 +32,7 @@
 	}
 
     // さらに小さい画面
-    @media all and (max-width: 440px) {
+    @container (max-width: 440px) {
 		&--width-1of1 &__img { width: 100%; }
 		&--width-3of4 &__img { width: 100%; }
 		&--width-2of3 &__img { width: 100%; }
