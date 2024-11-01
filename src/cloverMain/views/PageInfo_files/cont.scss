@@ -54,8 +54,10 @@
 	margin: 1em 0;
 	display: flex;
 	gap: 20px;
+
 	&__main {
 		width: calc(100% - 220px);
+		container-type: inline-size;
 
 		.px2-table {
 			th, td {
