@@ -30,7 +30,7 @@
         "pickles2/px2-px2dthelper": "~2.2",
         "tomk79/langbank": "~0.2",
         "tomk79/remote-finder": "~0.2",
-        "twig/twig": "~3.8.0"
+        "twig/twig": "^3.8"
     },
     "require-dev": {
         "pickles2/px2-blog-kit": "~0.1.0",

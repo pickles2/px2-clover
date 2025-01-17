@@ -80,6 +80,10 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
+### pickles2/px2-clover v0.3.9 (リリース日未定)
+
+- `twig/twig` v3.9 以降に対応。
+
 ### pickles2/px2-clover v0.3.8 (2024年11月1日)
 
 - PX Command のパラメータに `lang` を追加した。
