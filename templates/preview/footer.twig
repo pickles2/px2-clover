@@ -7,6 +7,7 @@
 {% else %}
 <a href="?PX=admin.page_info" class="px2-btn">{{ lb.get('ui_label.page_info') }}</a>
 {% endif %}
+<a href="?PX=admin.edit_theme_layout&amp;backto=preview" class="px2-btn">{{ lb.get('ui_label.edit_theme_layout') }}</a>
 <a href="?PX=admin.edit_content&amp;backto=preview" class="px2-btn">{{ lb.get('ui_label.edit_article') }}</a>
 {% else %}
 <p>{{ lb.get('error_message.set_allow_pxcommands_flag_to_1') | raw }}</p>

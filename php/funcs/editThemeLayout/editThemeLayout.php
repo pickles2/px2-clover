@@ -15,6 +15,12 @@ class editThemeLayout{
 	/** Authorize Helper オブジェクト */
 	private $authorizeHelper;
 
+	/** テーマID */
+	private $theme_id;
+
+	/** レイアウトID */
+	private $layout_id;
+
 	/**
 	 * Constructor
 	 *
@@ -25,6 +31,16 @@ class editThemeLayout{
 		$this->clover = $clover;
 		$this->px = $clover->px();
 		$this->authorizeHelper = new \tomk79\pickles2\px2clover\helpers\authorizeHelper($this->clover);
+
+		$this->theme_id = $this->px->req()->get_param('theme_id') ?? $this->px->req()->get_param('THEME') ?? $this->px->req()->get_cookie('THEME');
+		if( !strlen($this->theme_id ?? '') ){
+			$tmp_multithemePluginOptionsJson = $this->px->internal_sub_request(
+				'/?PX=px2dthelper.plugins.get_plugin_options&func_div=processor.html&plugin_name='.urlencode('tomk79\\pickles2\\multitheme\\theme::exec')
+			);
+			$multithemePluginOptions = json_decode($tmp_multithemePluginOptionsJson, true);
+			$this->theme_id = $multithemePluginOptions[0]['options']['default_theme_id'] ?? null;
+		}
+		$this->layout_id = $this->px->req()->get_param('layout_id') ?? $this->px->site()->get_current_page_info('layout');
 	}
 
 	/**
@@ -35,6 +51,9 @@ class editThemeLayout{
 		if( !$backto ){
 			$backto = 'close';
 		}
+
+		$theme_id = $this->theme_id;
+		$layout_id = $this->layout_id;
 
 		if( !$this->authorizeHelper->is_authorized('server_side_scripting') ){
 			if( $this->is_sanitize_desired() ){
@@ -68,7 +87,7 @@ class editThemeLayout{
 		$px2ce_res = $this->px->internal_sub_request('/?PX=px2dthelper.px2ce.client_resources&dist='.urlencode($client_resources_dist).'&appearance='.urlencode($appearance));
 		$px2ce_res = json_decode($px2ce_res, true);
 
-		$checkout_result = $this->clover->checkout()->start('theme:'.$this->px->req()->get_param('theme_id').'/'.$this->px->req()->get_param('layout_id'));
+		$checkout_result = $this->clover->checkout()->start('theme:'.$theme_id.'/'.$layout_id);
 		if( !$checkout_result->result ){
 			// 他のユーザーが編集中
 			$holder_info = $this->clover->auth()->get_admin_user_info($checkout_result->holder_id);
@@ -91,8 +110,8 @@ class editThemeLayout{
 				'path_client_resources' => $path_client_resources,
 				'px2ce_res' => $px2ce_res,
 				'target_mode' => 'theme_layout',
-				'theme_id' => $this->px->req()->get_param('theme_id'),
-				'layout_id' => $this->px->req()->get_param('layout_id'),
+				'theme_id' => $theme_id,
+				'layout_id' => $layout_id,
 				'backto' => $backto,
 			)
 		);
@@ -108,8 +127,8 @@ class editThemeLayout{
 		$result = false;
 		$target_files = array();
 
-		$theme_id = $this->px->req()->get_param('theme_id');
-		$layout_id = $this->px->req()->get_param('layout_id');
+		$theme_id = $this->theme_id;
+		$layout_id = $this->layout_id;
 
 		$px2dthelper = new \tomk79\pickles2\px2dthelper\main( $this->px );
 		$realpath_theme_collection_dir = $px2dthelper->get_realpath_theme_collection_dir();

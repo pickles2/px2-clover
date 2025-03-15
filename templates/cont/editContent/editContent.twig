@@ -78,10 +78,10 @@
 			var resizeTimer;
 			var backto = "{{ backto | e("js") }}";
 
-			if( page_path.length ){
+			if( !target_mode ){
 				target_mode = 'page_content';
-			}else if( theme_id && layout_id ){
-				target_mode = 'theme_layout';
+			}
+			if( target_mode == 'theme_layout' && !page_path ){
 				page_path = '/'+theme_id+'/'+layout_id+'.html';
 			}
 
@@ -99,7 +99,7 @@
 			pickles2ContentsEditor.init(
 				{
 					'target_mode': target_mode,
-					'page_path': page_path ,
+					'page_path': page_path,
 					'elmCanvas': document.getElementById('cont-px2ce-canvas'),
 					'preview':{
 						'origin': preview_url// プレビュー用サーバーの情報を設定します。
@@ -115,6 +115,8 @@
 									'data': {
 										'appMode': app_mode,
 										'target_mode': target_mode,
+										'theme_id': theme_id || null,
+										'layout_id': layout_id || null,
 										'data': encodedInput,
 										'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
 									},
@@ -167,7 +169,7 @@
 								}
 							},
 							"complete": function(){
-								if( target_mode == 'theme_layout' || backto == 'close' ){
+								if( backto == 'close' ){
 									window.close();
 									return;
 								}
