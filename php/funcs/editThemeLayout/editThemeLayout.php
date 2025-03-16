@@ -40,8 +40,8 @@ class editThemeLayout{
 			$multithemePluginOptions = json_decode($tmp_multithemePluginOptionsJson, true);
 			$this->theme_id = $multithemePluginOptions[0]['options']['default_theme_id'] ?? null;
 		}
-		$this->layout_id = $this->px->req()->get_param('layout_id') ?? $this->px->site()->get_current_page_info('layout');
-		if( !strlen($this->layout_id ?? null) ){
+		$this->layout_id = $this->px->req()->get_param('layout_id') ?? $this->px->site()->get_current_page_info('layout') ?? null;
+		if( !strlen($this->layout_id ?? '') ){
 			$this->layout_id = "default";
 		}
 	}
