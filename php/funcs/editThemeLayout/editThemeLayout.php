@@ -51,9 +51,6 @@ class editThemeLayout{
 	 */
 	public function start(){
 		$backto = $this->px->req()->get_param('backto');
-		if( !$backto ){
-			$backto = 'close';
-		}
 
 		$theme_id = $this->theme_id;
 		$layout_id = $this->layout_id;
