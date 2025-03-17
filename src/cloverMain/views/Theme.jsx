@@ -67,7 +67,7 @@ export default React.memo(function Theme(props){
 						},
 						'themeLayoutEditor': function(themeId, layoutId){
 							var href = main.px2utils.href('/'+themeId+'/'+layoutId+'.html');
-							window.open(href+'?PX=admin.edit_theme_layout&theme_id='+encodeURIComponent(themeId)+'&layout_id='+encodeURIComponent(layoutId));
+							window.open(href+'?PX=admin.edit_theme_layout&theme_id='+encodeURIComponent(themeId)+'&layout_id='+encodeURIComponent(layoutId)+'&backto=close');
 							return;
 						},
 						'openInBrowser': function(path){
