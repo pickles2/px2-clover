@@ -64,7 +64,7 @@ class Layout extends React.Component {
 			iterate79.fnc({}, [
 				(it1) => {
 					if( newState.bootupInfoLoaded && newState.profileLoaded && newState.lbLoaded && newState.pageInfoLoaded && newState.configLoaded ){
-						this.setState( newState );
+						this.setState( pastState => newState );
 						callback();
 						return;
 					}
@@ -173,7 +173,7 @@ class Layout extends React.Component {
 				},
 				(it1) => {
 					px2style.closeLoading();
-					this.setState( newState );
+					this.setState( pastState => newState );
 					callback();
 					it1.next();
 				},
