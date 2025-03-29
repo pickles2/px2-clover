@@ -14,7 +14,6 @@ export default function CustomConsoleExtensions(props){
 			'/?PX=px2dthelper.custom_console_extensions',
 			{},
 			function( res ){
-				console.log('-- CCE:', res);
 				if( !res.result ){
 					console.error('Error:', res);
 				}
@@ -125,13 +124,11 @@ export default function CustomConsoleExtensions(props){
 					'onPxCmd': function(path, options, callback){
 						main.px2utils.pxCmd(path, {}, options, callback);
 					},
-					'onEditContent': function(target){
-						window.open(target+'?PX=admin.edit_content&backto=close');
+					'onEditContent': function(targetPath){
+						window.open(targetPath+'?PX=admin.edit_content&backto=close');
 					},
-					'onEditThemeLayout': function(target){
-						// TODO: テーマレイアウト編集画面を開く実装を追加する↓
-						// window.open(target+'?PX=admin.edit_theme_layout&theme_id='+encodeURIComponent(themeId)+'&layout_id='+encodeURIComponent(layoutId));
-						console.info('開発中の機能です。');
+					'onEditThemeLayout': function(targetPath, themeId, layoutId){
+						window.open(targetPath+'?PX=admin.edit_theme_layout&theme_id='+encodeURIComponent(themeId || '')+'&layout_id='+encodeURIComponent(layoutId || '')+'&backto=close');
 					},
 					'onOpenInBrowser': function(path){
 						window.open(path);
