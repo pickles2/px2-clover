@@ -315,9 +315,9 @@ export default function CloverUtils(){
 					'ADMIN_USER_CSRF_TOKEN': $('meta[name="csrf-token"]').attr('content'),
 				},
 				"error": function(error){
+					console.error(error);
 				},
 				"success": function(data){
-					console.info( 'CSRF Token:', $('meta[name="csrf-token"]').attr('content'), 'to', data.token );
 					$('meta[name="csrf-token"]')
 						.attr({
 							'content': data.token,
