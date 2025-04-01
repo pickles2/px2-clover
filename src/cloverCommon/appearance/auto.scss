@@ -1,4 +1,4 @@
-@media (prefers-color-scheme: dark) { 
+@media (prefers-color-scheme: dark) {
 :root {
 	--px2-text-color: #ddd;
 	--px2-background-color: #333;
@@ -53,6 +53,9 @@
 		&__foot-menu {
 			li {
 				border-top: 1px solid #444;
+			}
+			.current {
+				background-color: #f6f6f610;
 			}
 		}
 	}

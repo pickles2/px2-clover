@@ -157,6 +157,7 @@
 		padding-bottom: 0;
 		flex-grow: 10;
 		display: flex;
+		gap: 40px;
 		flex-direction: column;
 		justify-content: space-between;
 
@@ -197,7 +198,14 @@
 				border-top: 1px solid #e5e5e5;
 			}
 			a, button {
-				padding: 20px;
+				padding: 12px 10px 12px 20px;
+			}
+			.current {
+				background-color: #09090910;
+				span {
+					border-left: none;
+					padding-left: 14px;
+				}
 			}
 		}
 

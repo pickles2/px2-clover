@@ -29,9 +29,9 @@ export default React.memo(function Root(props){
 								<li><Link href={main.px2utils.href("/?PX=admin.theme")}><span>{main.lb.get('page_title.theme')}</span></Link></li>
 								<li><Link href={main.px2utils.href("/?PX=admin.publish")}><span>{main.lb.get('page_title.publish')}</span></Link></li>
 								<li><Link href={main.px2utils.href("/?PX=admin.history")}><span>{main.lb.get('page_title.history')}</span></Link></li>
-								<li><Link href={main.px2utils.href("/?PX=admin.config")}><span>{main.lb.get('page_title.config')}</span></Link></li>
 							</ul>
 							<ul className="theme-layout__left-navbar__foot-menu">
+								<li><Link href={main.px2utils.href("/?PX=admin.config")}><span>{main.lb.get('page_title.config')}</span></Link></li>
 								<li><a href="?"><span>{main.lb.get('page_title.back_to_preview')}</span></a></li>
 								<li><a href="?PX=admin.logout"><span>{main.lb.get('page_title.logout')}</span></a></li>
 							</ul>

@@ -84,6 +84,7 @@ $conf->allow_pxcommands = 1;
 
 - プレビューフッターに「レイアウト編集」ボタンを追加した。
 - CCE: `onEditThemeLayout` に対応した。
+- ボタンレイアウトを変更した。
 
 ### pickles2/px2-clover v0.3.9 (2025年1月18日)
 
