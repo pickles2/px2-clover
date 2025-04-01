@@ -327,7 +327,6 @@ class Layout extends React.Component {
 			'admin.cce': {
 				"title": "拡張機能",
 				"langKey": "page_title.cce",
-				"parent": "admin.config",
 				"content": <CustomConsoleExtensions />,
 			},
 		};
