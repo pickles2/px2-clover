@@ -27,6 +27,14 @@ export default React.memo(function Root(props){
 								<li><Link href={main.px2utils.href("/?PX=admin.page_info")}><span>{main.lb.get('page_title.page_info')}</span></Link></li>
 								<li><Link href={main.px2utils.href("/?PX=admin.blog")}><span>{main.lb.get('page_title.blog')}</span></Link></li>
 								<li><Link href={main.px2utils.href("/?PX=admin.theme")}><span>{main.lb.get('page_title.theme')}</span></Link></li>
+								{main.customConsoleExtensions ? <>
+									{Object.keys(main.customConsoleExtensions).map((cceKey, index) => {
+										const listItem = main.customConsoleExtensions[cceKey];
+										return <li key={index}>
+											<Link href={`?PX=admin.cce.${listItem.id}`}><span>{ listItem.label }</span></Link>
+										</li>;
+									})}
+								</> : <></>}
 								<li><Link href={main.px2utils.href("/?PX=admin.publish")}><span>{main.lb.get('page_title.publish')}</span></Link></li>
 								<li><Link href={main.px2utils.href("/?PX=admin.history")}><span>{main.lb.get('page_title.history')}</span></Link></li>
 							</ul>

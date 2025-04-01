@@ -172,6 +172,17 @@ class Layout extends React.Component {
 					return;
 				},
 				(it1) => {
+					newState.px2utils.pxCmd(
+						'/?PX=px2dthelper.custom_console_extensions',
+						{},
+						function( res ){
+							newState.customConsoleExtensions = res.list;
+							it1.next();
+						}
+					);
+					return;
+				},
+				(it1) => {
 					px2style.closeLoading();
 					this.setState( pastState => newState );
 					callback();
@@ -378,6 +389,7 @@ class Layout extends React.Component {
 			"config": null,
 			"pxConfigLoaded": false,
 			"pxConfig": null,
+			"customConsoleExtensions": null,
 			"link": link,
 			"cloverUtils": window.cloverUtils,
 			"px2utils": window.px2utils,
