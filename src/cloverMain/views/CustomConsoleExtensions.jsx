@@ -102,6 +102,7 @@ export default function CustomConsoleExtensions(props){
 			function(it1){
 				cceAgent = new window.Px2dthelperCceAgent({
 					'elm': $('.cont-custom-console-extensions__main').get(0),
+					'appearance': main.profile.appearance || 'auto',
 					'lang': main.lb.getLang(),
 					'appMode': 'web',
 					'gpiBridge': function(input, callback){
