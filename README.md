@@ -83,6 +83,7 @@ $conf->allow_pxcommands = 1;
 ### pickles2/px2-clover v0.4.0 (リリース日未定)
 
 - ブログの編集機能を `pickles2/px2-blog-kit` に移した。
+- Clover以外のプラグインが提供するPXコマンドには、`POST` メソッド以外のアクセスを拒否するようになった。
 
 ### pickles2/px2-clover v0.3.10 (2025年4月3日)
 

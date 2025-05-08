@@ -37,9 +37,9 @@ class register{
 		if( !is_string($options->realpath_admin_user_dir ?? null) || !strlen($options->realpath_admin_user_dir ?? '') ){
 			$options->realpath_admin_user_dir = null;
 		}
+		$options->app_mode = "web"; // NOTE: `app_mode` オプションは、 px2-clover v0.3.0 で廃止されました。
 
-		// NOTE: `app_mode` オプションは、 px2-clover v0.3.0 で廃止されました。
-		$options->app_mode = "web";
+		$px_command = $px->get_px_command();
 
 		if( !$px->req()->is_cmd() ){
 
@@ -61,6 +61,14 @@ class register{
 			}
 
 			// --------------------------------------
+			// NOTE: `PX=admin.*` 以外のPXコマンドは、POSTメソッドでのみ通す
+			if( count($px_command) ){
+				if($px_command[0] != 'admin'){
+					$clover->allowed_method('post');
+				}
+			}
+
+			// --------------------------------------
 			// 認証
 			$auth_needs = false;
 			if( $px->req()->get_param('PX') === 'admin.logout' ){
@@ -78,7 +86,7 @@ class register{
 
 			// --------------------------------------
 			// $px->authorizer を初期化する
-			if( $px->get_px_command() ){
+			if( count($px_command) ){
 				$login_user_info = $clover->auth()->get_login_user_info();
 				\tomk79\pickles2\px2dthelper\authorizer::initialize($px, $login_user_info->role ?? null);
 			}
