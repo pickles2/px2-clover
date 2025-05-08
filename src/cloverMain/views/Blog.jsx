@@ -35,7 +35,7 @@ export default React.memo(function Blog(props){
 
 	if( !localState.blogList ){
 		main.px2utils.pxCmd(
-			`?PX=admin.api.blogkit.get_blog_list`,
+			`?PX=blogkit.api.get_blog_list`,
 			{},
 			function( result ){
 				if( !result.result ){
@@ -71,7 +71,7 @@ export default React.memo(function Blog(props){
 
 	if( currentAction == 'article_info' && !localState.articleInfo ){
 		main.px2utils.pxCmd(
-			`?PX=admin.api.blogkit.get_article_info`,
+			`?PX=blogkit.api.get_article_info`,
 			{
 				path: main.path,
 			},
@@ -113,7 +113,7 @@ export default React.memo(function Blog(props){
 							const newBlogId = $form.find(`[name=blog_id]`).val();
 
 							main.px2utils.pxCmd(
-								`?PX=admin.api.blogkit.create_new_blog`,
+								`?PX=blogkit.api.create_new_blog`,
 								{
 									blog_id: newBlogId,
 								},
@@ -162,7 +162,7 @@ export default React.memo(function Blog(props){
 			"form": {
 				"submit": function(e){
 					main.px2utils.pxCmd(
-						`?PX=admin.api.blogkit.delete_blog`,
+						`?PX=blogkit.api.delete_blog`,
 						{
 							blog_id: blog_id,
 						},
@@ -192,10 +192,10 @@ export default React.memo(function Blog(props){
 			function(it){
 				// サイトマップ定義を取得
 				main.px2utils.pxCmd(
-					`?PX=admin.api.blogkit.get_sitemap_definition`,
+					`?PX=api.get.sitemap_definition`,
 					{},
 					function( res ){
-						sitemapDefinition = res.sitemap_definition;
+						sitemapDefinition = res;
 						it.next();
 					}
 				);
@@ -203,7 +203,7 @@ export default React.memo(function Blog(props){
 			function(it){
 				// ブログマップ定義を取得
 				main.px2utils.pxCmd(
-					`?PX=admin.api.blogkit.get_blogmap_definition`,
+					`?PX=blogkit.api.get_blogmap_definition`,
 					{
 						'blog_id': blog_id,
 					},
@@ -216,7 +216,7 @@ export default React.memo(function Blog(props){
 			(it1) => {
 				// 既存ブログの一覧を取得
 				main.px2utils.pxCmd(
-					`?PX=admin.api.blogkit.get_article_list`,
+					`?PX=blogkit.api.get_article_list`,
 					{
 						blog_id: blog_id,
 						dpp: 1,
@@ -278,7 +278,7 @@ export default React.memo(function Blog(props){
 							}
 
 							main.px2utils.pxCmd(
-								`?PX=admin.api.blogkit.create_new_article`,
+								`?PX=blogkit.api.create_new_article`,
 								{
 									blog_id: blog_id,
 									fields: JSON.stringify(fields),
@@ -318,17 +318,17 @@ export default React.memo(function Blog(props){
 		iterate79.fnc({}, [
 			function(it){
 				main.px2utils.pxCmd(
-					`?PX=admin.api.blogkit.get_sitemap_definition`,
+					`?PX=api.get.sitemap_definition`,
 					{},
 					function( res ){
-						sitemapDefinition = res.sitemap_definition;
+						sitemapDefinition = res;
 						it.next();
 					}
 				);
 			},
 			function(it){
 				main.px2utils.pxCmd(
-					`?PX=admin.api.blogkit.get_blogmap_definition`,
+					`?PX=blogkit.api.get_blogmap_definition`,
 					{
 						blog_id: blog_id,
 					},
@@ -340,7 +340,7 @@ export default React.memo(function Blog(props){
 			},
 			function(it){
 				main.px2utils.pxCmd(
-					`?PX=admin.api.blogkit.get_article_info`,
+					`?PX=blogkit.api.get_article_info`,
 					{
 						path: path,
 					},
@@ -379,7 +379,7 @@ export default React.memo(function Blog(props){
 								fields[blogmapDefinitionRow.key] = $form.find(`[name=${blogmapDefinitionRow.key}]`).val();
 							}
 							main.px2utils.pxCmd(
-								`?PX=admin.api.blogkit.update_article`,
+								`?PX=blogkit.api.update_article`,
 								{
 									blog_id: blog_id,
 									path: path,
@@ -426,7 +426,7 @@ export default React.memo(function Blog(props){
 			"form": {
 				"submit": function(e){
 					main.px2utils.pxCmd(
-						`?PX=admin.api.blogkit.delete_article`,
+						`?PX=blogkit.api.delete_article`,
 						{
 							blog_id: blog_id,
 							path: path,
@@ -452,7 +452,7 @@ export default React.memo(function Blog(props){
 		return;
 
 		// main.px2utils.pxCmd(
-		// 	`/?PX=admin.api.blogkit.get_article_info`,
+		// 	`/?PX=blogkit.api.get_article_info`,
 		// 	{
 		// 		path: path,
 		// 	},
@@ -496,7 +496,7 @@ export default React.memo(function Blog(props){
 	// 記事詳細画面へ
 	function gotoBlogList(){
 		main.px2utils.pxCmd(
-			`?PX=admin.api.blogkit.get_blog_list`,
+			`?PX=blogkit.api.get_blog_list`,
 			{},
 			function( result ){
 				if( !result.result ){

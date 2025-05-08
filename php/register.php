@@ -389,6 +389,7 @@ class register{
 					case 'blogkit':
 						// --------------------------------------
 						// API: BlogKit Bypass
+						// NOTE: pickles2/px2-blog-kit v0.2.0 以降、 `pickles2/px2-blog-kit` 側の `PX=blogkit.api.*` に移設されました。
 
 						$this->px->header('Content-type: application/json');
 						$blog = $this->px->blog;

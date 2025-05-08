@@ -446,17 +446,17 @@ export default React.memo(function PageInfo(props){
 		iterate79.fnc({}, [
 			function(it){
 				main.px2utils.pxCmd(
-					`?PX=admin.api.blogkit.get_sitemap_definition`,
+					`?PX=api.get.sitemap_definition`,
 					{},
 					function( res ){
-						sitemapDefinition = res.sitemap_definition;
+						sitemapDefinition = res;
 						it.next();
 					}
 				);
 			},
 			function(it){
 				main.px2utils.pxCmd(
-					`?PX=admin.api.blogkit.get_blogmap_definition`,
+					`?PX=blogkit.api.get_blogmap_definition`,
 					{
 						blog_id: blog_id,
 					},
@@ -468,7 +468,7 @@ export default React.memo(function PageInfo(props){
 			},
 			function(it){
 				main.px2utils.pxCmd(
-					`?PX=admin.api.blogkit.get_article_info`,
+					`?PX=blogkit.api.get_article_info`,
 					{
 						path: path,
 					},
@@ -510,7 +510,7 @@ export default React.memo(function PageInfo(props){
 							iterate79.fnc({}, [
 								(it) => {
 									main.px2utils.pxCmd(
-										`?PX=admin.api.blogkit.update_article`,
+										`?PX=blogkit.api.update_article`,
 										{
 											blog_id: blog_id,
 											path: path,
@@ -834,7 +834,7 @@ export default React.memo(function PageInfo(props){
 						},
 						(it) => {
 							main.px2utils.pxCmd(
-								`?PX=admin.api.blogkit.delete_article`,
+								`?PX=blogkit.api.delete_article`,
 								{
 									blog_id: blog_id,
 									path: path,
