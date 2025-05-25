@@ -1043,6 +1043,7 @@ class auth {
 				case 'sitemap':
 				case 'theme':
 				case 'edit_content':
+				case 'edit_module':
 				case 'edit_theme_layout':
 				case 'publish':
 				case 'clearcache':

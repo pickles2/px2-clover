@@ -70,6 +70,7 @@
 		(function(){
 			var app_mode = "web";
 			var page_path = "{{ page_path | e("js") }}";
+			var module_id = "{{ module_id | e("js") }}";
 			var theme_id = "{{ theme_id | e("js") }}";
 			var layout_id = "{{ layout_id | e("js") }}";
 			var target_mode = "{{ target_mode | e("js") }}";
@@ -100,6 +101,7 @@
 				{
 					'target_mode': target_mode,
 					'page_path': page_path,
+					'module_id': module_id,
 					'elmCanvas': document.getElementById('cont-px2ce-canvas'),
 					'preview':{
 						'origin': preview_url// プレビュー用サーバーの情報を設定します。
@@ -145,7 +147,9 @@
 					},
 					'complete': function(){
 						var item = 'content:'+page_path;
-						if( target_mode == 'theme_layout' ){
+						if( target_mode == 'module' ){
+							item = 'module:'+module_id;
+						}else if( target_mode == 'theme_layout' ){
 							item = 'theme:'+theme_id+'/'+layout_id;
 						}
 

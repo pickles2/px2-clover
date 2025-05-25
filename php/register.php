@@ -570,6 +570,13 @@ class register{
 				$app->start();
 				break;
 
+			case 'edit_module':
+				// --------------------------------------
+				// コンテンツを編集
+				$app = new funcs\editModule\editModule($this->clover);
+				$app->start();
+				break;
+
 			case 'edit_theme_layout':
 				// --------------------------------------
 				// テーマレイアウトを編集

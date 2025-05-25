@@ -80,6 +80,10 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
+### pickles2/px2-clover v0.5.0 (リリース日未定)
+
+- モジュール編集機能のサポートを追加した。
+
 ### pickles2/px2-clover v0.4.0 (2025年5月9日)
 
 - ブログの編集機能を `pickles2/px2-blog-kit` に移した。
