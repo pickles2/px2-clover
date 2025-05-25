@@ -32,6 +32,7 @@ class editModule {
 	 */
 	public function start(){
 		$backto = $this->px->req()->get_param('backto');
+		$module_id = $this->px->req()->get_param('module_id');
 
 		if( !$this->authorizeHelper->is_authorized('server_side_scripting') ){
 			if( $this->is_sanitize_desired() ){
@@ -65,7 +66,7 @@ class editModule {
 		$px2ce_res = $this->px->internal_sub_request('/?PX=px2dthelper.px2ce.client_resources&dist='.urlencode($client_resources_dist.'edit-content/').'&appearance='.urlencode($appearance));
 		$px2ce_res = json_decode($px2ce_res, true);
 
-		$checkout_result = $this->clover->checkout()->start('content:'.$this->px->req()->get_request_file_path());
+		$checkout_result = $this->clover->checkout()->start('module:'.$module_id);
 		if( !$checkout_result->result ){
 			// 他のユーザーが編集中
 			$holder_info = $this->clover->auth()->get_admin_user_info($checkout_result->holder_id);
@@ -89,7 +90,7 @@ class editModule {
 				'path_client_resources' => $path_client_resources,
 				'px2ce_res' => $px2ce_res,
 				'target_mode' => 'module',
-				'module_id' => $this->px->req()->get_param('module_id'),
+				'module_id' => $module_id,
 				'backto' => $backto,
 			)
 		);
