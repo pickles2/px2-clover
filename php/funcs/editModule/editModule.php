@@ -91,6 +91,7 @@ class editModule {
 				'px2ce_res' => $px2ce_res,
 				'target_mode' => 'module',
 				'module_id' => $module_id,
+				'page_path' => $this->px->req()->get_request_file_path(),
 				'backto' => $backto,
 			)
 		);
