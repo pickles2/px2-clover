@@ -83,7 +83,7 @@
 				target_mode = 'page_content';
 			}
 			if( target_mode == 'theme_layout' && !page_path ){
-				page_path = '/'+theme_id+'/'+layout_id+'.html';
+				page_path = '/'+encodeURIComponent(theme_id)+'/'+encodeURIComponent(layout_id)+'.html';
 			}else if( target_mode == 'module' && !page_path ){
 				if(module_id.match(/^([a-zA-Z0-9\-\_]*)\:([a-zA-Z0-9\-\_]*)\/([a-zA-Z0-9\-\_]*)$/)){
 					page_path = '/'+(RegExp.$1)+'/'+(RegExp.$2)+'/'+(RegExp.$3)+'.html';
