@@ -62,10 +62,15 @@ export default React.memo(function Modules(props){
 						'complete': function(){
 							alert('完了しました。');
 						},
+						'moduleEditor': function(moduleId){
+							var href = main.px2utils.href('/');
+							window.open(href+'?PX=admin.edit_module&module_id='+encodeURIComponent(moduleId)+'&backto=close');
+							return;
+						},
 						'onMessage': function( message ){
 							// ユーザーへ知らせるメッセージを表示する
 							console.info('message: '+message);
-						}
+						},
 					},
 					function(){
 						// スタンバイ完了したら呼び出されるコールバックメソッドです。
