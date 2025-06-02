@@ -21,11 +21,15 @@ page_title.config_maintenance,"Maintenance","メンテナンス",,
 page_title.cce,"Custom Console Extension","拡張機能",,
 page_title.back_to_preview,"Back to Preview","プレビューへ戻る",,
 page_title.logout,"Logout","ログアウト",,
+modal_title.create_blog,"Create new blog","新規ブログを追加する",,
+modal_title.delete_blog,"Delete blog","ブログを削除する",,
+modal_title.create_article,"Create new article","新規記事を追加する",,
 ui_label.ok,OK,OK,OK,OK
 ui_label.save,Save,保存する,保存,保存
 ui_label.cancel,Cancel,キャンセル,取消,取消
 ui_label.close,Close,閉じる,关闭,關閉
 ui_label.create,Create,作成する,,
+ui_label.delete,"Delete",削除する,,
 ui_label.edit,"Edit","編集する",,
 ui_label.finished,Finished,完了,,
 ui_label.anchor,Anchor,アンカー,,
@@ -45,6 +49,7 @@ ui_label.show_advanced_setting,"Show Advanced",詳細設定を表示する,,
 ui_label.hide_advanced_setting,"Hide Advanced",詳細設定を隠す,,
 ui_label.drop_a_module_here,"Drop a module here",ここにモジュールをドラッグしてください,,
 ui_label.dblclick_here_and_add_array_element,"Double click here to add array element",ここをダブルクリックして配列要素を追加してください,,
+ui_label.blog_id,Blog ID,ブログID,,
 ui_label.user_name,Name,お名前,,
 ui_label.user_id,User ID,ユーザーID,,
 ui_label.user_pw,Password,パスワード,,

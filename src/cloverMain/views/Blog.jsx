@@ -102,10 +102,10 @@ export default React.memo(function Blog(props){
 						{}
 					) );
 				px2style.modal({
-					"title": "新規ブログを追加する",
+					"title": main.lb.get('modal_title.create_blog'),
 					"body": $body,
 					"buttons": [
-						$('<button type="submit" class="px2-btn px2-btn--primary">').text('作成する'),
+						$('<button type="submit" class="px2-btn px2-btn--primary">').text(main.lb.get('ui_label.create')),
 					],
 					"form": {
 						"submit": function(e){
@@ -154,10 +154,10 @@ export default React.memo(function Blog(props){
 				}
 			) );
 		px2style.modal({
-			"title": "ブログを削除する",
+			"title": main.lb.get('modal_title.delete_blog'),
 			"body": $body,
 			"buttons": [
-				$('<button type="submit" class="px2-btn px2-btn--danger">').text('削除する'),
+				$('<button type="submit" class="px2-btn px2-btn--danger">').text(main.lb.get('ui_label.delete')),
 			],
 			"form": {
 				"submit": function(e){
@@ -262,10 +262,10 @@ export default React.memo(function Blog(props){
 						}
 					) );
 				modal = px2style.modal({
-					"title": "記事を作成する",
+					"title": main.lb.get('modal_title.create_article'),
 					"body": $body,
 					"buttons": [
-						$('<button type="submit" class="px2-btn px2-btn--primary">').text('作成する'),
+						$('<button type="submit" class="px2-btn px2-btn--primary">').text(main.lb.get('ui_label.create')),
 					],
 					"form": {
 						"submit": function(e){
@@ -549,7 +549,7 @@ export default React.memo(function Blog(props){
 						<table className="px2-table px2-table--dl">
 							<tbody>
 								<tr>
-									<th>ブログID</th>
+									<th>{ main.lb.get('ui_label.blog_id') }</th>
 									<td>{ currentBlogId }</td>
 								</tr>
 							</tbody>
@@ -603,7 +603,7 @@ export default React.memo(function Blog(props){
 						<table className="px2-table px2-table--dl">
 							<tbody>
 								<tr>
-									<th>ブログID</th>
+									<th>{ main.lb.get('ui_label.blog_id') }</th>
 									<td>{ currentBlogId }</td>
 								</tr>
 							</tbody>
