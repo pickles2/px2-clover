@@ -24,13 +24,10 @@ export default function ConfigProfile(props){
 
 				var $body = $( main.cloverUtils.bindTwig(
 					require('-!text-loader!./ConfigProfile_files/templates/currentPassword.twig'),
-					{
-						main: main,
-					}
 				) );
 
 				px2style.modal({
-					"title": "パスワード",
+					"title": main.lb.get('modal_title.password'),
 					"body": $body,
 					"form": {
 						"submit": function(){
@@ -179,7 +176,7 @@ export default function ConfigProfile(props){
 										</>
 										: <>
 									</>}
-									<p className="px2-note">確認のため、もう一度入力してください。</p>
+									<p className="px2-note">{main.lb.get('ui_message.please_enter_it_again_to_confirm')}</p>
 									<input type="password" id="input-pw_retype" name="pw_retype" defaultValue="" className={"px2-input px2-input--block"+(hasValidationError('pw_retype') ? ' px2-input--error' : '')} />
 									{(hasValidationError('pw_retype'))
 										? <>

@@ -28,6 +28,7 @@ modal_title.publish,"Publish","パブリッシュ",,
 modal_title.publishing_suspended,"Publishing Suspended","パブリッシュ 中断",,
 modal_title.publishing_errors,"Publishing Errors","パブリッシュ エラー",,
 modal_title.publish_completed,"Publish Completed","パブリッシュ 完了",,
+modal_title.password,"Password","パスワード",,
 ui_label.ok,OK,OK,OK,OK
 ui_label.save,Save,保存する,保存,保存
 ui_label.cancel,Cancel,キャンセル,取消,取消
@@ -108,6 +109,8 @@ ui_message.an_error_has_occurred,"An error has occurred.","エラーが発生し
 ui_message.publishing_completed,"Publishing completed.","パブリッシュ が完了しました。",,
 ui_message.please_specify_the_directory_path_to_be_published_specify_a_path_beginning_with_a_slash_multiple_directories_can_be_specified_with_one_per_line,"Please specify the directory path to be published. Specify a path beginning with a slash. Multiple directories can be specified with one per line.","パブリッシュ対象のディレクトリパスを指定してください。スラッシュから始まるパスで指定します。1行1ディレクトリで複数件指定できます。",,
 ui_message.please_specify_the_directory_path_to_exclude_from_publishing_specify_a_path_beginning_with_a_slash_you_can_specify_multiple_directories_one_per_line,"Please specify the directory path to exclude from publishing. Specify a path beginning with a slash. You can specify multiple directories, one per line.","パブリッシュ対象外にするディレクトリパスを指定してください。スラッシュから始まるパスで指定します。1行1ディレクトリで複数件指定できます。",,
+ui_message.please_enter_it_again_to_confirm,"Please enter it again to confirm.","確認のため、もう一度入力してください。",,
+ui_message.please_enter_your_current_password,"Please enter your current password.","現在のパスワードを入力してください。",,
 login_error.csrf_token_expired,"Token Expired.","認証トークンが無効か、期限が切れています。"
 login_error.user_id_is_required,"User ID is required.","ユーザーIDを入力してください。"
 login_error.invalid_user_id,"Invalid User ID.","ユーザーIDの形式が不正です。"
@@ -123,6 +126,9 @@ error_message.required,"This is required.","必ず入力してください。",,
 error_message.required_select,"This is required.","必ず選択してください。",,
 error_message.required_user_id,"User ID is required.","ユーザーIDを入力してください。",,
 error_message.set_allow_pxcommands_flag_to_1,"To use Pickles 2 Clover, set the <code>$conf-&gt;allow_pxcommands</code> flag to <code>1</code>.","Pickles 2 Clover を利用するには、<code>$conf-&gt;allow_pxcommands</code>フラグを <code>1</code> に設定してください。",,
+error_message.please_enter_your_current_login_password_correctly,"Please enter your current login password correctly.","現在のログインパスワードを正しく入力してください。",,
+error_message.passwords_do_not_match,"Passwords do not match.","パスワードが一致しません。",,
+error_message.this_user_id_already_exists,"This user ID already exists.","このユーザーIDはすでに存在します。",,
 system_module_label.root,Root,ルート,,
 system_module_label.unknown_module,Unknown Module,不明なモジュール,,
 system_module_label.image,Image,画像,,

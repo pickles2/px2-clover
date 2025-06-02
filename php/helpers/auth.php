@@ -374,7 +374,7 @@ class auth {
 					'result' => false,
 					'message' => 'Authentication Failed.',
 					'errors' => (object) array(
-						'current_pw' => array('現在のログインパスワードを正しく入力してください。'),
+						'current_pw' => array($this->clover->lang()->get('error_message.please_enter_your_current_login_password_correctly')),
 					),
 				);
 			}
@@ -383,9 +383,9 @@ class auth {
 		if( $this->admin_user_data_exists( $new_profile->id ) ){
 			return (object) array(
 				'result' => false,
-				'message' => 'そのユーザーIDはすでに存在します。',
+				'message' => $this->clover->lang()->get('error_message.this_user_id_already_exists'),
 				'errors' => (object) array(
-					'id' => array('そのユーザーIDはすでに存在します。')
+					'id' => array($this->clover->lang()->get('error_message.this_user_id_already_exists')),
 				),
 			);
 		}
@@ -395,7 +395,7 @@ class auth {
 				'result' => false,
 				'message' => 'Password not matched.',
 				'errors' => (object) array(
-					'pw_retype' => array('パスワードが一致しません。'),
+					'pw_retype' => array($this->clover->lang()->get('error_message.passwords_do_not_match')),
 				),
 			);
 		}
@@ -590,7 +590,7 @@ class auth {
 				'result' => false,
 				'message' => 'Authentication Failed.',
 				'errors' => (object) array(
-					'current_pw' => array('現在のログインパスワードを正しく入力してください。'),
+					'current_pw' => array($this->clover->lang()->get('error_message.please_enter_your_current_login_password_correctly')),
 				),
 			);
 		}
@@ -627,7 +627,7 @@ class auth {
 				'result' => false,
 				'message' => 'Password not matched.',
 				'errors' => (object) array(
-					'pw_retype' => array('パスワードが一致しません。'),
+					'pw_retype' => array($this->clover->lang()->get('error_message.passwords_do_not_match')),
 				),
 			);
 		}
@@ -725,7 +725,7 @@ class auth {
 				'result' => false,
 				'message' => 'Authentication Failed.',
 				'errors' => (object) array(
-					'current_pw' => array('現在のログインパスワードを正しく入力してください。'),
+					'current_pw' => array($this->clover->lang()->get('error_message.please_enter_your_current_login_password_correctly')),
 				),
 			);
 		}
