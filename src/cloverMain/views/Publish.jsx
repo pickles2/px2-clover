@@ -69,13 +69,13 @@ export default React.memo(function Publish(props){
 					}
 				));
 				modal = px2style.modal({
-					"title": "パブリッシュ",
+					"title": main.lb.get('modal_title.publish'),
 					"body": $body,
 					"buttons": [
-						$('<button type="submit" class="px2-btn px2-btn--primary">').text('パブリッシュを実行する'),
+						$('<button type="submit" class="px2-btn px2-btn--primary">').text(main.lb.get('ui_label.execute_the_publish')),
 					],
 					"buttonsSecondary": [
-						$('<button type="button" class="px2-btn">').text('キャンセル')
+						$('<button type="button" class="px2-btn">').text(main.lb.get('ui_label.cancel'))
 							.on('click', function(){ px2style.closeModal(); }),
 					],
 					"form": {
@@ -106,7 +106,7 @@ export default React.memo(function Publish(props){
 					var data = publish_patterns[selectedValue];
 					$(this).val('');
 					if( !data ){
-						alert('ERROR: 設定を読み込めません。');
+						alert('ERROR: Failed to load publish patterns.');
 						return;
 					}
 					try {
@@ -152,8 +152,8 @@ export default React.memo(function Publish(props){
 				function(data, error){
 					console.log('------ scheduler_add_queue Response:', data, error);
 					px2style.modal({
-						'title': 'パブリッシュ',
-						'body': '<p>パブリッシュキュー を登録しました。</p>',
+						'title': main.lb.get('modal_title.publish'),
+						'body': `<p>${main.lb.get('ui_message.you_have_registered_a_publish_queue')}</p>`,
 					});
 					px2style.closeLoading();
 				}
@@ -213,13 +213,13 @@ export default React.memo(function Publish(props){
 					console.log('------ publish Response:', data, error);
 					if( error ){
 						px2style.modal({
-							'title': 'パブリッシュ エラー',
-							'body': '<p>エラーが発生しました。</p>',
+							'title': main.lb.get('modal_title.publishing_errors'),
+							'body': `<p>${main.lb.get('ui_message.an_error_has_occurred')}</p>`,
 						});
 					}else{
 						px2style.modal({
-							'title': 'パブリッシュ 完了',
-							'body': '<p>パブリッシュ が完了しました。</p>',
+							'title': main.lb.get('modal_title.publish_completed'),
+							'body': `<p>${main.lb.get('ui_message.publishing_completed')}</p>`,
 						});
 					}
 
@@ -239,15 +239,15 @@ export default React.memo(function Publish(props){
 	 * パブリッシュを中断する
 	 */
 	function publishStop(){
-		if( !confirm('パブリッシュを中断しますか？') ){
+		if( !confirm(main.lb.get('ui_message.do_you_want_to_abort_publishing')) ){
 			return;
 		}
 		px2style.loading();
 		main.px2utils.pxCmd("?PX=admin.api.publish_stop", {}, function(data, error){
 			console.log('------ publish_stop Response:', data, error);
 			px2style.modal({
-				'title': 'パブリッシュ 中断',
-				'body': '<p>パブリッシュは停止しました。</p>',
+				'title': main.lb.get('modal_title.publishing_suspended'),
+				'body': `<p>${main.lb.get('ui_message.publishing_has_stopped')}</p>`,
 			});
 			px2style.closeLoading();
 		});
@@ -262,13 +262,13 @@ export default React.memo(function Publish(props){
 				:<>
 					{(!healthCheckStatus.publish.is_running)
 						?<>
-							<p><button type="button" onClick={publishDialog} className="px2-btn px2-btn--primary">パブリッシュ</button></p>
+							<p><button type="button" onClick={publishDialog} className="px2-btn px2-btn--primary">{main.lb.get('ui_label.execute_the_publish')}</button></p>
 						</>
 						:<>
-							<p>パブリッシュ中です...</p>
+							<p>{ main.lb.get('ui_label.now_publishing') }</p>
 							{(healthCheckStatus.scheduler.is_available)
 								?<>
-									<p><button type="button" onClick={publishStop} className="px2-btn">パブリッシュを中断</button></p>
+									<p><button type="button" onClick={publishStop} className="px2-btn">{ main.lb.get('ui_label.abort_publishing') }</button></p>
 								</>
 								:<>
 								</>}

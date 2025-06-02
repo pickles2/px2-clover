@@ -12,23 +12,23 @@
 <div class="px2-form-input-list">
 	<ul class="px2-form-input-list__ul">
 		<li class="px2-form-input-list__li">
-			<div class="px2-form-input-list__label"><label for="form-element--paths_region">パブリッシュ対象範囲</label></div>
+			<div class="px2-form-input-list__label"><label for="form-element--paths_region">{{lb.get('ui_label.publishing_scope')}}</label></div>
 			<div class="px2-form-input-list__input">
-				<p class="px2-note">パブリッシュ対象のディレクトリパスを指定してください。スラッシュから始まるパスで指定します。1行1ディレクトリで複数件指定できます。</p>
+				<p class="px2-note">{{lb.get('ui_message.please_specify_the_directory_path_to_be_published_specify_a_path_beginning_with_a_slash_multiple_directories_can_be_specified_with_one_per_line')}}</p>
 				<label><textarea name="paths_region" class="px2-input px2-input--block" />{{ paths_region|e }}</textarea></label>
 			</div>
 		</li>
 		<li class="px2-form-input-list__li">
-			<div class="px2-form-input-list__label"><label for="form-element--paths_ignore">パブリッシュ対象外範囲</label></div>
+			<div class="px2-form-input-list__label"><label for="form-element--paths_ignore">{{lb.get('ui_label.scope_not_included_in_publishing')}}</label></div>
 			<div class="px2-form-input-list__input">
-				<p class="px2-note">パブリッシュ対象外にするディレクトリパスを指定してください。スラッシュから始まるパスで指定します。1行1ディレクトリで複数件指定できます。</p>
+				<p class="px2-note">{{lb.get('ui_message.please_specify_the_directory_path_to_exclude_from_publishing_specify_a_path_beginning_with_a_slash_you_can_specify_multiple_directories_one_per_line')}}</p>
 				<label><textarea name="paths_ignore" class="px2-input px2-input--block" />{{ paths_ignore|e }}</textarea></label>
 			</div>
 		</li>
 		<li class="px2-form-input-list__li">
-			<div class="px2-form-input-list__label"><label for="form-element--keep_cache">キャッシュの保持</label></div>
+			<div class="px2-form-input-list__label"><label for="form-element--keep_cache">{{lb.get('ui_label.cache_preservation')}}</label></div>
 			<div class="px2-form-input-list__input">
-				<label><input type="checkbox" name="keep_cache" value="" {{ keep_cache ? 'checked="checked"' : '' }} class="px2-input" /> キャッシュを消去しない</label>
+				<label><input type="checkbox" name="keep_cache" value="" {{ keep_cache ? 'checked="checked"' : '' }} class="px2-input" /> {{lb.get('ui_label.dont_clear_the_cache')}}</label>
 			</div>
 		</li>
 	</ul>

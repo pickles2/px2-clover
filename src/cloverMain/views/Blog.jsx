@@ -531,7 +531,7 @@ export default React.memo(function Blog(props){
 				?<>
 				{/* --------------------------------------
 					BlogKitプラグインが未設定の画面 */}
-					<p>Blog Kit プラグインが利用できません。</p>
+					<p>{ main.lb.get('ui_message.the_blog_kit_plugin_is_not_available') }</p>
 				</>
 
 			:(currentAction === "article_info" && localState.articleInfo && localState.articleInfo.path)
@@ -543,7 +543,7 @@ export default React.memo(function Blog(props){
 							e.preventDefault();
 							const blog_id = $(e.target).attr('data-btn-article-list');
 							gotoArticleList( blog_id );
-						}}>戻る</button></p>
+						}}>{ main.lb.get('ui_label.back') }</button></p>
 
 					<div className="px2-p">
 						<table className="px2-table px2-table--dl">
@@ -560,9 +560,9 @@ export default React.memo(function Blog(props){
 						<li><button type="button" className="px2-btn" onClick={(e)=>{
 							e.preventDefault();
 							editBlogArticle( currentBlogId, localState.articleInfo.path );
-							}}>ブログ記事情報を編集する</button></li>
-						<li><a href="?PX=admin.edit_content" className="px2-btn">コンテンツを編集する</a></li>
-						<li><a href="?" className="px2-btn">プレビューに戻る</a></li>
+							}}>{ main.lb.get('ui_label.edit_blog_post_information') }</button></li>
+						<li><a href="?PX=admin.edit_content" className="px2-btn">{ main.lb.get('ui_label.edit_content') }</a></li>
+						<li><a href="?" className="px2-btn">{ main.lb.get('ui_label.back_to_preview') }</a></li>
 					</ul>
 
 					<div className="px2-p">
@@ -587,7 +587,7 @@ export default React.memo(function Blog(props){
 					<p className="px2-text-align-center"><button type="button" className="px2-btn px2-btn--danger" data-delete-article={localState.articleInfo.path} onClick={(e)=>{
 						e.preventDefault();
 						deleteArticle(localState.articleInfo.path);
-						}}>記事を削除する</button></p>
+						}}>{ main.lb.get('ui_label.delete_an_article') }</button></p>
 
 				</>
 
@@ -597,7 +597,7 @@ export default React.memo(function Blog(props){
 					ブログ記事一覧画面 */}
 					<p><button type="button" className="px2-btn" onClick={(e)=>{
 						gotoBlogList();
-					}}>&lt; ブログ一覧へ戻る</button></p>
+					}}>&lt; { main.lb.get('ui_label.back_to_blog_list') }</button></p>
 
 					<div className="px2-p">
 						<table className="px2-table px2-table--dl">
@@ -611,7 +611,7 @@ export default React.memo(function Blog(props){
 					</div>
 
 					<ul className="px2-horizontal-list px2-horizontal-list--right">
-						<li><button type="button" className="px2-btn px2-btn--primary" data-btn-create-new-article={currentBlogId} onClick={createNewArticle}>新規記事を追加</button></li>
+						<li><button type="button" className="px2-btn px2-btn--primary" data-btn-create-new-article={currentBlogId} onClick={createNewArticle}>{ main.lb.get('modal_title.create_article') }</button></li>
 					</ul>
 
 					{(localState.articleList && localState.articleList[currentBlogId])
@@ -628,7 +628,7 @@ export default React.memo(function Blog(props){
 						</>
 					}
 
-					<p className="px2-text-align-center"><button type="button" className="px2-btn px2-btn--danger" data-delete-blog={currentBlogId} onClick={deleteBlog}>ブログ { currentBlogId } を削除する</button></p>
+					<p className="px2-text-align-center"><button type="button" className="px2-btn px2-btn--danger" data-delete-blog={currentBlogId} onClick={deleteBlog}>{ main.lb.get('ui_label.delete_blog_{{blogName}}', {blogName: currentBlogId}) }</button></p>
 				</>
 
 			:(localState.enableBlogKit && localState.blogList !== null)
@@ -636,7 +636,7 @@ export default React.memo(function Blog(props){
 				{/* --------------------------------------
 					ブログ一覧画面 */}
 					<ul className="px2-horizontal-list px2-horizontal-list--right">
-						<li><button type="button" className="px2-btn px2-btn--primary" data-btn-create-new-blog onClick={createNewBlog}>新規ブログを追加</button></li>
+						<li><button type="button" className="px2-btn px2-btn--primary" data-btn-create-new-blog onClick={createNewBlog}>{ main.lb.get('modal_title.create_blog') }</button></li>
 					</ul>
 
 					{(localState.enableBlogKit && localState.blogList.length)

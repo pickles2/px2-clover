@@ -4,12 +4,17 @@ export default function CloverUtils(){
 	const Twig = require('twig');
 	const _this = this;
 	this.lang = "ja";
+	let lb;
 
 	/**
 	 * 言語コードをセットする
 	 */
 	this.setLang = function(lang){
 		this.lang = lang;
+	}
+
+	this.setLangbank = function(langbank){
+		lb = langbank;
 	}
 
 	/**
@@ -300,6 +305,10 @@ export default function CloverUtils(){
 			data: templateSrc,
 			autoescape: true,
 		});
+		bindData = {
+			...bindData,
+			lb: lb,
+		};
 		return template.render(bindData);
 	}
 

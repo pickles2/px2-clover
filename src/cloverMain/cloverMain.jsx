@@ -105,6 +105,7 @@ class Layout extends React.Component {
 						const lang = ( newState.profile && newState.profile.lang ? newState.profile.lang : "ja");
 						lb.setLang( lang );
 						newState.cloverUtils.setLang( lang );
+						newState.cloverUtils.setLangbank( lb );
 						newState.lb = lb;
 						newState.lbLoaded = true;
 						it1.next();
