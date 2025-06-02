@@ -198,16 +198,16 @@ export default React.memo(function PageInfo(props){
 				) );
 
 				modal = px2style.modal({
-					'title': "ページ情報を追加する",
+					'title': main.lb.get('modal_title.add_new_page'),
 					'body': $body,
 					'width': '680px',
 					'buttons':[
 						$('<button type="submit" class="px2-btn px2-btn--primary">')
-							.text('保存する')
+							.text(main.lb.get('ui_label.save'))
 					],
 					'buttonsSecondary': [
 						$('<button type="button" class="px2-btn">')
-							.text('キャンセル')
+							.text(main.lb.get('ui_label.cancel'))
 							.on('click', function(){
 								px2style.closeModal();
 							}),
@@ -321,16 +321,16 @@ export default React.memo(function PageInfo(props){
 				) );
 
 				modal = px2style.modal({
-					'title': "ページ情報を編集する",
+					'title': main.lb.get('modal_title.edit_page_details'),
 					'body': $body,
 					'width': '680px',
 					'buttons':[
 						$('<button type="submit" class="px2-btn px2-btn--primary">')
-							.text('保存する')
+							.text(main.lb.get('ui_label.save'))
 					],
 					'buttonsSecondary': [
 						$('<button type="button" class="px2-btn">')
-							.text('キャンセル')
+							.text(main.lb.get('ui_label.cancel'))
 							.on('click', function(){
 								px2style.closeModal();
 							}),
@@ -492,10 +492,10 @@ export default React.memo(function PageInfo(props){
 					"title": "記事を編集する",
 					"body": $body,
 					"buttons": [
-						$('<button type="submit" class="px2-btn px2-btn--primary">').text('保存する'),
+						$('<button type="submit" class="px2-btn px2-btn--primary">').text(main.lb.get('ui_label.save')),
 					],
 					"buttonsSecondary": [
-						$('<button type="button" class="px2-btn px2-btn--secondary">').text('キャンセル')
+						$('<button type="button" class="px2-btn px2-btn--secondary">').text(main.lb.get('ui_label.cancel'))
 							.on('click', function(){ px2style.closeModal(); }),
 					],
 					"form": {
@@ -612,11 +612,11 @@ export default React.memo(function PageInfo(props){
 					'width': '680px',
 					'buttons':[
 						$('<button type="submit" class="px2-btn px2-btn--primary">')
-							.text('保存する')
+							.text(main.lb.get('ui_label.save'))
 					],
 					'buttonsSecondary': [
 						$('<button type="button" class="px2-btn">')
-							.text('キャンセル')
+							.text(main.lb.get('ui_label.cancel'))
 							.on('click', function(){
 								px2style.closeModal();
 							}),
@@ -720,7 +720,7 @@ export default React.memo(function PageInfo(props){
 					],
 					'buttonsSecondary': [
 						$('<button type="button" class="px2-btn">')
-							.text('キャンセル')
+							.text(main.lb.get('ui_label.cancel'))
 							.on('click', function(){
 								px2style.closeModal();
 							}),
@@ -871,7 +871,7 @@ export default React.memo(function PageInfo(props){
 		var $body = $('<div>')
 			.append( `
 				<ul>
-					<li><label><input type="radio" name="proc_type" value="html.gui" /> ブロックエディタ</label></li>
+					<li><label><input type="radio" name="proc_type" value="html.gui" /> ${main.lb.get('ui_label.block_editor')}</label></li>
 					<li><label><input type="radio" name="proc_type" value="html" /> HTML</label></li>
 					<li><label><input type="radio" name="proc_type" value="md" /> Markdown</label></li>
 				</ul>
@@ -879,7 +879,7 @@ export default React.memo(function PageInfo(props){
 		;
 		$body.find('input[name=proc_type]').val( [main.pageInfo.editor_mode] );
 		px2style.modal({
-			'title': '編集方法を変更する',
+			'title': main.lb.get('modal_title.change_the_editing_method'),
 			'body': $body,
 			'buttons':[
 				$('<button class="px2-btn px2-btn--primary" type="button">')
@@ -894,7 +894,7 @@ export default React.memo(function PageInfo(props){
 							{},
 							function( result, error ){
 								if( !result[0] ){
-									alert('編集モードの変更に失敗しました。'+(result[1] || error));
+									alert(main.lb.get('error_message.failed_to_change_edit_mode') + (result[1] || error));
 									px2style.closeLoading();
 									return;
 								}
@@ -915,7 +915,7 @@ export default React.memo(function PageInfo(props){
 			],
 			'buttonsSecondary': [
 				$('<button class="px2-btn" type="button">')
-					.text('キャンセル')
+					.text(main.lb.get('ui_label.cancel'))
 					.on('click', function(){
 						px2style.closeModal();
 					}),
@@ -1008,19 +1008,19 @@ export default React.memo(function PageInfo(props){
 								<li><button className="px2-btn" onClick={(e)=>{
 									e.preventDefault();
 									editPage();
-									}}>ページ情報を編集する</button></li>
+									}}>{main.lb.get('ui_label.edit_page_details')}</button></li>
 								</>
 							:<>{(main.pageInfo.blog && main.pageInfo.blog.originated_csv)
 								?<>
 								<li><button className="px2-btn" onClick={(e)=>{
 									e.preventDefault();
 									editBlogArticle( main.pageInfo.blog.blog_id, main.pageInfo.current_page_info.path );
-									}}>ブログ記事情報を編集する</button></li>
+									}}>{main.lb.get('ui_label.edit_blog_post_details')}</button></li>
 								</>
 							:<>
 							</>}</>}
-							<li><a href="?PX=admin.edit_content" className="px2-btn">コンテンツを編集する</a></li>
-							<li><a href="?" className="px2-btn">プレビューに戻る</a></li>
+							<li><a href="?PX=admin.edit_content" className="px2-btn">{main.lb.get('ui_label.edit_content')}</a></li>
+							<li><a href="?" className="px2-btn">{main.lb.get('ui_label.back_to_preview')}</a></li>
 						</ul>
 					</div>
 
@@ -1049,27 +1049,27 @@ export default React.memo(function PageInfo(props){
 								</table>
 								<p className="px2-text-align-right"><button type="button" className="px2-btn" onClick={()=>{
 									px2style.modal({
-										"title": "ページの詳細情報",
+										"title": main.lb.get('modal_title.page_details'),
 										"width": '680px',
 										"body": $('#cont-page-info-detail').html(),
 									});
-								}}>ページ詳細情報</button></p>
+								}}>{main.lb.get('ui_label.page_details')}</button></p>
 
 								<div className="px2-linklist">
 									<ul>
 										{main.pageInfo.originated_csv && !!main.pageInfo.current_page_info.id.length && <>
-										<li><a href="?" onClick={sortPage}>並べ替え</a></li>
+										<li><a href="?" onClick={sortPage}>{main.lb.get('ui_label.sorting')}</a></li>
 										</>}
 										{main.pageInfo.editor_mode !== '.not_exists' && <>
-										{isChangeContentEditorModeAuthorized ? <><li><a href="?" onClick={changeEditorType}>編集方法を変更する</a></li></> : <></>}
-										<li><a href="?" onClick={singlePagePublish}>単体パブリッシュ</a></li>
-										{main.pageInfo.editor_mode == 'html.gui' && <li><a href="?" onClick={rebuildBroccoliContent}>ブロックエディタのコンテンツを再構成する</a></li>}
+										{isChangeContentEditorModeAuthorized ? <><li><a href="?" onClick={changeEditorType}>{main.lb.get('ui_label.change_the_editing_method')}</a></li></> : <></>}
+										<li><a href="?" onClick={singlePagePublish}>{main.lb.get('ui_label.single_publishing')}</a></li>
+										{main.pageInfo.editor_mode == 'html.gui' && <li><a href="?" onClick={rebuildBroccoliContent}>{main.lb.get('ui_label.reorganize_the_block_editor_content')}</a></li>}
 										</>}
 									</ul>
 								</div>
 
 								{(main.pageInfo.blog && main.pageInfo.blog.child_blogs.length) ?<>
-									<h2>ブログ記事</h2>
+									<h2>{main.lb.get('ui_label.blog_posts')}</h2>
 									<div>
 										{main.pageInfo.blog.child_blogs.map( ( child_blog_info )=>{
 											return (<div key={child_blog_info.blog_id}>
@@ -1093,7 +1093,7 @@ export default React.memo(function PageInfo(props){
 									{(main.pageInfo !== null && typeof(main.pageInfo.bros) === typeof([]) && !!main.pageInfo.originated_csv && (<>
 										<ul>
 										{(!!main.pageInfo.current_page_info.id.length && (
-											<li className="cont-pagenavi__add-new-page"><a href="?" onClick={createNewBrosBefore}>(+) ページを追加する</a></li>
+											<li className="cont-pagenavi__add-new-page"><a href="?" onClick={createNewBrosBefore}>(+) {main.lb.get('ui_label.add_new_page')}</a></li>
 										))}
 										{main.pageInfo.bros.map( ( bros_page_info )=>{
 											return (
@@ -1105,7 +1105,7 @@ export default React.memo(function PageInfo(props){
 																<li key={child_page_info.id}><Link href={main.px2utils.href(child_page_info.path + "?PX=admin.page_info")}>{child_page_info.title}</Link></li>
 															)
 														} )}
-															<li className="cont-pagenavi__add-new-page"><a href="?" onClick={createNewChildAfter}>(+) ページを追加する</a></li>
+															<li className="cont-pagenavi__add-new-page"><a href="?" onClick={createNewChildAfter}>(+) {main.lb.get('ui_label.add_new_page')}</a></li>
 														</ul>
 													</>)
 													)}
@@ -1113,7 +1113,7 @@ export default React.memo(function PageInfo(props){
 											)
 										} )}
 										{(!!main.pageInfo.current_page_info.id.length && (
-											<li className="cont-pagenavi__add-new-page"><a href="?" onClick={createNewBrosAfter}>(+) ページを追加する</a></li>
+											<li className="cont-pagenavi__add-new-page"><a href="?" onClick={createNewBrosAfter}>(+) {main.lb.get('ui_label.add_new_page')}</a></li>
 										))}
 										</ul>
 									</>))}
@@ -1121,7 +1121,7 @@ export default React.memo(function PageInfo(props){
 								{(main.pageInfo.blog && main.pageInfo.blog.blog_id)
 									?<>
 										<div className="px2-p">
-											<div>ブログID: <Link href={main.px2utils.href('?PX=admin.blog.'+main.pageInfo.blog.blog_id)}>{main.pageInfo.blog.blog_id}</Link></div>
+											<div>{main.lb.get('ui_label.blog_id')}: <Link href={main.px2utils.href('?PX=admin.blog.'+main.pageInfo.blog.blog_id)}>{main.pageInfo.blog.blog_id}</Link></div>
 										</div>
 									</>
 									:<></>}
@@ -1183,21 +1183,21 @@ export default React.memo(function PageInfo(props){
 							<p className="px2-text-align-center"><button type="button" onClick={(e)=>{
 								e.preventDefault();
 								deletePage();
-								}} className="px2-btn px2-btn--danger">このページを削除する</button></p>
+								}} className="px2-btn px2-btn--danger">{main.lb.get('ui_label.delete_this_page')}</button></p>
 							</>
 						:<>{(main.pageInfo.blog && main.pageInfo.blog.originated_csv)
 							?<>
 							<p className="px2-text-align-center"><button type="button" onClick={(e)=>{
 								e.preventDefault();
 								deleteBlogArticle( main.pageInfo.blog.blog_id, main.pageInfo.current_page_info.path );
-								}} className="px2-btn px2-btn--danger">このブログ記事を削除する</button></p>
+								}} className="px2-btn px2-btn--danger">{main.lb.get('ui_label.delete_this_blog_post')}</button></p>
 							</>
 						:<>
 						</>}</>}
 					</>))}
 				</>
 			:<>
-				<p>このページは存在しません。</p>
+				<p>{main.lb.get('ui_message.this_page_does_not_exist')}</p>
 			</>}</>}
 		</>
 	);

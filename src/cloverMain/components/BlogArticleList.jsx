@@ -84,9 +84,9 @@ export default function BlogArticleList(props){
 			:<>												
 				<div className="px2-clover-pagenation">
 					<ul>
-						<li><button type="button" className="px2-btn" onClick={()=>{gotoPage(localState.page - 1);}} disabled={(localState.page <= 1 ? true : false)}>&lt; 前へ</button></li>
+						<li><button type="button" className="px2-btn" onClick={()=>{gotoPage(localState.page - 1);}} disabled={(localState.page <= 1 ? true : false)}>&lt; {main.lb.get('ui_label.prev')}</button></li>
 						<li>{localState.page} / {localState.pageCount}</li>
-						<li><button type="button" className="px2-btn" onClick={()=>{gotoPage(localState.page + 1);}} disabled={(localState.page >= localState.pageCount ? true : false)}>次へ &gt;</button></li>
+						<li><button type="button" className="px2-btn" onClick={()=>{gotoPage(localState.page + 1);}} disabled={(localState.page >= localState.pageCount ? true : false)}>{main.lb.get('ui_label.next')} &gt;</button></li>
 					</ul>
 				</div>
 				<div className="px2-linklist">
@@ -111,9 +111,9 @@ export default function BlogArticleList(props){
 				</div>
 				<div className="px2-clover-pagenation">
 					<ul>
-						<li><button type="button" className="px2-btn" onClick={()=>{gotoPage(localState.page - 1);}} disabled={(localState.page <= 1 ? true : false)}>&lt; 前へ</button></li>
+						<li><button type="button" className="px2-btn" onClick={()=>{gotoPage(localState.page - 1);}} disabled={(localState.page <= 1 ? true : false)}>&lt; {main.lb.get('ui_label.prev')}</button></li>
 						<li>{localState.page} / {localState.pageCount}</li>
-						<li><button type="button" className="px2-btn" onClick={()=>{gotoPage(localState.page + 1);}} disabled={(localState.page >= localState.pageCount ? true : false)}>次へ &gt;</button></li>
+						<li><button type="button" className="px2-btn" onClick={()=>{gotoPage(localState.page + 1);}} disabled={(localState.page >= localState.pageCount ? true : false)}>{main.lb.get('ui_label.next')} &gt;</button></li>
 					</ul>
 				</div>
 			</>}

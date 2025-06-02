@@ -560,7 +560,7 @@ export default React.memo(function Blog(props){
 						<li><button type="button" className="px2-btn" onClick={(e)=>{
 							e.preventDefault();
 							editBlogArticle( currentBlogId, localState.articleInfo.path );
-							}}>{ main.lb.get('ui_label.edit_blog_post_information') }</button></li>
+							}}>{ main.lb.get('ui_label.edit_blog_post_details') }</button></li>
 						<li><a href="?PX=admin.edit_content" className="px2-btn">{ main.lb.get('ui_label.edit_content') }</a></li>
 						<li><a href="?" className="px2-btn">{ main.lb.get('ui_label.back_to_preview') }</a></li>
 					</ul>
