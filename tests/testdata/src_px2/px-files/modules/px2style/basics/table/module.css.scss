@@ -4,7 +4,6 @@ table.px2-table {
 	margin: 0;
 	text-align: left;
 	border: 1px solid #dee2e6;
-	container-type: inline-size;
 
 	th,
 	td {
@@ -34,7 +33,26 @@ table.px2-table {
 			width: 70%;
 		}
 
-		@container (max-width: 544px) {
+	}
+
+	@media all and (max-width: 544px) {
+		&--dl {
+			display: block;
+			box-sizing: border-box;
+			border-bottom: none;
+			tbody,
+			thead,
+			tr,
+			th,
+			td {
+				display: block;
+				box-sizing: border-box;
+				width: 100%;
+			}
+		}
+	}
+	@container (max-width: 544px) {
+		&--dl {
 			display: block;
 			box-sizing: border-box;
 			border-bottom: none;
