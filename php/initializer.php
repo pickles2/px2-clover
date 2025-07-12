@@ -78,7 +78,7 @@ class initializer{
 			$result = $this->clover->auth()->create_admin_user( $user_info, null ); // NOTE: 最初のユーザー作成時には、現在のパスワードを確認しない。
 			if( $result->result ){
 				$this->px->fs()->chmod_r($this->realpath_admin_user_dir, 0700, 0700);
-				header('Location:'.'?PX=admin');
+				$this->px->header('Location:'.'?PX=admin');
 				exit;
 			}
 		}

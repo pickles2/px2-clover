@@ -200,7 +200,7 @@ class auth {
 		$this->req->delete_session($this->session_key_id);
 		$this->req->delete_session($this->session_key_pw);
 		$this->logger()->log('User \''.$user_id.'\' logged out.');
-		header('Location:'.$this->px->href( $this->req->get_request_file_path().'?PX='.htmlspecialchars(''.$pxcmd) ));
+		$this->px->header('Location:'.$this->px->href( $this->req->get_request_file_path().'?PX='.htmlspecialchars(''.$pxcmd) ));
 		exit;
 	}
 
