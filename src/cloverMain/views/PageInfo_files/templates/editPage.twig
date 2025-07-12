@@ -1,7 +1,7 @@
 <div class="px2-form-input-list">
 	<ul class="px2-form-input-list__ul">
 {% for key, value in page_info %}
-	<li class="px2-form-input-list__li">
+	<li class="px2-form-input-list__li{% if key == "path" or key == "title" %} px2-form-input-list__li--required{% endif %}">
 		<div class="px2-form-input-list__label"><label for="form-element--{{ key|e("html_attr") }}">{{ sitemapDefinition[key].label ?? key|e }}</label></div>
 		{% if (lockedField[key] == 'lock') %}
 			<div class="px2-form-input-list__input">
