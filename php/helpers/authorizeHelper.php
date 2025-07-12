@@ -41,7 +41,7 @@ class authorizeHelper {
 	 * @param string $src 検査対象のソースコード
 	 * @return boolean 検査結果。望まれる記述が発見された場合に true, 無毒だった場合に false。
 	 */
-	public function is_sanitize_desired_in_code($src){
+	public function is_sanitization_needed_in_code($src){
 		$src_check = $src;
 
 		// NOTE: server_side_scripting 権限がなくても許容する記述を除外する

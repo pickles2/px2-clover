@@ -35,7 +35,7 @@ class editModule {
 		$module_id = $this->px->req()->get_param('module_id');
 
 		if( !$this->authorizeHelper->is_authorized('server_side_scripting') ){
-			if( $this->is_sanitize_desired() ){
+			if( $this->is_sanitization_needed() ){
 				echo $this->clover->view()->bind(
 					'/cont/editContent/editContentUnauthorized.twig',
 					array(
@@ -103,7 +103,7 @@ class editModule {
 	 *
 	 * @return boolean 検査結果。望まれる記述が発見された場合に true, 無毒だった場合に false。
 	 */
-	private function is_sanitize_desired(){
+	private function is_sanitization_needed(){
 		$result = false;
 		$px2dthelper = new \tomk79\pickles2\px2dthelper\main( $this->px );
 		$editor_mode = $px2dthelper->check_editor_mode();
@@ -142,7 +142,7 @@ class editModule {
 			if( preg_match('/\.json$/i', $realpath) ){
 				$src = json_encode($src, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
 			}
-			if( $this->authorizeHelper->is_sanitize_desired_in_code($src) ){
+			if( $this->authorizeHelper->is_sanitization_needed_in_code($src) ){
 				$result = true;
 				break;
 			}
