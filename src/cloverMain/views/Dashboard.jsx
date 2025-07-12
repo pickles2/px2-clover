@@ -62,11 +62,7 @@ export default function Dashboard(props){
 										return;
 									}
 
-									// NOTE: 変更が反映されるまでにタイムラグが発生するので、2秒のタメを作った。
-									// NOTE: [要調査] なぜタイムラグが生まれるのかは不明。
-									setTimeout(function(){
-										window.location.reload();
-									}, 2000);
+									window.location.reload();
 								}
 							);
 						},
