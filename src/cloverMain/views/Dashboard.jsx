@@ -47,6 +47,7 @@ export default function Dashboard(props){
 									"tagline": $body.find('[name=tagline]').val(),
 									"domain": $body.find('[name=domain]').val(),
 									"copyright": $body.find('[name=copyright]').val(),
+									"default_lang": $body.find('[name=default_lang]').val(),
 								},
 							};
 
@@ -193,6 +194,10 @@ export default function Dashboard(props){
 							<tr>
 								<th>{main.lb.get('ui_label.copyright')}</th>
 								<td>{main.pxConfig.copyright ? <>&copy;{main.pxConfig.copyright}, All rights reserved.</> : '---'}</td>
+							</tr>
+							<tr>
+								<th>{main.lb.get('ui_label.default_lang')}</th>
+								<td>{main.pxConfig.default_lang ? <>{main.pxConfig.default_lang}</> : '---'}</td>
 							</tr>
 							</tbody>
 						</table>

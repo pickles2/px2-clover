@@ -40,5 +40,15 @@
 				{% endif %}
 			</div>
 		</li>
+		<li class="px2-form-input-list__li">
+			<div class="px2-form-input-list__label"><label for="form-element--default_lang">{{ main.lb.get('ui_label.default_lang') }}</label></div>
+			<div class="px2-form-input-list__input">
+				{% if ( parsedConfig.values.default_lang is defined ) %}
+				<input type="text" id="form-element--default_lang" name="default_lang" value="{{ parsedConfig.values.default_lang|e }}" class="px2-input px2-input--block" />
+				{% else %}
+				{{ pxConfig.default_lang|e }}
+				{% endif %}
+			</div>
+		</li>
 	</ul>
 </div>
