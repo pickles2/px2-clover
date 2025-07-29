@@ -80,7 +80,7 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
-### pickles2/px2-clover v0.5.0 (リリース日未定)
+### pickles2/px2-clover v0.5.0 (2025年7月29日)
 
 - モジュール編集機能のサポートを追加した。
 - 多言語対応に関する更新。
