@@ -351,8 +351,9 @@ class git {
 		$cmd = $realpath_git_command.' '.implode(' ', $git_sub_commands);
 
 		// コマンドを実行
+		// NOTE: Apacheの設定によって、環境変数 HOME がコマンドに引き継がれない場合があるので、明示的に、PHPが持っている HOME を引き継ぐ。
 		ob_start();
-		$proc = proc_open($cmd, array(
+		$proc = proc_open('HOME='.getenv('HOME').' '.$cmd, array(
 			0 => array('pipe','r'),
 			1 => array('pipe','w'),
 			2 => array('pipe','w'),
