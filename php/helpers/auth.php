@@ -414,7 +414,7 @@ class auth {
 		if( !$this->write_admin_user_data($new_profile->id, $new_profile) ){
 			return (object) array(
 				'result' => false,
-				'message' => 'ユーザー情報の保存に失敗しました。',
+				'message' => 'Failed to save user information.',
 				'errors' => (object) array(),
 			);
 		}
@@ -673,9 +673,9 @@ class auth {
 			// 既に存在します。
 			return (object) array(
 				'result' => false,
-				'message' => '新しいユーザーIDは既に存在します。',
+				'message' => 'The new user ID already exists.',
 				'errors' => (object) array(
-					'id' => array('新しいユーザーIDは既に存在します。'),
+					'id' => array('The new user ID already exists.'),
 				),
 			);
 		}
@@ -685,7 +685,7 @@ class auth {
 		if( !$res_rename ){
 			return (object) array(
 				'result' => false,
-				'message' => 'ユーザーIDの変更に失敗しました。',
+				'message' => 'Failed to change user ID.',
 				'errors' => (object) array(),
 			);
 		}
@@ -693,7 +693,7 @@ class auth {
 		if( !$this->write_admin_user_data($user_info->id, $user_info) ){
 			return (object) array(
 				'result' => false,
-				'message' => 'ユーザー情報の保存に失敗しました。',
+				'message' => 'Failed to save user information.',
 				'errors' => (object) array(),
 			);
 		}
@@ -739,7 +739,7 @@ class auth {
 			// 削除対象が未指定
 			return (object) array(
 				'result' => false,
-				'message' => '削除対象を指定してください。',
+				'message' => 'Please specify the target to delete.',
 				'errors' => (object) array(),
 			);
 		}
@@ -748,7 +748,7 @@ class auth {
 			// 不正な形式のID
 			return (object) array(
 				'result' => false,
-				'message' => 'ログインユーザーのIDが不正です。',
+				'message' => 'Invalid login user ID.',
 				'errors' => (object) array(),
 			);
 		}
@@ -757,7 +757,7 @@ class auth {
 		if( !is_object($user_info) ){
 			return (object) array(
 				'result' => false,
-				'message' => 'ユーザー情報の取得に失敗しました。',
+				'message' => 'Failed to get user information.',
 				'errors' => (object) array(),
 			);
 		}
@@ -765,7 +765,7 @@ class auth {
 		if( !$this->remove_admin_user_data($user_info->id) ){
 			return (object) array(
 				'result' => false,
-				'message' => 'ユーザー情報の削除に失敗しました。',
+				'message' => 'Failed to delete user information.',
 				'errors' => (object) array(),
 			);
 		}
