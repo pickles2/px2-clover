@@ -352,8 +352,13 @@ class git {
 
 		// コマンドを実行
 		// NOTE: Apacheの設定によって、環境変数 HOME がコマンドに引き継がれない場合があるので、明示的に、PHPが持っている HOME を引き継ぐ。
+		$ENV_HOME = getenv('HOME');
+		if( is_string($ENV_HOME ?? null) && strlen($ENV_HOME ?? '') ){
+			$cmd = 'HOME='.$ENV_HOME.' '.$cmd;
+		}
+
 		ob_start();
-		$proc = proc_open('HOME='.getenv('HOME').' '.$cmd, array(
+		$proc = proc_open($cmd, array(
 			0 => array('pipe','r'),
 			1 => array('pipe','w'),
 			2 => array('pipe','w'),
