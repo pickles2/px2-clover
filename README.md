@@ -80,7 +80,7 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
-### pickles2/px2-clover v0.5.1 (リリース日未定)
+### pickles2/px2-clover v0.5.1 (2025年9月24日)
 
 - `git commit` が実行できない場合がある問題を修正した。
 - 日本語でハードコーディングされていたエラーメッセージなどを英語に置き換えた。
