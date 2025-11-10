@@ -18,6 +18,9 @@ export default React.memo(function Root(props){
 				<header className="theme-layout__header">
 					<div className="theme-layout__header__inner">
 						<div className="theme-layout__title">
+							{(main.bootupInfo && main.bootupInfo.favicon) && (
+								<img src={main.bootupInfo.favicon} alt="" className="theme-layout__title-favicon" />
+							)}
 							<span className="theme-layout__title-pj-name">
 								<Link href={main.px2utils.href('/?PX=admin')}>{(window.px2config.name)}</Link>
 							</span>

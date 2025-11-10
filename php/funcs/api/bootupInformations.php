@@ -28,6 +28,36 @@ class bootupInformations {
 	}
 
 	/**
+	 * faviconのパスを取得
+	 *
+	 * @return string|null faviconのパス(プロジェクトルートからの相対パス)、見つからない場合はnull
+	 */
+	private function get_favicon_path(){
+		$realpath_docroot = $this->px->get_realpath_docroot();
+		
+		// 一般的なfaviconのファイル名パターン
+		$favicon_patterns = array(
+			'favicon.ico',
+			'favicon.png',
+			'favicon.jpg',
+			'favicon.jpeg',
+			'favicon.gif',
+			'favicon.svg',
+		);
+		
+		// ドキュメントルート直下を検索
+		foreach($favicon_patterns as $pattern){
+			$favicon_path = $realpath_docroot . $pattern;
+			if( is_file($favicon_path) ){
+				return '/' . $pattern;
+			}
+		}
+		
+		// 見つからなかった場合はnull
+		return null;
+	}
+
+	/**
 	 * 取得
 	 */
 	public function get(){
@@ -81,6 +111,10 @@ class bootupInformations {
 		$rtn['bootupInfo']['authorization']['config'] = $this->px->authorizer->is_authorized('config');
 		$rtn['bootupInfo']['authorization']['server_side_scripting'] = $this->px->authorizer->is_authorized('server_side_scripting');
 		$rtn['bootupInfo']['authorization']['write_file_directly'] = $this->px->authorizer->is_authorized('write_file_directly');
+
+
+		// favicon
+		$rtn['bootupInfo']['favicon'] = $this->get_favicon_path();
 
 
 		$this->px->header('Content-type: text/json');

@@ -61,6 +61,14 @@
 		width: 100%;
 		box-sizing: border-box;
 
+		&-favicon {
+			display: block;
+			width: 32px;
+			height: 32px;
+			margin: 0 auto 10px auto;
+			object-fit: contain;
+		}
+
 		&-pj-name {
 			display: block;
 			a {
@@ -78,6 +86,9 @@
 			padding: 10px 10px;
 			text-align: center;
 			font-size: 14px;
+			&-favicon {
+				margin: 0 auto 5px;
+			}
 			&-pj-name {
 				padding: 0px 22px;
 				a {
