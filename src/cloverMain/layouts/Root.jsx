@@ -17,7 +17,7 @@ export default React.memo(function Root(props){
 			<div className="theme-layout" data-px={currentRoute.current}>
 				<header className="theme-layout__header">
 					<div className="theme-layout__header__inner">
-						<div className="theme-layout__title">
+						<div className={"theme-layout__title" + ((main.bootupInfo && main.bootupInfo.favicon) ? ' theme-layout__title--with-favicon' : '')}>
 							{(main.bootupInfo && main.bootupInfo.favicon) && (
 								<img src={main.bootupInfo.favicon} alt="" className="theme-layout__title-favicon" />
 							)}

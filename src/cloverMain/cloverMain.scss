@@ -62,15 +62,16 @@
 		box-sizing: border-box;
 
 		&-favicon {
-			display: block;
-			width: 32px;
-			height: 32px;
+			display: inline-block;
+			width: 64px;
+			height: 64px;
 			margin: 0 auto 10px auto;
 			object-fit: contain;
 		}
 
 		&-pj-name {
 			display: block;
+			vertical-align: middle;
 			a {
 				display: block;
 				text-decoration: none;
@@ -82,15 +83,23 @@
 			}
 		}
 
+		&--with-favicon {
+			text-align: center;
+		}
+
 		@media (max-width: 720px) {
 			padding: 10px 10px;
 			text-align: center;
 			font-size: 14px;
 			&-favicon {
-				margin: 0 auto 5px;
+				margin: 0;
+				width: 1.4em;
+				height: 1.4em;
+				vertical-align: middle;
 			}
 			&-pj-name {
-				padding: 0px 22px;
+				display: inline-block;
+				padding: 0;
 				a {
 					display: inline-block;
 					padding: 5px 10px;
