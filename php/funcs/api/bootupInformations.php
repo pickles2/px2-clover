@@ -37,12 +37,12 @@ class bootupInformations {
 		
 		// 一般的なfaviconのファイル名パターン
 		$favicon_patterns = array(
-			'favicon.ico',
+			'favicon.svg',
 			'favicon.png',
+			'favicon.gif',
 			'favicon.jpg',
 			'favicon.jpeg',
-			'favicon.gif',
-			'favicon.svg',
+			'favicon.ico',
 		);
 		
 		// ドキュメントルート直下を検索
