@@ -87,3 +87,8 @@
 @import "./../../../node_modules/@tomk79/common-file-editor/dist/themes/darkmode";
 
 }
+
+@media (prefers-color-scheme: light) {
+// remote-finder の light mode
+@import "./../../../vendor/tomk79/remote-finder/dist/themes/default";
+}

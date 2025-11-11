@@ -83,6 +83,7 @@ $conf->allow_pxcommands = 1;
 ### pickles2/px2-clover v0.5.2 (リリース日未定)
 
 - 管理画面に favicon を表示するようになった。
+- その他、細かいUI改善、不具合の修正、内部コードの修正など。
 
 ### pickles2/px2-clover v0.5.1 (2025年9月24日)
 
