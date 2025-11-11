@@ -61,6 +61,16 @@
 		width: 100%;
 		box-sizing: border-box;
 
+		a {
+			display: inline-block;
+			text-decoration: none;
+			max-height: 40vh;
+			overflow: hidden;
+			&:hover {
+				opacity: 0.8;
+			}
+		}
+
 		&-favicon {
 			display: inline-block;
 			width: 64px;
@@ -72,15 +82,6 @@
 		&-pj-name {
 			display: block;
 			vertical-align: middle;
-			a {
-				display: block;
-				text-decoration: none;
-				max-height: 40vh;
-				overflow: hidden;
-				&:hover {
-					opacity: 0.8;
-				}
-			}
 		}
 
 		&--with-favicon {
@@ -96,6 +97,7 @@
 				width: 1.4em;
 				height: 1.4em;
 				vertical-align: middle;
+				margin-right: 8px;
 			}
 			&-pj-name {
 				display: inline-block;

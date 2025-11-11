@@ -52,7 +52,7 @@ export default function Link(props){
 
 	function goto(e){
 		e.preventDefault();
-		main.link(e.target.href);
+		main.link(e.target.href || props.href);
 		return false;
 	}
 
