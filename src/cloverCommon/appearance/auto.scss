@@ -80,15 +80,13 @@
 // gitui79 の darkmode
 @import "./../../../node_modules/gitui79/dist/themes/darkmode";
 
-// remote-finder の darkmode
-@import "./../../../vendor/tomk79/remote-finder/dist/themes/darkmode";
-
 // common-file-editor の darkmode
 @import "./../../../node_modules/@tomk79/common-file-editor/dist/themes/darkmode";
 
 }
 
 @media (prefers-color-scheme: light) {
-// remote-finder の light mode
-@import "./../../../vendor/tomk79/remote-finder/dist/themes/default";
 }
+
+// remote-finder の auto mode
+@import "./../../../vendor/tomk79/remote-finder/dist/themes/default";

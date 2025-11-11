@@ -184,6 +184,7 @@ export default function CloverUtils(){
 		var remoteFinder = new RemoteFinder(
 			$finderContainer,
 			{
+				"lang": this.lang,
 				"gpiBridge": function(input, callback){ // required
 					window.px2utils.pxCmd(
 						'/?PX=admin.api.remote_finder',
