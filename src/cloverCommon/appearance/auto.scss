@@ -1,10 +1,10 @@
+@import "../../../vendor/pickles2/px2style/dist/themes/default";
+
 @media (prefers-color-scheme: dark) {
 :root {
 	--px2-text-color: #ddd;
 	--px2-background-color: #333;
 }
-
-@import "../../../vendor/pickles2/px2style/dist/themes/darkmode";
 
 @layer base{
 	pre.code {
