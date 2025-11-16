@@ -20,7 +20,7 @@
             "@php ./vendor/phpunit/phpunit/phpunit"
         ]
     } ,
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "config": {
         "process-timeout": 0
     },
