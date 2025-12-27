@@ -80,6 +80,10 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
+### pickles2/px2-clover v0.6.0 (リリース日未定)
+
+- GitのSSH認証に対応した。
+
 ### pickles2/px2-clover v0.5.2 (2025年11月16日)
 
 - 管理画面に favicon を表示するようになった。

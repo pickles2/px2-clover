@@ -27,6 +27,15 @@ class git {
 	/** Git Remote: PW */
 	private $git_pw;
 
+	/** Git Auth Type */
+	private $git_auth_type;
+
+	/** Git SSH Private Key */
+	private $git_ssh_private_key;
+
+	/** SSH秘密鍵の一時ファイルパス */
+	private $tmp_ssh_key_path;
+
 	/**
 	 * Constructor
 	 *
@@ -46,6 +55,35 @@ class git {
 		}
 		if( isset($this->cloverConfig->history->git_pw) && strlen($this->crypt->decrypt($this->cloverConfig->history->git_pw ?? '')) ){
 			$this->git_pw = $this->cloverConfig->history->git_pw;
+		}
+		if( isset($this->cloverConfig->history->git_auth_type) && strlen($this->cloverConfig->history->git_auth_type ?? '') ){
+			$this->git_auth_type = $this->cloverConfig->history->git_auth_type;
+		}else{
+			// 既存設定との互換性: git_ssh_private_keyがあればSSH、なければPAT
+			if( isset($this->cloverConfig->history->git_ssh_private_key) && strlen($this->crypt->decrypt($this->cloverConfig->history->git_ssh_private_key ?? '')) ){
+				$this->git_auth_type = 'ssh';
+			}else{
+				$this->git_auth_type = 'pat';
+			}
+		}
+		if( isset($this->cloverConfig->history->git_ssh_private_key) && strlen($this->crypt->decrypt($this->cloverConfig->history->git_ssh_private_key ?? '')) ){
+			$this->git_ssh_private_key = $this->cloverConfig->history->git_ssh_private_key;
+		}
+	}
+
+	/**
+	 * デストラクタ: 一時ファイルをクリーンアップ
+	 */
+	public function __destruct(){
+		$this->cleanup_ssh_key();
+	}
+
+	/**
+	 * SSH秘密鍵の一時ファイルをクリーンアップ
+	 */
+	private function cleanup_ssh_key(){
+		if( isset($this->tmp_ssh_key_path) && is_file($this->tmp_ssh_key_path) ){
+			@unlink($this->tmp_ssh_key_path);
 		}
 	}
 
@@ -69,13 +107,51 @@ class git {
 	public function get_remote_default_branch_name( $git_url = null ) {
 		$default = 'master';
 		if( !strlen( $git_url ?? '' ) ){
-			$git_url = $this->url_bind_confidentials($git_url);
+			$git_url = $this->git_remote;
 		}
+		
 		if( !strlen( $git_url ?? '' ) ){
 			return $default;
 		}
+		
+		// HTTPS/HTTPの場合は認証情報を埋め込む
+		if( preg_match( '/^(?:https?)\:\/\//si', $git_url ) ){
+			$git_url = $this->url_bind_confidentials($git_url);
+		}
+		// SSHの場合はそのまま使用（認証はSSH鍵で行う）
+		
+		if( !strlen( $git_url ?? '' ) ){
+			return $default;
+		}
+		
 		$realpath_git_command = $this->realpath_git_cmd();
-		$result = shell_exec($realpath_git_command.' ls-remote --symref '.escapeshellarg($git_url).' HEAD');
+		
+		// SSH認証の場合は秘密鍵をセットアップ
+		$ssh_cmd_prefix = '';
+		if( $this->git_auth_type === 'ssh' ){
+			if( !$this->setup_ssh_key() ){
+				return $default;
+			}
+			if( isset($this->tmp_ssh_key_path) && is_file($this->tmp_ssh_key_path) ){
+				$ssh_command = 'ssh -i '.escapeshellarg($this->tmp_ssh_key_path).' -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null';
+				$ssh_cmd_prefix = 'GIT_SSH_COMMAND='.escapeshellarg($ssh_command).' ';
+			}
+		}
+		
+		$ENV_HOME = getenv('HOME');
+		$home_prefix = '';
+		if( is_string($ENV_HOME ?? null) && strlen($ENV_HOME ?? '') ){
+			$home_prefix = 'HOME='.$ENV_HOME.' ';
+		}
+		
+		$result = shell_exec($home_prefix.$ssh_cmd_prefix.$realpath_git_command.' ls-remote --symref '.escapeshellarg($git_url).' HEAD');
+		
+		// SSH鍵のクリーンアップ（このメソッド内で作成した場合）
+		if( $this->git_auth_type === 'ssh' && isset($this->tmp_ssh_key_path) ){
+			$this->cleanup_ssh_key();
+			$this->tmp_ssh_key_path = null;
+		}
+		
 		if(!is_string($result) || !strlen($result ?? '')){
 			return $default;
 		}
@@ -190,7 +266,17 @@ class git {
 			return false;
 		}
 
-		$git_remote = $this->url_bind_confidentials($git_url);
+		$git_remote = $git_url;
+		if( !strlen($git_remote ?? '') ){
+			$git_remote = $this->git_remote;
+		}
+		
+		// HTTPS/HTTPの場合は認証情報を埋め込む
+		if( preg_match( '/^(?:https?)\:\/\//si', $git_remote ) ){
+			$git_remote = $this->url_bind_confidentials($git_remote);
+		}
+		// SSHの場合はそのまま使用（認証はSSH鍵で行う）
+		
 		if( !strlen($git_remote ?? '') ){
 			return true;
 		}
@@ -223,10 +309,15 @@ class git {
 		if( !isset($this->git_remote) || !strlen($this->git_remote ?? '') ){
 			return false;
 		}
-		if( !preg_match( '/^(?:https?)\:\/\/(?:.+)\.git$/si', $this->git_remote ) ){
-			return false;
+		// HTTPS/HTTP URL
+		if( preg_match( '/^(?:https?)\:\/\/(?:.+)\.git$/si', $this->git_remote ) ){
+			return true;
 		}
-		return true;
+		// SSH URL (git@... または ssh://...)
+		if( preg_match( '/^(?:git@|ssh:\/\/)(?:.+)\.git$/si', $this->git_remote ) ){
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -285,6 +376,36 @@ class git {
 	}
 
 	/**
+	 * SSH秘密鍵の一時ファイルを作成する
+	 */
+	private function setup_ssh_key(){
+		if( $this->git_auth_type !== 'ssh' ){
+			return true;
+		}
+		if( !isset($this->git_ssh_private_key) || !strlen($this->crypt->decrypt($this->git_ssh_private_key ?? '')) ){
+			return false;
+		}
+
+		$ssh_key_content = $this->crypt->decrypt($this->git_ssh_private_key);
+		if( !strlen($ssh_key_content ?? '') ){
+			return false;
+		}
+
+		// 一時ファイルを作成
+		$tmp_dir = sys_get_temp_dir();
+		$this->tmp_ssh_key_path = $tmp_dir.'/px2clover_ssh_key_'.uniqid().'.key';
+		
+		if( !$this->px->fs()->save_file($this->tmp_ssh_key_path, $ssh_key_content) ){
+			return false;
+		}
+		
+		// パーミッションを600に設定（SSH鍵の要件）
+		chmod($this->tmp_ssh_key_path, 0600);
+		
+		return true;
+	}
+
+	/**
 	 * Gitコマンドを実行する
 	 *
 	 * @param array $git_sub_commands Gitコマンドオプション
@@ -339,6 +460,19 @@ class git {
 			}
 		}
 
+		// SSH認証の場合は秘密鍵をセットアップ
+		$ssh_key_setup = true;
+		if( $this->git_auth_type === 'ssh' ){
+			$ssh_key_setup = $this->setup_ssh_key();
+			if( !$ssh_key_setup ){
+				return array(
+					'result' => false,
+					'stdout' => '',
+					'stderr' => 'Failed to setup SSH key.',
+					'exitcode' => 1,
+				);
+			}
+		}
 
 		$cd = realpath('.');
 		chdir($realpath_git_root);
@@ -349,6 +483,12 @@ class git {
 
 		$realpath_git_command = $this->realpath_git_cmd();
 		$cmd = $realpath_git_command.' '.implode(' ', $git_sub_commands);
+
+		// SSH認証の場合はGIT_SSH_COMMANDを設定
+		if( $this->git_auth_type === 'ssh' && isset($this->tmp_ssh_key_path) && is_file($this->tmp_ssh_key_path) ){
+			$ssh_command = 'ssh -i '.escapeshellarg($this->tmp_ssh_key_path).' -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null';
+			$cmd = 'GIT_SSH_COMMAND='.escapeshellarg($ssh_command).' '.$cmd;
+		}
 
 		// コマンドを実行
 		// NOTE: Apacheの設定によって、環境変数 HOME がコマンドに引き継がれない場合があるので、明示的に、PHPが持っている HOME を引き継ぐ。

@@ -51,6 +51,8 @@ class config{
 				'git_remote' => null,
 				'git_id' => null,
 				'git_pw' => null,
+				'git_auth_type' => 'pat',
+				'git_ssh_private_key' => null,
 				'auto_commit' => null,
 			),
 		);
@@ -70,6 +72,8 @@ class config{
 		if( isset($new_config->history->git_remote) ){ $config->history->git_remote = $new_config->history->git_remote; }
 		if( isset($new_config->history->git_id) ){ $config->history->git_id = $new_config->history->git_id; }
 		if( isset($new_config->history->git_pw) ){ $config->history->git_pw = $crypt->encrypt($new_config->history->git_pw); }
+		if( isset($new_config->history->git_auth_type) ){ $config->history->git_auth_type = $new_config->history->git_auth_type; }
+		if( isset($new_config->history->git_ssh_private_key) ){ $config->history->git_ssh_private_key = $crypt->encrypt($new_config->history->git_ssh_private_key); }
 		if( isset($new_config->history->auto_commit) ){ $config->history->auto_commit = $new_config->history->auto_commit; }
 
 		$result = dataDotPhp::write_json($this->realpath_config_json_php, $config);

@@ -40,6 +40,7 @@ class config{
 
 		// 秘匿情報を削除
 		unset( $rtn['config']->history->git_pw );
+		unset( $rtn['config']->history->git_ssh_private_key );
 
 		$this->px->header('Content-type: text/json');
 		echo json_encode($rtn);
@@ -61,6 +62,8 @@ class config{
 		if( !is_null( $this->px->req()->get_param('history->git_remote') ) ){ $new_config['history']['git_remote'] = $this->px->req()->get_param('history->git_remote'); }
 		if( !is_null( $this->px->req()->get_param('history->git_id') ) ){ $new_config['history']['git_id'] = $this->px->req()->get_param('history->git_id'); }
 		if( !is_null( $this->px->req()->get_param('history->git_pw') ) ){ $new_config['history']['git_pw'] = $this->px->req()->get_param('history->git_pw'); }
+		if( !is_null( $this->px->req()->get_param('history->git_auth_type') ) ){ $new_config['history']['git_auth_type'] = $this->px->req()->get_param('history->git_auth_type'); }
+		if( !is_null( $this->px->req()->get_param('history->git_ssh_private_key') ) ){ $new_config['history']['git_ssh_private_key'] = $this->px->req()->get_param('history->git_ssh_private_key'); }
 		if( !is_null( $this->px->req()->get_param('history->auto_commit') ) ){ $new_config['history']['auto_commit'] = !!$this->px->req()->get_param('history->auto_commit'); }
 
 		$result = $this->cloverConfig->update($new_config);
