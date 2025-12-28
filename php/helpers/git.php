@@ -391,6 +391,14 @@ class git {
 			return false;
 		}
 
+		// 改行文字を統一（LFに統一）
+		$ssh_key_content = preg_replace('/\r\n|\r/', "\n", $ssh_key_content);
+		
+		// 末尾に改行を追加（SSH鍵ファイルには通常改行が必要）
+		if (substr($ssh_key_content, -1) !== "\n") {
+			$ssh_key_content .= "\n";
+		}
+
 		// 一時ファイルを作成
 		$tmp_dir = sys_get_temp_dir();
 		$this->tmp_ssh_key_path = $tmp_dir.'/px2clover_ssh_key_'.uniqid().'.key';
