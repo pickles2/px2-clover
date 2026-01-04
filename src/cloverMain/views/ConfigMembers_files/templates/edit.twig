@@ -60,8 +60,11 @@
 				<div class="px2-form-input-list__label"><label for="input-lang">{{ main.lb.get('ui_label.user_lang') }}</label></div>
 				<div class="px2-form-input-list__input">
 					<select id="input-lang" name="lang" class="px2-input">
-						<option value="en"{{ values.lang == 'en' ? ' selected="selected"' : "" }}>English</option>
-						<option value="ja"{{ values.lang == 'ja' ? ' selected="selected"' : "" }}>Japanese</option>
+					<option value="en"{{ values.lang == 'en' ? ' selected="selected"' : "" }}>{{ main.lb.get('ui_label.lang_english') }}</option>
+					<option value="ja"{{ values.lang == 'ja' ? ' selected="selected"' : "" }}>{{ main.lb.get('ui_label.lang_japanese') }}</option>
+					<option value="zh"{{ values.lang == 'zh' ? ' selected="selected"' : "" }}>{{ main.lb.get('ui_label.lang_chinese_simplified') }}</option>
+					<option value="zh-TW"{{ values.lang == 'zh-TW' ? ' selected="selected"' : "" }}>{{ main.lb.get('ui_label.lang_chinese_traditional') }}</option>
+					<option value="ko"{{ values.lang == 'ko' ? ' selected="selected"' : "" }}>{{ main.lb.get('ui_label.lang_korean') }}</option>
 					</select>
 					{% if errors.lang %}
 						{% for errorText in errors.lang %}

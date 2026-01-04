@@ -192,8 +192,11 @@ export default function ConfigProfile(props){
 								<div className="px2-form-input-list__label"><label htmlFor="input-lang">{main.lb.get('ui_label.user_lang')}</label></div>
 								<div className="px2-form-input-list__input">
 									<select id="input-lang" name="lang" className={"px2-input"+(hasValidationError('lang') ? ' px2-input--error' : '')} defaultValue={main.profile.lang}>
-									<option value="en">{main.lb.get('ui_label.lang_english')}</option>
-									<option value="ja">{main.lb.get('ui_label.lang_japanese')}</option>
+										<option value="en">{main.lb.get('ui_label.lang_english')}</option>
+										<option value="ja">{main.lb.get('ui_label.lang_japanese')}</option>
+										<option value="zh">{main.lb.get('ui_label.lang_chinese_simplified')}</option>
+										<option value="zh-TW">{main.lb.get('ui_label.lang_chinese_traditional')}</option>
+										<option value="ko">{main.lb.get('ui_label.lang_korean')}</option>
 									</select>
 									{(hasValidationError('lang'))
 										? <>
