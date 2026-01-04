@@ -83,6 +83,7 @@ $conf->allow_pxcommands = 1;
 ### pickles2/px2-clover v0.6.0 (リリース日未定)
 
 - GitのSSH認証に対応した。
+- 多言語対応に関する更新。
 
 ### pickles2/px2-clover v0.5.2 (2025年11月16日)
 

@@ -40,7 +40,7 @@ export default function ContentsProcessor(props){
 		) );
 
 		const $executeModal = px2style.modal({
-			"title": "コンテンツの一括加工",
+			"title": main.lb.get('modal_title.batch_process_contents'),
 			"body": $body,
 			"width": 800,
 		}, function(){
@@ -49,7 +49,7 @@ export default function ContentsProcessor(props){
 				{},
 				function( response ){
 					if( !response.result ){
-						alert('Errored.');
+						alert(main.lb.get('modal_title.errored'));
 						return;
 					}
 
@@ -107,7 +107,7 @@ export default function ContentsProcessor(props){
 	if( !isAuthorized ){
 		return (
 			<>
-				<p>Not Authorized.</p>
+				<p>{main.lb.get('ui_message.not_authorized')}</p>
 			</>
 		);
 	}
@@ -117,8 +117,8 @@ export default function ContentsProcessor(props){
 			<form onSubmit={function(event){event.preventDefault();executeContentsProcessor(event);}}>
 				<div className="px2-p">
 					<ul>
-						<li>この処理は、たくさんのファイルに一度に変更を加えます。</li>
-						<li>すべてのファイルを 実行の前に状態をコミットし、実行後にもコミットすることを強くお勧めします。</li>
+						<li>{main.lb.get('ui_message.batch_process_warning_1')}</li>
+						<li>{main.lb.get('ui_message.batch_process_warning_2')}</li>
 					</ul>
 				</div>
 
@@ -187,9 +187,9 @@ next(instance);" onChange={()=>{}}></textarea>{"}"}</code></pre>
 					</table>
 				</div>
 
-				<p><label><input type="checkbox" name="is_dryrun" value="dryrun" defaultChecked={true} onChange={()=>{}} /> 実行結果を保存しない (Dry run)</label></p>
+				<p><label><input type="checkbox" name="is_dryrun" value="dryrun" defaultChecked={true} onChange={()=>{}} /> {main.lb.get('ui_label.dry_run')}</label></p>
 				<p className="px2-text-align-center">
-					<button className="px2-btn px2-btn--primary">すべてのコンテンツを一括加工する</button>
+					<button className="px2-btn px2-btn--primary">{main.lb.get('ui_label.batch_process_all_contents')}</button>
 				</p>
 			</form>
 

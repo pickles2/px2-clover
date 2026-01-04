@@ -108,16 +108,16 @@ export default function Dashboard(props){
 						}
 
 						const $body = $(`<div>
-							<p>Gitリポジトリを初期化しました。</p>
-							<p>画面を再読み込みしてください。</p>
+							<p>${main.lb.get('ui_message.git_init_success_reload').split('. ')[0]}.</p>
+							<p>${main.lb.get('ui_message.git_init_success_reload').split('. ')[1]}</p>
 						</div>`);
 
 						const resultModal = px2style.modal({
-							"title": "Gitリポジトリの初期化",
+							"title": main.lb.get('modal_title.git_init'),
 							"body": $body,
 							"buttons": [
 								$('<button type="button" class="px2-btn px2-btn--primary"></button>')
-									.text('再読み込みする')
+									.text(main.lb.get('ui_label.reload'))
 									.on('click', ()=>{
 										// 画面をリロードする
 										window.location.href = '?PX=admin';

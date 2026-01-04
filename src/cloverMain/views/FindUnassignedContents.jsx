@@ -26,8 +26,8 @@ export default function FindUnassignedContents(props){
 					});
 				}else{
 					px2style.modal({
-						'title': '完了',
-						'body': '<p>リストの抽出が完了しました。</p>',
+						'title': main.lb.get('modal_title.completed'),
+						'body': `<p>${main.lb.get('ui_message.list_extraction_completed')}</p>`,
 					});
 				}
 
@@ -44,7 +44,7 @@ export default function FindUnassignedContents(props){
 	 * 未アサインコンテンツを削除する
 	 */
 	function deleteContent( target_path ){
-		if(!confirm('このコンテンツ '+target_path+' を削除しますか？')){
+		if(!confirm(main.lb.get('ui_message.delete_content_confirm'))){
 			return;
 		}
 
@@ -70,7 +70,7 @@ export default function FindUnassignedContents(props){
 					getUnassignedContentList(function(){
 						$(e.target).removeAttr('disabled');
 					});
-				}}>未アサインコンテンツを検索する</button>
+				}}>{main.lb.get('ui_label.search_unassigned_contents')}</button>
 			</div>
 			{(unassignedContentsList!==null
 				?
@@ -97,7 +97,7 @@ export default function FindUnassignedContents(props){
 						</>
 						:
 						<>
-							<p>未アサインコンテンツは検出されませんでした。</p>
+							<p>{main.lb.get('ui_message.no_unassigned_contents_found')}</p>
 						</>
 					)}
 				</>

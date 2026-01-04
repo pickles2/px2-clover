@@ -489,7 +489,7 @@ export default React.memo(function PageInfo(props){
 					}
 				));
 				modal = px2style.modal({
-					"title": "記事を編集する",
+					"title": main.lb.get('modal_title.edit_article'),
 					"body": $body,
 					"buttons": [
 						$('<button type="submit" class="px2-btn px2-btn--primary">').text(main.lb.get('ui_label.save')),
@@ -607,7 +607,7 @@ export default React.memo(function PageInfo(props){
 					) );
 
 				modal = px2style.modal({
-					'title': "ページを並べ替える",
+					'title': main.lb.get('modal_title.sort_pages'),
 					'body': $body,
 					'width': '680px',
 					'buttons':[
@@ -636,7 +636,7 @@ export default React.memo(function PageInfo(props){
 							var selectedPagePath = $select.val();
 
 							if(selectedPagePath == main.pageInfo.current_page_info.path){
-								alert('移動先が変更されていません。');
+								alert(main.lb.get('ui_message.destination_not_changed'));
 								modal.unlock();
 								return;
 							}
@@ -712,11 +712,11 @@ export default React.memo(function PageInfo(props){
 				var template = require('./PageInfo_files/templates/deletePage.twig');
 				var $body = $(template({}));
 				modal = px2style.modal({
-					'title': "ページ情報を削除する",
+					'title': main.lb.get('modal_title.delete_page_info'),
 					'body': $body,
 					'buttons':[
 						$('<button type="submit" class="px2-btn px2-btn--danger">')
-							.text('削除する')
+							.text(main.lb.get('ui_label.delete'))
 					],
 					'buttonsSecondary': [
 						$('<button type="button" class="px2-btn">')
@@ -801,10 +801,10 @@ export default React.memo(function PageInfo(props){
 			}
 		));
 		modal = px2style.modal({
-			"title": "記事を削除する",
+			"title": main.lb.get('modal_title.delete_article'),
 			"body": $body,
 			"buttons": [
-				$('<button type="submit" class="px2-btn px2-btn--danger">').text('削除する'),
+				$('<button type="submit" class="px2-btn px2-btn--danger">').text(main.lb.get('ui_label.delete')),
 			],
 			"form": {
 				"submit": function(e){

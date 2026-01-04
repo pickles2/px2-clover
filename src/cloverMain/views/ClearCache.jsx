@@ -23,13 +23,13 @@ export default React.memo(function ClearCache(props){
 				console.log('------ clearcache Response:', data, error);
 				if( error ){
 					px2style.modal({
-						'title': 'キャッシュ消去 エラー',
-						'body': '<p>エラーが発生しました。</p>',
+						'title': main.lb.get('modal_title.clear_cache_error'),
+						'body': `<p>${main.lb.get('ui_message.an_error_has_occurred')}</p>`,
 					});
 				}else{
 					px2style.modal({
-						'title': 'キャッシュ消去 完了',
-						'body': '<p>キャッシュの消去は完了しました。</p>',
+						'title': main.lb.get('modal_title.clear_cache_completed'),
+						'body': `<p>${main.lb.get('ui_message.cache_clearing_completed')}</p>`,
 					});
 				}
 
@@ -40,7 +40,7 @@ export default React.memo(function ClearCache(props){
 
 	return (
 		<>
-			<p><button type="button" onClick={clearcache} className="px2-btn">キャッシュを消去</button></p>
+			<p><button type="button" onClick={clearcache} className="px2-btn">{main.lb.get('ui_label.clear_cache')}</button></p>
 		</>
 	);
 });

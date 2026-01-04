@@ -55,7 +55,7 @@ export default function ConfigMembers(props){
 	function editMember(e, memberInfo, options){
 		e.preventDefault();
 		options = options || {};
-		options.modalTitle = options.modalTitle || "メンバーを追加する";
+		options.modalTitle = options.modalTitle || main.lb.get('modal_title.add_member');
 		options.PxCmd = options.PxCmd || "admin.api.update_member";
 		var modal;
 		var targetId = (memberInfo.id ? memberInfo.id : null);
@@ -77,11 +77,11 @@ export default function ConfigMembers(props){
 					'width': '680px',
 					'buttons':[
 						$('<button type="submit" class="px2-btn px2-btn--primary">')
-							.text('保存する')
+						.text(main.lb.get('ui_label.save'))
 					],
 					'buttonsSecondary': [
 						$('<button type="button" class="px2-btn">')
-							.text('キャンセル')
+						.text(main.lb.get('ui_label.cancel'))
 							.on('click', function(){
 								px2style.closeModal();
 							}),
@@ -109,7 +109,7 @@ export default function ConfigMembers(props){
 										}
 									) );
 									px2style.modal({
-										"title": "パスワード",
+									"title": main.lb.get('modal_title.password'),
 										"body": $body,
 										"form": {
 											"submit": function(){
@@ -207,16 +207,16 @@ export default function ConfigMembers(props){
 					) )
 				;
 				modal = px2style.modal({
-					'title': "メンバーを削除する",
+					'title': main.lb.get('modal_title.delete_member'),
 					'body': $body,
 					'width': '680px',
 					'buttons':[
 						$('<button type="submit" class="px2-btn px2-btn--danger">')
-							.text('削除する')
+							.text(main.lb.get('ui_label.delete'))
 					],
 					'buttonsSecondary': [
 						$('<button type="button" class="px2-btn">')
-							.text('キャンセル')
+						.text(main.lb.get('ui_label.cancel'))
 							.on('click', function(){
 								px2style.closeModal();
 							}),
@@ -289,13 +289,13 @@ export default function ConfigMembers(props){
 	}
 
 	if(main.bootupInfoLoaded && !main.bootupInfo.authorization.members){
-		return (<p>権限がありません。</p>);
+		return (<p>{main.lb.get('ui_message.no_permission')}</p>);
 	}
 
 	return (
 		<>
 			<p className="px2-text-align-right">
-				<button type="button" className="px2-btn px2-btn--primary" onClick={(e)=>{createNewMember(e)}}>新規メンバーを登録する</button>
+				<button type="button" className="px2-btn px2-btn--primary" onClick={(e)=>{createNewMember(e)}}>{main.lb.get('ui_label.register_new_member')}</button>
 			</p>
 			{(memberListAry && memberListAry.length)
 				?<>
@@ -318,11 +318,11 @@ export default function ConfigMembers(props){
 									<td>{ memberInfo.email }</td>
 									<td>{ main.lb.get(`role.${memberInfo.role}`) }</td>
 									{ memberInfo.id == main.profile.id ? <>
-										<td>(You)</td>
-									</> : <>
-										<td>
-											<button type="button" className="px2-btn px2-btn--primary" onClick={(e)=>{editMember(e, memberInfo)}}>編集</button>
-											<button type="button" className="px2-btn px2-btn--danger" onClick={(e)=>{deleteMember(e, memberInfo)}}>削除</button>
+									<td>{main.lb.get('ui_label.you')}</td>
+								</> : <>
+									<td>
+										<button type="button" className="px2-btn px2-btn--primary" onClick={(e)=>{editMember(e, memberInfo)}}>{main.lb.get('ui_label.edit')}</button>
+										<button type="button" className="px2-btn px2-btn--danger" onClick={(e)=>{deleteMember(e, memberInfo)}}>{main.lb.get('ui_label.delete')}</button>
 										</td>
 									</> }
 								</tr>;
@@ -333,7 +333,7 @@ export default function ConfigMembers(props){
 				</>
 				:<>
 					<p>
-						メンバー情報は登録されていません。<br />
+						{main.lb.get('ui_message.no_members_registered')}<br />
 					</p>
 				</>
 			}

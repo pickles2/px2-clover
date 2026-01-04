@@ -51,7 +51,7 @@ export default React.memo(function History(props){
 			{(!main.bootupInfo.git.is_init) ? <>
 				{/* git init されていない場合 */}
 				<div className="px2-p">
-					<p>git環境が初期化されていません。</p>
+					<p>{main.lb.get('ui_message.git_not_initialized')}</p>
 				</div>
 			</>
 			: <>{(!main.profile) ? <>

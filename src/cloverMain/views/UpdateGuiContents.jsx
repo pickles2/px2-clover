@@ -30,8 +30,8 @@ export default function UpdateGuiContents(props){
 					});
 				}else{
 					px2style.modal({
-						'title': '完了',
-						'body': '<p>リストの抽出が完了しました。</p>',
+						'title': main.lb.get('modal_title.completed'),
+						'body': `<p>${main.lb.get('ui_message.list_extraction_completed')}</p>`,
 					});
 				}
 
@@ -118,7 +118,7 @@ export default function UpdateGuiContents(props){
 					});
 			},
 			function(){
-				alert('Completed.');
+				alert(main.lb.get('ui_message.completed'));
 			}
 		);
 	}
@@ -132,12 +132,12 @@ export default function UpdateGuiContents(props){
 						getGuiEditorContentList(function(){
 							$(e.target).removeAttr('disabled');
 						});
-					}}>ブロックエディタのコンテンツを検索する</button></li>
+					}}>{main.lb.get('ui_label.search_block_editor_contents')}</button></li>
 				{(status.GuiEditorContentsList!==null
 					?
 					<li><button className="px2-btn px2-btn--primary" onClick={(e)=>{
 						rebuildAllBroccoliContent();
-					}}>すべて再構成</button></li>
+					}}>{main.lb.get('ui_label.rebuild_all')}</button></li>
 					:
 					<></>
 				)}
@@ -160,13 +160,13 @@ export default function UpdateGuiContents(props){
 									return (
 										<tr key={idx}>
 											<th>{guiEditorContent}</th>
-											<td>{status.ContentsRebuildStatus[guiEditorContent] === undefined ? '' : status.ContentsRebuildStatus[guiEditorContent] === null ? 'progress...' : status.ContentsRebuildStatus[guiEditorContent] ? 'OK' : 'NG'}</td>
-											<td class="cont-content-list__btn-rebuild"><button type="button" data-target-content={guiEditorContent} onClick={(e)=>{
-												e.preventDefault();
-												var target_path = $(e.target).attr('data-target-content');
+										<td>{status.ContentsRebuildStatus[guiEditorContent] === undefined ? '' : status.ContentsRebuildStatus[guiEditorContent] === null ? 'progress...' : status.ContentsRebuildStatus[guiEditorContent] ? 'OK' : main.lb.get('ui_label.ng')}</td>
+									<td class="cont-content-list__btn-rebuild"><button type="button" data-target-content={guiEditorContent} onClick={(e)=>{
+										e.preventDefault();
+										var target_path = $(e.target).attr('data-target-content');
 
-												rebuildBroccoliContent(target_path);
-											}} className={status.ContentsRebuildStatus[guiEditorContent] === true ? "px2-btn px2-btn--primary" : status.ContentsRebuildStatus[guiEditorContent] === false ? "px2-btn px2-btn--danger" : "px2-btn"} disabled={status.ContentsRebuildStatus[guiEditorContent]===null ? true : false}>rebuild</button></td>
+										rebuildBroccoliContent(target_path);
+									}} className={status.ContentsRebuildStatus[guiEditorContent] === true ? "px2-btn px2-btn--primary" : status.ContentsRebuildStatus[guiEditorContent] === false ? "px2-btn px2-btn--danger" : "px2-btn"} disabled={status.ContentsRebuildStatus[guiEditorContent]===null ? true : false}>{main.lb.get('ui_label.rebuild')}</button></td>
 										</tr>
 									);
 								}))}
@@ -175,7 +175,7 @@ export default function UpdateGuiContents(props){
 						</>
 						:
 						<>
-							<p>ブロックエディタのコンテンツは検出されませんでした。</p>
+							<p>{main.lb.get('ui_message.no_block_editor_contents_found')}</p>
 						</>
 					)}
 				</>

@@ -33,26 +33,26 @@ export default function ConfigHistory(props){
 			}
 		}
 		
-		main.cloverUtils.updateConfig(
-			newConfig,
-			(result) => {
-				console.log(result);
-				if( !result.result ){
-					alert('履歴管理設定の更新は失敗しました。');
-					return;
+			main.cloverUtils.updateConfig(
+				newConfig,
+				(result) => {
+					console.log(result);
+					if( !result.result ){
+						alert(main.lb.get('ui_message.failed_to_update_history_config'));
+						return;
+					}
+					main.setMainState({
+						'config': result.config,
+						'configLoaded': false,
+					});
+					alert(main.lb.get('ui_message.history_config_updated'));
+					main.link('?PX=admin.config');
 				}
-				main.setMainState({
-					'config': result.config,
-					'configLoaded': false,
-				});
-				alert('履歴管理設定 を更新しました。');
-				main.link('?PX=admin.config');
-			}
-		);
+			);
 	}
 
 	if( !isHistoryConfigAuthorized ){
-		return (<p>権限がありません。</p>);
+		return (<p>{main.lb.get('ui_message.no_permission')}</p>);
 	}
 
 	if( !main.config ){
@@ -66,10 +66,10 @@ export default function ConfigHistory(props){
 					<div className="px2-form-input-list">
 						<ul className="px2-form-input-list__ul">
 							<li className={"px2-form-input-list__li"}>
-								<div className="px2-form-input-list__label"><label htmlFor="input-git_remote">Gitリモート</label></div>
-								<div className="px2-form-input-list__input">
-									<input type="text" id="input-git_remote" name="git_remote" defaultValue={main.config.history.git_remote} className="px2-input px2-input--block" />
-									<p className="px2-note">例: https://github.com/user/repo.git または git@github.com:user/repo.git</p>
+							<div className="px2-form-input-list__label"><label htmlFor="input-git_remote">{main.lb.get('ui_label.git_remote')}</label></div>
+							<div className="px2-form-input-list__input">
+								<input type="text" id="input-git_remote" name="git_remote" defaultValue={main.config.history.git_remote} className="px2-input px2-input--block" />
+								<p className="px2-note">{main.lb.get('ui_message.git_remote_example')}</p>
 								</div>
 							</li>
 							<li className={"px2-form-input-list__li"}>
@@ -100,13 +100,13 @@ export default function ConfigHistory(props){
 							{authType === 'pat' && (
 								<>
 									<li className={"px2-form-input-list__li"}>
-										<div className="px2-form-input-list__label"><label htmlFor="input-git_param_1">Git ID</label></div>
-										<div className="px2-form-input-list__input"><input type="text" id="input-git_param_1" name="git_param_1" defaultValue={main.config.history.git_id} className="px2-input px2-input--block" autoComplete="off" /></div>
-									</li>
-									<li className={"px2-form-input-list__li"}>
-										<div className="px2-form-input-list__label"><label htmlFor="input-git_param_2">Git パスワード（PAT）</label></div>
-										<div className="px2-form-input-list__input">
-											<p className="px2-note">パスワード（PAT）を変更する場合のみ入力してください。</p>
+									<div className="px2-form-input-list__label"><label htmlFor="input-git_param_1">{main.lb.get('ui_label.git_id')}</label></div>
+									<div className="px2-form-input-list__input"><input type="text" id="input-git_param_1" name="git_param_1" defaultValue={main.config.history.git_id} className="px2-input px2-input--block" autoComplete="off" /></div>
+								</li>
+								<li className={"px2-form-input-list__li"}>
+									<div className="px2-form-input-list__label"><label htmlFor="input-git_param_2">{main.lb.get('ui_label.git_password_pat')}</label></div>
+									<div className="px2-form-input-list__input">
+										<p className="px2-note">{main.lb.get('ui_message.enter_password_only_when_changing')}</p>
 											<input type="password" id="input-git_param_2" name="git_param_2" defaultValue="" className="px2-input px2-input--block" autoComplete="new-password" />
 										</div>
 									</li>
@@ -114,9 +114,9 @@ export default function ConfigHistory(props){
 							)}
 							{authType === 'ssh' && (
 								<li className={"px2-form-input-list__li"}>
-									<div className="px2-form-input-list__label"><label htmlFor="input-git_ssh_private_key">SSH秘密鍵</label></div>
-									<div className="px2-form-input-list__input">
-										<p className="px2-note">SSH秘密鍵を変更する場合のみ入力してください。-----BEGIN ... PRIVATE KEY----- から始まる形式で入力してください。</p>
+								<div className="px2-form-input-list__label"><label htmlFor="input-git_ssh_private_key">{main.lb.get('ui_label.git_ssh_private_key')}</label></div>
+								<div className="px2-form-input-list__input">
+									<p className="px2-note">{main.lb.get('ui_message.ssh_private_key_instruction')}</p>
 										<textarea 
 											id="input-git_ssh_private_key" 
 											name="git_ssh_private_key" 
@@ -129,8 +129,8 @@ export default function ConfigHistory(props){
 								</li>
 							)}
 							<li className={"px2-form-input-list__li"}>
-								<div className="px2-form-input-list__label"><label htmlFor="input-auto_commit">自動コミット</label></div>
-								<div className="px2-form-input-list__input"><label><input type="checkbox" id="input-auto_commit" name="auto_commit" value="1" defaultChecked={main.config.history.auto_commit ? true : false} className="px2-input" /> 自動コミットを有効にする</label></div>
+							<div className="px2-form-input-list__label"><label htmlFor="input-auto_commit">{main.lb.get('ui_label.auto_commit')}</label></div>
+							<div className="px2-form-input-list__input"><label><input type="checkbox" id="input-auto_commit" name="auto_commit" value="1" defaultChecked={main.config.history.auto_commit ? true : false} className="px2-input" /> {main.lb.get('ui_label.enable_auto_commit')}</label></div>
 							</li>
 						</ul>
 					</div>

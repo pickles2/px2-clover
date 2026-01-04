@@ -63,8 +63,8 @@ export default function ConfigProfile(props){
 				if( !result.result ){
 					setValidationErrors(result.errors);
 					px2style.modal({
-						"title": "Errored.",
-						"body": $(`<p>Failed to update.</p>`),
+						"title": main.lb.get('modal_title.errored'),
+						"body": $(`<p>${main.lb.get('ui_message.failed_to_update')}</p>`),
 					}, function(modal){
 						setTimeout(()=>{
 							modal.$modal.find('.px2-modal__footer button').focus();
@@ -77,8 +77,8 @@ export default function ConfigProfile(props){
 					'profileLoaded': false,
 				});
 				px2style.modal({
-					"title": "Successful.",
-					"body": $(`<p>Your profile updated.</p>`),
+					"title": main.lb.get('modal_title.successful'),
+					"body": $(`<p>${main.lb.get('ui_message.your_profile_updated')}</p>`),
 					"form": {
 						"submit": function(){
 							// window.location.href = '?PX=admin.config';
@@ -192,8 +192,8 @@ export default function ConfigProfile(props){
 								<div className="px2-form-input-list__label"><label htmlFor="input-lang">{main.lb.get('ui_label.user_lang')}</label></div>
 								<div className="px2-form-input-list__input">
 									<select id="input-lang" name="lang" className={"px2-input"+(hasValidationError('lang') ? ' px2-input--error' : '')} defaultValue={main.profile.lang}>
-										<option value="en">English</option>
-										<option value="ja">Japanese</option>
+									<option value="en">{main.lb.get('ui_label.lang_english')}</option>
+									<option value="ja">{main.lb.get('ui_label.lang_japanese')}</option>
 									</select>
 									{(hasValidationError('lang'))
 										? <>
@@ -223,9 +223,9 @@ export default function ConfigProfile(props){
 								<div className="px2-form-input-list__label"><label htmlFor="input-appearance">{main.lb.get('ui_label.user_appearance')}</label></div>
 								<div className="px2-form-input-list__input">
 									<select id="input-appearance" name="appearance" className={"px2-input"+(hasValidationError('appearance') ? ' px2-input--error' : '')} defaultValue={main.profile.appearance}>
-										<option value="">Auto</option>
-										<option value="light">Light mode</option>
-										<option value="dark">Dark mode</option>
+									<option value="">{main.lb.get('ui_label.appearance_auto')}</option>
+									<option value="light">{main.lb.get('ui_label.appearance_light_mode')}</option>
+									<option value="dark">{main.lb.get('ui_label.appearance_dark_mode')}</option>
 									</select>
 									{(hasValidationError('appearance'))
 										? <>

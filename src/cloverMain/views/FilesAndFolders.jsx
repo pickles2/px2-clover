@@ -26,7 +26,7 @@ export default function FilesAndFolders(props){
 	}, []);
 
 	if( !isFilesAndFoldersAuthorized ){
-		return (<p>権限がありません。</p>);
+		return (<p>{main.lb.get('ui_message.no_permission')}</p>);
 	}
 
 	return (

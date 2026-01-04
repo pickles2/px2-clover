@@ -62,7 +62,7 @@ export default function CustomConsoleExtensions(props){
 					{},
 					function( res ){
 						if( !res.result ){
-							alert('Undefined Extension. ' + res.message);
+							alert(main.lb.get('error_message.undefined_extension') + ' ' + res.message);
 							return;
 						}
 						var resources = res.resources;
@@ -174,7 +174,7 @@ export default function CustomConsoleExtensions(props){
 									</div>
 								</>
 								: <>
-									<p>拡張機能は登録されていません。</p>
+									<p>{main.lb.get('ui_message.no_extensions_registered')}</p>
 								</>
 							}
 						</>

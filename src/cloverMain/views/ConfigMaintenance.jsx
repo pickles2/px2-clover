@@ -35,7 +35,7 @@ export default function ConfigMaintenance(props){
 					alert( res.message );
 					return;
 				}
-				alert( 'メンテナンスモードを開始しました。' );
+				alert( main.lb.get('ui_message.maintenance_mode_started') );
 				updateStatus();
 			}
 		);
@@ -53,7 +53,7 @@ export default function ConfigMaintenance(props){
 					alert( res.message );
 					return;
 				}
-				alert( 'メンテナンスモードを解除しました。' );
+				alert( main.lb.get('ui_message.maintenance_mode_exited') );
 				updateStatus();
 			}
 		);
@@ -64,7 +64,7 @@ export default function ConfigMaintenance(props){
 	}, []);
 
 	if( !isMaintenanceModeAuthorized ){
-		return (<p>権限がありません。</p>);
+		return (<p>{main.lb.get('ui_message.no_permission')}</p>);
 	}
 
 	if( !maintenanceModeStatus ){
@@ -73,22 +73,22 @@ export default function ConfigMaintenance(props){
 
 	return (
 		<>
-			<p>メンテナンスモードの切り替えを設定します。</p>
+			<p>{main.lb.get('ui_message.configure_maintenance_mode')}</p>
 			{(maintenanceModeStatus.start_at && maintenanceModeStatus.exit_at)
 				? <>
-					<p>現在の設定:</p>
+					<p>{main.lb.get('ui_label.current_settings')}</p>
 					<dl>
-						<dt>開始:</dt><dd>{ maintenanceModeStatus.start_at }</dd>
-						<dt>終了:</dt><dd>{ maintenanceModeStatus.exit_at }</dd>
-						<dt>メンテナ:</dt><dd>{ maintenanceModeStatus.maintainer }</dd>
+						<dt>{main.lb.get('ui_label.start')}:</dt><dd>{ maintenanceModeStatus.start_at }</dd>
+						<dt>{main.lb.get('ui_label.end')}:</dt><dd>{ maintenanceModeStatus.exit_at }</dd>
+						<dt>{main.lb.get('ui_label.maintenance')}:</dt><dd>{ maintenanceModeStatus.maintainer }</dd>
 					</dl>
-					<p>メンテナンスモードを再設定しますか？</p>
-					<p><button type="button" className={"px2-btn px2-btn--primary"} onClick={startMaintenanceMode}>メンテナンスモードを再設定する</button></p>
-					<p><button type="button" className={"px2-btn px2-btn--secondary"} onClick={exitMaintenanceMode}>メンテナンスモードを終了する</button></p>
+					<p>{main.lb.get('ui_message.reconfigure_maintenance_mode')}</p>
+					<p><button type="button" className={"px2-btn px2-btn--primary"} onClick={startMaintenanceMode}>{main.lb.get('ui_label.reconfigure_maintenance_mode')}</button></p>
+					<p><button type="button" className={"px2-btn px2-btn--secondary"} onClick={exitMaintenanceMode}>{main.lb.get('ui_label.exit_maintenance_mode')}</button></p>
 				</>
 				: <>
-					<p>メンテナンスモードを開始しますか？</p>
-					<p><button type="button" className={"px2-btn px2-btn--primary"} onClick={startMaintenanceMode}>メンテナンスモードを開始する</button></p>
+					<p>{main.lb.get('ui_message.start_maintenance_mode_confirm')}</p>
+					<p><button type="button" className={"px2-btn px2-btn--primary"} onClick={startMaintenanceMode}>{main.lb.get('ui_label.start_maintenance_mode')}</button></p>
 			</>}
 		</>
 	);

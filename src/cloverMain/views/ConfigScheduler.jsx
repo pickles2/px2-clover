@@ -51,19 +51,19 @@ export default function ConfigScheduler(props){
 	}, []);
 
 	if( !isModuleEditorAuthorized ){
-		return (<p>権限がありません。</p>);
+		return (<p>{main.lb.get('ui_message.no_permission')}</p>);
 	}
 
 	return (
 		<>
-			<p>タスクスケジュールの実行設定の状態を確認します。</p>
+			<p>{main.lb.get('ui_message.check_scheduler_status')}</p>
 			<div>
-				Status: <code>{(healthCheckStatus.scheduler.is_available===null ? '---' : (healthCheckStatus.scheduler.is_available ? 'available' : 'not available'))}</code><br />
-				Elapsed: <code>{(healthCheckStatus.scheduler.elapsed)}</code><br />
+				{main.lb.get('ui_label.status')}: <code>{(healthCheckStatus.scheduler.is_available===null ? main.lb.get('ui_label.status_unknown') : (healthCheckStatus.scheduler.is_available ? main.lb.get('ui_label.status_available') : main.lb.get('ui_label.status_not_available')))}</code><br />
+				{main.lb.get('ui_label.elapsed')}: <code>{(healthCheckStatus.scheduler.elapsed)}</code><br />
 			</div>
 			<div>
-				<p>cron での設定例</p>
-				<p>ユーザー {schedulerHint.user} で、次のように crontab を設定してください。</p>
+				<p>{main.lb.get('ui_label.cron_configuration_example')}</p>
+				<p>{main.lb.get('ui_message.crontab_instruction')}</p>
 				<pre className="code"><code>{(()=>{
 					return (<>
 						* * * * * {schedulerHint.path_php} {schedulerHint.script_filename} &quot;/?PX=admin.api.scheduler_run&quot; &gt; /dev/null 2&gt;&amp;1

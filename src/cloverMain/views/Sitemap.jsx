@@ -25,11 +25,11 @@ export default React.memo(function Sitemap(props){
 			},
 			"error": function(error){
 				console.error('Error:', error);
-				alert('Loading Error');
+				alert(main.lb.get('error_message.loading_error'));
 			},
 			"success": function(data){
 				if( !data.result ){
-					alert('Loading Error');
+					alert(main.lb.get('error_message.loading_error'));
 					return;
 				}
 				tmpSitemapFileList = data;
@@ -55,7 +55,7 @@ export default React.memo(function Sitemap(props){
 		xhr.responseType = 'blob';
 		xhr.onload = function(e) {
 			if (this.status !== 200) {
-				alert('Failed to download.');
+				alert(main.lb.get('error_message.failed_to_download'));
 				return;
 			}
 			var url = window.URL.createObjectURL(new Blob([this.response]));
@@ -84,11 +84,11 @@ export default React.memo(function Sitemap(props){
 			} ) )
 		;
 		const modal = px2style.modal({
-			"title": "サイトマップファイルをアップロード",
+			"title": main.lb.get('modal_title.upload_sitemap_file'),
 			"body": $body,
 			'buttons':[
 				$('<button type="button" class="px2-btn px2-btn--primary">')
-					.text('アップロードする')
+					.text(main.lb.get('ui_label.upload'))
 					.on('click', function(e){
 						e.preventDefault();
 						uploadSitemapFile( $body.find('form').get(0) );
@@ -122,7 +122,7 @@ export default React.memo(function Sitemap(props){
 				main.setMainState({
 					"pageInfoLoaded": false,
 				});
-				alert('Upload: done.');
+					alert(main.lb.get('ui_message.upload_done'));
 
 				main.cloverUtils.autoCommit();
 				main.link('?PX=admin.sitemap');
@@ -149,11 +149,11 @@ export default React.memo(function Sitemap(props){
 			},
 			"error": function(error){
 				console.error('Error:', error);
-				alert('Failed to Delete file.');
+				alert(main.lb.get('error_message.failed_to_delete_file'));
 			},
 			"success": function(data){
 				if( !data.result ){
-					alert('Failed to Delete file.');
+					alert(main.lb.get('error_message.failed_to_delete_file'));
 				}
 			},
 			"complete": function(){
@@ -166,7 +166,7 @@ export default React.memo(function Sitemap(props){
 	return (
 		<>
 			<div className="cont-head-menu">
-				<p><button type="button" className="px2-btn" onClick={openUploadSitemapFileDialog}>アップロード</button></p>
+				<p><button type="button" className="px2-btn" onClick={openUploadSitemapFileDialog}>{main.lb.get('ui_label.upload')}</button></p>
 			</div>
 
 			{(!sitemapFileList)
@@ -189,13 +189,13 @@ export default React.memo(function Sitemap(props){
 													{sitemapFileNameExt}: <a href="?PX=px2dthelper.sitemap.download" className="px2-btn px2-btn--secondary" onClick={(e)=>{
 														e.preventDefault();
 														downloadSitemapFile(sitemapFileName+'.'+sitemapFileNameExt);
-													}}>download</a>
+													}}>{main.lb.get('ui_label.download')}</a>
 												</li>
 											);
 										} )}
 										</ul>
 										<ul>
-											<li><a href="#" className="px2-btn px2-btn--danger" onClick={(e)=>{e.preventDefault();deleteSitemapFile(sitemapFileName);}}>delete</a></li>
+											<li><a href="#" className="px2-btn px2-btn--danger" onClick={(e)=>{e.preventDefault();deleteSitemapFile(sitemapFileName);}}>{main.lb.get('ui_label.delete')}</a></li>
 										</ul>
 									</div>
 								</li>
