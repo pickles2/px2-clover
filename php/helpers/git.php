@@ -133,7 +133,7 @@ class git {
 				return $default;
 			}
 			if( isset($this->tmp_ssh_key_path) && is_file($this->tmp_ssh_key_path) ){
-				$ssh_command = 'ssh -i '.escapeshellarg($this->tmp_ssh_key_path).' -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null';
+				$ssh_command = 'ssh -i '.escapeshellarg($this->tmp_ssh_key_path).' -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR';
 				$ssh_cmd_prefix = 'GIT_SSH_COMMAND='.escapeshellarg($ssh_command).' ';
 			}
 		}
@@ -494,7 +494,7 @@ class git {
 
 		// SSH認証の場合はGIT_SSH_COMMANDを設定
 		if( $this->git_auth_type === 'ssh' && isset($this->tmp_ssh_key_path) && is_file($this->tmp_ssh_key_path) ){
-			$ssh_command = 'ssh -i '.escapeshellarg($this->tmp_ssh_key_path).' -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null';
+			$ssh_command = 'ssh -i '.escapeshellarg($this->tmp_ssh_key_path).' -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR';
 			$cmd = 'GIT_SSH_COMMAND='.escapeshellarg($ssh_command).' '.$cmd;
 		}
 
