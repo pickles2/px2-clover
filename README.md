@@ -80,7 +80,7 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
-### pickles2/px2-clover v0.6.0 (リリース日未定)
+### pickles2/px2-clover v0.6.0 (2026年1月10日)
 
 - GitのSSH認証に対応した。
 - 多言語対応に関する更新。
