@@ -2285,16 +2285,16 @@
         },
         {
             "name": "tomk79/request",
-            "version": "1.4.1",
+            "version": "1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tomk79/request.git",
-                "reference": "069f989dbe19fc8db0ae09ab4dc9444cab61ac32"
+                "reference": "1ba2adb635ec8c5dccad5e17ed78a763bfed75c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tomk79/request/zipball/069f989dbe19fc8db0ae09ab4dc9444cab61ac32",
-                "reference": "069f989dbe19fc8db0ae09ab4dc9444cab61ac32",
+                "url": "https://api.github.com/repos/tomk79/request/zipball/1ba2adb635ec8c5dccad5e17ed78a763bfed75c0",
+                "reference": "1ba2adb635ec8c5dccad5e17ed78a763bfed75c0",
                 "shasum": ""
             },
             "require": {
@@ -2326,9 +2326,9 @@
             "description": "A request management utilitiy for PHP.",
             "support": {
                 "issues": "https://github.com/tomk79/request/issues",
-                "source": "https://github.com/tomk79/request/tree/1.4.1"
+                "source": "https://github.com/tomk79/request/tree/1.4.2"
             },
-            "time": "2023-05-01T13:02:18+00:00"
+            "time": "2026-01-10T14:08:04+00:00"
         },
         {
             "name": "twig/twig",
@@ -2413,30 +2413,29 @@
     "packages-dev": [
         {
             "name": "doctrine/instantiator",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/instantiator.git",
-                "reference": "c6222283fa3f4ac679f8b9ced9a4e23f163e80d0"
+                "reference": "23da848e1a2308728fe5fdddabf4be17ff9720c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/c6222283fa3f4ac679f8b9ced9a4e23f163e80d0",
-                "reference": "c6222283fa3f4ac679f8b9ced9a4e23f163e80d0",
+                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/23da848e1a2308728fe5fdddabf4be17ff9720c7",
+                "reference": "23da848e1a2308728fe5fdddabf4be17ff9720c7",
                 "shasum": ""
             },
             "require": {
-                "php": "^8.1"
+                "php": "^8.4"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^11",
+                "doctrine/coding-standard": "^14",
                 "ext-pdo": "*",
                 "ext-phar": "*",
                 "phpbench/phpbench": "^1.2",
-                "phpstan/phpstan": "^1.9.4",
-                "phpstan/phpstan-phpunit": "^1.3",
-                "phpunit/phpunit": "^9.5.27",
-                "vimeo/psalm": "^5.4"
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpunit/phpunit": "^10.5.58"
             },
             "type": "library",
             "autoload": {
@@ -2463,7 +2462,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/instantiator/issues",
-                "source": "https://github.com/doctrine/instantiator/tree/2.0.0"
+                "source": "https://github.com/doctrine/instantiator/tree/2.1.0"
             },
             "funding": [
                 {
@@ -2479,7 +2478,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-30T00:23:10+00:00"
+            "time": "2026-01-05T06:47:08+00:00"
         },
         {
             "name": "myclabs/deep-copy",
