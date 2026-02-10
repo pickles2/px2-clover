@@ -208,8 +208,13 @@ class git {
 		}
 
 		$rtn['exitcode'] = $res_cmd['exitcode'];
-		$rtn['stdout'] = $this->conceal_confidentials($res_cmd['stdout']);
-		$rtn['stderr'] = $this->conceal_confidentials($res_cmd['stderr']);
+		$stdout = $this->conceal_confidentials($res_cmd['stdout']) ?? '';
+		$stderr = $this->conceal_confidentials($res_cmd['stderr']) ?? '';
+		
+		// バイナリデータを安全に転送するためにbase64エンコード
+		$rtn['stdout'] = base64_encode($stdout);
+		$rtn['stderr'] = base64_encode($stderr);
+		$rtn['encoding'] = 'base64';
 
 		return $rtn;
 	}

@@ -36,8 +36,41 @@ export default React.memo(function History(props){
 
 						// 必要なプロパティの存在確認
 						const exitcode = (typeof data.exitcode !== 'undefined') ? data.exitcode : 1;
-						const stdout = (typeof data.stdout === 'string') ? data.stdout : '';
-						const stderr = (typeof data.stderr === 'string') ? data.stderr : 'Unexpected response format';
+						let stdout = (typeof data.stdout === 'string') ? data.stdout : '';
+						let stderr = (typeof data.stderr === 'string') ? data.stderr : 'Unexpected response format';
+
+						// Base64エンコードされたデータをデコード
+						if (data.encoding === 'base64') {
+							try {
+								// Base64デコードしてUint8Arrayに変換
+								const binaryStdout = atob(stdout);
+								const binaryStderr = atob(stderr);
+								
+								// バイナリ文字列をUint8Arrayに変換
+								const uint8ArrayStdout = new Uint8Array(binaryStdout.length);
+								const uint8ArrayStderr = new Uint8Array(binaryStderr.length);
+								
+								for (let i = 0; i < binaryStdout.length; i++) {
+									uint8ArrayStdout[i] = binaryStdout.charCodeAt(i);
+								}
+								for (let i = 0; i < binaryStderr.length; i++) {
+									uint8ArrayStderr[i] = binaryStderr.charCodeAt(i);
+								}
+								
+								// UTF-8としてデコードを試みる
+								try {
+									const decoder = new TextDecoder('utf-8', { fatal: true });
+									stdout = decoder.decode(uint8ArrayStdout);
+									stderr = decoder.decode(uint8ArrayStderr);
+								} catch(utf8Error) {
+									// UTF-8デコードに失敗した場合、バイナリデータとして扱う
+									stdout = binaryStdout;
+									stderr = binaryStderr;
+								}
+							} catch(e) {
+								console.error('Base64 decode error:', e);
+							}
+						}
 
 						callback(exitcode, stdout, stderr);
 					} catch (error) {
