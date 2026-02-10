@@ -25,8 +25,28 @@ export default React.memo(function History(props){
 				main.px2utils.pxCmd("?PX=admin.api.git", {
 					'git': JSON.stringify(cmdAry),
 				}, (data)=>{
-					callback(data.exitcode, data.stdout, data.stderr);
-					px2style.closeLoading();
+					try {
+						// レスポンスの妥当性をチェック
+						if (!data || typeof data !== 'object') {
+							console.error('Invalid response from git API:', data);
+							callback(1, '', 'Invalid response from server');
+							px2style.closeLoading();
+							return;
+						}
+
+						// 必要なプロパティの存在確認
+						const exitcode = (typeof data.exitcode !== 'undefined') ? data.exitcode : 1;
+						const stdout = (typeof data.stdout === 'string') ? data.stdout : '';
+						const stderr = (typeof data.stderr === 'string') ? data.stderr : 'Unexpected response format';
+
+						callback(exitcode, stdout, stderr);
+					} catch (error) {
+						// 例外が発生した場合のエラーハンドリング
+						console.error('Error processing git API response:', error);
+						callback(1, '', 'Error processing response: ' + (error.message || 'Unknown error'));
+					} finally {
+						px2style.closeLoading();
+					}
 				});
 			},
 			{
