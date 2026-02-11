@@ -326,6 +326,11 @@ class register{
 						$app = new funcs\api\git($this->clover);
 						$app->commit();
 						break;
+					case 'git_get_working_tree_file':
+						$this->clover->allowed_method('post');
+						$app = new funcs\api\git($this->clover);
+						$app->get_working_tree_file();
+						break;
 					case 'publish_stop':
 						$this->clover->allowed_method('post');
 						$app = new funcs\api\publish($this->clover);

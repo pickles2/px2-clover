@@ -107,4 +107,83 @@ class git{
 	// 	exit;
 	// }
 
+	/**
+	 * ワークツリーからファイルを取得する
+	 */
+	public function get_working_tree_file(){
+		$this->px->header('Content-type: text/json');
+
+		$filePath = $this->px->req()->get_param('filePath');
+		if( !is_string($filePath) || !strlen($filePath) ){
+			echo json_encode(array(
+				'result' => false,
+				'error' => true,
+				'message' => 'File path is required.',
+			));
+			exit;
+		}
+
+		// セキュリティ: パス トラバーサル攻撃を防ぐ
+		if( strpos($filePath, '..') !== false || strpos($filePath, '\\') !== false ){
+			echo json_encode(array(
+				'result' => false,
+				'error' => true,
+				'message' => 'Invalid file path.',
+			));
+			exit;
+		}
+
+		// Gitルートディレクトリを取得
+		$gitRoot = $this->clover->realpath_git_root();
+		if( !$gitRoot || !is_dir($gitRoot) ){
+			echo json_encode(array(
+				'result' => false,
+				'error' => true,
+				'message' => 'Git repository not found.',
+			));
+			exit;
+		}
+
+		// ファイルの絶対パスを構築
+		$realpath = $gitRoot . DIRECTORY_SEPARATOR . ltrim($filePath, '/');
+		$realpath = realpath($realpath);
+
+		// セキュリティ: Gitルート外へのアクセスを防ぐ
+		if( !$realpath || strpos($realpath, $gitRoot) !== 0 ){
+			echo json_encode(array(
+				'result' => false,
+				'error' => true,
+				'message' => 'File not found or access denied.',
+			));
+			exit;
+		}
+
+		// ファイルが存在し、読み取り可能かチェック
+		if( !is_file($realpath) || !is_readable($realpath) ){
+			echo json_encode(array(
+				'result' => false,
+				'error' => true,
+				'message' => 'File not found or not readable.',
+			));
+			exit;
+		}
+
+		// ファイルを読み込んでBase64エンコード
+		$content = file_get_contents($realpath);
+		if( $content === false ){
+			echo json_encode(array(
+				'result' => false,
+				'error' => true,
+				'message' => 'Failed to read file.',
+			));
+			exit;
+		}
+
+		echo json_encode(array(
+			'result' => true,
+			'content' => base64_encode($content),
+		));
+		exit;
+	}
+
 }

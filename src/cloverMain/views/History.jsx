@@ -88,6 +88,36 @@ export default React.memo(function History(props){
 					"name": (main.profile ? main.profile.name : '' ),
 					"email": (main.profile ? main.profile.email : ''),
 				},
+				"getWorkingTreeFile": function(filePath, callback) {
+					// ワークツリー内のファイルを取得するコールバック
+					// filePath: ワークツリーのルートからの相対パス
+					// callback(error, binaryData)
+					//   - error: エラーオブジェクト（成功時は null）
+					//   - binaryData: Uint8Array 形式のバイナリデータ
+					
+					main.px2utils.pxCmd("?PX=admin.api.git_get_working_tree_file", {
+						'filePath': filePath,
+					}, (data)=>{
+						if (data.error) {
+							callback(new Error(data.message || data.error), null);
+							return;
+						}
+						
+						// Base64エンコードされたデータをデコード
+						try {
+							const binaryString = atob(data.content);
+							const uint8Array = new Uint8Array(binaryString.length);
+							for (let i = 0; i < binaryString.length; i++) {
+								uint8Array[i] = binaryString.charCodeAt(i);
+							}
+							callback(null, uint8Array);
+						} catch(e) {
+							callback(e, null);
+						}
+					}, function(error){
+						callback(new Error(error || 'Failed to fetch working tree file'), null);
+					});
+				}
 			}
 		);
 		gitUi79.init(function(){
