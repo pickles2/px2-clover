@@ -114,8 +114,6 @@ export default React.memo(function History(props){
 						} catch(e) {
 							callback(e, null);
 						}
-					}, function(error){
-						callback(new Error(error || 'Failed to fetch working tree file'), null);
 					});
 				}
 			}
