@@ -844,16 +844,16 @@
         },
         {
             "name": "pickles2/lib-px2-contents-editor",
-            "version": "2.3.0",
+            "version": "2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pickles2/lib-px2-contents-editor.git",
-                "reference": "027eb55014e5d6e38b8bf3a91b77e3d17e8a8327"
+                "reference": "8cd58f01fd47d73a3c7a36bdb8f86f28f98761e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pickles2/lib-px2-contents-editor/zipball/027eb55014e5d6e38b8bf3a91b77e3d17e8a8327",
-                "reference": "027eb55014e5d6e38b8bf3a91b77e3d17e8a8327",
+                "url": "https://api.github.com/repos/pickles2/lib-px2-contents-editor/zipball/8cd58f01fd47d73a3c7a36bdb8f86f28f98761e7",
+                "reference": "8cd58f01fd47d73a3c7a36bdb8f86f28f98761e7",
                 "shasum": ""
             },
             "require": {
@@ -904,9 +904,9 @@
             ],
             "support": {
                 "issues": "https://github.com/pickles2/lib-px2-contents-editor/issues",
-                "source": "https://github.com/pickles2/lib-px2-contents-editor/tree/2.3.0"
+                "source": "https://github.com/pickles2/lib-px2-contents-editor/tree/2.3.1"
             },
-            "time": "2025-07-29T12:26:23+00:00"
+            "time": "2026-02-11T14:43:03+00:00"
         },
         {
             "name": "pickles2/lib-px2-module-editor",

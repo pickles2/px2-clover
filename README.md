@@ -80,6 +80,10 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
+### pickles2/px2-clover v0.6.2 (リリース日未定)
+
+- ファイルとフォルダ: ファイルの直接編集のUI画面を改善した。
+
 ### pickles2/px2-clover v0.6.1 (2026年2月11日)
 
 - 履歴管理画面で、画像の差分を表示できるようになったなど、UIを改善した。

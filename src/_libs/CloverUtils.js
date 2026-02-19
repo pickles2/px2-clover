@@ -205,15 +205,15 @@ export default function CloverUtils(){
 						}
 					);
 				},
-				"open": function(fileinfo, callback){
-					window.cloverUtils.openInCommonFileEditor(
-						rootDirectory,
-						fileinfo.path,
-						function(res){
-							callback(res);
-						}
-					);
-				},
+				// "open": function(fileinfo, callback){
+				// 	window.cloverUtils.openInCommonFileEditor(
+				// 		rootDirectory,
+				// 		fileinfo.path,
+				// 		function(res){
+				// 			callback(res);
+				// 		}
+				// 	);
+				// },
 			}
 		);
 		remoteFinder.init(path, {}, function(){
