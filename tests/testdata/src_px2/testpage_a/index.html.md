@@ -12,6 +12,11 @@
 </form>
 
 
+<img src="<?= $px->h($px->path_files("/photo007_thumb.jpg")) ?>" alt="photo007_thumb.jpg" />
+
+<img src="<?= $px->h($px->path_files("/2026-02-20-124831.svg")) ?>" alt="NoImagePlaceholder_root2_1.svg" />
+
+
 <div style="height: 200vh;"></div>
 
 

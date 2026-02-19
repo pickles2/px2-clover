@@ -205,15 +205,15 @@ export default function CloverUtils(){
 						}
 					);
 				},
-				// "open": function(fileinfo, callback){
-				// 	window.cloverUtils.openInCommonFileEditor(
-				// 		rootDirectory,
-				// 		fileinfo.path,
-				// 		function(res){
-				// 			callback(res);
-				// 		}
-				// 	);
-				// },
+				"open": function(fileinfo, callback){
+					window.cloverUtils.openInCommonFileEditor(
+						rootDirectory,
+						fileinfo.path,
+						function(res){
+							callback(res);
+						}
+					);
+				},
 			}
 		);
 		remoteFinder.init(path, {}, function(){
@@ -227,7 +227,10 @@ export default function CloverUtils(){
 	this.openInCommonFileEditor = function( rootDirectory, filePath, callback ){
 		rootDirectory = rootDirectory || 'root';
 		callback = callback || function(){};
-		const $body = document.createElement('div');
+		const $body = $('<div>').css({
+			paddingLeft: 15,
+			paddingRight: 15,
+		});
 		const modalObj = px2style.modal({
 			"body": $body,
 			"buttons": [],
@@ -238,7 +241,7 @@ export default function CloverUtils(){
 		modalObj.closable(false);
 
 		var commonFileEditor = new CommonFileEditor(
-			$body,
+			$body.get(0),
 			{
 				"lang": this.lang,
 				"read": function(filename, callback){ // required
