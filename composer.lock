@@ -57,16 +57,16 @@
         },
         {
             "name": "broccoli-html-editor/broccoli-html-editor",
-            "version": "1.2.4",
+            "version": "1.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/broccoli-html-editor/broccoli-html-editor.git",
-                "reference": "7db16933ba026618b7b119bdfd4f02f351cd1e37"
+                "reference": "c0d586ef7eaf3059d1f80b26b5a3afac017d4e41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/broccoli-html-editor/broccoli-html-editor/zipball/7db16933ba026618b7b119bdfd4f02f351cd1e37",
-                "reference": "7db16933ba026618b7b119bdfd4f02f351cd1e37",
+                "url": "https://api.github.com/repos/broccoli-html-editor/broccoli-html-editor/zipball/c0d586ef7eaf3059d1f80b26b5a3afac017d4e41",
+                "reference": "c0d586ef7eaf3059d1f80b26b5a3afac017d4e41",
                 "shasum": ""
             },
             "require": {
@@ -115,9 +115,9 @@
             ],
             "support": {
                 "issues": "https://github.com/broccoli-html-editor/broccoli-html-editor/issues",
-                "source": "https://github.com/broccoli-html-editor/broccoli-html-editor/tree/1.2.4"
+                "source": "https://github.com/broccoli-html-editor/broccoli-html-editor/tree/1.2.5"
             },
-            "time": "2026-01-10T14:30:40+00:00"
+            "time": "2026-02-21T04:06:29+00:00"
         },
         {
             "name": "broccoli-html-editor/kaleflower",
@@ -844,16 +844,16 @@
         },
         {
             "name": "pickles2/lib-px2-contents-editor",
-            "version": "2.3.1",
+            "version": "2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pickles2/lib-px2-contents-editor.git",
-                "reference": "8cd58f01fd47d73a3c7a36bdb8f86f28f98761e7"
+                "reference": "18ec62d7158c3cb521fb03800e50486cf76819a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pickles2/lib-px2-contents-editor/zipball/8cd58f01fd47d73a3c7a36bdb8f86f28f98761e7",
-                "reference": "8cd58f01fd47d73a3c7a36bdb8f86f28f98761e7",
+                "url": "https://api.github.com/repos/pickles2/lib-px2-contents-editor/zipball/18ec62d7158c3cb521fb03800e50486cf76819a1",
+                "reference": "18ec62d7158c3cb521fb03800e50486cf76819a1",
                 "shasum": ""
             },
             "require": {
@@ -904,9 +904,9 @@
             ],
             "support": {
                 "issues": "https://github.com/pickles2/lib-px2-contents-editor/issues",
-                "source": "https://github.com/pickles2/lib-px2-contents-editor/tree/2.3.1"
+                "source": "https://github.com/pickles2/lib-px2-contents-editor/tree/2.3.2"
             },
-            "time": "2026-02-11T14:43:03+00:00"
+            "time": "2026-02-21T04:15:24+00:00"
         },
         {
             "name": "pickles2/lib-px2-module-editor",
