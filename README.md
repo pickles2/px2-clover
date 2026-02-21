@@ -80,7 +80,7 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
-### pickles2/px2-clover v0.6.2 (リリース日未定)
+### pickles2/px2-clover v0.6.2 (2026年2月21日)
 
 - ファイルとフォルダ:
 	- `.svg` のプレビューに対応
