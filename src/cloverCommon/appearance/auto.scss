@@ -3,7 +3,7 @@
 @media (prefers-color-scheme: dark) {
 :root {
 	--px2-text-color: #ddd;
-	--px2-background-color: #333;
+	--px2-background-color: #090909;
 }
 
 @layer base{
@@ -12,6 +12,10 @@
 			border: 1px solid #555;
 			background-color: #222;
 		}
+	}
+	a:hover {
+		opacity: 1;
+		color: #c0ddf6;
 	}
 }
 
@@ -64,6 +68,10 @@
 	}
 }
 
+table.px2-table td {
+	background-color: #090909;
+}
+
 [data-px="admin.page_info"] {
 	@import "./../../cloverMain/views/PageInfo_files/darkmode";
 }
@@ -80,6 +88,9 @@
 // gitui79 の darkmode
 @import "./../../../node_modules/gitui79/dist/themes/darkmode";
 
+// remote-finder の auto mode
+@import "./../../../vendor/tomk79/remote-finder/dist/themes/default";
+
 // common-file-editor の darkmode
 @import "./../../../node_modules/@tomk79/common-file-editor/dist/themes/darkmode";
 
@@ -87,6 +98,3 @@
 
 @media (prefers-color-scheme: light) {
 }
-
-// remote-finder の auto mode
-@import "./../../../vendor/tomk79/remote-finder/dist/themes/default";

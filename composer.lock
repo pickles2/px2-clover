@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "broccoli-html-editor/broccoli-field-table",
-            "version": "0.4.1",
+            "version": "0.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/broccoli-html-editor/broccoli-field-table.git",
-                "reference": "c4e3c3f14740d76310bd5e940bb63b358dcc0e05"
+                "reference": "6c2395dec9e5eeb886519b30d9d3ee69578b7afb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/broccoli-html-editor/broccoli-field-table/zipball/c4e3c3f14740d76310bd5e940bb63b358dcc0e05",
-                "reference": "c4e3c3f14740d76310bd5e940bb63b358dcc0e05",
+                "url": "https://api.github.com/repos/broccoli-html-editor/broccoli-field-table/zipball/6c2395dec9e5eeb886519b30d9d3ee69578b7afb",
+                "reference": "6c2395dec9e5eeb886519b30d9d3ee69578b7afb",
                 "shasum": ""
             },
             "require": {
@@ -51,9 +51,9 @@
             ],
             "support": {
                 "issues": "https://github.com/broccoli-html-editor/broccoli-field-table/issues",
-                "source": "https://github.com/broccoli-html-editor/broccoli-field-table/tree/0.4.1"
+                "source": "https://github.com/broccoli-html-editor/broccoli-field-table/tree/0.4.2"
             },
-            "time": "2023-11-12T16:09:31+00:00"
+            "time": "2026-02-21T04:32:09+00:00"
         },
         {
             "name": "broccoli-html-editor/broccoli-html-editor",
@@ -1759,16 +1759,16 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v8.0.1",
+            "version": "v8.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "d937d400b980523dc9ee946bb69972b5e619058d"
+                "reference": "7bf9162d7a0dff98d079b72948508fa48018a770"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/d937d400b980523dc9ee946bb69972b5e619058d",
-                "reference": "d937d400b980523dc9ee946bb69972b5e619058d",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/7bf9162d7a0dff98d079b72948508fa48018a770",
+                "reference": "7bf9162d7a0dff98d079b72948508fa48018a770",
                 "shasum": ""
             },
             "require": {
@@ -1805,7 +1805,7 @@
             "description": "Provides basic utilities for the filesystem",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/filesystem/tree/v8.0.1"
+                "source": "https://github.com/symfony/filesystem/tree/v8.0.6"
             },
             "funding": [
                 {
@@ -1825,7 +1825,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-01T09:13:36+00:00"
+            "time": "2026-02-25T16:59:43+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
