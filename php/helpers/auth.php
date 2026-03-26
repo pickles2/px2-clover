@@ -257,6 +257,9 @@ class auth {
 			$is_html_page = true;
 		}
 
+		$cookie_params = session_get_cookie_params();
+		$session_cookie_secure = !empty($cookie_params['secure']) ? 1 : 0;
+
 		if( $is_html_page ){
 			echo $this->clover->view()->bind(
 				'/system/login.twig',
@@ -265,6 +268,7 @@ class auth {
 					'ADMIN_USER_ID' => $this->req->get_param('ADMIN_USER_ID'),
 					'csrf_token' => $this->get_csrf_token(),
 					'error_message' => ($error_message ? $this->lang()->get('login_error.'.$error_message) : ''),
+					'session_cookie_secure' => $session_cookie_secure,
 				)
 			);
 			exit;

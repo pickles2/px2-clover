@@ -8,7 +8,8 @@
 {% if error_message %}
 	<p class="px2-error">{{ error_message }}</p>
 {% endif %}
-<form action="" method="post">
+<div id="login-ssl-warning" style="display:none;"></div>
+<form action="" method="post" id="login-form">
 	<div class="auth-form">
 		<div class="auth-form__unit">
 			<div class="auth-form__label">{{ lb.get('ui_label.user_id') }}:</div>
@@ -26,8 +27,31 @@
 		</div>
 		<input type="hidden" name="ADMIN_USER_FLG" value="1" />
 		<input type="hidden" name="ADMIN_USER_CSRF_TOKEN" value="{{ csrf_token }}" />
+		<input type="hidden" id="session-cookie-secure" value="{{ session_cookie_secure }}" />
 	</div>
 </form>
 {% endblock %}
 {% block foot %}
+<script>
+(function(){
+	var secureCookie = parseInt(document.getElementById('session-cookie-secure').value, 10);
+	var isHttp = (location.protocol === 'http:');
+	var warningEl = document.getElementById('login-ssl-warning');
+
+	if(secureCookie === 1 && isHttp){
+		warningEl.className = 'px2-error';
+		warningEl.textContent = {{ lb.get('login_warning.ssl_required') | json_encode | raw }};
+		warningEl.style.display = '';
+	}else if(secureCookie === 0 && !isHttp){
+		warningEl.className = 'px2-error';
+		warningEl.textContent = {{ lb.get('login_warning.secure_cookie_required') | json_encode | raw }};
+		warningEl.style.display = '';
+		var form = document.getElementById('login-form');
+		var inputs = form.querySelectorAll('input, button, select, textarea');
+		for(var i = 0; i < inputs.length; i++){
+			inputs[i].disabled = true;
+		}
+	}
+})();
+</script>
 {% endblock %}
