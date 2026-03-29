@@ -1035,16 +1035,16 @@
         },
         {
             "name": "pickles2/px-fw-2.x",
-            "version": "2.1.24",
+            "version": "2.1.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pickles2/px-fw-2.x.git",
-                "reference": "cfb4ade70b097ea886f1c71ab9a3452fe97623b9"
+                "reference": "767082f1db68e72dfcd3d498ff693f2485987630"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pickles2/px-fw-2.x/zipball/cfb4ade70b097ea886f1c71ab9a3452fe97623b9",
-                "reference": "cfb4ade70b097ea886f1c71ab9a3452fe97623b9",
+                "url": "https://api.github.com/repos/pickles2/px-fw-2.x/zipball/767082f1db68e72dfcd3d498ff693f2485987630",
+                "reference": "767082f1db68e72dfcd3d498ff693f2485987630",
                 "shasum": ""
             },
             "require": {
@@ -1089,22 +1089,22 @@
             ],
             "support": {
                 "issues": "https://github.com/pickles2/px-fw-2.x/issues",
-                "source": "https://github.com/pickles2/px-fw-2.x/tree/2.1.24"
+                "source": "https://github.com/pickles2/px-fw-2.x/tree/2.1.25"
             },
-            "time": "2025-07-12T07:38:33+00:00"
+            "time": "2026-03-29T17:07:22+00:00"
         },
         {
             "name": "pickles2/px2-blog-kit",
-            "version": "0.2.1",
+            "version": "0.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pickles2/px2-blog-kit.git",
-                "reference": "68e66943f5f4f51cc32c71feefc1c06c4bb82876"
+                "reference": "4025d9e1343d30d46cc0f359d7b52aa19a47f517"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pickles2/px2-blog-kit/zipball/68e66943f5f4f51cc32c71feefc1c06c4bb82876",
-                "reference": "68e66943f5f4f51cc32c71feefc1c06c4bb82876",
+                "url": "https://api.github.com/repos/pickles2/px2-blog-kit/zipball/4025d9e1343d30d46cc0f359d7b52aa19a47f517",
+                "reference": "4025d9e1343d30d46cc0f359d7b52aa19a47f517",
                 "shasum": ""
             },
             "require": {
@@ -1153,9 +1153,9 @@
             ],
             "support": {
                 "issues": "https://github.com/pickles2/px2-blog-kit/issues",
-                "source": "https://github.com/pickles2/px2-blog-kit/tree/0.2.1"
+                "source": "https://github.com/pickles2/px2-blog-kit/tree/0.2.2"
             },
-            "time": "2025-07-29T12:17:30+00:00"
+            "time": "2026-03-29T17:14:18+00:00"
         },
         {
             "name": "pickles2/px2-multitheme",
@@ -2188,16 +2188,16 @@
         },
         {
             "name": "tomk79/remote-finder",
-            "version": "0.5.0",
+            "version": "0.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tomk79/node-remote-finder.git",
-                "reference": "a365677db7ac3d9c0a03667dc4e4e309ee65f740"
+                "reference": "4550422602465b59e8b3f079a0719311e360c7fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tomk79/node-remote-finder/zipball/a365677db7ac3d9c0a03667dc4e4e309ee65f740",
-                "reference": "a365677db7ac3d9c0a03667dc4e4e309ee65f740",
+                "url": "https://api.github.com/repos/tomk79/node-remote-finder/zipball/4550422602465b59e8b3f079a0719311e360c7fb",
+                "reference": "4550422602465b59e8b3f079a0719311e360c7fb",
                 "shasum": ""
             },
             "require": {
@@ -2229,9 +2229,9 @@
             "description": "Finder や Explorer のように、サーバー上のファイルとフォルダを操作するUIを提供します。",
             "support": {
                 "issues": "https://github.com/tomk79/node-remote-finder/issues",
-                "source": "https://github.com/tomk79/node-remote-finder/tree/0.5.0"
+                "source": "https://github.com/tomk79/node-remote-finder/tree/0.5.1"
             },
-            "time": "2025-11-16T06:08:44+00:00"
+            "time": "2026-03-29T16:47:35+00:00"
         },
         {
             "name": "tomk79/request",
