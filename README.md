@@ -80,7 +80,7 @@ $conf->allow_pxcommands = 1;
 
 ## 更新履歴 - Change log
 
-### pickles2/px2-clover v0.6.3 (リリース日未定)
+### pickles2/px2-clover v0.6.3 (2026年3月30日)
 
 - 管理画面のスタイリングを更新。
 - セッションCookieの `secure` フラグと、実際の接続方法が一致していない場合に、解決のヒントを表示するようになった。
